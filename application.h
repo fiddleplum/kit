@@ -7,13 +7,15 @@
 This is a simple wrapper for SDL. It provides windowing, input, and OpenGL capabilities with very little setup effort. Just implement the
 five functions below, and you're ready to go!
 
-Here is a simple on_entry template. You can put your own initialization and deinitialization stuff inbetween the function calls.
+Here is a simple onEntry template. You can put your own initialization and deinitialization stuff inbetween the function calls.
 
-void App::on_entry (std::vector<std::string> const& params)
+void App::onEntry (std::vector<std::string> const& params)
 {
-	app::open_window("New Application", false, app::Size(800, 600));
-	app::start_loop();
-	app::close_window();
+	App::openWindow();
+	App::setTitle("New Application");
+	App::setSize(false, App::Coord(800, 600));
+	App::startLoop();
+	App::closeWindow();
 }
 **/
 
@@ -21,10 +23,10 @@ namespace App
 {
 	struct Coord
 	{
+		Coord(int x, int y) : x(x), y(y) {}
 		int x;
 		int y;
-		Coord(int x, int y) : x(x), y(y) {}
-	}
+	};
 
 	struct InputEvent
 	{
@@ -34,27 +36,28 @@ namespace App
 	};
 
 	/******* Implement these! *******/
-	
+
 	// This is the first function that is called (like the main function). The params are the given at the console, separated by spaces.
 	void onEntry(std::vector<std::string> const& params);
-	
+
 	// This is called whenever an input event occurs (can be more than once per loop iteration).
 	void onInputEvent(InputEvent const& event);
-	
-	// This is called every time the program loops (after all onEvent calls for that frame). deltaTime is in seconds.
+
+	// This is called every time the program loops (after all onEvent calls for that frame). deltaTime is how much time has passed since the last onFrame
+	// and is in seconds.
 	void onFrame(float deltaTime);
-	
+
 	// This is called every time the program loops (after onFrame). Draw stuff here using OpenGL. The OpenGL state is mostly reset before this is called.
 	void onRender();
-	
+
 	// This is called whenever the window resizes (typically used to correct camera aspect ratios or reload textures). For fullscreen, size is the resolution.
 	void onResize(Coord const& size);
-	
+
 	/******* You can call these *******/
 
 	// This shows a system message. If in Windows, it opens a popup window, otherwise it prints to stdout.
 	void showMessage(std::string const& text);
-	
+
 	/** Window Functions **/
 
 	// The window has a title that you specify. The window can also be fullscreen, which the resolution is specified by window_size. There
@@ -76,7 +79,7 @@ namespace App
 
 	// Retrieves a list of all possible resolutions available to the primary monitor (multiple monitors not yet supported).
 	std::vector<Coord> getAllResolutions();
-	
+
 	/** Input Device Functions **/
 
 	// The input types can be a keyboard, a mouse, and a number of controllers. Each device is numbered from 0 (keyboard) to

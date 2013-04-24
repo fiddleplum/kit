@@ -157,7 +157,7 @@ namespace App
 			if(!mFirstMouseMoveEvent) // the first mouse motion event always gives absolute values in its xrel and yrel, and so is invalid
 			{
 				event.device = Device::KEYBOARD;
-				if(sdlEvent.motion.xrel != 0) 
+				if(sdlEvent.motion.xrel != 0)
 				{
 					event.axis = Mouse::X;
 					event.value = sdlEvent.motion.xrel;
@@ -165,7 +165,7 @@ namespace App
 					event.value = 0;
 					events.push_back(event);
 				}
-				if(sdlEvent.motion.yrel != 0) 
+				if(sdlEvent.motion.yrel != 0)
 				{
 					event.axis = Mouse::Y;
 					event.value = sdlEvent.motion.yrel;
@@ -179,10 +179,10 @@ namespace App
 				mFirstMouseMoveEvent = false;
 			}
 		}
-		else if(sdlEvent.type == SDL_MOUSEBUTTONDOWN || sdlEvent.type == SDL_MOUSEBUTTONUP) 
+		else if(sdlEvent.type == SDL_MOUSEBUTTONDOWN || sdlEvent.type == SDL_MOUSEBUTTONUP)
 		{
 			event.device = Device::MOUSE;
-			if((sdlEvent.button.button == SDL_BUTTON_WHEELDOWN || sdlEvent.button.button == SDL_BUTTON_WHEELUP)) 
+			if((sdlEvent.button.button == SDL_BUTTON_WHEELDOWN || sdlEvent.button.button == SDL_BUTTON_WHEELUP))
 			{
 				if(sdlEvent.type == SDL_MOUSEBUTTONDOWN) // wheel move generates both buttonup and buttondown events, so only keep the buttondown ones
 				{
@@ -191,7 +191,7 @@ namespace App
 					events.push_back(event);
 				}
 			}
-			else 
+			else
 			{
 				switch(sdlEvent.button.button)
 				{
@@ -208,17 +208,17 @@ namespace App
 				events.push_back(event);
 			}
 		}
-		else if(sdlEvent.type == SDL_JOYAXISMOTION) 
+		else if(sdlEvent.type == SDL_JOYAXISMOTION)
 		{
 			event.device = Device::CONTROLLER_0 + sdlEvent.jaxis.which;
 			event.axis = sdlEvent.jaxis.axis;
 			event.value = sdlEvent.jaxis.value;
 			events.push_back(event);
 		}
-		else if(sdlEvent.type == SDL_JOYBALLMOTION) 
+		else if(sdlEvent.type == SDL_JOYBALLMOTION)
 		{
 			event.device = Device::CONTROLLER_0 + sdlEvent.jaxis.which;
-			if(sdlEvent.jball.xrel != 0) 
+			if(sdlEvent.jball.xrel != 0)
 			{
 				event.axis = 256 + 2 * sdlEvent.jball.ball;
 				event.value = sdlEvent.jball.xrel;
@@ -226,7 +226,7 @@ namespace App
 				event.value = 0;
 				events.push_back(event);
 			}
-			if(sdlEvent.jball.yrel != 0) 
+			if(sdlEvent.jball.yrel != 0)
 			{
 				event.axis = 256 + 2 * sdlEvent.jball.ball + 1;
 				event.value = sdlEvent.jball.yrel;
@@ -235,11 +235,11 @@ namespace App
 				events.push_back(event);
 			}
 		}
-		else if(sdlEvent.type == SDL_JOYHATMOTION) 
+		else if(sdlEvent.type == SDL_JOYHATMOTION)
 		{
 			event.device = Device::CONTROLLER_0 + sdlEvent.jaxis.which;
 			Uint8 prevHatValue = mHatValues[sdlEvent.jaxis.which][sdlEvent.jhat.hat];
-			if(((sdlEvent.jhat.value & SDL_HAT_LEFT) != (prevHatValue & SDL_HAT_LEFT)) || (((sdlEvent.jhat.value & SDL_HAT_RIGHT) != (prevHatValue & SDL_HAT_RIGHT)))) 
+			if(((sdlEvent.jhat.value & SDL_HAT_LEFT) != (prevHatValue & SDL_HAT_LEFT)) || (((sdlEvent.jhat.value & SDL_HAT_RIGHT) != (prevHatValue & SDL_HAT_RIGHT))))
 			{
 				event.axis = 512 + 2 * sdlEvent.jhat.hat;
 				if((sdlEvent.jhat.value & SDL_HAT_RIGHT) != 0)
@@ -256,7 +256,7 @@ namespace App
 				}
 				events.push_back(event);
 			}
-			if(((sdlEvent.jhat.value & SDL_HAT_DOWN) != (prevHatValue & SDL_HAT_DOWN)) || (((sdlEvent.jhat.value & SDL_HAT_UP) != (prevHatValue & SDL_HAT_UP)))) 
+			if(((sdlEvent.jhat.value & SDL_HAT_DOWN) != (prevHatValue & SDL_HAT_DOWN)) || (((sdlEvent.jhat.value & SDL_HAT_UP) != (prevHatValue & SDL_HAT_UP))))
 			{
 				event.axis = 512 + 2 * sdlEvent.jhat.hat + 1;
 				if((sdlEvent.jhat.value & SDL_HAT_UP) != 0)
@@ -275,7 +275,7 @@ namespace App
 			}
 			mHatValues[sdlEvent.jaxis.which][sdlEvent.jhat.hat] = sdlEvent.jhat.value;
 		}
-		else if(sdlEvent.type == SDL_JOYBUTTONDOWN || sdlEvent.type == SDL_JOYBUTTONUP) 
+		else if(sdlEvent.type == SDL_JOYBUTTONDOWN || sdlEvent.type == SDL_JOYBUTTONUP)
 		{
 			event.device = Device::CONTROLLER_0 + sdlEvent.jaxis.which;
 			event.axis = 768 + sdlEvent.jbutton.button;
@@ -284,23 +284,23 @@ namespace App
 		}
 	}
 
-	void handleEvents() 
+	void handleEvents()
 	{
 		SDL_Event event;
 		std::vector<Event> events;
 		SDL_PumpEvents();
-		while(SDL_PollEvent(&event) == 1) 
+		while(SDL_PollEvent(&event) == 1)
 		{
-			if(event.type == SDL_QUIT) 
+			if(event.type == SDL_QUIT)
 			{
 				quit();
 			}
-			else if(event.type == SDL_VIDEOEXPOSE || event.type == SDL_USEREVENT || event.type == SDL_SYSWMEVENT) 
+			else if(event.type == SDL_VIDEOEXPOSE || event.type == SDL_USEREVENT || event.type == SDL_SYSWMEVENT)
 			{ // Do nothing.
 			}
-			else if(event.type == SDL_VIDEORESIZE) 
+			else if(event.type == SDL_VIDEORESIZE)
 			{
-				if(!mFullscreen) 
+				if(!mFullscreen)
 				{
 					Coord size(event.resize.w, event.resize.h);
 					setSize(mFullscreen, size);
@@ -308,13 +308,13 @@ namespace App
 					mLastTime = SDL_GetTicks() / 1000.0f;
 				}
 			}
-			else if(event.type == SDL_ACTIVEEVENT) 
+			else if(event.type == SDL_ACTIVEEVENT)
 			{
 				if(mFullscreen && (event.active.type & SDL_APPACTIVE) != 0 && event.active.gain == 0)
 				{
 					setSize(true, getSize());
 				}
-				if((event.active.type & SDL_APPMOUSEFOCUS) != 0) 
+				if((event.active.type & SDL_APPMOUSEFOCUS) != 0)
 				{
 					mCursorPositionValid = (event.active.gain == 1);
 				}
@@ -324,7 +324,7 @@ namespace App
 				createEventsFromSDLEvent(events, event);
 			}
 		}
-		if(cursorHasValidPosition()) 
+		if(cursorHasValidPosition())
 		{
 			Coord position = cursorPosition();
 			event.type = SDL_MOUSEMOTION;
@@ -335,9 +335,9 @@ namespace App
 			event.motion.state = 0;
 			createEventsFromSDLEvent(events, event);
 		}
-		for(unsigned int i = 0; i < events.size(); ++i) 
+		for(unsigned int i = 0; i < events.size(); ++i)
 		{
-			if(events[i].device == Device::MOUSE && (events[i].axis == Mouse::X || events[i].axis == Mouse::Y)) 
+			if(events[i].device == Device::MOUSE && (events[i].axis == Mouse::X || events[i].axis == Mouse::Y))
 			{
 				mCursorPositionValid = true;
 				if(mCursorEnabled)
@@ -349,7 +349,7 @@ namespace App
 		}
 	}
 
-	void draw() 
+	void draw()
 	{
 		// mostly reset to basic state
 		glDisable(GL_CULL_FACE);
@@ -388,7 +388,7 @@ namespace App
 
 	/*** Header functions ***/
 
-	void showMessage(std::string const& text) 
+	void showMessage(std::string const& text)
 	{
 	#ifdef __WIN32__
 		MessageBoxA(NULL, text.c_str(), "Message", MB_OK);
@@ -397,7 +397,7 @@ namespace App
 	#endif
 	}
 
-	void openWindow() 
+	void openWindow()
 	{
 		if(SDL_Init(SDL_INIT_VIDEO) == -1)
 		{
@@ -408,7 +408,7 @@ namespace App
 		refreshInputDevices();
 	}
 
-	void closeWindow() 
+	void closeWindow()
 	{
 		for(int i = 0; i < (int)mJoysticks.size(); ++i)
 		{
@@ -416,23 +416,23 @@ namespace App
 		}
 		SDL_Quit();
 	}
-	
+
 	void setTitle(std::string const& title)
 	{
 		SDL_WM_SetCaption(title.c_str(), title.c_str());
 	}
 
-	Coord getSize() 
+	Coord getSize()
 	{
 		return mWindowSize;
 	}
 
-	bool isFullscreen() 
+	bool isFullscreen()
 	{
 		return mFullscreen;
 	}
 
-	void setSize(bool fullscreen, Coord windowSize) 
+	void setSize(bool fullscreen, Coord windowSize)
 	{
 		Uint32 flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL;
 		if(fullscreen)
@@ -443,7 +443,7 @@ namespace App
 		{
 			flags |= SDL_ANYFORMAT | SDL_RESIZABLE;
 		}
-		if(SDL_SetVideoMode(windowSize.x, windowSize.y, 32, flags) == NULL) 
+		if(SDL_SetVideoMode(windowSize.x, windowSize.y, 32, flags) == NULL)
 		{
 			std::stringstream ss;
 			ss << "A window size of " << windowSize.x << "x" << windowSize.y << " is not supported while in " << (fullscreen ? "fullscreen" : "windowed") << " mode. ";
@@ -453,11 +453,11 @@ namespace App
 		mFullscreen = fullscreen;
 	}
 
-	void startLoop() 
+	void startLoop()
 	{
 		mRunning = true;
 		mLastTime = SDL_GetTicks() / 1000.0f;
-		while(mRunning) 
+		while(mRunning)
 		{
 			float newTime = SDL_GetTicks() / 1000.0f;
 			float deltaTime = newTime - mLastTime; // calculate the last frame's duration
@@ -468,7 +468,7 @@ namespace App
 			}
 			if(mRunning)
 			{
-				on_frame(deltaTime); // calls user-defined function
+				onFrame(deltaTime); // calls user-defined function
 			}
 			if(mRunning)
 			{
@@ -477,12 +477,12 @@ namespace App
 		}
 	}
 
-	void quit() 
+	void quit()
 	{
 		mRunning = false;
 	}
 
-	std::vector<Coord> getAllResolutions() 
+	std::vector<Coord> getAllResolutions()
 	{
 		std::vector<Size > resolutions;
 		SDL_Rect ** rects = SDL_ListModes(0, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL | SDL_FULLSCREEN);
@@ -491,12 +491,12 @@ namespace App
 		return resolutions;
 	}
 
-	int getNumInputDevices() 
+	int getNumInputDevices()
 	{
 		return 2 + (int)m_joysticks.size();
 	}
 
-	std::string getDeviceName(int device) 
+	std::string getDeviceName(int device)
 	{
 		if(device == Device::KEYBOARD)
 		{
@@ -506,7 +506,7 @@ namespace App
 		{
 			return "mouse";
 		}
-		else if(device >= Device::CONTROLLER_0) 
+		else if(device >= Device::CONTROLLER_0)
 		{
 			std::stringstream ss;
 			ss << "controller " << (device - Device::CONTROLLER_0);
@@ -518,9 +518,9 @@ namespace App
 		}
 	}
 
-	std::string getAxisName(int device, int axis) 
+	std::string getAxisName(int device, int axis)
 	{
-		if(device == Device::KEYBOARD) 
+		if(device == Device::KEYBOARD)
 		{
 			switch(axis)
 			{
@@ -732,7 +732,7 @@ namespace App
 					return "unicode";
 			}
 		}
-		else if(device == Device::MOUSE) 
+		else if(device == Device::MOUSE)
 		{
 			switch(axis)
 			{
@@ -756,27 +756,27 @@ namespace App
 						return ss.str();
 					}
 		}
-		else if(deivce >= Device::CONTROLLER_0) 
+		else if(deivce >= Device::CONTROLLER_0)
 		{
-			if(0 <= axis && axis < 256) 
+			if(0 <= axis && axis < 256)
 			{
 				std::stringstream ss;
 				ss << "axis " << (axis + 1);
 				return ss.str();
 			}
-			else if(256 <= axis && axis < 512) 
+			else if(256 <= axis && axis < 512)
 			{
 				std::stringstream ss;
 				ss << "ball " << ((axis - 256)/2 + 1) << " " << ((axis - 256) % 2 == 0 ? "x" : "y");
 				return ss.str();
 			}
-			else if(512 <= axis && axis < 768) 
+			else if(512 <= axis && axis < 768)
 			{
 				std::stringstream ss;
 				ss << "hat " << ((axis - 512)/2 + 1) << " " << ((axis - 512) % 2 == 0 ? "x" : "y");
 				return ss.str();
 			}
-			else if(768 <= axis && axis < 1024) 
+			else if(768 <= axis && axis < 1024)
 			{
 				std::stringstream ss;
 				ss << "button " << (axis - 768 + 1);
@@ -786,9 +786,9 @@ namespace App
 		return "unknown axis";
 	}
 
-	void refreshInputDevices() 
+	void refreshInputDevices()
 	{
-		if(SDL_WasInit(SDL_INIT_EVERYTHING) & SDL_INIT_JOYSTICK) 
+		if(SDL_WasInit(SDL_INIT_EVERYTHING) & SDL_INIT_JOYSTICK)
 		{
 			for(int i = 0; i < (int)mJoysticks.size(); ++i)
 			{
@@ -796,13 +796,13 @@ namespace App
 			}
 			SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 		}
-		if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) == 0) 
+		if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) == 0)
 		{
 			int numJoysticks = SDL_NumJoysticks();
-			for(int i = 0; i < numJoysticks; ++i) 
+			for(int i = 0; i < numJoysticks; ++i)
 			{
 				SDL_Joystick * joystick = SDL_JoystickOpen(i);
-				if(joystick == NULL) 
+				if(joystick == NULL)
 				{
 					std::stringstream ss;
 					ss << "Could not initialize input controller " << (i + 1) << ". ";
@@ -820,26 +820,26 @@ namespace App
 		}
 	}
 
-	bool hasValidCursorPosition() 
+	bool hasValidCursorPosition()
 	{
 		return mCursorEnabled && mCursorPositionValid;
 	}
 
-	Coord getCursorPosition() 
+	Coord getCursorPosition()
 	{
 		assert(mCursorEnabled && mCursorPositionValid);
 		return mCursorPosition;
 	}
 
-	bool isCursorVisible() 
+	bool isCursorVisible()
 	{
 		return mCursorVisible;
 	}
 
-	void setCursorVisible (bool visible) 
+	void setCursorVisible (bool visible)
 	{
 		mCursorVisible = visible;
-		if(mCursorEnabled) 
+		if(mCursorEnabled)
 		{
 			if(visible)
 			{
@@ -852,15 +852,15 @@ namespace App
 		}
 	}
 
-	bool isCursorEnabled() 
+	bool isCursorEnabled()
 	{
 		return mCursorEnabled;
 	}
 
-	void setCursorEnabled(bool enabled) 
+	void setCursorEnabled(bool enabled)
 	{
 		mCursorEnabled = enabled;
-		if(enabled) 
+		if(enabled)
 		{
 			if(mCursorVisible)
 			{
@@ -869,7 +869,7 @@ namespace App
 			SDL_WM_GrabInput(SDL_GRAB_OFF);
 			SDL_WarpMouse((Uint16)mCursorPosition.x, (Uint16)mCursorPosition.y);
 		}
-		else 
+		else
 		{
 			SDL_ShowCursor(SDL_DISABLE);
 			SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -877,18 +877,18 @@ namespace App
 	}
 }
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
 	std::vector<std::string> params;
 	for(int i = 1; i < argc; ++i)
 	{
 		params.push_back(std::string(argv[i]));
 	}
-	try 
+	try
 	{
 		app::onEntry(params); // calls user-defined function
 	}
-	catch(std::runtime_error const& err) 
+	catch(std::runtime_error const& err)
 	{
 		app::showMessage(err.what());
 	}
