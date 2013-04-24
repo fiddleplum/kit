@@ -1,10 +1,10 @@
 #pragma once
 
-#include "vector.h"
+#include "Vector.h"
 #include <cassert>
 
 /*!
-This is a standard mathematical matrix class. \b Rows and \b cols are the dimensions of the matrix and \b T is the type of its elements.
+This is a standard mathematical matrix class. Rows and cols are the dimensions of the matrix and T is the type of its elements.
 The matrix is in column-major order. The rationale for this is that traditional mathematics uses m * v operator order, which means that,
 for a translation matrix, the elements m(0, 3), m(1, 3), and m(2, 3) should contain the translation components. In addition, video cards
 expect the translation components to be in elements 12, 13, and 14, which would then indicate a column-major order.
@@ -22,22 +22,22 @@ public:
   //! Returns a matrix where each element is zero.
   static Matrix<rows, cols, T> zero ();
 
-  //! Returns the identity matrix. \b Rows must equal \b cols.
+  //! Returns the identity matrix. Rows must equal cols.
   static Matrix<rows, cols, T> identity ();
 
-  //! Returns a matrix equivalent to the cross product with the first operand as \b v.
+  //! Returns a matrix equivalent to the cross product with the first operand as v.
   static Matrix<rows, cols, T> crossProduct (Vector<rows, T> v);
 
-  //! Access the element at row \b row and column \b col.
+  //! Access the element at row row and column col.
   T & operator () (int row, int col);
 
-  //! Access the element at row \b row and column \b col.
+  //! Access the element at row row and column col.
   T const & operator () (int row, int col) const;
 
-  //! Access the element at index \b i. Remember the matrix is column-major.
+  //! Access the element at index i. Remember the matrix is column-major.
   T & operator [] (int i);
 
-  //! Access the element at index \b i. Remember the matrix is column-major.
+  //! Access the element at index i. Remember the matrix is column-major.
   T const & operator [] (int i) const;
 
   //! Assignment operator.
@@ -52,10 +52,10 @@ public:
   //! Returns the transpose.
   Matrix<cols, rows, T> transpose () const;
 
-  //! Returns \b this \b v, extending \b v either as a point (v3 = 1) or direction (v3 = 0). \b Rows must equal \b cols.
+  //! Returns this v, extending v either as a point (v3 = 1) or direction (v3 = 0). Rows must equal cols.
   Vector<rows - 1, T> transform (Vector<cols - 1, T> v, T v3) const;
 
-  //! Returns \b v \b this. Used for dealing with row-major systems.
+  //! Returns v this. Used for dealing with row-major systems.
   Vector<cols, T> preMultiply (Vector<rows, T> v);
 
 private:
@@ -65,25 +65,25 @@ private:
 typedef Matrix<4, 4, float> Matrix44f;
 typedef Matrix<4, 4, double> Matrix44d;
 
-//! Returns true if each element in \b m0 is equal to its corresponding element in \b m1.
+//! Returns true if each element in m0 is equal to its corresponding element in m1.
 template <int rows, int cols, typename T> bool operator == (Matrix<rows, cols, T> const & m0, Matrix<rows, cols, T> const & m1);
 
-//! Returns true if any element in \b m0 is not equal to its corresponding element in \b m1.
+//! Returns true if any element in m0 is not equal to its corresponding element in m1.
 template <int rows, int cols, typename T> bool operator != (Matrix<rows, cols, T> const & m0, Matrix<rows, cols, T> const & m1);
 
-//! Returns \b m0 + \b m1.
+//! Returns m0 + m1.
 template <int rows, int cols, typename T> Matrix<rows, cols, T> operator + (Matrix<rows, cols, T> const & m0, Matrix<rows, cols, T> const & m1);
 
-//! Returns \b m0 - \b m1.
+//! Returns m0 - m1.
 template <int rows, int cols, typename T> Matrix<rows, cols, T> operator - (Matrix<rows, cols, T> const & m0, Matrix<rows, cols, T> const & m1);
 
-//! Returns \b m0 \b m1.
+//! Returns m0 m1.
 template <int rows, int mid, int cols, typename T> Matrix<rows, cols, T> operator * (Matrix<rows, mid, T> const & m0, Matrix<mid, cols, T> const & m1);
 
-//! Returns \b a \b m. There is no \b m \b a syntax to be consistent with standard mathematical formula writing order.
+//! Returns a m. There is no m a syntax to be consistent with standard mathematical formula writing order.
 template <int rows, int cols, typename T> Matrix<rows, cols, T> operator * (T a, Matrix<rows, cols, T> const & m);
 
-//! Returns \b m \b v.
+//! Returns m v.
 template <int rows, int cols, typename T> Vector<rows, T> operator * (Matrix<rows, cols, T> const & m, Vector<cols, T> v);
 
 // Template Implementations
@@ -197,7 +197,7 @@ Matrix<cols, rows, T> Matrix<rows, cols, T>::transpose () const
     int icols = i * cols;
     for (int j = 0; j < cols; ++j)
     {
-      r(icols + j) = m(j * rows + i);
+      r(icols + j) = c[j * rows + i];
     }
   }
   return r;

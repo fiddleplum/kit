@@ -1,7 +1,7 @@
 #pragma once
 
-#include "matrix.h"
-#include "math_util.h"
+#include "Matrix.h"
+#include "MathUtil.h"
 
 /*!
 A bunch of functions for creating transforms.

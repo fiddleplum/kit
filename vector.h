@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-//! This is a standard mathematical vector class. \b Dim is the dimensions of the vector and \b T is the type of its elements.
+//! This is a standard mathematical vector class. Dim is the dimensions of the vector and T is the type of its elements.
 
 template <int dim, typename T>
 class Vector
@@ -20,25 +20,25 @@ public:
   //! Constructor for a four dimensional vector.
   Vector (T a0, T a1, T a2, T a3);
 
-  //! Copy constructor. Each element in \b v is converted from type \b Y to type \b T.
+  //! Copy constructor. Each element in v is converted from type Y to type T.
   template <typename Y> Vector (Vector<dim, Y> v);
 
   //! Returns a zero vector.
   static Vector<dim, T> zero ();
 
-  //! Returns a unit vector along the \b i axis.
+  //! Returns a unit vector along the i axis.
   static Vector<dim, T> axis (int i);
 
-  //! Returns a vector with all elements equal to \b a.
+  //! Returns a vector with all elements equal to a.
   static Vector<dim, T> filled (T a);
 
-  //! Access element at index \b i.
+  //! Access element at index i.
   T & operator [] (int i);
 
-  //! Access element at index \b i.
+  //! Access element at index i.
   T operator [] (int i) const;
   
-  //! Assignment operator. Each element in \b v is converted from type \b Y to type \b T.
+  //! Assignment operator. Each element in v is converted from type Y to type T.
   template <typename Y> Vector<dim, T> operator = (Vector<dim, Y> v);
   
   //! Set the first two elements.
@@ -50,13 +50,13 @@ public:
   //! Set the first four elements.
   void set (T a0, T a1, T a2, T a3);
 
-  //! Add \b v to \b this.
+  //! Add v to this.
   void operator += (Vector<dim, T> v);
   
-  //! Subtract \b v from \b this.
+  //! Subtract v from this.
   void operator -= (Vector<dim, T> v);
   
-  //! Multiply \b this by \b a.
+  //! Multiply this by a.
   void operator *= (T a);
   
   //! Get a pointer to the elements.
@@ -68,25 +68,25 @@ public:
   //! Returns true if all of the elements are zero.
   bool isZero () const;
 
-  //! Returns \b this extended to a higher dimension \b newDim, filling the extra elements with \b fill.
+  //! Returns this extended to a higher dimension newDim, filling the extra elements with fill.
   template <int newDim> Vector<newDim, T> extend (T fill) const;
 
-  //! Returns \b this shrunk to a lower dimension \b newDim.
+  //! Returns this shrunk to a lower dimension newDim.
   template <int newDim> Vector<newDim, T> shrink () const;
 
-  //! Returns the dot product of \b this with \b v.
+  //! Returns the dot product of this with v.
   T dot (Vector<dim, T> v) const;
 
-  //! Returns the three-dimensional cross product of \b this and \b v. The vectors must be at least three dimensional.
+  //! Returns the three-dimensional cross product of this and v. The vectors must be at least three dimensional.
   Vector<dim, T> cross (Vector<dim, T> v) const;
   
-  //! Returns \b this rotated by 90 degrees counter-clockwise. The vector must be at least two dimensional.
+  //! Returns this rotated by 90 degrees counter-clockwise. The vector must be at least two dimensional.
   Vector<dim, T> perp2d () const;
   
-  //! Returns the two dimensional cross product of \b this and \b v (abs(\b this) abs(\b v) sin(the angle between the vectors). The vectors must be at least two dimensional.
+  //! Returns the two dimensional cross product of this and v (abs(this) abs(v) sin(the angle between the vectors). The vectors must be at least two dimensional.
   T cross2d (Vector<dim, T> v) const;
   
-  //! Returns a vector that is \b this from the reference frame of \b v with a norm that is the product of the norms of \b this and \b v. The vectors must be at least two dimensional.
+  //! Returns a vector that is this from the reference frame of v with a norm that is the product of the norms of this and v. The vectors must be at least two dimensional.
   Vector<dim, T> relative2d (Vector<dim, T> v) const; 
   
   //! Returns the norm/magnitude/length.
@@ -95,19 +95,19 @@ public:
   //! Returns the square of the norm/magnitude/length.
   T normSq () const;
 
-  //! Returns the unit vector of \b this. \b This must not be a zero vector.
+  //! Returns the unit vector of this. This must not be a zero vector.
   Vector<dim, T> unit () const;
 
-  //! Returns a vector with each element in \b this multiplied by the corresponding element in \b v.
+  //! Returns a vector with each element in this multiplied by the corresponding element in v.
   Vector<dim, T> scale (Vector<dim, T> v) const;
 
-  //! Returns a vector with each element in \b this divided by the corresponding element in \b v. \b V must not contain any zero elements.
+  //! Returns a vector with each element in this divided by the corresponding element in v. V must not contain any zero elements.
   Vector<dim, T> scaleInv (Vector<dim, T> v) const;
 
-  //! Returns a vector with each element in \b this clamped to the range [\b min, \b max].
+  //! Returns a vector with each element in this clamped to the range [min, max].
   Vector<dim, T> clamp (T min, T max) const;
 
-  //! Returns a vector with each element in \b this clamped to the range specificied by the corresponding elements in \b min and \b max.
+  //! Returns a vector with each element in this clamped to the range specificied by the corresponding elements in min and max.
   Vector<dim, T> clamp (Vector<dim, T> min, Vector<dim, T> max) const;
 
 private:
@@ -116,41 +116,41 @@ private:
   template <int dimY, typename Y> friend class Vector;
 };
 
-typedef Vector<2, int>   Vector2i;
-typedef Vector<3, int>   Vector3i;
-typedef Vector<4, int>   Vector4i;
+typedef Vector<2, int> Vector2i;
+typedef Vector<3, int> Vector3i;
+typedef Vector<4, int> Vector4i;
 typedef Vector<2, float> Vector2f;
 typedef Vector<3, float> Vector3f;
 typedef Vector<4, float> Vector4f;
 
-//! Returns true if each element in \b v0 is equal to the corresponding element in \b v1.
+//! Returns true if each element in v0 is equal to the corresponding element in v1.
 template <int dim, typename T> bool operator == (Vector<dim, T> v0, Vector<dim, T> v1);
 
-//! Returns true if any element in \b v0 is not equal to the corresponding elment in \b v1.
+//! Returns true if any element in v0 is not equal to the corresponding elment in v1.
 template <int dim, typename T> bool operator != (Vector<dim, T> v0, Vector<dim, T> v1);
 
-//! Returns true if the the first element in \b v0 that is not equal to the corresponding element in \b v1 is less than the other element. If they are all equal, it returns false.
+//! Returns true if the the first element in v0 that is not equal to the corresponding element in v1 is less than the other element. If they are all equal, it returns false.
 template <int dim, typename T> bool operator < (Vector<dim, T> v0, Vector<dim, T> v1);
 
-//! Returns -\b v.
+//! Returns -v.
 template <int dim, typename T> Vector<dim, T> operator - (Vector<dim, T> const & v);
 
-//! Returns +\b v.
+//! Returns +v.
 template <int dim, typename T> Vector<dim, T> operator + (Vector<dim, T> const & v);
 
-//! Returns \b v0 + \b v1.
+//! Returns v0 + v1.
 template <int dim, typename T> Vector<dim, T> operator + (Vector<dim, T> v0, Vector<dim, T> v1);
 
-//! Returns \b v0 - \b v1.
+//! Returns v0 - v1.
 template <int dim, typename T> Vector<dim, T> operator - (Vector<dim, T> v0, Vector<dim, T> v1);
 
-//! Returns \b a \b v.
+//! Returns a v.
 template <int dim, typename T> Vector<dim, T> operator * (T a, Vector<dim, T> v);
 
-//! Returns \b v \b a.
+//! Returns v a.
 template <int dim, typename T> Vector<dim, T> operator * (Vector<dim, T> v, T a);
 
-//! Returns \b v / \b a. Beware of truncation if they are both integers.
+//! Returns v / a. Beware of truncation if they are both integers.
 template <int dim, typename T> Vector<dim, T> operator / (Vector<dim, T> v, T a);
 
 // Template implementations

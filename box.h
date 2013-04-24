@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "Vector.h"
 
 //! A <b>dim</b>-dimensional rectangle with dimensions of type \b T.
 template <int dim, typename T>
