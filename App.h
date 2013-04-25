@@ -11,11 +11,9 @@ Here is a simple onEntry template. You can put your own initialization and deini
 
 void App::onEntry (std::vector<std::string> const& params)
 {
-	App::openWindow();
 	App::setTitle("New Application");
 	App::setSize(false, App::Coord(800, 600));
 	App::startLoop();
-	App::closeWindow();
 }
 **/
 
@@ -60,14 +58,12 @@ namespace App
 
 	/** Window Functions **/
 
-	// The window has a title that you specify. The window can also be fullscreen, which the resolution is specified by window_size. There
-	// may be only one window open at a time. The window starts with a title "Untitled" and in 800x600 windowed.
-	void openWindow();
-	void closeWindow();
+	// The window has a title that you specify. The window can also be fullscreen, in which the resolution is specified by size.
+    // The window defaults to a title "Untitled" and in 800x600 windowed mode.
 	void setTitle(std::string const& title);
 	Coord getSize();
 	bool isFullscreen();
-	void setSize(bool fullscreen, Coord windowSize);
+	void setSize(bool fullscreen, Coord size);
 
 	/** Loop Functions **/
 

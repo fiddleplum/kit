@@ -1,4 +1,4 @@
-#include `"Application.h"
+#include "App.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
 #ifdef __WIN32__
@@ -395,26 +395,6 @@ namespace App
 	#else
 		printf("%s", text.c_str());
 	#endif
-	}
-
-	void openWindow()
-	{
-		if(SDL_Init(SDL_INIT_VIDEO) == -1)
-		{
-			throw std::runtime_error(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
-		}
-		SDL_EnableUNICODE(SDL_ENABLE);
-		setWindow(false, Coord(800, 600));
-		refreshInputDevices();
-	}
-
-	void closeWindow()
-	{
-		for(int i = 0; i < (int)mJoysticks.size(); ++i)
-		{
-			SDL_JoystickClose(mJoysticks[i]);
-		}
-		SDL_Quit();
 	}
 
 	void setTitle(std::string const& title)
@@ -879,11 +859,23 @@ namespace App
 
 int main(int argc, char *argv[])
 {
+    // Grab the params.
 	std::vector<std::string> params;
 	for(int i = 1; i < argc; ++i)
 	{
 		params.push_back(std::string(argv[i]));
 	}
+    
+    // Open the window.
+    if(SDL_Init(SDL_INIT_VIDEO) == -1)
+    {
+        throw std::runtime_error(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
+    }
+    SDL_EnableUNICODE(SDL_ENABLE);
+    setWindow(false, Coord(800, 600));
+    refreshInputDevices();
+    
+    // Run the user onEntry function.
 	try
 	{
 		app::onEntry(params); // calls user-defined function
@@ -893,5 +885,12 @@ int main(int argc, char *argv[])
 		app::showMessage(err.what());
 	}
 	return 0;
+    
+    // Close window.
+    for(int i = 0; i < (int)mJoysticks.size(); ++i)
+    {
+        SDL_JoystickClose(mJoysticks[i]);
+    }
+    SDL_Quit();
 }
 
