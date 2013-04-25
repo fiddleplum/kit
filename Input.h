@@ -7,8 +7,8 @@
 class Input
 {
 public:
-  //! Returns a user-friendly name of a given input.
-  static std::string getNameOfInput (int device, int axis);
+  //! Returns a user-friendly name of a given input device and axis.
+  static std::string toString(int device, int axis);
 
   int device;
   int axis;

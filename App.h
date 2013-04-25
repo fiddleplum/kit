@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include "Vector.h"
+#include "Input.h"
 
 /**
 This is a simple wrapper for SDL. It provides windowing, input, and OpenGL capabilities with very little setup effort. Just implement the
@@ -12,27 +14,13 @@ Here is a simple onEntry template. You can put your own initialization and deini
 void App::onEntry (std::vector<std::string> const& params)
 {
 	App::setTitle("New Application");
-	App::setSize(false, App::Coord(800, 600));
+	App::setSize(false, Vector2i(800, 600));
 	App::startLoop();
 }
 **/
 
 namespace App
 {
-	struct Coord
-	{
-		Coord(int x, int y) : x(x), y(y) {}
-		int x;
-		int y;
-	};
-
-	struct InputEvent
-	{
-		int device;
-		int axis;
-		int value;
-	};
-
 	/******* Implement these! *******/
 
 	// This is the first function that is called (like the main function). The params are the given at the console, separated by spaces.
@@ -99,31 +87,5 @@ namespace App
 	void setCursorVisible(bool visible);
 	bool isCursorEnabled();
 	void setCursorEnabled(bool enabled);
-
-	/** Device and Axis Types **/
-
-	// Keys and buttons have a pressed value of 1, otherwise 0. Mouse axes and wheels and joystick axes, balls, and hats have
-	// positive values to the right and up. To get controller indices use (event.device - Device::CONTROLLER0). To get extra mouse button axes
-	// use (event.axis - MouseAxis::BUTTON0). For characters (including unicode), an event occurs with the axis equal to
-	// KeyboardAxis::CHAR and the value equal to the unicode character.
-	enum Device
-	{
-		KEYBOARD, MOUSE, CONTROLLER_0
-	};
-	enum Mouse
-	{
-		X, Y, WHEEL, LEFT, MIDDLE, RIGHT, BUTTON_0 = LEFT
-	};
-	enum Key
-	{
-		A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
-		N_0, N_1, N_2, N_3, N_4, N_5, N_6, N_7, N_8, N_9,
-		UP, DOWN, LEFT, RIGHT, PAGE_UP, PAGE_DOWN, HOME, END, ENTER, BACKSPACE, INSERT, DELETE, TAB, SPACE, ESCAPE,
-		KP_0, KP_1, KP_2, KP_3, KP_4, KP_5, KP_6, KP_7, KP_8, KP_9, KP_ADD, KP_SUBTRACT, KP_MULTIPLY, KP_DIVIDE, KP_DECIMAL, KP_ENTER,
-		GRAVE, APOSTROPHE, SEMICOLON, COMMA, PERIOD, SLASH, L_BRACKET, R_BRACKET, BACKSLASH, HYPHEN, EQUALS,
-		CAPSLOCK, L_SHIFT, R_SHIFT, L_CTRL, R_CTRL, L_ALT /* SAME AS OPTION */, R_ALT /* SAME AS ALT GR */, L_SYSTEM, R_SYSTEM, // SAME AS WINDOWS OR COMMAND OR META
-		F_1, F_2, F_3, F_4, F_5, F_6, F_7, F_8, F_9, F_10, F_11, F_12, F_13, F_14, F_15,
-		CHAR
-	};
 }
 

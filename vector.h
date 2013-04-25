@@ -3,7 +3,6 @@
 #include <cassert>
 
 //! This is a standard mathematical vector class. Dim is the dimensions of the vector and T is the type of its elements.
-
 template <int dim, typename T>
 class Vector
 {
