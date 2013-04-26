@@ -27,7 +27,7 @@ namespace App
 	void onEntry(std::vector<std::string> const& params);
 
 	// This is called whenever an input event occurs (can be more than once per loop iteration).
-	void onInputEvent(InputEvent const& event);
+	void onInputEvent(Input::Event event);
 
 	// This is called every time the program loops (after all onEvent calls for that frame). deltaTime is how much time has passed since the last onFrame
 	// and is in seconds.
@@ -37,7 +37,7 @@ namespace App
 	void onRender();
 
 	// This is called whenever the window resizes (typically used to correct camera aspect ratios or reload textures). For fullscreen, size is the resolution.
-	void onResize(Coord const& size);
+	void onResize(Vector2i size);
 
 	/******* You can call these *******/
 
@@ -49,9 +49,9 @@ namespace App
 	// The window has a title that you specify. The window can also be fullscreen, in which the resolution is specified by size.
     // The window defaults to a title "Untitled" and in 800x600 windowed mode.
 	void setTitle(std::string const& title);
-	Coord getSize();
+	Vector2i getSize();
 	bool isFullscreen();
-	void setSize(bool fullscreen, Coord size);
+	void setSize(bool fullscreen, Vector2i size);
 
 	/** Loop Functions **/
 
@@ -62,30 +62,6 @@ namespace App
 	/** Video Functions **/
 
 	// Retrieves a list of all possible resolutions available to the primary monitor (multiple monitors not yet supported).
-	std::vector<Coord> getAllResolutions();
-
-	/** Input Device Functions **/
-
-	// The input types can be a keyboard, a mouse, and a number of controllers. Each device is numbered from 0 (keyboard) to
-	// numInputDevices. Use the deviceName and axisName functions for a user-friendly name. If someone plugs in or removes a controller,
-	// you can call refreshInputDevices to update the device list. A note about mouseX and mouseY input events: If the cursor is at
-	// the edge of the screen and is enabled, the events may not get called. Disable the cursor (see below) to make sure the events
-	// always get through, which is ideal for an fps.
-	int getNumInputDevices();
-	std::string getDeviceName(int device);
-	std::string getAxisName(int device, int axis);
-	void refreshInputDevices();
-
-	/** Cursor Functions **/
-
-	// The cursor only has a valid position when it is within the window and enabled. ALWAYS call cursorHasValidPosition before calling
-	// cursorPosition to avoid unpleasant assert fails (in debug mode). You can also make the system cursor invisible so that you can use
-	// your own graphical cursor, if you wish.
-	bool hasValidCursorPosition();
-	Coord getCursorPosition();
-	bool isCursorVisible();
-	void setCursorVisible(bool visible);
-	bool isCursorEnabled();
-	void setCursorEnabled(bool enabled);
+	std::vector<Vector2i> getAllResolutions();
 }
 
