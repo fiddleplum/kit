@@ -3,7 +3,7 @@
 #include <cassert>
 
 //! This is a standard mathematical vector class. Dim is the dimensions of the vector and T is the type of its elements.
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 class Vector
 {
 public:
@@ -26,16 +26,16 @@ public:
   static Vector<dim, T> zero ();
 
   //! Returns a unit vector along the i axis.
-  static Vector<dim, T> axis (int i);
+  static Vector<dim, T> axis (unsigned int i);
 
   //! Returns a vector with all elements equal to a.
   static Vector<dim, T> filled (T a);
 
   //! Access element at index i.
-  T & operator [] (int i);
+  T & operator [] (unsigned int i);
 
   //! Access element at index i.
-  T operator [] (int i) const;
+  T operator [] (unsigned int i) const;
   
   //! Assignment operator. Each element in v is converted from type Y to type T.
   template <typename Y> Vector<dim, T> operator = (Vector<dim, Y> v);
@@ -68,10 +68,10 @@ public:
   bool isZero () const;
 
   //! Returns this extended to a higher dimension newDim, filling the extra elements with fill.
-  template <int newDim> Vector<newDim, T> extend (T fill) const;
+  template <unsigned int newDim> Vector<newDim, T> extend (T fill) const;
 
   //! Returns this shrunk to a lower dimension newDim.
-  template <int newDim> Vector<newDim, T> shrink () const;
+  template <unsigned int newDim> Vector<newDim, T> shrink () const;
 
   //! Returns the dot product of this with v.
   T dot (Vector<dim, T> v) const;
@@ -112,7 +112,7 @@ public:
 private:
   T c[dim];
 
-  template <int dimY, typename Y> friend class Vector;
+  template <unsigned int dimY, typename Y> friend class Vector;
 };
 
 typedef Vector<2, int> Vector2i;
@@ -123,95 +123,95 @@ typedef Vector<3, float> Vector3f;
 typedef Vector<4, float> Vector4f;
 
 //! Returns true if each element in v0 is equal to the corresponding element in v1.
-template <int dim, typename T> bool operator == (Vector<dim, T> v0, Vector<dim, T> v1);
+template <unsigned int dim, typename T> bool operator == (Vector<dim, T> v0, Vector<dim, T> v1);
 
 //! Returns true if any element in v0 is not equal to the corresponding elment in v1.
-template <int dim, typename T> bool operator != (Vector<dim, T> v0, Vector<dim, T> v1);
+template <unsigned int dim, typename T> bool operator != (Vector<dim, T> v0, Vector<dim, T> v1);
 
 //! Returns true if the the first element in v0 that is not equal to the corresponding element in v1 is less than the other element. If they are all equal, it returns false.
-template <int dim, typename T> bool operator < (Vector<dim, T> v0, Vector<dim, T> v1);
+template <unsigned int dim, typename T> bool operator < (Vector<dim, T> v0, Vector<dim, T> v1);
 
 //! Returns -v.
-template <int dim, typename T> Vector<dim, T> operator - (Vector<dim, T> const & v);
+template <unsigned int dim, typename T> Vector<dim, T> operator - (Vector<dim, T> const & v);
 
 //! Returns +v.
-template <int dim, typename T> Vector<dim, T> operator + (Vector<dim, T> const & v);
+template <unsigned int dim, typename T> Vector<dim, T> operator + (Vector<dim, T> const & v);
 
 //! Returns v0 + v1.
-template <int dim, typename T> Vector<dim, T> operator + (Vector<dim, T> v0, Vector<dim, T> v1);
+template <unsigned int dim, typename T> Vector<dim, T> operator + (Vector<dim, T> v0, Vector<dim, T> v1);
 
 //! Returns v0 - v1.
-template <int dim, typename T> Vector<dim, T> operator - (Vector<dim, T> v0, Vector<dim, T> v1);
+template <unsigned int dim, typename T> Vector<dim, T> operator - (Vector<dim, T> v0, Vector<dim, T> v1);
 
 //! Returns a v.
-template <int dim, typename T> Vector<dim, T> operator * (T a, Vector<dim, T> v);
+template <unsigned int dim, typename T> Vector<dim, T> operator * (T a, Vector<dim, T> v);
 
 //! Returns v a.
-template <int dim, typename T> Vector<dim, T> operator * (Vector<dim, T> v, T a);
+template <unsigned int dim, typename T> Vector<dim, T> operator * (Vector<dim, T> v, T a);
 
 //! Returns v / a. Beware of truncation if they are both integers.
-template <int dim, typename T> Vector<dim, T> operator / (Vector<dim, T> v, T a);
+template <unsigned int dim, typename T> Vector<dim, T> operator / (Vector<dim, T> v, T a);
 
 // Template implementations
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T>::Vector ()
 {
   assert(dim > 0);
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     c[i] = 0;
   }
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T>::Vector (T a0, T a1)
 {
   assert(dim == 2);
   set(a0, a1);
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T>::Vector (T a0, T a1, T a2)
 {
   assert(dim == 3);
   set(a0, a1, a2);
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T>::Vector (T a0, T a1, T a2, T a3)
 {
   assert(dim == 4);
   set(a0, a1, a2, a3);
 }
 
-template <int dim, typename T> template <typename Y>
+template <unsigned int dim, typename T> template <typename Y>
 Vector<dim, T>::Vector (Vector<dim, Y> v)
 {
   assert(dim > 0);
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     c[i] = (T)v[i];
   }
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::zero ()
 {
   Vector<dim, T> r;
-  for (int j = 0; j < dim; ++j)
+  for (unsigned int j = 0; j < dim; ++j)
   {
     r.c[j] = 0;
   }
   return r;
 }
 
-template <int dim, typename T>
-Vector<dim, T> Vector<dim, T>::axis (int i)
+template <unsigned int dim, typename T>
+Vector<dim, T> Vector<dim, T>::axis (unsigned int i)
 {
-  assert(0 <= i && i < dim);
+  assert(i < dim);
   Vector<dim, T> r;
-  for (int j = 0; j < dim; ++j)
+  for (unsigned int j = 0; j < dim; ++j)
   {
     r.c[j] = 0;
   }
@@ -219,42 +219,42 @@ Vector<dim, T> Vector<dim, T>::axis (int i)
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::filled (T a)
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r.c[i] = a;
   }
   return r;
 }
 
-template <int dim, typename T>
-T & Vector<dim, T>::operator [] (int i)
+template <unsigned int dim, typename T>
+T & Vector<dim, T>::operator [] (unsigned int i)
 {
-  assert(0 <= i && i < dim);
+  assert(i < dim);
   return c[i];
 }
 
-template <int dim, typename T>
-T Vector<dim, T>::operator [] (int i) const
+template <unsigned int dim, typename T>
+T Vector<dim, T>::operator [] (unsigned int i) const
 {
-  assert(0 <= i && i < dim);
+  assert(i < dim);
   return c[i];
 }
 
-template <int dim, typename T> template <typename Y>
+template <unsigned int dim, typename T> template <typename Y>
 Vector<dim, T> Vector<dim, T>::operator = (Vector<dim, Y> v)
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     c[i] = (T)v.c[i];
   }
   return *this;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 void Vector<dim, T>::set (T a0, T a1)
 {
   assert(dim >= 2);
@@ -262,7 +262,7 @@ void Vector<dim, T>::set (T a0, T a1)
   c[1] = a1;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 void Vector<dim, T>::set (T a0, T a1, T a2)
 {
   assert(dim >= 3);
@@ -271,7 +271,7 @@ void Vector<dim, T>::set (T a0, T a1, T a2)
   c[2] = a2;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 void Vector<dim, T>::set (T a0, T a1, T a2, T a3)
 {
   assert(dim >= 4);
@@ -281,49 +281,49 @@ void Vector<dim, T>::set (T a0, T a1, T a2, T a3)
   c[3] = a3;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 void Vector<dim, T>::operator += (Vector<dim, T> v)
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     c[i] += v.c[i];
   }
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 void Vector<dim, T>::operator -= (Vector<dim, T> v)
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     c[i] -= v.c[i];
   }
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 void Vector<dim, T>::operator *= (T a)
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     c[i] *= a;
   }
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 T * Vector<dim, T>::ptr ()
 {
   return c;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 T const * Vector<dim, T>::ptr () const
 {
   return c;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 bool Vector<dim, T>::isZero () const
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     if (c[i] != 0)
     {
@@ -333,46 +333,46 @@ bool Vector<dim, T>::isZero () const
   return true;
 }
 
-template <int dim, typename T> template <int newDim>
+template <unsigned int dim, typename T> template <unsigned int newDim>
 Vector<newDim, T> Vector<dim, T>::extend (T fill) const
 {
   assert(newDim > dim);
   Vector<newDim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r[i] = c[i];
   }
-  for (int i = dim; i < newDim; ++i)
+  for (unsigned int i = dim; i < newDim; ++i)
   {
     r[i] = fill;
   }
   return r;
 }
 
-template <int dim, typename T> template <int newDim>
+template <unsigned int dim, typename T> template <unsigned int newDim>
 Vector<newDim, T> Vector<dim, T>::shrink () const
 {
   assert(newDim <= dim);
   Vector<newDim, T> r;
-  for (int i = 0; i < newDim; ++i)
+  for (unsigned int i = 0; i < newDim; ++i)
   {
     r[i] = c[i];
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 T Vector<dim, T>::dot (Vector<dim, T> v) const
 {
   T r = 0;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r += c[i] * v.c[i];
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::cross (Vector<dim, T> v) const
 {
   assert(dim >= 3);
@@ -383,7 +383,7 @@ Vector<dim, T> Vector<dim, T>::cross (Vector<dim, T> v) const
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::perp2d () const
 {
   assert(dim >= 2);
@@ -393,63 +393,63 @@ Vector<dim, T> Vector<dim, T>::perp2d () const
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 T Vector<dim, T>::cross2d (Vector<dim, T> v) const
 {
   assert(dim >= 2);
   return c[0] * v.c[1] - c[1] * v.c[0];
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::relative2d (Vector<dim, T> v) const
 {
   assert(dim >= 2);
   return Vector<dim, T>(dot(v), cross2D(v));
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 T Vector<dim, T>::norm () const
 {
   T r = dot(*this);
   return sqrt(r);
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 T Vector<dim, T>::normSq () const
 {
   return dot(*this);
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::unit () const
 {
   T n = norm();
   assert(n != (T)0);
   T nInv = 1 / n;
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r.c[i] = c[i] * nInv;
   } 
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::scale (Vector<dim, T> v) const
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r.c[i] = c[i] * v.c[i];
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::scaleInv (Vector<dim, T> v) const
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     assert(v.c[i] != (T)0);
     r.c[i] = c[i] / v.c[i];
@@ -457,11 +457,11 @@ Vector<dim, T> Vector<dim, T>::scaleInv (Vector<dim, T> v) const
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::clamp (T min, T max) const
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     if (c[i] < min)
     {
@@ -479,11 +479,11 @@ Vector<dim, T> Vector<dim, T>::clamp (T min, T max) const
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> Vector<dim, T>::clamp (Vector<dim, T> min, Vector<dim, T> max) const
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     if (c[i] < min.c[i])
     {
@@ -501,10 +501,10 @@ Vector<dim, T> Vector<dim, T>::clamp (Vector<dim, T> min, Vector<dim, T> max) co
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 bool operator == (Vector<dim, T> v0, Vector<dim, T> v1)
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     if (v0[i] != v1[i])
     {
@@ -514,16 +514,16 @@ bool operator == (Vector<dim, T> v0, Vector<dim, T> v1)
   return true;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 bool operator != (Vector<dim, T> v0, Vector<dim, T> v1)
 {
   return !(v0 == v1);
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 bool operator < (Vector<dim, T> v0, Vector<dim, T> v1)
 {
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     if (v0[i] < v1[i])
     {
@@ -537,29 +537,29 @@ bool operator < (Vector<dim, T> v0, Vector<dim, T> v1)
   return false; // They are equal, so it is false.
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator - (Vector<dim, T> const & v)
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r[i] = -v[i];
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator + (Vector<dim, T> const & v)
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r[i] = +v[i];
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator + (Vector<dim, T> v0, Vector<dim, T> v1)
 {
   Vector<dim, T> r(v0);
@@ -567,7 +567,7 @@ Vector<dim, T> operator + (Vector<dim, T> v0, Vector<dim, T> v1)
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator - (Vector<dim, T> v0, Vector<dim, T> v1)
 {
   Vector<dim, T> r(v0);
@@ -575,35 +575,34 @@ Vector<dim, T> operator - (Vector<dim, T> v0, Vector<dim, T> v1)
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator * (T a, Vector<dim, T> v)
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r[i] = a * v[i];
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator * (Vector<dim, T> v, T a)
 {
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r[i] = v[i] * a;
   }
   return r;
 }
 
-template <int dim, typename T>
+template <unsigned int dim, typename T>
 Vector<dim, T> operator / (Vector<dim, T> v, T a)
 {
   assert(a != 0);
-
   Vector<dim, T> r;
-  for (int i = 0; i < dim; ++i)
+  for (unsigned int i = 0; i < dim; ++i)
   {
     r.c[i] = v.c[i] / a;
   }

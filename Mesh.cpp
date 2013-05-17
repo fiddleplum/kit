@@ -1,55 +1,55 @@
 #include "Mesh.h"
-#include "serialize_stdvector.h"
+#include "SerializeStdVector.h"
+#include "SeializeVector.h"
 
-bool serialize (std::ostream & out, Mesh::Frame const& frame)
+bool serialize(std::ostream & out, Mesh::VertexComponent const& v)
 {
-  bool good = true;
-  good = serialize<Vector3f, serialize> (out, frame.vs);
-  if (good)
-  {
-    good = serialize<Vector3f, serialize> (out, frame.ns);
-  }
-  if (good)
-  {
-    good = serialize<Vector2f, serialize> (out, frame.ts);
-  }
-  return good;
+	return serialize(out, (unsigned int const &)v);
 }
 
-bool deserialize (std::istream & in, Mesh::Frame & frame)
+bool deserialize(std::istream & in, Mesh::VertexComponent & v)
 {
-  bool good = true;
-  good = deserialize<Vector3f, deserialize> (in, frame.vs);
-  if (good)
-  {
-    good = deserialize<Vector3f, deserialize> (in, frame.ns);
-  }
-  if (good)
-  {
-    good = deserialize<Vector2f, deserialize> (in, frame.ts);
-  }
-  return good;
+	return deserialize(in, (unsigned int &)v);
 }
 
-bool serialize (std::ostream & out, Mesh const& mesh)
+bool Mesh::serialize(std::ostream & out) const
 {
-  bool good = true;
-  good = serialize<Mesh::Frame, serialize> (out, mesh.fs);
-  if (good)
-  {
-    good = serialize<Mesh::Triangle, serialize> (out, mesh.tris);
-  }
-  return good;
+	if(!serialize(out, vertexFormat, serialize))
+	{
+		return false;
+	}
+	if(!serialize(out, data, serialize))
+	{
+		return false;
+	}
+	if(!serialize(out, numVerticesPerFrame))
+	{
+		return false;
+	}
+	if(!serialize(out, triangles, serialize))
+	{
+		return false;
+	}
+	return true;
 }
 
-bool deserialize (std::istream & in, Mesh & mesh)
+bool Mesh::deserialize(std::istream & in)
 {
-  bool good = true;
-  good = deserialize<Mesh::Frame, deserialize> (in, mesh.fs);
-  if (good)
-  {
-    good = deserialize<Mesh::Triangle, deserialize> (in, mesh.tris);
-  }
-  return good;
+	if(!deserialize(in, vertexFormat, deserialize))
+	{
+		return false;
+	}
+	if(!deserialize(in, data, deserialize))
+	{
+		return false;
+	}
+	if(!deserialize(in, numVerticesPerFrame))
+	{
+		return false;
+	}
+	if(!deserialize(in, triangles, deserialize))
+	{
+		return false;
+	}
+	return true;
 }
-
