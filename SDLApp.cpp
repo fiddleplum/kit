@@ -74,7 +74,7 @@ namespace App
 		}
 	}
 
-	void draw()
+	void render()
 	{
 		// mostly reset to basic state
 		glDisable(GL_CULL_FACE);
@@ -127,14 +127,14 @@ namespace App
 		SDL_WM_SetCaption(title.c_str(), title.c_str());
 	}
 
-	Vector2i getSize()
-	{
-		return mWindowSize;
-	}
-
 	bool isFullscreen()
 	{
 		return mFullscreen;
+	}
+
+	Vector2i getSize()
+	{
+		return mWindowSize;
 	}
 
 	void setSize(bool fullscreen, Vector2i windowSize)
@@ -156,30 +156,6 @@ namespace App
 		}
 		mWindowSize = windowSize;
 		mFullscreen = fullscreen;
-	}
-
-	void startLoop()
-	{
-		mRunning = true;
-		mLastTime = SDL_GetTicks() / 1000.0f;
-		while(mRunning)
-		{
-			float newTime = SDL_GetTicks() / 1000.0f;
-			float deltaTime = newTime - mLastTime; // calculate the last frame's duration
-			mLastTime = newTime;
-			if(mRunning)
-			{
-				handleEvents();
-			}
-			if(mRunning)
-			{
-				onFrame(deltaTime); // calls user-defined function
-			}
-			if(mRunning)
-			{
-				draw();
-			}
-		}
 	}
 
 	void quit()
@@ -227,6 +203,28 @@ int main(int argc, char *argv[])
 		App::showMessage(err.what());
 	}
 	return 0;
+
+	// Do the loop.
+	mRunning = true;
+	mLastTime = SDL_GetTicks() / 1000.0f;
+	while(mRunning)
+	{
+		float newTime = SDL_GetTicks() / 1000.0f;
+		float deltaTime = newTime - mLastTime; // calculate the last frame's duration
+		mLastTime = newTime;
+		if(mRunning)
+		{
+			handleEvents();
+		}
+		if(mRunning)
+		{
+			onFrame(deltaTime); // calls user-defined function
+		}
+		if(mRunning)
+		{
+			render();
+		}
+	}
     
     // Close window.
 	shutdownInput();
