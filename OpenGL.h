@@ -1,11 +1,26 @@
 #pragma once
 
-#include <SDL_opengl.h>
-#include "Box.h"
+#include "gl3.h"
 
-void pushClipBounds (Box2i bounds);
+void glInitialize();
 
-void popClipBounds ();
+extern PFNGLSCISSORPROC glScissor;
+
+// Shaders
+extern PFNGLCREATESHADERPROC glCreateShader;
+extern PFNGLSHADERSOURCEPROC glShaderSource;
+extern PFNGLCOMPILESHADERPROC glCompileShader;
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+extern PFNGLCREATEPROGRAMPROC glCreateProgram;
+extern PFNGLATTACHSHADERPROC glAttachShader;
+extern PFNGLLINKPROGRAMPROC glLinkProgram;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
+extern PFNGLDETACHSHADERPROC glDetachShader;
+extern PFNGLDELETESHADERPROC glDeleteShader;
+extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
+extern PFNGLUSEPROGRAMPROC glUseProgram;
 
 #ifdef _WIN32
 
@@ -15,16 +30,7 @@ void popClipBounds ();
 #undef far
 #include <gl/GL.h>
 
-#define GL_ARRAY_BUFFER 0x8892
-#define GL_ELEMENT_ARRAY_BUFFER 0x8893
-#define GL_STATIC_DRAW 0x88E4
-#define GL_DYNAMIC_DRAW 0x88E8
 
-typedef void (APIENTRY * PFNGLGENBUFFERSARBPROC) (GLsizei n, GLuint * buffers);
-typedef void (APIENTRY * PFNGLBINDBUFFERARBPROC) (GLenum target, GLuint buffer);
-typedef void (APIENTRY * PFNGLDELETEBUFFERSARBPROC) (GLsizei n, GLuint const * buffers);
-typedef void (APIENTRY * PFNGLBUFFERDATAARBPROC) (GLenum target, int size, GLvoid const * data, GLenum usage);
-typedef void (APIENTRY * PFNGLCLIENTACTIVETEXTUREARBPROC) (GLenum texture);
 
 extern PFNGLDRAWRANGEELEMENTSWINPROC glDrawRangeElements;
 extern PFNGLGENBUFFERSARBPROC glGenBuffers;

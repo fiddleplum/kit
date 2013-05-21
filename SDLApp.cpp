@@ -7,8 +7,9 @@
 #include <sstream>
 #include <stdexcept>
 #include <cassert>
+#include <iostream>
 
-void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event const& sdlEvent);
+void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event const & sdlEvent);
 void startupInput();
 void shutdownInput();
 extern bool gCursorPositionValid;
@@ -27,7 +28,7 @@ namespace App
 	void handleSDLEvents()
 	{
 		SDL_Event event;
-		std::vector<Event> events;
+		std::vector<Input::Event> events;
 		SDL_PumpEvents();
 		while(SDL_PollEvent(&event) == 1)
 		{
@@ -70,7 +71,7 @@ namespace App
 		}
 		for(unsigned int i = 0; i < events.size(); ++i)
 		{
-			onEvent(events[i]); // calls user-defined function
+			onInputEvent(events[i]); // calls user-defined function
 		}
 	}
 
@@ -111,18 +112,42 @@ namespace App
 		SDL_GL_SwapBuffers();
 	}
 
+	void doLoop()
+	{
+		mRunning = true;
+		mLastTime = SDL_GetTicks() / 1000.0f;
+		while(mRunning)
+		{
+			float newTime = SDL_GetTicks() / 1000.0f;
+			float deltaTime = newTime - mLastTime; // calculate the last frame's duration
+			mLastTime = newTime;
+			if(mRunning)
+			{
+				handleSDLEvents();
+			}
+			if(mRunning)
+			{
+				onFrame(deltaTime); // calls user-defined function
+			}
+			if(mRunning)
+			{
+				render();
+			}
+		}
+	}
+
 	/*** Header functions ***/
 
-	void showMessage(std::string const& text)
+	void showMessage(std::string const & text)
 	{
 	#ifdef __WIN32__
 		MessageBoxA(NULL, text.c_str(), "Message", MB_OK);
 	#else
-		printf("%s", text.c_str());
+		std::cout << text << std::endl;
 	#endif
 	}
 
-	void setTitle(std::string const& title)
+	void setTitle(std::string const & title)
 	{
 		SDL_WM_SetCaption(title.c_str(), title.c_str());
 	}
@@ -165,11 +190,11 @@ namespace App
 
 	std::vector<Vector2i> getAllResolutions()
 	{
-		std::vector<Size > resolutions;
+		std::vector<Vector2i> resolutions;
 		SDL_Rect ** rects = SDL_ListModes(0, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL | SDL_FULLSCREEN);
 		for(int i = 0; rects[i] != 0; ++i)
 		{
-			resolutions.push_back(Size(rects[i]->w, rects[i]->h));
+			resolutions.push_back(Vector2i(rects[i]->w, rects[i]->h));
 		}
 		return resolutions;
 	}
@@ -198,33 +223,14 @@ int main(int argc, char *argv[])
 	{
 		App::onEntry(params); // calls user-defined function
 	}
-	catch(std::runtime_error const& err)
+	catch(std::runtime_error const & err)
 	{
 		App::showMessage(err.what());
 	}
 	return 0;
 
 	// Do the loop.
-	mRunning = true;
-	mLastTime = SDL_GetTicks() / 1000.0f;
-	while(mRunning)
-	{
-		float newTime = SDL_GetTicks() / 1000.0f;
-		float deltaTime = newTime - mLastTime; // calculate the last frame's duration
-		mLastTime = newTime;
-		if(mRunning)
-		{
-			handleEvents();
-		}
-		if(mRunning)
-		{
-			onFrame(deltaTime); // calls user-defined function
-		}
-		if(mRunning)
-		{
-			render();
-		}
-	}
+	App::doLoop();
     
     // Close window.
 	shutdownInput();

@@ -1,56 +1,42 @@
 #include "OpenGL.h"
-#include <vector>
+#include <SDL.h>
 
-#ifdef _WIN32
+#include <stack>
 
-#pragma message("\n----Depends on opengl32.lib.----")
+PFNGLCREATESHADERPROC glCreateShader;
+PFNGLSHADERSOURCEPROC glShaderSource;
+PFNGLCOMPILESHADERPROC glCompileShader;
+PFNGLGETSHADERIVPROC glGetShaderiv;
+PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+PFNGLCREATEPROGRAMPROC glCreateProgram;
+PFNGLATTACHSHADERPROC glAttachShader;
+PFNGLLINKPROGRAMPROC glLinkProgram;
+PFNGLGETPROGRAMIVPROC glGetProgramiv;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
+PFNGLDETACHSHADERPROC glDetachShader;
+PFNGLDELETESHADERPROC glDeleteShader;
+PFNGLDELETEPROGRAMPROC glDeleteProgram;
+PFNGLUSEPROGRAMPROC glUseProgram;
 
-#endif
-
-bool glIsExtensionSupported( char* szTargetExtension )
+void glInitialize()
 {
-	const unsigned char *pszExtensions = NULL;
-	const unsigned char *pszStart;
-	unsigned char *pszWhere, *pszTerminator;
+	// Replace RegEx: ([^ ]+) ([^ ]+);   ->   \t\2 = (\1)SDL_GL_GetProcAddress("\2");
+	glScissor = (PFNGLSCISSORPROC)SDL_GL_GetProcAddress("glScissor");
 
-	// Extension names should not have spaces
-	pszWhere = (unsigned char *) strchr( szTargetExtension, ' ' );
-	if( pszWhere || *szTargetExtension == '\0' )
-		return false;
+	glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
+	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");
+	glCompileShader = (PFNGLCOMPILESHADERPROC)SDL_GL_GetProcAddress("glCompileShader");
+	glGetShaderiv = (PFNGLGETSHADERIVPROC)SDL_GL_GetProcAddress("glGetShaderiv");
+	glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)SDL_GL_GetProcAddress("glGetShaderInfoLog");
+	glCreateProgram = (PFNGLCREATEPROGRAMPROC)SDL_GL_GetProcAddress("glCreateProgram");
+	glAttachShader = (PFNGLATTACHSHADERPROC)SDL_GL_GetProcAddress("glAttachShader");
+	glLinkProgram = (PFNGLLINKPROGRAMPROC)SDL_GL_GetProcAddress("glLinkProgram");
+	glGetProgramiv = (PFNGLGETPROGRAMIVPROC)SDL_GL_GetProcAddress("glGetProgramiv");
+	glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)SDL_GL_GetProcAddress("glGetProgramInfoLog");
+	glDetachShader = (PFNGLDETACHSHADERPROC)SDL_GL_GetProcAddress("glDetachShader");
+	glDeleteShader = (PFNGLDELETESHADERPROC)SDL_GL_GetProcAddress("glDeleteShader");
+	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)SDL_GL_GetProcAddress("glDeleteProgram");
+	glUseProgram = (PFNGLUSEPROGRAMPROC)SDL_GL_GetProcAddress("glUseProgram");
 
-	// Get Extensions String
-	pszExtensions = glGetString( GL_EXTENSIONS );
-
-	// Search The Extensions String For An Exact Copy
-	pszStart = pszExtensions;
-	for(;;)
-	{
-		pszWhere = (unsigned char *) strstr( (const char *) pszStart, szTargetExtension );
-		if( !pszWhere )
-			break;
-		pszTerminator = pszWhere + strlen( szTargetExtension );
-		if( pszWhere == pszStart || *( pszWhere - 1 ) == ' ' )
-			if( *pszTerminator == ' ' || *pszTerminator == '\0' )
-				return true;
-		pszStart = pszTerminator;
-	}
-	return false;
-}
-
-std::vector<Box2i> clipStack;
-
-void pushClipBounds (Box2i bounds)
-{
-  glScissor(bounds.min[0], bounds.min[1], bounds.getSize()[0], bounds.getSize()[1]);
-  clipStack.push_back(bounds);
-}
-
-void popClipBounds ()
-{
-  clipStack.pop_back();
-  if (clipStack.empty() == false)
-  {
-    glScissor(clipStack.back().min[0], clipStack.back().min[1], clipStack.back().getSize()[0], clipStack.back().getSize()[1]);
-  }
 }
 

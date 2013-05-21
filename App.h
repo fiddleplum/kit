@@ -15,7 +15,7 @@ namespace App
 	/******* Implement *******/
 
 	/// This is the first function that is called (like the main function), even before the loop. The params are the given at the console.
-	void onEntry(std::vector<std::string> const& params);
+	void onEntry(std::vector<std::string> const & params);
 
 	/// This is called whenever an input event occurs (can be more than once per loop iteration).
 	void onInputEvent(Input::Event event);
@@ -32,10 +32,10 @@ namespace App
 	/******* Call *******/
 
 	/// This shows a system message. If in Windows, it opens a popup window, otherwise it prints to stdout.
-	void showMessage(std::string const& text);
+	void showMessage(std::string const & text);
 
 	/// Sets the title of the window. The window starts with "Untitled".
-	void setTitle(std::string const& title);
+	void setTitle(std::string const & title);
 	
 	/// Returns true if the application is fullscreen. False if windowed.
 	bool isFullscreen();
