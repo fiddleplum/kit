@@ -212,7 +212,8 @@ int main(int argc, char *argv[])
     // Open the window.
     if(SDL_Init(SDL_INIT_VIDEO) == -1)
     {
-        throw std::runtime_error(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
+        App::showMessage(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
+		return -1;
     }
     SDL_EnableUNICODE(SDL_ENABLE);
     App::setSize(false, Vector2i(800, 600));
@@ -227,7 +228,6 @@ int main(int argc, char *argv[])
 	{
 		App::showMessage(err.what());
 	}
-	return 0;
 
 	// Do the loop.
 	App::doLoop();
@@ -235,5 +235,7 @@ int main(int argc, char *argv[])
     // Close window.
 	shutdownInput();
     SDL_Quit();
+
+	return 0;
 }
 

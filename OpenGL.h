@@ -26,24 +26,9 @@ extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
 extern PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform;
 extern PFNGLGETACTIVEATTRIBPROC glGetActiveAttrib;
 
-#ifdef _WIN32
+extern PFNGLGENBUFFERSPROC glGenBuffers;
+extern PFNGLBINDBUFFERPROC glBindBuffer;
+extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
+extern PFNGLBUFFERDATAPROC glBufferData;
 
-#define NOMINMAX
-#include <windows.h>
-#undef near
-#undef far
-#include <gl/GL.h>
-
-
-
-extern PFNGLDRAWRANGEELEMENTSWINPROC glDrawRangeElements;
-extern PFNGLGENBUFFERSARBPROC glGenBuffers;
-extern PFNGLBINDBUFFERARBPROC glBindBuffer;
-extern PFNGLDELETEBUFFERSARBPROC glDeleteBuffers;
-extern PFNGLBUFFERDATAARBPROC glBufferData;
-extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture;
-
-extern int maxIndices;
-
-#endif
 

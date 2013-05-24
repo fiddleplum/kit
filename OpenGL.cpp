@@ -3,6 +3,8 @@
 
 #include <stack>
 
+PFNGLSCISSORPROC glScissor;
+
 PFNGLCREATESHADERPROC glCreateShader;
 PFNGLSHADERSOURCEPROC glShaderSource;
 PFNGLCOMPILESHADERPROC glCompileShader;
