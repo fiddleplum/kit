@@ -17,6 +17,10 @@ PFNGLDETACHSHADERPROC glDetachShader;
 PFNGLDELETESHADERPROC glDeleteShader;
 PFNGLDELETEPROGRAMPROC glDeleteProgram;
 PFNGLUSEPROGRAMPROC glUseProgram;
+PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
+PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform;
+PFNGLGETACTIVEATTRIBPROC glGetActiveAttrib;
 
 void glInitialize()
 {
@@ -37,6 +41,10 @@ void glInitialize()
 	glDeleteShader = (PFNGLDELETESHADERPROC)SDL_GL_GetProcAddress("glDeleteShader");
 	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)SDL_GL_GetProcAddress("glDeleteProgram");
 	glUseProgram = (PFNGLUSEPROGRAMPROC)SDL_GL_GetProcAddress("glUseProgram");
+	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)SDL_GL_GetProcAddress("glGetUniformLocation");
+	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONPROC)SDL_GL_GetProcAddress("glGetAttribLocation");
+	glGetActiveUniform = (PFNGLGETACTIVEUNIFORMPROC)SDL_GL_GetProcAddress("glGetActiveUniform");
+	glGetActiveAttrib = (PFNGLGETACTIVEATTRIBPROC)SDL_GL_GetProcAddress("glGetActiveAttrib");
 
 }
 

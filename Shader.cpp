@@ -89,11 +89,68 @@ Shader::Shader(std::vector<std::string> const & code)
 		glDeleteProgram(program);
 		throw std::runtime_error("Error linking shader: " + log);
 	}
+	
+	// Get variable locations.
+	GLint numVariables;
+	GLint maxNameSize;
+	std::string name;
+	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numVariables);
+	glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxNameSize);
+	for(int i = 0; i < numVariables; i++)
+	{
+		GLsizei nameSize;
+		GLint size;
+		GLenum type;
+		name.resize(maxNameSize);
+		glGetActiveUniform(program, i, maxNameSize, &nameSize, &size, &type, &name[0]);
+		name.resize(nameSize);
+		GLint location = glGetUniformLocation(program, name.c_str());
+		if(location != -1)
+		{
+			uniforms[name] = location;
+		}
+	}
+	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numVariables);
+	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxNameSize);
+	for(int i = 0; i < numVariables; i++)
+	{
+		GLsizei nameSize;
+		GLint size;
+		GLenum type;
+		name.resize(maxNameSize);
+		glGetActiveAttrib(program, i, maxNameSize, &nameSize, &size, &type, &name[0]);
+		name.resize(nameSize);
+		GLint location = glGetAttribLocation(program, name.c_str());
+		if(location != -1)
+		{
+			attributes[name] = location;
+		}
+	}
 }
 
 Shader::~Shader()
 {
 	glDeleteProgram(program);
+}
+
+int Shader::getUniformLocation(std::string const & name)
+{
+	auto it = uniforms.find(name);
+	if(it == uniforms.end())
+	{
+		return -1;
+	}
+	return it->second;
+}
+
+int Shader::getAttributeLocation(std::string const & name)
+{
+	auto it = attributes.find(name);
+	if(it == attributes.end())
+	{
+		return -1;
+	}
+	return it->second;
 }
 
 void Shader::activate()

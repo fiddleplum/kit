@@ -21,6 +21,10 @@ extern PFNGLDETACHSHADERPROC glDetachShader;
 extern PFNGLDELETESHADERPROC glDeleteShader;
 extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
 extern PFNGLUSEPROGRAMPROC glUseProgram;
+extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
+extern PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform;
+extern PFNGLGETACTIVEATTRIBPROC glGetActiveAttrib;
 
 #ifdef _WIN32
 

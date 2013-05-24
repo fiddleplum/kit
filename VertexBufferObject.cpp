@@ -1,22 +1,6 @@
 #include "VertexBufferObject.h"
 #include "OpenGL.h"
 
-// VBO Extension Definitions, From glext.h
-#define GL_STATIC_DRAW_ARB 0x88E4
-#define GL_DYNAMIC_DRAW_ARB 0x88E8
-typedef void (APIENTRY * PFNGLBINDBUFFERARBPROC) (GLenum target, GLuint buffer);
-typedef void (APIENTRY * PFNGLDELETEBUFFERSARBPROC) (GLsizei n, const GLuint *buffers);
-typedef void (APIENTRY * PFNGLGENBUFFERSARBPROC) (GLsizei n, GLuint *buffers);
-typedef void (APIENTRY * PFNGLBUFFERDATAARBPROC) (GLenum target, int size, const GLvoid *data, GLenum usage);
-typedef void (APIENTRY * PFNGCLIENTACTIVETEXTUREARBPROC) (GLenum texture);
-
-// VBO Extension Function Pointers
-PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;
-PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;
-PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;
-PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;
-PFNGCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
-
 /*
 Notes:
 

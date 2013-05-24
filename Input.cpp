@@ -1,6 +1,8 @@
 #include "Input.h"
 #include <string>
 #include <map>
+#include <stdexcept>
+#include <vector>
 #include <SDL.h>
 
 std::map<int, std::string> gKeyToNameMap;
@@ -65,42 +67,42 @@ void setupKeyToNameMap()
 	gKeyToNameMap[Input::Keyboard::Tab] = "tab";
 	gKeyToNameMap[Input::Keyboard::Space] = "space";
 	gKeyToNameMap[Input::Keyboard::Escape] = "escape";
-	gKeyToNameMap[Input::Keyboard::KP0] = "keypad 0";
-	gKeyToNameMap[Input::Keyboard::KP1] = "keypad 1";
-	gKeyToNameMap[Input::Keyboard::KP2] = "keypad 2";
-	gKeyToNameMap[Input::Keyboard::KP3] = "keypad 3";
-	gKeyToNameMap[Input::Keyboard::KP4] = "keypad 4";
-	gKeyToNameMap[Input::Keyboard::KP5] = "keypad 5";
-	gKeyToNameMap[Input::Keyboard::KP6] = "keypad 6";
-	gKeyToNameMap[Input::Keyboard::KP7] = "keypad 7";
-	gKeyToNameMap[Input::Keyboard::KP8] = "keypad 8";
-	gKeyToNameMap[Input::Keyboard::KP9] = "keypad 9";
-	gKeyToNameMap[Input::Keyboard::KPAdd] = "keypad plus";
-	gKeyToNameMap[Input::Keyboard::KPSubtract] = "keypad minus";
-	gKeyToNameMap[Input::Keyboard::KPMultiply] = "keypad multiply";
-	gKeyToNameMap[Input::Keyboard::KPDivide] = "keypad divide";
-	gKeyToNameMap[Input::Keyboard::KPDecimal] = "keypad decimal";
-	gKeyToNameMap[Input::Keyboard::KPEnter] = "keypad enter";
+	gKeyToNameMap[Input::Keyboard::Keypad0] = "keypad 0";
+	gKeyToNameMap[Input::Keyboard::Keypad1] = "keypad 1";
+	gKeyToNameMap[Input::Keyboard::Keypad2] = "keypad 2";
+	gKeyToNameMap[Input::Keyboard::Keypad3] = "keypad 3";
+	gKeyToNameMap[Input::Keyboard::Keypad4] = "keypad 4";
+	gKeyToNameMap[Input::Keyboard::Keypad5] = "keypad 5";
+	gKeyToNameMap[Input::Keyboard::Keypad6] = "keypad 6";
+	gKeyToNameMap[Input::Keyboard::Keypad7] = "keypad 7";
+	gKeyToNameMap[Input::Keyboard::Keypad8] = "keypad 8";
+	gKeyToNameMap[Input::Keyboard::Keypad9] = "keypad 9";
+	gKeyToNameMap[Input::Keyboard::KeypadAdd] = "keypad plus";
+	gKeyToNameMap[Input::Keyboard::KeypadSubtract] = "keypad minus";
+	gKeyToNameMap[Input::Keyboard::KeypadMultiply] = "keypad multiply";
+	gKeyToNameMap[Input::Keyboard::KeypadDivide] = "keypad divide";
+	gKeyToNameMap[Input::Keyboard::KeypadDecimal] = "keypad decimal";
+	gKeyToNameMap[Input::Keyboard::KeypadEnter] = "keypad enter";
 	gKeyToNameMap[Input::Keyboard::Grave] = "grave";
 	gKeyToNameMap[Input::Keyboard::Apostrophe] = "apostrophe";
 	gKeyToNameMap[Input::Keyboard::Semicolon] = "semicolon";
 	gKeyToNameMap[Input::Keyboard::Comma] = "comma";
 	gKeyToNameMap[Input::Keyboard::Period] = "period";
 	gKeyToNameMap[Input::Keyboard::Slash] = "slash";
-	gKeyToNameMap[Input::Keyboard::LBracket] = "left bracket";
-	gKeyToNameMap[Input::Keyboard::RBracket] = "right bracket";
+	gKeyToNameMap[Input::Keyboard::LeftBracket] = "left bracket";
+	gKeyToNameMap[Input::Keyboard::RightBracket] = "right bracket";
 	gKeyToNameMap[Input::Keyboard::Backslash] = "backslash";
 	gKeyToNameMap[Input::Keyboard::Hyphen] = "hyphen";
 	gKeyToNameMap[Input::Keyboard::Equals] = "equals";
 	gKeyToNameMap[Input::Keyboard::Capslock] = "capslock";
-	gKeyToNameMap[Input::Keyboard::LShift] = "left shift";
-	gKeyToNameMap[Input::Keyboard::RShift] = "right shift";
-	gKeyToNameMap[Input::Keyboard::LControl] = "left control";
-	gKeyToNameMap[Input::Keyboard::RControl] = "right control";
-	gKeyToNameMap[Input::Keyboard::LAlt] = "left alt";
-	gKeyToNameMap[Input::Keyboard::RAlt] = "right alt";
-	gKeyToNameMap[Input::Keyboard::LSystem] = "left system";
-	gKeyToNameMap[Input::Keyboard::RSystem] = "right system";
+	gKeyToNameMap[Input::Keyboard::LeftShift] = "left shift";
+	gKeyToNameMap[Input::Keyboard::RightShift] = "right shift";
+	gKeyToNameMap[Input::Keyboard::LeftControl] = "left control";
+	gKeyToNameMap[Input::Keyboard::RightControl] = "right control";
+	gKeyToNameMap[Input::Keyboard::LeftAlt] = "left alt";
+	gKeyToNameMap[Input::Keyboard::RightAlt] = "right alt";
+	gKeyToNameMap[Input::Keyboard::LeftSystem] = "left system";
+	gKeyToNameMap[Input::Keyboard::RightSystem] = "right system";
 	gKeyToNameMap[Input::Keyboard::F1] = "f1";
 	gKeyToNameMap[Input::Keyboard::F2] = "f2";
 	gKeyToNameMap[Input::Keyboard::F3] = "f3";
@@ -258,7 +260,7 @@ void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event cons
 			event.device = Input::Device::Mouse;
 			if(sdlEvent.motion.xrel != 0)
 			{
-				event.axis = Mouse::X;
+				event.axis = Input::Mouse::X;
 				event.value = sdlEvent.motion.xrel;
 				events.push_back(event);
 				event.value = 0;
@@ -266,7 +268,7 @@ void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event cons
 			}
 			if(sdlEvent.motion.yrel != 0)
 			{
-				event.axis = Mouse::Y;
+				event.axis = Input::Mouse::Y;
 				event.value = sdlEvent.motion.yrel;
 				events.push_back(event);
 				event.value = 0;
@@ -338,7 +340,7 @@ void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event cons
 	else if(sdlEvent.type == SDL_JOYHATMOTION)
 	{
 		event.device = Input::Device::Controller0 + sdlEvent.jaxis.which;
-		Uint8 prevHatValue = mHatValues[sdlEvent.jaxis.which][sdlEvent.jhat.hat];
+		Uint8 prevHatValue = gHatValues[sdlEvent.jaxis.which][sdlEvent.jhat.hat];
 		if((sdlEvent.jhat.value & SDL_HAT_LEFT) != (prevHatValue & SDL_HAT_LEFT) || ((sdlEvent.jhat.value & SDL_HAT_RIGHT) != (prevHatValue & SDL_HAT_RIGHT)))
 		{
 			event.axis = 512 + 2 * sdlEvent.jhat.hat;
@@ -373,7 +375,7 @@ void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event cons
 			}
 			events.push_back(event);
 		}
-		mHatValues[sdlEvent.jaxis.which][sdlEvent.jhat.hat] = sdlEvent.jhat.value;
+		gHatValues[sdlEvent.jaxis.which][sdlEvent.jhat.hat] = sdlEvent.jhat.value;
 	}
 	else if(sdlEvent.type == SDL_JOYBUTTONDOWN || sdlEvent.type == SDL_JOYBUTTONUP)
 	{
@@ -387,7 +389,7 @@ void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event cons
 void startupInput()
 {
 	setupKeyToNameMap();
-    Input::refreshInputDevices();
+    Input::refreshControllers();
 }
 
 void shutdownInput()
@@ -454,12 +456,12 @@ std::string Input::Event::toString(int device, int axis)
 	return std::string();
 }
 
-int Input::getNumInputDevices()
+int Input::getNumControllers()
 {
-	return 2 + (int)gJoysticks.size();
+	return (int)gJoysticks.size();
 }
 
-void Input::refreshInputDevices()
+void Input::refreshControllers()
 {
 	if(SDL_WasInit(SDL_INIT_EVERYTHING) & SDL_INIT_JOYSTICK)
 	{
@@ -471,15 +473,13 @@ void Input::refreshInputDevices()
 	}
 	if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) == 0)
 	{
-		int nugJoysticks = SDL_NugJoysticks();
+		int nugJoysticks = SDL_NumJoysticks();
 		for(int i = 0; i < nugJoysticks; ++i)
 		{
 			SDL_Joystick * joystick = SDL_JoystickOpen(i);
 			if(joystick == NULL)
 			{
-				std::stringstream ss;
-				ss << "Could not initialize input controller " << (i + 1) << ". ";
-				throw std::runtime_error(ss.str());
+				throw std::runtime_error("Could not initialize input controller " + std::to_string(i + 1));
 			}
 			std::vector<Uint8> hatValue;
 			int numHats = SDL_JoystickNumHats(joystick);

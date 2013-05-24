@@ -4,9 +4,8 @@
 #include <string>
 
 /// Used by widgets and others to handle user input.
-class Input
+namespace Input
 {
-public:
 	class Event
 	{
 	public:
@@ -60,21 +59,21 @@ public:
 			N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, // Regular number keys
 			Up, Down, Left, Right, PageUp, PageDown,
 			Home, End, Enter, Backspace, Insert, Delete, Tab, Space, Escape,
-			KP0, KP1, KP2, KP3, KP4, KP5, KP6, KP7, KP8, KP9, // Keypad number keys
-			KPAdd, KPSubtract, KPMultiply, KPDivide, KPDecimal, KPEnter,
+			Keypad0, Keypad1, Keypad2, Keypad3, Keypad4, Keypad5, Keypad6, Keypad7, Keypad8, Keypad9, // Keypad number keys
+			KeypadAdd, KeypadSubtract, KeypadMultiply, KeypadDivide, KeypadDecimal, KeypadEnter,
 			Grave, Apostrophe, Semicolon, Comma, Period, Slash,
-			LBracket, RBracket, Backslash, Hyphen, Equals,
-			Capslock, LShift, RShift, LControl, RControl,
-			LAlt /*!	same as option */, RAlt /*! same as alt gr */,
-			LSystem, RSystem, /// same as windows or command or meta
+			LeftBracket, RightBracket, Backslash, Hyphen, Equals,
+			Capslock, LeftShift, RightShift, LeftControl, RightControl,
+			LeftAlt /*!	same as option */, RightAlt /*! same as alt gr */,
+			LeftSystem, RightSystem, /// same as windows or command or meta
 			F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15,
 			Pause,
 			Char // Use UserInput.value to find the character entered.
 		};
 	};
 
-	/// Returns the number of input devices, including the mouse and keyboard.
-	int getNumInputDevices();
+	/// Returns the number of controllers.
+	int getNumControllers();
 
 	/// Reloads the controllers, enabling plug-in and play functionality.
 	void refreshControllers();
