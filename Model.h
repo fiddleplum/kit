@@ -1,9 +1,45 @@
 #pragma once
 
+#include <vector>
+#include <string>
+#include "Vector.h"
+
 // The model format is at the bottom.
 
 class Model
 {
+public:
+	class Texture
+	{
+	public:
+		std::string filename;
+		std::string type;
+		int uvIndex;
+	};
+
+	class Material
+	{
+	public:
+		Vector3f diffuseColor;
+		int shininess;
+		float shininessStrength;
+		std::vector<Texture> textures;
+	};
+
+	class Mesh
+	{
+	public:
+		std::string name;
+		Material material;
+		int numUVs;
+		std::vector<float> vertices;
+		std::vector<int> indices;
+	};
+
+	Model(std::string const & filename);
+
+private:
+	std::vector<Mesh> meshes;
 };
 
 /*
