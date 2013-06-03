@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 
-/// Generic resource manager. Configuration must be explicitly castable to a string, and must have the < operator.
+/// Generic resource manager.
 template <typename Resource>
 class ResourceManager
 {
@@ -13,13 +13,13 @@ public:
 	/// Constructor. O(1)
 	ResourceManager();
 
-	/// Destructor. Throws an exception if it still has any resources after a cleaning. O(n)
+	/// Destructor. Cleans. Throws an exception if it still has any resources. O(n)
 	~ResourceManager();
 
-	/// Returns a valid shared_ptr if the manager has the resource, otherwise a null shared_ptr. O(log n)
+	/// Returns a shared_ptr of the requested resource. O(log n)
 	template <typename ... Args>
 	std::shared_ptr<Resource> get(std::string const & name, Args ... args);
-	
+
 	/// Removes and destroys the resources that aren't referenced anywhere else. O(n)
 	void clean();
 
