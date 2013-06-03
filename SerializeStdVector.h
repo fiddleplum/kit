@@ -1,42 +1,28 @@
 #pragma once
 
-#include <function>
+#include <functional>
 #include "Serialize.h"
 
 template <class T>
-bool serialize(std::ostream & out, std::vector<T> const & v, std::function<bool(std::ostream &, T const &)> serializeItem)
+void serialize(std::ostream & out, std::vector<T> const & v, void (*serializeItem)(std::ostream &, T const &))
 {
-	if(!serialize(out, (unsigned int)v.size()))
-	{
-		return false;
-	}
+	serialize(out, (unsigned int)v.size());
 	for(T const & item : v)
 	{
-		if(!serializeItem(out, item))
-		{
-			return false;
-		}
+		serializeItem(out, item);
 	}
-	return true;
 }
 
 template <class T>
-bool deserialize(std::istream & in, std::vector<T> & v, std::function<bool(std::istream &, T &)> deserializeItem)
+void deserialize(std::istream & in, std::vector<T> & v, void (*deserializeItem)(std::istream &, T &))
 {
 	unsigned int size;
-	if(!deserialize(in, size))
-	{
-		return false;
-	}
+	deserialize(in, size);
 	v.clear();
 	v.resize(size);
 	for(T & item : v)
 	{
-		if(!deserializeItem(in, item))
-		{
-			return false;
-		}
+		deserializeItem(in, item);
 	}
-	return true;
 }
 

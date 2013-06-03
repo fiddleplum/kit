@@ -16,10 +16,15 @@ public:
 	};
 
 	Shader(std::vector<std::string> const & code);
+
 	~Shader();
+
 	int getUniformLocation(std::string const & name);
+
 	int getAttributeLocation(std::string const & name);
+
 	void activate();
+
 	static void deactivate();
 
 private:
@@ -28,3 +33,6 @@ private:
 	std::map<std::string, int> attributes;
 };
 
+class ManagedShader : public 
+{
+}

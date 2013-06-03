@@ -2,160 +2,166 @@
 
 #include <istream>
 #include <ostream>
-#include <cstdint>
+#include <exception>
 
-inline bool serialize(std::ostream & out, void const * v, int numBytes)
+inline void serialize(std::ostream & out, void const * v, int numBytes)
 {
 	out.write((char const *)v, numBytes);
-	return out.good();
+	if(!out.good())
+	{
+		throw std::exception();
+	}
 }
 
-inline bool deserialize(std::istream & in, void * v, int numBytes)
+inline void deserialize(std::istream & in, void * v, int numBytes)
 {
 	in.read((char *)v, numBytes);
-	return in.good();
+	if(!in.good())
+	{
+		throw std::exception();
+	}
 }
 
-inline bool serialize(std::ostream & out, bool const & v)
+inline void serialize(std::ostream & out, bool const & v)
 {
-	return serialize(out, (void const *)&v, 1);
+	serialize(out, (void const *)&v, 1);
 }
 
-inline bool serialize(std::ostream & out, char const & v)
+inline void serialize(std::ostream & out, char const & v)
 {
-	return serialize(out, (void const *)&v, 1);
+	serialize(out, (void const *)&v, 1);
 }
 
-inline bool serialize(std::ostream & out, unsigned char const & v)
+inline void serialize(std::ostream & out, unsigned char const & v)
 {
-	return serialize(out, (void const *)&v, 1);
+	serialize(out, (void const *)&v, 1);
 }
 
-inline bool serialize(std::ostream & out, short const & v)
+inline void serialize(std::ostream & out, short const & v)
 {
-	return serialize(out, (void const *)&v, 2);
+	serialize(out, (void const *)&v, 2);
 }
 
-inline bool serialize(std::ostream & out, unsigned short const & v)
+inline void serialize(std::ostream & out, unsigned short const & v)
 {
-	return serialize(out, (void const *)&v, 2);
+	serialize(out, (void const *)&v, 2);
 }
 
-inline bool serialize(std::ostream & out, int const & v)
+inline void serialize(std::ostream & out, int const & v)
 {
-	return serialize(out, (void const *)&v, 4);
+	serialize(out, (void const *)&v, 4);
 }
 
-inline bool serialize(std::ostream & out, unsigned int const & v)
+inline void serialize(std::ostream & out, unsigned int const & v)
 {
-	return serialize(out, (void const *)&v, 4);
+	serialize(out, (void const *)&v, 4);
 }
 
-inline bool serialize(std::ostream & out, long const & v)
+inline void serialize(std::ostream & out, long const & v)
 {
-	return serialize(out, (void const *)&v, 4);
+	serialize(out, (void const *)&v, 4);
 }
 
-inline bool serialize(std::ostream & out, unsigned long const & v)
+inline void serialize(std::ostream & out, unsigned long const & v)
 {
-	return serialize(out, (void const *)&v, 4);
+	serialize(out, (void const *)&v, 4);
 }
 
-inline bool serialize(std::ostream & out, long long const & v)
+inline void serialize(std::ostream & out, long long const & v)
 {
-	return serialize(out, (void const *)&v, 8);
+	serialize(out, (void const *)&v, 8);
 }
 
-inline bool serialize(std::ostream & out, unsigned long long const & v)
+inline void serialize(std::ostream & out, unsigned long long const & v)
 {
-	return serialize(out, (void const *)&v, 8);
+	serialize(out, (void const *)&v, 8);
 }
 
-inline bool serialize(std::ostream & out, float const & v)
+inline void serialize(std::ostream & out, float const & v)
 {
-	return serialize(out, (void const *)&v, 4);
+	serialize(out, (void const *)&v, 4);
 }
 
-inline bool serialize(std::ostream & out, double const & v)
+inline void serialize(std::ostream & out, double const & v)
 {
-	return serialize(out, (void const *)&v, 8);
+	serialize(out, (void const *)&v, 8);
 }
 
-inline bool deserialize(std::istream & in, bool & v)
-{
-	v = 0;
-	return deserialize(in, (void *)&v, 1);
-}
-
-inline bool deserialize(std::istream & in, char & v)
+inline void deserialize(std::istream & in, bool & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 1);
+	deserialize(in, (void *)&v, 1);
 }
 
-inline bool deserialize(std::istream & in, unsigned char & v)
+inline void deserialize(std::istream & in, char & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 1);
+	deserialize(in, (void *)&v, 1);
 }
 
-inline bool deserialize(std::istream & in, short & v)
+inline void deserialize(std::istream & in, unsigned char & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 2);
+	deserialize(in, (void *)&v, 1);
 }
 
-inline bool deserialize(std::istream & in, unsigned short & v)
+inline void deserialize(std::istream & in, short & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 2);
+	deserialize(in, (void *)&v, 2);
 }
 
-inline bool deserialize(std::istream & in, int & v)
+inline void deserialize(std::istream & in, unsigned short & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 4);
+	deserialize(in, (void *)&v, 2);
 }
 
-inline bool deserialize(std::istream & in, unsigned int & v)
+inline void deserialize(std::istream & in, int & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 4);
+	deserialize(in, (void *)&v, 4);
 }
 
-inline bool deserialize(std::istream & in, long & v)
+inline void deserialize(std::istream & in, unsigned int & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 4);
+	deserialize(in, (void *)&v, 4);
 }
 
-inline bool deserialize(std::istream & in, unsigned long & v)
+inline void deserialize(std::istream & in, long & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 4);
+	deserialize(in, (void *)&v, 4);
 }
 
-inline bool deserialize(std::istream & in, long long & v)
+inline void deserialize(std::istream & in, unsigned long & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 8);
+	deserialize(in, (void *)&v, 4);
 }
 
-inline bool deserialize(std::istream & in, unsigned long long & v)
+inline void deserialize(std::istream & in, long long & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 8);
+	deserialize(in, (void *)&v, 8);
 }
 
-inline bool deserialize(std::istream & in, float & v)
+inline void deserialize(std::istream & in, unsigned long long & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 4);
+	deserialize(in, (void *)&v, 8);
 }
 
-inline bool deserialize(std::istream & in, double & v)
+inline void deserialize(std::istream & in, float & v)
 {
 	v = 0;
-	return deserialize(in, (void *)&v, 8);
+	deserialize(in, (void *)&v, 4);
+}
+
+inline void deserialize(std::istream & in, double & v)
+{
+	v = 0;
+	deserialize(in, (void *)&v, 8);
 }
 

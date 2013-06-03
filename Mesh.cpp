@@ -1,8 +1,8 @@
 #include "Mesh.h"
 #include "SerializeStdVector.h"
-#include "SeializeVector.h"
+#include "SerializeVector.h"
 
-bool serialize(std::ostream & out, Mesh::VertexComponent const& v)
+bool serialize(std::ostream & out, Mesh::VertexComponent const & v)
 {
 	return serialize(out, (unsigned int const &)v);
 }
@@ -12,42 +12,42 @@ bool deserialize(std::istream & in, Mesh::VertexComponent & v)
 	return deserialize(in, (unsigned int &)v);
 }
 
-bool Mesh::serialize(std::ostream & out) const
+bool serialize(std::ostream & out, Mesh const & mesh)
 {
-	if(!serialize(out, vertexFormat, serialize))
+	if(!serialize(out, mesh.vertexFormat, serialize))
 	{
 		return false;
 	}
-	if(!serialize(out, data, serialize))
+	if(!serialize(out, mesh.data, serialize))
 	{
 		return false;
 	}
-	if(!serialize(out, numVerticesPerFrame))
+	if(!serialize(out, mesh.numVerticesPerFrame))
 	{
 		return false;
 	}
-	if(!serialize(out, triangles, serialize))
+	if(!serialize(out, mesh.triangles, serialize<3, int>))
 	{
 		return false;
 	}
 	return true;
 }
 
-bool Mesh::deserialize(std::istream & in)
+bool deserialize(std::istream & in, Mesh & mesh)
 {
-	if(!deserialize(in, vertexFormat, deserialize))
+	if(!deserialize(in, mesh.vertexFormat, deserialize))
 	{
 		return false;
 	}
-	if(!deserialize(in, data, deserialize))
+	if(!deserialize(in, mesh.data, deserialize))
 	{
 		return false;
 	}
-	if(!deserialize(in, numVerticesPerFrame))
+	if(!deserialize(in, mesh.numVerticesPerFrame))
 	{
 		return false;
 	}
-	if(!deserialize(in, triangles, deserialize))
+	if(!deserialize(in, mesh.triangles, deserialize<3, int>))
 	{
 		return false;
 	}

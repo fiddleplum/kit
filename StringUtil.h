@@ -20,3 +20,18 @@ bool stringToFloat(float & f, std::string const & s);
 //! Convert a string s to a double d. Returns false on failure.
 bool stringToDouble(double & d, std::string const & s);
 
+/// THESE FUNCTIONS CAN BE DELETED ONCE std::to_string works!
+#include <cstdio>
+
+namespace std
+{
+	inline string to_string(int value) { char buf [256] {0}; std::sprintf(buf, "%d", value); return buf; }
+	inline string to_string(long value) { char buf [256] {0}; std::sprintf(buf, "%ld", value); return buf; }
+	inline string to_string(long long value) { char buf [256] {0}; std::sprintf(buf, "%lld", value); return buf; }
+	inline string to_string(unsigned value) { char buf [256] {0}; std::sprintf(buf, "%u", value); return buf; }
+	inline string to_string(unsigned long value) { char buf [256] {0}; std::sprintf(buf, "%lu", value); return buf; }
+	inline string to_string(unsigned long long value) { char buf [256] {0}; std::sprintf(buf, "%llu", value); return buf; }
+	inline string to_string(float value) { char buf [256] {0}; std::sprintf(buf, "%f", value); return buf; }
+	inline string to_string(double value) { char buf [256] {0}; std::sprintf(buf, "%f", value); return buf; }
+	inline string to_string(long double value) { char buf [256] {0}; std::sprintf(buf, "%Lf", value); return buf; }
+}

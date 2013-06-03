@@ -9,19 +9,29 @@
 class Mesh
 {
 public:
-	enum VertexComponent
+	class Texture
 	{
-		Position,
-		Normal,
-		TexCoord
+	public:
+		std::string filename;
+		std::string type;
+		int uvIndex;
 	};
 
-	bool serialize(std::ostream & out) const;
-	bool deserialize(std::istream & in);
+	class Material
+	{
+	public:
+		Vector3f diffuseColor;
+		int shininess;
+		float shininessStrength;
+		std::vector<Texture> textures;
+	};
 
-	std::vector<VertexComponent> vertexFormat; ///< Describes the components in each vertex.
-	std::vector<float> data; ///< Vertex data is interleaved, and contains one or more frames of data in sequence.
-    std::vector<Vector3i> triangles; ///< Each vertex points to a vertex in data.
-    unsigned int numVerticesPerFrame; ///< Each from contains the same number of vertices.
+	Material material;
+	int numUVs;
+	std::vector<float> vertices;
+	std::vector<int> indices;
 };
+
+bool serialize(std::ostream & out, Mesh const & mesh);
+bool deserialize(std::istream & in, Mesh & mesh);
 

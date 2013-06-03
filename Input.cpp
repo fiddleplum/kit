@@ -5,6 +5,9 @@
 #include <vector>
 #include <SDL.h>
 
+// TAKE THIS OUT ONCE std::to_string works
+#include <StringUtil.h>
+
 std::map<int, std::string> gKeyToNameMap;
 bool gFirstMouseMoveEvent = true;
 std::vector<SDL_Joystick *> gJoysticks;

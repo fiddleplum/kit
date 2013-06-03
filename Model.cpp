@@ -1,70 +1,41 @@
 #include "Model.h"
-#include <fstream>
-#include <stdexcept>
+#include "Serialize.h"
+#include "SerializeStdString.h"
+#include "SerializeStdVector.h"
+#include <istream>
 
-int readInt(std::istream & is)
+Model::Model()
 {
-	int v = 0;
-	is.read((char *)&v, 4);
-	if(!is.good())
-	{
-		throw std::exception();
-	}
-}
-
-float readFloat(std::istream & is)
-{
-	float v = 0.0f;
-	is.read((char *)&v, 4);
-	if(!is.good())
-	{
-		throw std::exception();
-	}
+	material.diffuseColor.set(1, 1, 1);
+	material.shininess = 1;
+	material.shininessStrength = 0;
+	hasNormal = false;
+	numUVs = 0;
 }
 
-std::string readString(std::istream & is)
+Model::Model(std::istream & in)
 {
-	std::string v;
-	char c;
-	do
+	deserialize(in, material.diffuseColor[0]);
+	deserialize(in, material.diffuseColor[1]);
+	deserialize(in, material.diffuseColor[2]);
+	deserialize(in, material.shininess);
+	deserialize(in, material.shininessStrength);
+	deserialize<Texture>(in, material.textures, [] (std::istream & in, Texture & texture)
 	{
-		is.read(&c, 1);
-		if(!is.good())
-		{
-			throw std::exception();
-		}
-	} while(c != 0);
-	return v;
-}
-Model::Model(std::string const & filename)
-{
-	std::fstream file(filename);
-	try
+		deserialize(in, texture.filename);
+		deserialize(in, texture.type);
+		deserialize(in, texture.uvIndex);
+	});
+	deserialize(in, hasNormal);
+	deserialize(in, numUVs);
+	int numVertices = 0;
+	deserialize(in, numVertices);
+	int numFloats = 3 + 3 + 2 * numUVs;
+	vertices.resize(numFloats);
+	for(int vertexI = 0; vertexI < numFloats; vertexI++)
 	{
-		int numMeshes = readInt(file);
-		for(int meshI = 0; meshI < numMeshes; meshI++)
-		{
-			meshes.push_back(Mesh());
-			Mesh & mesh = meshes.back();
-			mesh.name = readString(file);
-			mesh.material.diffuseColor[0] = readFloat(file);
-			mesh.material.diffuseColor[1] = readFloat(file);
-			mesh.material.diffuseColor[2] = readFloat(file);
-			mesh.material.shininess = readInt(file);
-			mesh.material.shininessStrength = readFloat(file);
-			int numTextures = readInt(file);
-			for(int textureI = 0; textureI < numTextures; textureI++)
-			{
-				mesh.material.textures.push_back(Texture());
-				Texture & texture = mesh.material.textures.back();
-				texture.filename = readString(file);
-				texture.type = readString(file);
-				texture.uvIndex = readInt(file);
-			}
-		}
+		deserialize(in, vertices[vertexI]);
 	}
-	catch (std::exception const &)
-	{
-		throw std::runtime_error("Error while loading " + filename + ". ");
-	}
+	deserialize<int>(in, indices, deserialize);
 }
+

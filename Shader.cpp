@@ -9,6 +9,10 @@ Shader::Shader(std::vector<std::string> const & code)
 	assert(code.size() == 3);
 
 	bool shaderValid [NumShaderTypes];
+	for(unsigned int type = 0; type < NumShaderTypes; type++)
+	{
+		shaderValid[type] = false;
+	}
 
 	GLuint shaders[NumShaderTypes];
 	for(unsigned int type = 0; type < NumShaderTypes; type++)
@@ -16,12 +20,7 @@ Shader::Shader(std::vector<std::string> const & code)
 		// Does this type have any code with it?
 		if(code.empty())
 		{
-			shaderValid[type] = false;
 			continue;
-		}
-		else
-		{
-			shaderValid[type] = true;
 		}
 
 		// Set the OpenGL type.
@@ -61,8 +60,13 @@ Shader::Shader(std::vector<std::string> const & code)
 			case Fragment:
 				typeString = "fragment"; break;
 			}
+			for(unsigned int typeToDelete = 0; typeToDelete <= type; typeToDelete++)
+			{
+				glDeleteShader(shaders[typeToDelete]);
+			}
 			throw std::runtime_error("Error compiling " + typeString + " shader: " + log);
 		}
+		shaderValid[type] = true;
 	}
 
 	// Create the shader program.
