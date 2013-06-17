@@ -3,19 +3,12 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "ShaderComponent.h"
 
 class Shader
 {
 public:
-	enum
-	{
-		Vertex,
-		Geometry,
-		Fragment,
-		NumShaderTypes
-	};
-
-	Shader(std::vector<std::string> const & code);
+	Shader(std::vector<ShaderComponent> const & shaderComponents);
 
 	~Shader();
 
@@ -33,6 +26,3 @@ private:
 	std::map<std::string, int> attributes;
 };
 
-class ManagedShader : public 
-{
-}

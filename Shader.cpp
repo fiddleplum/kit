@@ -4,6 +4,42 @@
 #include <cassert>
 #include <stdexcept>
 
+Shader::Shader(std::vector<ShaderComponent> const & shaderComponents)
+{
+	std::string code [ShaderComponent::NumTypes];
+	std::set<std::string> uniforms [ShaderComponent::NumTypes];
+	std::set<std::string> attributes [ShaderComponent::NumTypes];
+
+	// go through inputs and outputs, sorting and checking them
+	for(int sci = 0; sci < shaderComponents.size(); sci++)
+	{
+		ShaderComponent const & sc = shaderComponents[sci];
+		for(int i = 0; i < sc.getInputs().size(); i++)
+		{
+			std::string const & input = sc.getInputs()[i];
+			bool findValidOutput = false;
+			if(input.beginsWith("attribute "))
+			{
+				if(sc.getType() != ShaderComponent::Vertex)
+				{
+					throw std::runtime_error("In shader component " + sc.getName() + ": Only vertex shader components may have attribute inputs.");
+				}
+				findValidOutput = true;
+			}
+			if(findValidOutput)
+			{
+				for(int scj = 0; scj < i; scj++) // check all previous shader components for an output
+				{
+				}
+			}
+		}
+	}
+
+	for(int type = 0; type < ShaderComponent::NumTypes; type++)
+	{
+	}
+}
+
 Shader::Shader(std::vector<std::string> const & code)
 {
 	assert(code.size() == 3);
