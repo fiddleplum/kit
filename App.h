@@ -36,13 +36,13 @@ namespace App
 
 	/// Sets the title of the window. The window starts with "Untitled".
 	void setTitle(std::string const & title);
-	
+
 	/// Returns true if the application is fullscreen. False if windowed.
 	bool isFullscreen();
-	
+
 	/// Returns the size of the window, which is the resolution of the screen if fullscreen.
 	Vector2i getSize();
-	
+
 	/// Sets whether the application is fullscreen, and sets the resolution (if fullscreen) or the window size. The window starts in 800x600 windowed mode.
 	void setSize(bool fullscreen, Vector2i size);
 

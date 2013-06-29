@@ -1,24 +1,38 @@
 #pragma once
 
-#include "Shader.h"
-#include "Mesh.h"
 #include <vector>
-#include <string>
 
 class VertexBufferObject
 {
 public:
-	VertexBufferObject(Shader const & shader, Mesh const & mesh, bool dynamic);
-	~VertexBufferObject();
+	enum class Type
+	{
+		Float,
+		Int
+	};
 
+	VertexBufferObject();
+	~VertexBufferObject();
+	void mapLocationToVertexComponent(int location, unsigned int offset, Type type, unsigned int numDimensions);
+	void setVertices(void const * vertices, unsigned int numVertices, unsigned int bytesPerVertex, bool dynamic);
+	void updateVertices(void const * vertices, unsigned int numVertices, unsigned int vertexOffset);
+	void setIndices(unsigned int const * indices, unsigned int numIndices, unsigned int numIndicesPerPrimitive);
 	void render() const;
 
 private:
-	void update();
-	bool dynamic;
-	unsigned int num_indices;
-	unsigned int stride;
-	unsigned int id;
-	unsigned int index_id;
+	class VertexComponent
+	{
+	public:
+		unsigned int index;
+		unsigned int size;
+		unsigned int type;
+		unsigned int offset;
+	};
+	unsigned int mArrayBuffer;
+	unsigned int mElementArrayBuffer;
+	unsigned int mMode;
+	unsigned int mNumIndices;
+	unsigned int mBytesPerVertex;
+	std::vector<VertexComponent> mVertexComponents;
 };
 

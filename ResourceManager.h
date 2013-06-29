@@ -15,6 +15,9 @@ public:
 
 	/// Destructor. Cleans. Throws an exception if it still has any resources. O(n)
 	~ResourceManager();
+	
+	/// If it is already created, it returns a shared_ptr of the requested resource. Otherwise returns a null shared_ptr. O(log n)
+	std::shared_ptr<Resource> get(std::string const & name);
 
 	/// Returns a shared_ptr of the requested resource. O(log n)
 	template <typename ... Args>

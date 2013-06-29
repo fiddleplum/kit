@@ -1,16 +1,10 @@
 #pragma once
 
+#include "Vector.h"
+#include "Matrix.h"
 #include <vector>
 #include <string>
 #include <map>
-#include "ShaderComponent.h"
-
-/*
-NEW SHADER IDEA:
-Instead of having all of these .glsl files and hooking them together, procedurally create the shader based on a Shader::Config class.
-This would simplify a lot of things, and still be very flexible. (You could easily map uv indices to texture types, too)
-
-*/
 
 class Shader
 {
@@ -24,6 +18,8 @@ public:
 		bool usesWorldView; // requires uWorldView
 	};
 
+	Shader(std::string const & vertexCode, std::string const & fragmentCode);
+
 	Shader(Config const & config);
 
 	// Shader(std::vector<ShaderComponent> const & shaderComponents);
@@ -34,6 +30,24 @@ public:
 
 	int getAttributeLocation(std::string const & name);
 
+	void setUniform(int location, int value) const;
+
+	void setUniform(int location, float value) const;
+
+	void setUniform(int location, Vector2i value) const;
+
+	void setUniform(int location, Vector2f value) const;
+
+	void setUniform(int location, Vector3i value) const;
+
+	void setUniform(int location, Vector3f value) const;
+
+	void setUniform(int location, Vector4i value) const;
+
+	void setUniform(int location, Vector4f value) const;
+
+	void setUniform(int location, Matrix44f value) const;
+
 	void activate();
 
 	static void deactivate();
@@ -41,7 +55,7 @@ public:
 private:
 	unsigned int createVertexShaderObject(Config const & config);
 	unsigned int createFragmentShaderObject(Config const & config);
-	unsigned int compileShaderObject(std::code const & code, unsigned int type);
+	unsigned int compileShaderObject(std::string const & code, unsigned int type);
 	void linkShaderProgram(unsigned int vertexShaderObject, unsigned int fragmentShaderObject);
 	void populateVariableLocations();
 

@@ -4,6 +4,25 @@
 #include <cassert>
 #include <stdexcept>
 
+Shader::Shader(std::string const & vertexCode, std::string const & fragmentCode)
+{
+	unsigned int vertexShaderObject = 0;
+	unsigned int fragmentShaderObject = 0;
+	try
+	{
+		vertexShaderObject = compileShaderObject(vertexCode, GL_VERTEX_SHADER);
+		fragmentShaderObject = compileShaderObject(fragmentCode, GL_FRAGMENT_SHADER);
+	}
+	catch(...)
+	{
+		glDeleteShader(vertexShaderObject);
+		glDeleteShader(fragmentShaderObject);
+		throw;
+	}
+	linkShaderProgram(vertexShaderObject, fragmentShaderObject);
+	populateVariableLocations();
+}
+
 Shader::Shader(Config const & config)
 {
 	unsigned int vertexShaderObject = 0;
@@ -177,6 +196,51 @@ int Shader::getAttributeLocation(std::string const & name)
 	return it->second;
 }
 
+void Shader::setUniform(int location, int value) const
+{
+	glUniform1i(location, value);
+}
+
+void Shader::setUniform(int location, float value) const
+{
+	glUniform1f(location, value);
+}
+
+void Shader::setUniform(int location, Vector2i value) const
+{
+	glUniform2iv(location, 1, value.ptr());
+}
+
+void Shader::setUniform(int location, Vector2f value) const
+{
+	glUniform2fv(location, 1, value.ptr());
+}
+
+void Shader::setUniform(int location, Vector3i value) const
+{
+	glUniform3iv(location, 1, value.ptr());
+}
+
+void Shader::setUniform(int location, Vector3f value) const
+{
+	glUniform3fv(location, 1, value.ptr());
+}
+
+void Shader::setUniform(int location, Vector4i value) const
+{
+	glUniform4iv(location, 1, value.ptr());
+}
+
+void Shader::setUniform(int location, Vector4f value) const
+{
+	glUniform4fv(location, 1, value.ptr());
+}
+
+void Shader::setUniform(int location, Matrix44f value) const
+{
+	glUniformMatrix4fv(location, 1, false, value.ptr());
+}
+
 void Shader::activate()
 {
 	glUseProgram(program);
@@ -217,14 +281,22 @@ unsigned int Shader::createVertexShaderObject(Config const & config)
 
 unsigned int Shader::createFragmentShaderObject(Config const & config)
 {
+	std::string code;
+	
+	code += "#version 120\n";
+	
+	code += "void main()\n";
+	code += "{\n";
+	code += "	gl_Color = vec4(1,1,1,1);\n";
+	code += "}\n";
 }
 
-unsigned int Shader::compileShaderObject(std::code const & code, unsigned int type)
+unsigned int Shader::compileShaderObject(std::string const & code, unsigned int type)
 {
 	unsigned int handle;
 	handle = glCreateShader(type);
-	char const * shaderCode = code[type].c_str();
-	GLint shaderCodeSize = code[type].size();
+	char const * shaderCode = code.c_str();
+	GLint shaderCodeSize = code.size();
 	glShaderSource(handle, 1, &shaderCode, &shaderCodeSize);
 	glCompileShader(handle);
 	GLint good;
@@ -248,10 +320,10 @@ void Shader::linkShaderProgram(unsigned int vertexShaderObject, unsigned int fra
 	glAttachShader(program, vertexShaderObject);
 	glAttachShader(program, fragmentShaderObject);
 	glLinkProgram(program);
-	glDetachShader(program, vertexShaderObject);
 	glDetachShader(program, fragmentShaderObject);
-	glDeleteShader(vertexShaderObject);
+	glDetachShader(program, vertexShaderObject);
 	glDeleteShader(fragmentShaderObject);
+	glDeleteShader(vertexShaderObject);
 	GLint good;
 	glGetProgramiv(program, GL_LINK_STATUS, &good);
 	if(good == GL_FALSE)

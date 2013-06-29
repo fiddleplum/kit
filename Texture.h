@@ -1,16 +1,19 @@
 #pragma once
 
 #include <string>
-#include <memory>
 
 class Texture
 {
 public:
 	Texture(std::string const & filename);
 
-	class Resource;
+	~Texture();
+
+	void activate(unsigned int slot);
+	
+	static void deactivate(unsigned int slot);
 
 private:
-	std::shared_ptr<Resource> mResource;
+	unsigned int mHandle;
 };
 

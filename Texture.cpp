@@ -1,29 +1,28 @@
 #include "Texture.h"
-#include "ResourceManager.h"
+#include "OpenGL.h"
+#include <SDL_Image.h>
 #include <stdexcept>
 #include <fstream>
 
-// #define cimg_OS 1
-// #define cimg_display 0
-// #define cimg_use_png
-// #include <stdio.h>
-// #include <CImg.h>
-
-class Texture::Resource
-{
-public:
-	Resource(std::string const & filename)
-	{
-//		cimg_library::CImg<unsigned char> image {filename.c_str()};
-	}
-
-	char * data;
-};
-
-static ResourceManager<Texture::Resource> gTextureManager;
-
 Texture::Texture(std::string const & filename)
 {
-	mResource = gTextureManager.get(filename, filename);
+	glGenTextures(1, &mHandle);
+}
+
+Texture::~Texture()
+{
+	glDeleteTextures(1, &mHandle);
+}
+
+void Texture::activate(unsigned int slot)
+{
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_2D, mHandle);
+}
+
+void Texture::deactivate(unsigned int slot)
+{
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
