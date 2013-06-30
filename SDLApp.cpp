@@ -1,4 +1,6 @@
 #include "App.h"
+#include "Texture.h"
+#include "Shader.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
 #ifdef __WIN32__
@@ -218,6 +220,8 @@ int main(int argc, char *argv[])
     SDL_EnableUNICODE(SDL_ENABLE);
     App::setSize(false, Vector2i(800, 600));
 	startupInput();
+
+	gTextureManager = new ResourceManager<Texture, std::string>;
     
     // Run the user onEntry function.
 	try
@@ -231,7 +235,9 @@ int main(int argc, char *argv[])
 
 	// Do the loop.
 	App::doLoop();
-    
+
+	delete gTextureManager;
+
     // Close window.
 	shutdownInput();
     SDL_Quit();

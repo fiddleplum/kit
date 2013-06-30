@@ -2,15 +2,18 @@
 #include "Serialize.h"
 #include "SerializeStdString.h"
 #include "SerializeStdVector.h"
+#include "Texture.h"
+#include "ResourceManager.h"
 #include <istream>
+
+
 
 Model::Model()
 {
-	material.diffuseColor.set(1, 1, 1);
-	material.shininess = 1;
-	material.shininessStrength = 0;
-	hasNormal = false;
-	numUVs = 0;
+	mVertexHasNormal = false;
+	mVertexHasColor = false;
+	mNumVertexUVs = 0;
+	mVertexBufferObject = nullptr;
 }
 
 Model::Model(std::istream & in)
@@ -37,5 +40,10 @@ Model::Model(std::istream & in)
 		deserialize(in, vertices[vertexI]);
 	}
 	deserialize<int>(in, indices, deserialize);
+}
+
+void Model::addTexture(std::string const & filename, TextureType type, int uvIndex)
+{
+	std::shared_ptr<Texture> texture = gTextureManager->get(filename);
 }
 

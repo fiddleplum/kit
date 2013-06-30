@@ -29,7 +29,7 @@ namespace App
 	/// This is called whenever the window resizes (typically used to correct camera aspect ratios or reload textures). For fullscreen, size is the resolution.
 	void onResize(Vector2i size);
 
-	/******* Call *******/
+	/******* Use *******/
 
 	/// This shows a system message. If in Windows, it opens a popup window, otherwise it prints to stdout.
 	void showMessage(std::string const & text);

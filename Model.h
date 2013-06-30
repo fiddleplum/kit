@@ -10,13 +10,12 @@
 class Model
 {
 public:
-	class Texture
+	enum class TextureType
 	{
-	public:
-		std::string filename;
-		std::string type;
-		int uvIndex;
-	};
+		Diffuse,
+		Normal,
+		Reflection
+	}
 
 	class Material
 	{
@@ -29,13 +28,30 @@ public:
 
 	Model();
 
+	void addTexture(std::string const & filename, TextureType type, int uvIndex);
+
+	void setColor(Vector3f color);
+
+	void setSpecular(int level, float strength);
+
+	void setVertices(void const * vertices, unsigned int numVertices, bool hasNormal, bool hasColor, unsigned int numUVs);
+
+	void setIndices(unsigned int const * indices, unsigned int numIndices, unsigned int numIndicesPerPrimitive);
+
 	Model(std::istream & in);
 
-	Material material;
-	bool hasNormal;
-	int numUVs;
-	std::vector<float> vertices;
-	std::vector<int> indices;
+private:
+	class Texture
+	{
+	public:
+		std::string type;
+		int uvIndex;
+	};
+
+	bool mVertexHasNormal;
+	bool mVertexHasColor;
+	unsigned int mNumVertexUVs;
+	VertexBufferObject * mVertexBufferObject;
 };
 
 /*
