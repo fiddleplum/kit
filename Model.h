@@ -3,7 +3,11 @@
 #include <vector>
 #include <istream>
 #include <string>
+#include <memory>
 #include "Vector.h"
+
+class VertexBufferObject;
+class Texture;
 
 // The model serialized format is at the bottom.
 
@@ -15,16 +19,16 @@ public:
 		Diffuse,
 		Normal,
 		Reflection
-	}
-
-	class Material
-	{
-	public:
-		Vector3f diffuseColor;
-		int shininess;
-		float shininessStrength;
-		std::vector<Texture> textures;
 	};
+
+	// class Material
+	// {
+	// public:
+		// Vector3f diffuseColor;
+		// int shininess;
+		// float shininessStrength;
+		// std::vector<Texture> textures;
+	// };
 
 	Model();
 
@@ -38,19 +42,26 @@ public:
 
 	void setIndices(unsigned int const * indices, unsigned int numIndices, unsigned int numIndicesPerPrimitive);
 
-	Model(std::istream & in);
+	void render() const;
+
+	// Model(std::istream & in);
 
 private:
-	class Texture
+	class TextureInfo
 	{
 	public:
-		std::string type;
+		std::shared_ptr<Texture> texture;
+		unsigned int samplerLocation;
 		int uvIndex;
 	};
+
+	void setupShader();
 
 	bool mVertexHasNormal;
 	bool mVertexHasColor;
 	unsigned int mNumVertexUVs;
+	std::shared_ptr<Shader> mShader;
+	std::vector<TextureInfo> mTextureInfos;
 	VertexBufferObject * mVertexBufferObject;
 };
 

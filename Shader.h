@@ -15,7 +15,10 @@ public:
 		/*
 			All shaders use uProjection.
 		*/
-		bool usesWorldView; // requires uWorldView
+		bool usesWorldView = false; // requires uWorldView
+		bool usesVertexNormal = false; // requires aNormal
+		bool usesVertexColor = false; // requires aColor
+		
 	};
 
 	Shader(std::string const & vertexCode, std::string const & fragmentCode);
