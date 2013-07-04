@@ -1,65 +1,81 @@
 #pragma once
 
+#include "Vector.h"
 #include <vector>
 #include <istream>
 #include <string>
 #include <memory>
-#include "Vector.h"
 
 class VertexBufferObject;
 class Texture;
+class Shader;
 
 // The model serialized format is at the bottom.
 
 class Model
 {
 public:
-	enum class TextureType
+	class Config
 	{
-		Diffuse,
-		Normal,
-		Reflection
+	public:
+		class Texture
+		{
+		public:
+			enum Type
+			{
+				Diffuse,
+				Normal,
+				Reflection
+			};
+
+			Texture(std::string const & filename, Type type, int uvIndex)
+				: filename(filename), type(type), uvIndex(uvIndex) {}
+
+			std::string filename;
+			Type type = Diffuse;
+			int uvIndex = -1; // -1 means no uv.
+		};
+
+		// Vertex format
+		void const * vertices = nullptr;
+		unsigned int numVertices = 0;
+		bool vertexHasNormal = false;
+		bool vertexHasTangent = false;
+		bool vertexHasColor = false;
+		unsigned int numVertexUVs = 0;
+
+		// Index format
+		unsigned int const * indices = nullptr;
+		unsigned int numIndices = 0;
+		unsigned int numIndicesPerPrimitive = 0;
+
+		// Material
+		bool hasBaseColor = false;
+		Vector4f baseColor = Vector4f::zero();
+		std::vector<Texture> textures;
+		unsigned int specularLevel = 0;
+		float specularStrength = 0.0f;
 	};
 
-	// class Material
-	// {
-	// public:
-		// Vector3f diffuseColor;
-		// int shininess;
-		// float shininessStrength;
-		// std::vector<Texture> textures;
-	// };
-
-	Model();
-
-	void addTexture(std::string const & filename, TextureType type, int uvIndex);
-
-	void setColor(Vector3f color);
-
-	void setSpecular(int level, float strength);
-
-	void setVertices(void const * vertices, unsigned int numVertices, bool hasNormal, bool hasColor, unsigned int numUVs);
-
-	void setIndices(unsigned int const * indices, unsigned int numIndices, unsigned int numIndicesPerPrimitive);
-
-	void render() const;
+	Model(Config const & config);
 
 	// Model(std::istream & in);
+
+	~Model();
+
+	void render() const;
 
 private:
 	class TextureInfo
 	{
 	public:
 		std::shared_ptr<Texture> texture;
-		unsigned int samplerLocation;
+		int samplerLocation;
 		int uvIndex;
 	};
 
-	void setupShader();
+	void setupShader(Config const & config);
 
-	bool mVertexHasNormal;
-	bool mVertexHasColor;
-	unsigned int mNumVertexUVs;
 	std::shared_ptr<Shader> mShader;
 	std::vector<TextureInfo> mTextureInfos;
 	VertexBufferObject * mVertexBufferObject;

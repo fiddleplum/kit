@@ -5,18 +5,47 @@
 class VertexBufferObject
 {
 public:
-	enum class Type
+	class Config
 	{
-		Float,
-		Int
+	public:
+		class VertexComponent
+		{
+		public:
+			enum Type
+			{
+				Float,
+				Int
+			};
+
+			VertexComponent(int location, unsigned int offset, Type type, unsigned int numDimensions)
+				: location(location), offset(offset), type(type), numDimensions(numDimensions) {}
+
+			int location = 0;
+			unsigned int offset = 0;
+			Type type = Float;
+			unsigned int numDimensions = 0;
+		};
+
+		// Vertex format
+		void const * vertices = nullptr;
+		unsigned int numVertices = 0;
+		unsigned int bytesPerVertex = 0;
+		bool dynamic = false;
+
+		// Index format
+		unsigned int const * indices = nullptr;
+		unsigned int numIndices = 0;
+		unsigned int numIndicesPerPrimitive = 0;
+		
+		std::vector<VertexComponent> vertexComponents;
 	};
 
-	VertexBufferObject();
+	VertexBufferObject(Config const & config);
+
 	~VertexBufferObject();
-	void mapLocationToVertexComponent(int location, unsigned int offset, Type type, unsigned int numDimensions);
-	void setVertices(void const * vertices, unsigned int numVertices, unsigned int bytesPerVertex, bool dynamic);
+
 	void updateVertices(void const * vertices, unsigned int numVertices, unsigned int vertexOffset);
-	void setIndices(unsigned int const * indices, unsigned int numIndices, unsigned int numIndicesPerPrimitive);
+
 	void render() const;
 
 private:
