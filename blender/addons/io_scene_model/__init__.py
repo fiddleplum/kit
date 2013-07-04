@@ -120,6 +120,7 @@ class ExportModel(bpy.types.Operator, ExportHelper):
 			write_float(file, mesh.material.diffuse_color[0])
 			write_float(file, mesh.material.diffuse_color[1])
 			write_float(file, mesh.material.diffuse_color[2])
+			write_float(file, mesh.material.diffuse_color[3])
 			write_int(file, mesh.material.shininess)
 			write_float(file, mesh.material.shininess_strength)
 			write_int(file, len(mesh.material.textures))
@@ -128,6 +129,8 @@ class ExportModel(bpy.types.Operator, ExportHelper):
 				write_string(file, texture.type)
 				write_int(file, texture.uv_index)
 			write_bool(file, True) # has normals
+			write_bool(file, False) # has no tangent
+			write_bool(file, False) # has no color
 			write_int(file, mesh.num_uvs)
 			write_int(file, len(mesh.vertices))
 			for vertex in mesh.vertices:
@@ -140,6 +143,7 @@ class ExportModel(bpy.types.Operator, ExportHelper):
 				for uv in vertex.uvs:
 					write_float(file, uv[0])
 					write_float(file, uv[1])
+			write_int(file, 3) # num indices per primitive = triangles
 			write_int(file, len(mesh.indices))
 			for index in mesh.indices:
 				write_int(file, index)

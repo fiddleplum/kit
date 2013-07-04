@@ -11,93 +11,75 @@
 
 Model::Model(Config const & config)
 {
-#ifdef DEBUG
-	for(Config::Texture const & textureConfig : config.textures)
+	construct(config);
+}
+
+Model::Model(std::istream & in)
+{
+	Config config;
+
+	// Material
+	config.hasBaseColor = true;
+	deserialize(in, config.baseColor[0]);
+	deserialize(in, config.baseColor[1]);
+	deserialize(in, config.baseColor[2]);
+	deserialize(in, config.baseColor[3]);
+	deserialize(in, config.specularLevel);
+	deserialize(in, config.specularStrength);
+	deserialize<Config::Texture>(in, config.textures, [] (std::istream & in, Config::Texture & textureConfig)
 	{
-		if(textureConfig.type == Config::Texture::Normal && (!config.vertexHasNormal || !config.vertexHasTangent))
+		deserialize(in, textureConfig.filename);
+		std::string type;
+		deserialize(in, type);
+		if(type == "diffuse")
 		{
-			throw std::runtime_error("Normal texture specified without both normal and tangent vertex components.");
+			textureConfig.type = Config::Texture::Diffuse;
 		}
-		if(textureConfig.uvIndex == -1 && (textureConfig.type == Config::Texture::Normal || textureConfig.type == Config::Texture::Normal))
+		else if(type == "normal")
 		{
-			throw std::runtime_error("Texture type requires a uv.");
+			textureConfig.type = Config::Texture::Normal;
 		}
-		if(textureConfig.uvIndex >= config.numVertexUVs)
+		else if(type == "reflection")
 		{
-			throw std::runtime_error("Texture has higher uvIndex than highest vertex uv.");
+			textureConfig.type = Config::Texture::Reflection;
 		}
-	}
-#endif
+		deserialize(in, textureConfig.uvIndex);
+	});
 
-	for(Config::Texture const & textureConfig : config.textures)
-	{
-		std::shared_ptr<Texture> texture = gTextureManager->get(textureConfig.filename);
-	}
-
-	setupShader(config);
-
-	VertexBufferObject::Config vboConfig;
-
-	// Configure the attributes.
-	unsigned int offset = 0;
-	vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aPosition"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
+	// Vertex format
+	deserialize(in, config.vertexHasNormal);
+	deserialize(in, config.vertexHasTangent);
+	deserialize(in, config.vertexHasColor);
+	deserialize(in, config.numVertexUVs);
+	deserialize(in, config.numVertices);
+	int numBytesPerVertex = 3 * sizeof(float);
 	if(config.vertexHasNormal)
 	{
-		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aNormal"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
-		offset += sizeof(Vector3f);
+		numBytesPerVertex += 3 * sizeof(float);
 	}
 	if(config.vertexHasTangent)
 	{
-		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aTangent"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
-		offset += sizeof(Vector3f);
+		numBytesPerVertex += 3 * sizeof(float);
 	}
 	if(config.vertexHasColor)
 	{
-		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aColor"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
-		offset += sizeof(Vector3f);
+		numBytesPerVertex += 4 * sizeof(float);
 	}
-	for(Config::Texture const & textureConfig : config.textures)
-	{
-		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aUV" + std::to_string(textureConfig.uvIndex)), offset + textureConfig.uvIndex * sizeof(Vector2f), VertexBufferObject::Config::VertexComponent::Float, 2);
-	}
-	offset += config.numVertexUVs * sizeof(Vector2f);
+	numBytesPerVertex += 2 * sizeof(float) * config.numVertexUVs;
+	std::vector<unsigned char> vertices;
+	vertices.resize(config.numVertices * numBytesPerVertex);
+	deserialize(in, (void *)&vertices[0], config.numVertices * numBytesPerVertex);
+	config.vertices = (void const*)&vertices[0];
 
-	vboConfig.vertices = config.vertices;
-	vboConfig.numVertices = config.numVertices;
-	vboConfig.bytesPerVertex = offset;
-	vboConfig.dynamic = false;
+	// Index format
+	std::vector<unsigned int> indices;
+	deserialize(in, config.numIndicesPerPrimitive);
+	deserialize<unsigned int>(in, indices, deserialize);
+	config.indices = (unsigned int const *)&indices[0];
+	config.numIndices = indices.size();
 
-	vboConfig.indices = config.indices;
-	vboConfig.numIndices = config.numIndices;
-	vboConfig.numIndicesPerPrimitive = config.numIndicesPerPrimitive;
-	mVertexBufferObject = new VertexBufferObject(vboConfig);
+	construct(config);
 }
-
-// Model::Model(std::istream & in)
-// {
-	// deserialize(in, material.diffuseColor[0]);
-	// deserialize(in, material.diffuseColor[1]);
-	// deserialize(in, material.diffuseColor[2]);
-	// deserialize(in, material.shininess);
-	// deserialize(in, material.shininessStrength);
-	// deserialize<Texture>(in, material.textures, [] (std::istream & in, Texture & texture)
-	// {
-		// deserialize(in, texture.filename);
-		// deserialize(in, texture.type);
-		// deserialize(in, texture.uvIndex);
-	// });
-	// deserialize(in, hasNormal);
-	// deserialize(in, numUVs);
-	// int numVertices = 0;
-	// deserialize(in, numVertices);
-	// int numFloats = 3 + 3 + 2 * numUVs;
-	// vertices.resize(numFloats);
-	// for(int vertexI = 0; vertexI < numFloats; vertexI++)
-	// {
-		// deserialize(in, vertices[vertexI]);
-	// }
-	// deserialize<int>(in, indices, deserialize);
-// }
 
 Model::~Model()
 {
@@ -118,6 +100,76 @@ void Model::render() const
 	mVertexBufferObject->render();
 }
 
+void Model::construct(Config const & config)
+{
+#ifdef DEBUG
+	for(Config::Texture const & textureConfig : config.textures)
+	{
+		if(textureConfig.type == Config::Texture::Normal && (!config.vertexHasNormal || !config.vertexHasTangent))
+		{
+			throw std::runtime_error("Normal texture specified without both normal and tangent vertex components.");
+		}
+		if(textureConfig.uvIndex == -1 && (textureConfig.type == Config::Texture::Normal || textureConfig.type == Config::Texture::Normal))
+		{
+			throw std::runtime_error("Texture type requires a uv.");
+		}
+		if(textureConfig.uvIndex >= config.numVertexUVs)
+		{
+			throw std::runtime_error("Texture has higher uvIndex than highest vertex uv.");
+		}
+	}
+#endif
+
+	setupShader(config);
+
+	VertexBufferObject::Config vboConfig;
+
+	// Configure the textures.
+	unsigned int samplerIndex = 0;
+	for(Config::Texture const & textureConfig : config.textures)
+	{
+		TextureInfo textureInfo;
+		textureInfo.texture = gTextureManager->get(textureConfig.filename);
+		textureInfo.samplerLocation = mShader->getUniformLocation("uSampler" + std::to_string(samplerIndex));
+		textureInfo.uvIndex = textureConfig.uvIndex;
+		samplerIndex++;
+	}
+
+	// Configure the attributes.
+	unsigned int offset = 0;
+	vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aPosition"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
+	if(config.vertexHasNormal)
+	{
+		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aNormal"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
+		offset += sizeof(Vector3f);
+	}
+	if(config.vertexHasTangent)
+	{
+		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aTangent"), offset, VertexBufferObject::Config::VertexComponent::Float, 3);
+		offset += sizeof(Vector3f);
+	}
+	if(config.vertexHasColor)
+	{
+		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aColor"), offset, VertexBufferObject::Config::VertexComponent::Float, 4);
+		offset += sizeof(Vector4f);
+	}
+	for(Config::Texture const & textureConfig : config.textures)
+	{
+		vboConfig.vertexComponents.emplace_back(mShader->getAttributeLocation("aUV" + std::to_string(textureConfig.uvIndex)), offset + textureConfig.uvIndex * sizeof(Vector2f), VertexBufferObject::Config::VertexComponent::Float, 2);
+	}
+	offset += config.numVertexUVs * sizeof(Vector2f);
+
+	vboConfig.vertices = config.vertices;
+	vboConfig.numVertices = config.numVertices;
+	vboConfig.bytesPerVertex = offset;
+	vboConfig.dynamic = false;
+
+	vboConfig.indices = config.indices;
+	vboConfig.numIndices = config.numIndices;
+	vboConfig.numIndicesPerPrimitive = config.numIndicesPerPrimitive;
+	mVertexBufferObject = new VertexBufferObject(vboConfig);
+}
+
 void Model::setupShader(Config const & config)
 {
 	/** VERTEX **/
@@ -136,8 +188,8 @@ void Model::setupShader(Config const & config)
 	}
 	if(config.vertexHasColor)
 	{
-		vertexCode += "attribute vec3 aColor;\n";
-		vertexCode += "varying vec3 vColor;\n";
+		vertexCode += "attribute vec4 aColor;\n";
+		vertexCode += "varying vec4 vColor;\n";
 	}
 	if(config.vertexHasTangent)
 	{
@@ -185,7 +237,7 @@ void Model::setupShader(Config const & config)
 	}
 	if(config.vertexHasColor)
 	{
-		vertexCode += "varying vec3 vColor;\n";
+		vertexCode += "varying vec4 vColor;\n";
 	}
 	if(config.vertexHasTangent)
 	{

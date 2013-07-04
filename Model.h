@@ -28,6 +28,7 @@ public:
 				Reflection
 			};
 
+			Texture() {}
 			Texture(std::string const & filename, Type type, int uvIndex)
 				: filename(filename), type(type), uvIndex(uvIndex) {}
 
@@ -59,7 +60,7 @@ public:
 
 	Model(Config const & config);
 
-	// Model(std::istream & in);
+	Model(std::istream & in);
 
 	~Model();
 
@@ -74,6 +75,7 @@ private:
 		int uvIndex;
 	};
 
+	void construct(Config const & config);
 	void setupShader(Config const & config);
 
 	std::shared_ptr<Shader> mShader;
@@ -85,21 +87,24 @@ private:
 
 Model File Format
 
-Strings are UTF-8 encoded. They have the number of bytes prepended as an unsigned int. They are not null-terminated.
-Bool is 8 bits.
-Ints and floats are 32 bits.
-Lists begin with an Int indicating their length and then the elements tightly packed.
+strings are UTF-8 encoded. They have the number of bytes prepended as an unsigned int. They are not null-terminated.
+bools is 8 bits.
+ints, unsigned ints, and floats are 32 bits.
+lists begin with an unsigned int indicating their length and then the elements tightly packed.
 
 model:
 material - the material
 bool - has normal
-int - num uvs
-float list - list of vertex components (vertices all contatenated, tightly packed)
+bool - has tangent
+bool - has color
+unsigned int - num uvs
+vertex list - list of vertex components (vertices all contatenated, tightly packed)
+unsigned int - number of indices per primitive
 int list - list of indices that make up triangles
 
 material:
-float[3] - diffuse color (0..1)
-int - shininess (>= 1)
+float[4] - color (0..1)
+unsigned int - shininess (>= 1)
 float - shininess strength (>= 0)
 texture list - list of textures
 
@@ -111,6 +116,8 @@ int - uv index
 vertex format:
 float[3] - position
 float[3] - normal (if it has one)
+float[3] - tangent (if it has one)
+float[4] - color (if it has one)
 float[2] list - uvs *** Note: this list is not prepended with a length.
 
 */
