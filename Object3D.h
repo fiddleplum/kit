@@ -10,9 +10,8 @@ public:
 
   Vector<3, float> position;
 
-  // The orthonormal trio of vectors that describe the orientation of the
-  // object. They are right, forward, and up, respectively.
-  Vector<3, Vector<3, float> > basis;
+  // The orthonormal trio of vectors that describe the orientation of the object. They are right, forward, and up, respectively.
+  Vector<3, Vector<3, float>> basis;
 
   // The matrix that transforms local into world coordinates.
   Matrix<4, 4, float> world_matrix () const;

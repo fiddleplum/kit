@@ -223,10 +223,10 @@ int main(int argc, char *argv[])
 
 	gTextureManager = new ResourceManager<Texture, std::string>;
     
-    // Run the user onEntry function.
+    // Run the user onStartup function.
 	try
 	{
-		App::onEntry(params); // calls user-defined function
+		App::onStartup(params); // calls user-defined function
 	}
 	catch(std::runtime_error const & err)
 	{
@@ -235,6 +235,16 @@ int main(int argc, char *argv[])
 
 	// Do the loop.
 	App::doLoop();
+
+    // Run the user onShutdown function.
+	try
+	{
+		App::onShutdown(); // calls user-defined function
+	}
+	catch(std::runtime_error const & err)
+	{
+		App::showMessage(err.what());
+	}
 
 	delete gTextureManager;
 

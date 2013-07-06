@@ -14,8 +14,11 @@ namespace App
 {
 	/******* Implement *******/
 
-	/// This is the first function that is called (like the main function), even before the loop. The params are the given at the console.
-	void onEntry(std::vector<std::string> const & params);
+	/// This function is called just before the loop. The params are the given at the command prompt.
+	void onStartup(std::vector<std::string> const & params);
+
+	/// This function is called just after the loop.
+	void onShutdown();
 
 	/// This is called whenever an input event occurs (can be more than once per loop iteration).
 	void onInputEvent(Input::Event event);
