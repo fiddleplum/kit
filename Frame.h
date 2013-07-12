@@ -8,6 +8,8 @@ template <typename T>
 class Frame
 {
 public:
+	Frame();
+
 	Matrix<4, 4, T> getMatrix() const;
 
 	Matrix<4, 4, T> getMatrixInverse() const;
@@ -20,6 +22,12 @@ public:
 };
 
 // Template implementation
+
+template <typename T>
+Frame<T>::Frame()
+: pos(Vector<3, T>::zero()), ori(), scale(Vector<3, T>::filled(1))
+{
+}
 
 template <typename T>
 Matrix<4, 4, T> Frame<T>::getMatrix() const

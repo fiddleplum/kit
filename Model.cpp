@@ -14,6 +14,17 @@ Model::Model(Config const & config)
 	construct(config);
 }
 
+Model::Model()
+{
+	mVertexHasNormal = false;
+	mVertexHasTangent = false;
+	mVertexHasColor = false;
+	mNumVertexUVs = 0;
+	mColor = Vector4f(1, 1, 1, 1);
+	mShaderNeedsUpdate = true;
+	mVertexBufferObject = new VertexBufferObject();
+}
+
 Model::Model(std::istream & in)
 {
 	Config config;
@@ -84,6 +95,55 @@ Model::Model(std::istream & in)
 Model::~Model()
 {
 	delete mVertexBufferObject;
+}
+
+std::shared_ptr<Shader const> const & Model::getShader() const
+{
+	if(mShaderNeedsUpdate)
+	{
+		const_cast<Model *>(this)->updateShader();
+		const_cast<Model *>(this)->mShaderNeedsUpdate = false;
+	}
+	return mShader;
+}
+
+void Model::setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs)
+{
+	mVertexHasNormal = hasNormal;
+	mVertexHasTangent = hasTangent;
+	mVertexHasColor = hasColor;
+	mNumVertexUVs = numVertexUVs;
+	unsigned int bytesPerVertex = sizeof(Vector3f);
+	if(mVertexHasNormal)
+	{
+		bytesPerVertex += sizeof(Vector3f);
+	}
+	if(mVertexHasTangent)
+	{
+		bytesPerVertex += sizeof(Vector3f);
+	}
+	if(mVertexHasColor)
+	{
+		bytesPerVertex += sizeof(Vector4f);
+	}
+	bytesPerVertex += numVertexUVs * 2 * sizeof(Vector2f);
+	mVertexBufferObject->setBytesPerVertex(bytesPerVertex);
+	mShaderNeedsUpdate = true;
+}
+
+void Model::setVertices(void const * vertices, unsigned int numBytes)
+{
+	mVertexBufferObject->setVertices(vertices, numBytes, false);
+}
+
+void Model::setNumIndicesPerPrimitive(unsigned int num)
+{
+	mVertexBufferObject->setNumIndicesPerPrimitive(num);
+}
+
+void Model::setIndices(unsigned int const * indices, unsigned int numIndices)
+{
+	mVertexBufferObject->setIndices(indices, numIndices);
 }
 
 void Model::render() const

@@ -37,21 +37,7 @@ public:
 			int uvIndex = -1; // -1 means no uv.
 		};
 
-		// Vertex format
-		void const * vertices = nullptr;
-		unsigned int numVertices = 0;
-		bool vertexHasNormal = false;
-		bool vertexHasTangent = false;
-		bool vertexHasColor = false;
-		unsigned int numVertexUVs = 0;
-
-		// Index format
-		unsigned int const * indices = nullptr;
-		unsigned int numIndices = 0;
-		unsigned int numIndicesPerPrimitive = 0;
-
 		// Material
-		bool hasBaseColor = false;
 		Vector4f baseColor = Vector4f::zero();
 		std::vector<Texture> textures;
 		unsigned int specularLevel = 0;
@@ -64,7 +50,23 @@ public:
 
 	~Model();
 
+	std::shared_ptr<Shader const> getShader() const;
+
+	void setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs);
+
+	void setVertices(void const * vertices, unsigned int numBytes);
+
+	void setNumIndicesPerPrimitive(unsigned int num);
+
+	void setIndices(unsigned int const * indices, unsigned int numIndices);
+
+	void setBaseColor(bool hasBaseColor, 
+
 	void render() const;
+
+	Model(Model const &) = delete;
+
+	Model & operator =(Model const &) = delete;
 
 private:
 	class TextureInfo
@@ -78,6 +80,12 @@ private:
 	void construct(Config const & config);
 	void setupShader(Config const & config);
 
+	bool mShaderNeedsUpdate;
+	bool mVertexHasNormal;
+	bool mVertexHasTangent;
+	bool mVertexHasColor;
+	unsigned int mNumVertexUVs;
+	Vector4f mColor;
 	std::shared_ptr<Shader> mShader;
 	std::vector<TextureInfo> mTextureInfos;
 	VertexBufferObject * mVertexBufferObject;

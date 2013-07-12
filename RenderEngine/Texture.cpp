@@ -4,8 +4,6 @@
 #include <stdexcept>
 #include <fstream>
 
-ResourceManager<Texture, std::string> * gTextureManager;
-
 Texture::Texture(std::string const & filename)
 {
 	glGenTextures(1, &mHandle);

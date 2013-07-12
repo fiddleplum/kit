@@ -248,7 +248,7 @@ T & Vector<dim, T>::operator [](unsigned int i)
 {
 	if(i >= dim)
 	{
-		throw exception();
+		throw std::exception();
 	}
 	return c[i];
 }
@@ -258,7 +258,7 @@ T Vector<dim, T>::operator [](unsigned int i) const
 {
 	if(i >= dim)
 	{
-		throw exception();
+		throw std::exception();
 	}
 	return c[i];
 }

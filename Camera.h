@@ -1,23 +1,48 @@
 #pragma once
 
-#include "Object3D.h"
+#include "Frame.h"
 #include "Ray.h"
 
-class Camera : public Object3D {
+class Camera
+{
 public:
 	Camera();
 
-	float focal_length;
-	float near_z;
-	float far_z;
-	Matrix<4,4,float> projection_matrix() const;
-	Matrix<4,4,float> view_matrix() const;
+	void setAspectRatio(float aspectRatio);
 
-	Ray<3, float> get_ray(Vector<2, int> const& position_in_window, Vector<2, int> const& window_size);
+	void setNearFar(float near, float far);
 
-	void activate();
+	void setPerspective(float fov);
+
+	void setOrthogonal(float size);
+
+	Vector3f const & getPosition() const;
+
+	void setPosition(Vector3f const & position);
+
+	Quaternionf const & getOrientation() const;
+
+	void setOrientation(Quaternionf const & orientation);
+
+	Ray3f getRay(Vector2f const& ndcPosition) const;
+
+	Matrix44f getProjection() const;
+
+	Matrix44f getView() const;
 
 private:
-	float aspect_ratio;
+	void updateProjection();
+
+	void updateView();
+
+	float aspectRatio;
+	float near;
+	float far;
+	float fov;
+	float size;
+	bool perspective;
+	Frame frame;
+	Matrix44f projection;
+	Matrix44f view;
 };
 

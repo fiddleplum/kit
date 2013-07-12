@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ResourceManager.h"
 #include <string>
 
 class Texture
@@ -17,6 +16,4 @@ public:
 private:
 	unsigned int mHandle;
 };
-
-extern ResourceManager<Texture, std::string> * gTextureManager;
 
