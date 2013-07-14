@@ -5,11 +5,8 @@
 #include <string>
 #include <memory>
 
-///******* NOTE: CAN ResourceManager take a Args... instead of Config, and can this Args... be converted into a tuple?
-///******* OTHERWISE: Put ResourceManager<Texture,Texture::Config> in Texture.h as a shared_ptr. App.cpp (not SDLApp.cpp) will instantiate and destroy them.
-
 /// Generic resource manager. Resource must be constructable by Config, and Config must have the < and == operators.
-template <typename Resource, typename Config>
+template <typename Resource, typename... Args>
 class ResourceManager
 {
 public:
@@ -20,24 +17,24 @@ public:
 	~ResourceManager();
 
 	/// Returns a shared_ptr of the requested resource. O(log number of loaded resources)
-	std::shared_ptr<Resource> get(Config const & config);
+	std::shared_ptr<Resource> get(Args... args);
 
 	/// Removes and destroys the resources that aren't referenced anywhere else. O(number of loaded resources)
 	void clean();
 
 private:
-	std::map<Config, std::shared_ptr<Resource>> mResources;
+	std::map<std::tuple<Args...>, std::shared_ptr<Resource>> mResources;
 };
 
 // Template Implementations
 
-template <typename Resource, typename Config>
-ResourceManager<Resource, Config>::ResourceManager()
+template <typename Resource, typename... Args>
+ResourceManager<Resource, Args...>::ResourceManager()
 {
 }
 
-template <typename Resource, typename Config>
-ResourceManager<Resource, Config>::~ResourceManager()
+template <typename Resource, typename... Args>
+ResourceManager<Resource, Args...>::~ResourceManager()
 {
 	clean();
 	if(!mResources.empty())
@@ -51,24 +48,24 @@ ResourceManager<Resource, Config>::~ResourceManager()
 	}
 }
 
-template <typename Resource, typename Config>
-std::shared_ptr<Resource> ResourceManager<Resource, Config>::get(Config const & config)
+template <typename Resource, typename... Args>
+std::shared_ptr<Resource> ResourceManager<Resource, Args...>::get(Args... args)
 {
-	auto it = mResources.find(config);
+	auto it = mResources.find(std::tuple<Args...>(args...));
 	if(it != mResources.end())
 	{
 		return it->second;
 	}
 	else
 	{
-		std::shared_ptr<Resource> resource {std::make_shared<Resource>(config)};
-		mResources[config] = resource;
+		std::shared_ptr<Resource> resource {std::make_shared<Resource>(args...)};
+		mResources[std::tuple<Args...>(args...)] = resource;
 		return resource;
 	}
 }
 
-template <typename Resource, typename Config>
-void ResourceManager<Resource, Config>::clean()
+template <typename Resource, typename... Args>
+void ResourceManager<Resource, Args...>::clean()
 {
 	for(auto it = mResources.begin(); it != mResources.end(); )
 	{

@@ -1,15 +1,21 @@
 #include "RenderEngine.h"
 
-bool RenderEngine::ModelLess::operator <(Model const * model0, Model const * model1);
+void RenderEngine::addModel(Model * model)
 {
-	if(model0->getShader() < model1->getShader())
-	{
-		return true;
-	}
-	else if(model0->getShader() > model1->getShader())
-	{
-		return false;
-	}
-	for(unsigned int i = 0; i < std::min(model0->getTextures()
-	if(model0->
+	mModels.insert(model);
 }
+
+void RenderEngine::removeModel(Model * model)
+{
+	mModel.erase(model);
+}
+
+ResourceManager<Texture, std::string const &> & RenderEngine::getTextureManager()
+{
+	return mTextureManager;
+}
+
+void RenderEngine::render() const
+{
+}
+

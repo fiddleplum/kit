@@ -33,16 +33,9 @@ void VertexBufferObject::addVertexComponent(int location, unsigned int offset, T
 	mVertexComponents.push_back(vertexComponent);
 }
 
-void VertexBufferObject::removeVertexComponent(int location)
+void VertexBufferObject::clearVertexComponents()
 {
-	for(unsigned int i = 0; i < mVertexComponents.size(); i++)
-	{
-		if(mVertexComponents[i].index == location)
-		{
-			mVertexComponents.erase(mVertexComponents.begin() + i);
-			break;
-		}
-	}
+	mVertexComponents.clear();
 }
 
 void VertexBufferObject::setBytesPerVertex(unsigned int bytes)

@@ -1,23 +1,31 @@
 #include "Shader.h"
 #include "OpenGL.h"
+#include "../StringUtil.h"
+#include <vector>
 #include <stdexcept>
 
-Shader::Shader(std::string const & vertexCode, std::string const & fragmentCode)
+Shader::Shader(std::string const code [NumTypes])
 {
-	unsigned int vertexShaderObject = 0;
-	unsigned int fragmentShaderObject = 0;
+	std::vector<unsigned int> shaderObjects;
 	try
 	{
-		vertexShaderObject = compileShaderObject(vertexCode, GL_VERTEX_SHADER);
-		fragmentShaderObject = compileShaderObject(fragmentCode, GL_FRAGMENT_SHADER);
+		for(int type = 0; type < NumTypes; type++)
+		{
+			if(!code[type].empty())
+			{
+				shaderObjects.push_back(compileShaderObject(code[type], type));
+			}
+		}
 	}
 	catch(...)
 	{
-		glDeleteShader(vertexShaderObject);
-		glDeleteShader(fragmentShaderObject);
+		for(unsigned int shaderObject : shaderObjects)
+		{
+			glDeleteShader(shaderObject);
+		}
 		throw;
 	}
-	linkShaderProgram(vertexShaderObject, fragmentShaderObject);
+	linkShaderProgram(shaderObjects); // delete shader objects as well
 	populateVariableLocations();
 }
 
@@ -103,8 +111,16 @@ void Shader::setUniform(int location, Matrix44f value)
 
 unsigned int Shader::compileShaderObject(std::string const & code, unsigned int type)
 {
+	unsigned int glType = 0;
+	switch(type)
+	{
+		case Vertex:
+			glType = GL_VERTEX_SHADER; break;
+		case Fragment:
+			glType = GL_FRAGMENT_SHADER; break;
+	}
 	unsigned int handle;
-	handle = glCreateShader(type);
+	handle = glCreateShader(glType);
 	char const * shaderCode = code.c_str();
 	GLint shaderCodeSize = code.size();
 	glShaderSource(handle, 1, &shaderCode, &shaderCodeSize);
@@ -120,20 +136,23 @@ unsigned int Shader::compileShaderObject(std::string const & code, unsigned int 
 		glGetShaderInfoLog(handle, logLength, 0, &log[0]);
 		std::string typeString;
 		glDeleteShader(handle);
-		throw std::runtime_error("Error compiling shader object: " + log);
+		throw std::runtime_error("Error compiling shader object " + std::to_string(type) + ".\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
 	}
 }
 
-void Shader::linkShaderProgram(unsigned int vertexShaderObject, unsigned int fragmentShaderObject)
+void Shader::linkShaderProgram(std::vector<unsigned int> const & shaderObjects)
 {
 	program = glCreateProgram();
-	glAttachShader(program, vertexShaderObject);
-	glAttachShader(program, fragmentShaderObject);
+	for(unsigned int shaderObject : shaderObjects)
+	{
+		glAttachShader(program, shaderObject);
+	}
 	glLinkProgram(program);
-	glDetachShader(program, fragmentShaderObject);
-	glDetachShader(program, vertexShaderObject);
-	glDeleteShader(fragmentShaderObject);
-	glDeleteShader(vertexShaderObject);
+	for(unsigned int shaderObject : shaderObjects)
+	{
+		glDetachShader(program, shaderObject);
+		glDeleteShader(shaderObject);
+	}
 	GLint good;
 	glGetProgramiv(program, GL_LINK_STATUS, &good);
 	if(good == GL_FALSE)

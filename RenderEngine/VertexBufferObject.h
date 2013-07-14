@@ -17,7 +17,7 @@ public:
 
 	void addVertexComponent(int location, unsigned int offset, Type type, unsigned int numDimensions);
 
-	void removeVertexComponent(int location);
+	void clearVertexComponents();
 
 	void setBytesPerVertex(unsigned int bytes);
 

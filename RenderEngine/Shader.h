@@ -4,11 +4,19 @@
 #include <Matrix.h>
 #include <string>
 #include <map>
+#include <vector>
 
 class Shader
 {
 public:
-	Shader(std::string const & vertexCode, std::string const & fragmentCode);
+	enum Type
+	{
+		Vertex,
+		Fragment,
+		NumTypes
+	};
+
+	Shader(std::string const code [NumTypes]);
 
 	~Shader();
 
@@ -40,7 +48,7 @@ public:
 
 private:
 	unsigned int compileShaderObject(std::string const & code, unsigned int type);
-	void linkShaderProgram(unsigned int vertexShaderObject, unsigned int fragmentShaderObject);
+	void linkShaderProgram(std::vector<unsigned int> const & shaderObjects);
 	void populateVariableLocations();
 
 	unsigned int program;

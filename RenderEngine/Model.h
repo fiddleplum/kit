@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Vector.h"
+#include "../Vector.h"
 #include <vector>
 #include <istream>
 #include <string>
 #include <memory>
 
+class RenderEngine;
 class VertexBufferObject;
 class Texture;
 class Shader;
@@ -15,42 +16,11 @@ class Shader;
 class Model
 {
 public:
-	class Config
-	{
-	public:
-		class Texture
-		{
-		public:
-			enum Type
-			{
-				Diffuse,
-				Normal,
-				Reflection
-			};
-
-			Texture() {}
-			Texture(std::string const & filename, Type type, int uvIndex)
-				: filename(filename), type(type), uvIndex(uvIndex) {}
-
-			std::string filename;
-			Type type = Diffuse;
-			int uvIndex = -1; // -1 means no uv.
-		};
-
-		// Material
-		Vector4f baseColor = Vector4f::zero();
-		std::vector<Texture> textures;
-		unsigned int specularLevel = 0;
-		float specularStrength = 0.0f;
-	};
-
-	Model(Config const & config);
-
-	Model(std::istream & in);
+	Model(RenderEngine * renderEngine);
 
 	~Model();
 
-	std::shared_ptr<Shader const> getShader() const;
+	void load(std::string const & filename);
 
 	void setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs);
 
@@ -60,9 +30,13 @@ public:
 
 	void setIndices(unsigned int const * indices, unsigned int numIndices);
 
-	void setBaseColor(bool hasBaseColor, 
+	void addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex);
 
-	void render() const;
+	void clearTextures();
+
+	void setColor(Vector4f const & color);
+
+	void setSpecular(unsigned int level, float strength);
 
 	Model(Model const &) = delete;
 
@@ -73,22 +47,40 @@ private:
 	{
 	public:
 		std::shared_ptr<Texture> texture;
+		std::string type;
 		int samplerLocation;
 		int uvIndex;
 	};
 
-	void construct(Config const & config);
-	void setupShader(Config const & config);
+	std::shared_ptr<Shader const> getShader() const;
 
-	bool mShaderNeedsUpdate;
+	void updateShader();
+
+	void render() const;
+
+	bool operator < (Model const & model) const;
+
+	RenderEngine * mRenderEngine;
+
+	Vector4f mColor;
+	int mColorLocation;
+	unsigned int mSpecularLevel;
+	int mSpecularLevelLocation;
+	float mSpecularStrength;
+	int mSpecularStrengthLocation;
+
+	std::vector<TextureInfo> mTextureInfos;
+
 	bool mVertexHasNormal;
 	bool mVertexHasTangent;
 	bool mVertexHasColor;
 	unsigned int mNumVertexUVs;
-	Vector4f mColor;
-	std::shared_ptr<Shader> mShader;
-	std::vector<TextureInfo> mTextureInfos;
+	unsigned int mNumBytesPerVertex;
 	VertexBufferObject * mVertexBufferObject;
+
+	std::shared_ptr<Shader> mShader;
+
+	friend class RenderEngine;
 };
 
 /*
