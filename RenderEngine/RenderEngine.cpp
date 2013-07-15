@@ -7,7 +7,7 @@ void RenderEngine::addModel(Model * model)
 
 void RenderEngine::removeModel(Model * model)
 {
-	mModel.erase(model);
+	mModels.erase(model);
 }
 
 ResourceManager<Texture, std::string const &> & RenderEngine::getTextureManager()
@@ -17,5 +17,7 @@ ResourceManager<Texture, std::string const &> & RenderEngine::getTextureManager(
 
 void RenderEngine::render() const
 {
+	std::shared_ptr<Shader const> currentShader;
+	std::set<std::shared_ptr<Texture const>> currentTextures;
 }
 

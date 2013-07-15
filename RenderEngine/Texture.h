@@ -9,11 +9,14 @@ public:
 
 	~Texture();
 
+	std::string toString() const;
+
 	void activate(unsigned int slot);
 	
 	static void deactivate(unsigned int slot);
 
 private:
+	std::string mFilename;
 	unsigned int mHandle;
 };
 

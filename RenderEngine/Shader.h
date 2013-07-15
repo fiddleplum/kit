@@ -9,16 +9,12 @@
 class Shader
 {
 public:
-	enum Type
-	{
-		Vertex,
-		Fragment,
-		NumTypes
-	};
-
-	Shader(std::string const code [NumTypes]);
+	/// Construct 
+	Shader(std::map<std::string, std::string> const & code);
 
 	~Shader();
+
+	std::string toString() const;
 
 	int getUniformLocation(std::string const & name) const;
 
@@ -47,12 +43,13 @@ public:
 	static void setUniform(int location, Matrix44f value);
 
 private:
-	unsigned int compileShaderObject(std::string const & code, unsigned int type);
+	unsigned int compileShaderObject(std::string const & type, std::string const & code);
 	void linkShaderProgram(std::vector<unsigned int> const & shaderObjects);
 	void populateVariableLocations();
 
-	unsigned int program;
-	std::map<std::string, int> uniforms;
-	std::map<std::string, int> attributes;
+	std::map<std::string, std::string> const & mCode;
+	unsigned int mProgram;
+	std::map<std::string, int> mUniforms;
+	std::map<std::string, int> mAttributes;
 };
 

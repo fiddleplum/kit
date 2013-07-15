@@ -4,17 +4,15 @@
 #include <vector>
 #include <stdexcept>
 
-Shader::Shader(std::string const code [NumTypes])
+Shader::Shader(std::map<std::string, std::string> const & code)
 {
 	std::vector<unsigned int> shaderObjects;
+	mCode = code;
 	try
 	{
-		for(int type = 0; type < NumTypes; type++)
+		for(auto const & pair : code)
 		{
-			if(!code[type].empty())
-			{
-				shaderObjects.push_back(compileShaderObject(code[type], type));
-			}
+			shaderObjects.push_back(compileShaderObject(pair.first, pair.second));
 		}
 	}
 	catch(...)
@@ -32,6 +30,11 @@ Shader::Shader(std::string const code [NumTypes])
 Shader::~Shader()
 {
 	glDeleteProgram(program);
+}
+
+std::string Shader::toString() const
+{
+	
 }
 
 int Shader::getUniformLocation(std::string const & name) const
@@ -109,15 +112,20 @@ void Shader::setUniform(int location, Matrix44f value)
 	glUniformMatrix4fv(location, 1, false, value.ptr());
 }
 
-unsigned int Shader::compileShaderObject(std::string const & code, unsigned int type)
+unsigned int Shader::compileShaderObject(std::string const & type, std::string const & code)
 {
 	unsigned int glType = 0;
-	switch(type)
+	if(type == "vertex")
 	{
-		case Vertex:
-			glType = GL_VERTEX_SHADER; break;
-		case Fragment:
-			glType = GL_FRAGMENT_SHADER; break;
+		glType = GL_VERTEX_SHADER;
+	}
+	else if(type == "fragment")
+	{
+		glType = GL_FRAGMENT_SHADER;
+	}
+	else
+	{
+		throw std::runtime_error("Unknown shader object type '" + type + "', with code:\n" + code + "\n");
 	}
 	unsigned int handle;
 	handle = glCreateShader(glType);
@@ -136,7 +144,7 @@ unsigned int Shader::compileShaderObject(std::string const & code, unsigned int 
 		glGetShaderInfoLog(handle, logLength, 0, &log[0]);
 		std::string typeString;
 		glDeleteShader(handle);
-		throw std::runtime_error("Error compiling shader object " + std::to_string(type) + ".\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
+		throw std::runtime_error("Error compiling shader object " + type + ".\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
 	}
 }
 

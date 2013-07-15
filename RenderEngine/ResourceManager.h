@@ -42,7 +42,7 @@ ResourceManager<Resource, Args...>::~ResourceManager()
 		std::string message {"Resources not released:\n"};
 		for(auto const & pair : mResources)
 		{
-			message += "  " + (std::string)pair.first + "\n";
+			message += "\t" + pair.second->toString() + "\n";
 		}
 		throw std::runtime_error(message);
 	}
