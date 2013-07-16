@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Vector.h"
-#include "Quaternion.h"
-#include "Matrix.h"
+#include "../Vector.h"
+#include "../Quaternion.h"
+#include "../Matrix.h"
 
 template <typename T>
 class Frame
@@ -20,6 +20,9 @@ public:
 
 	Vector<3, T> scale;
 };
+
+typedef Frame<float> Framef;
+typedef Frame<double> Framed;
 
 // Template implementation
 

@@ -38,9 +38,21 @@ public:
 
 	void setSpecular(unsigned int level, float strength);
 
+	Frame & getFrame();
+
 	Model(Model const &) = delete;
 
 	Model & operator =(Model const &) = delete;
+
+	// For use with RenderEngine
+	
+	void render() const;
+
+	bool needsResorting() const;
+
+	void resortingDone();
+
+	bool operator < (Model const & model) const;
 
 private:
 	class TextureInfo
@@ -52,13 +64,7 @@ private:
 		int uvIndex;
 	};
 
-	std::shared_ptr<Shader const> getShader() const;
-
 	void updateShader();
-
-	void render() const;
-
-	bool operator < (Model const & model) const;
 
 	RenderEngine * mRenderEngine;
 
@@ -79,8 +85,9 @@ private:
 	VertexBufferObject * mVertexBufferObject;
 
 	std::shared_ptr<Shader> mShader;
+	bool mNeedsResorting;
 
-	friend class RenderEngine;
+	Framef mFrame;
 };
 
 /*

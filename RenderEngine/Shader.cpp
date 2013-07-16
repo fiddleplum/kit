@@ -4,6 +4,8 @@
 #include <vector>
 #include <stdexcept>
 
+unsigned int gCurrentProgram = 0;
+
 Shader::Shader(std::string code [NumTypes])
 {
 	std::vector<unsigned int> shaderObjects;
@@ -56,11 +58,16 @@ int Shader::getAttributeLocation(std::string const & name) const
 
 void Shader::activate()
 {
-	glUseProgram(mProgram);
+	if(gCurrentHandle != mProgram)
+	{
+		gCurrentProgram = mProgram;
+		glUseProgram(mProgram);
+	}
 }
 
 void Shader::deactivate()
 {
+	gCurrentProgram = 0;
 	glUseProgram(0);
 }
 

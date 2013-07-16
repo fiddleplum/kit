@@ -22,7 +22,7 @@ Model::Model(RenderEngine * renderEngine)
 	mSpecularStrength = 0;
 	mVertexBufferObject = new VertexBufferObject();
 	updateShader();
-	mRenderEngine->addModel(this);
+	mNeedsResorting = true;
 }
 
 Model::~Model()
@@ -91,7 +91,6 @@ void Model::load(std::string const & filename)
 
 void Model::setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs)
 {
-	mRenderEngine->removeModel(this);
 	mNumBytesPerVertex = sizeof(Vector3f); // position
 	mVertexHasNormal = hasNormal;
 	if(mVertexHasNormal)
@@ -112,7 +111,6 @@ void Model::setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsi
 	mNumBytesPerVertex += numVertexUVs * 2 * sizeof(Vector2f);
 	mVertexBufferObject->setBytesPerVertex(mNumBytesPerVertex);
 	updateShader();
-	mRenderEngine->addModel(this);
 }
 
 void Model::setVertices(void const * vertices, unsigned int numBytes)
@@ -132,7 +130,6 @@ void Model::setIndices(unsigned int const * indices, unsigned int numIndices)
 
 void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 {
-	mRenderEngine->removeModel(this);
 	TextureInfo textureInfo;
 	textureInfo.texture = mRenderEngine->getTextureManager().get(filename, filename);
 	textureInfo.type = type;
@@ -140,15 +137,12 @@ void Model::addTexture(std::string const & filename, std::string const & type, u
 	textureInfo.uvIndex = uvIndex;
 	mTextureInfos.push_back(textureInfo);
 	updateShader();
-	mRenderEngine->addModel(this);
 }
 
 void Model::clearTextures()
 {
-	mRenderEngine->removeModel(this);
 	mTextureInfos.clear();
 	updateShader();
-	mRenderEngine->addModel(this);
 }
 
 void Model::setColor(Vector4f const & color)
@@ -162,9 +156,70 @@ void Model::setSpecular(unsigned int level, float strength)
 	mSpecularStrength = strength;
 }
 
-std::shared_ptr<Shader const> Model::getShader() const
+Frame & Model::getFrame()
 {
-	return mShader;
+	return mFrame;
+}
+
+void Model::render() const
+{
+	// The render engine handles shader and texture activation.
+	mShader->activate();
+	mShader->setUniform(mFrame.getMatrix());
+	unsigned int samplerIndex = 0;
+	for(unsigned int i = 0; i < mTextureInfos.size(); i++)
+	{
+		mTextureInfos[i].texture->activate();
+		mShader->setUniform(mTextureInfos[i].samplerLocation, (int)samplerIndex);
+		samplerIndex++;
+	}
+	Texture::deactivateRest(mTextureInfos.size());
+	mShader->setUniform(mColorLocation, mColor);
+	mShader->setUniform(mSpecularLevelLocation, (int)mSpecularLevel);
+	mShader->setUniform(mSpecularStrengthLocation, mSpecularStrength);
+	mVertexBufferObject->render();
+}
+
+bool Model::needsResorting() const
+{
+	return mNeedsResorting;
+}
+
+void Model::resortingDone()
+{
+	mNeedsResorting = false;
+}
+
+bool Model::operator <(Model const & model) const
+{
+	if(mShader < model.mShader)
+	{
+		return true;
+	}
+	else if(mShader > model.mShader)
+	{
+		return false;
+	}
+	for(unsigned int i = 0; i < std::min(mTextureInfos.size(), model.mTextureInfos.size()); i++)
+	{
+		if(mTextureInfos[i].texture < model.mTextureInfos[i].texture)
+		{
+			return true;
+		}
+		else if(mTextureInfos[i].texture > model.mTextureInfos[i].texture)
+		{
+			return false;
+		}
+	}
+	if(mTextureInfos.size() < model.mTextureInfos.size())
+	{
+		return true;
+	}
+	else if(mTextureInfos.size() > model.mTextureInfos.size())
+	{
+		return false;
+	}
+	return mVertexBufferObject < model.mVertexBufferObject;
 }
 
 void Model::updateShader()
@@ -308,6 +363,7 @@ void Model::updateShader()
 	}
 
 	mShader = mRenderEngine->getShaderManager().get(name, code);
+	mNeedsResorting = true;
 
 	// Update attribute locations
 	mVertexBufferObject->clearVertexComponents();
@@ -342,53 +398,5 @@ void Model::updateShader()
 	{
 		textureInfo.samplerLocation = mShader->getUniformLocation("uSampler" + std::to_string(samplerIndex));
 	}
-}
-
-void Model::render() const
-{
-	mShader->activate();
-	unsigned int samplerIndex = 0;
-	for(TextureInfo const & textureInfo : mTextureInfos)
-	{
-		textureInfo.texture->activate(samplerIndex);
-		mShader->setUniform(textureInfo.samplerLocation, (int)samplerIndex);
-		samplerIndex++;
-	}
-	mShader->setUniform(mColorLocation, mColor);
-	mShader->setUniform(mSpecularLevelLocation, (int)mSpecularLevel);
-	mShader->setUniform(mSpecularStrengthLocation, mSpecularStrength);
-	mVertexBufferObject->render();
-}
-
-bool Model::operator <(Model const & model) const
-{
-	if(mShader < model.mShader)
-	{
-		return true;
-	}
-	else if(mShader > model.mShader)
-	{
-		return false;
-	}
-	for(unsigned int i = 0; i < std::min(mTextureInfos.size(), model.mTextureInfos.size()); i++)
-	{
-		if(mTextureInfos[i].texture < model.mTextureInfos[i].texture)
-		{
-			return true;
-		}
-		else if(mTextureInfos[i].texture > model.mTextureInfos[i].texture)
-		{
-			return false;
-		}
-	}
-	if(mTextureInfos.size() < model.mTextureInfos.size())
-	{
-		return true;
-	}
-	else if(mTextureInfos.size() > model.mTextureInfos.size())
-	{
-		return false;
-	}
-	return mVertexBufferObject < model.mVertexBufferObject;
 }
 

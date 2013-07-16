@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <fstream>
 
+std::vector<unsigned int> gCurrentTextures;
+
 Texture::Texture(std::string const & filename)
 {
 	glGenTextures(1, &mHandle);
@@ -16,13 +18,29 @@ Texture::~Texture()
 
 void Texture::activate(unsigned int slot)
 {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, mHandle);
+	if(slot >= gCurrentTextures.size() || mHandle != gCurrentTextures[slot])
+	{
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, mHandle);
+		if(slot >= gCurrentTextures.size())
+		{
+			gCurrentTextures.resize(slot + 1);
+		}
+		gCurrentTextures[slot] = mHandle;
+	}
 }
 
-void Texture::deactivate(unsigned int slot)
+void Texture::deactivateRest(unsigned int slot)
 {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	for(; slot < gCurrentTextures.size(); slot++)
+	{
+		if(gCurrentTextures[slot] == 0)
+		{
+			break; // If this one is zero, the rest are zero.
+		}
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		gCurrentTextures[slot] = 0;
+	}
 }
 
