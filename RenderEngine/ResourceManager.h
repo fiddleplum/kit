@@ -5,8 +5,8 @@
 #include <string>
 #include <memory>
 
-/// Generic resource manager. Resource must be constructable by Config, and Config must have the < and == operators.
-template <typename Resource, typename... Args>
+/// Generic resource manager.
+template <typename Resource>
 class ResourceManager
 {
 public:
@@ -17,24 +17,25 @@ public:
 	~ResourceManager();
 
 	/// Returns a shared_ptr of the requested resource. O(log number of loaded resources)
-	std::shared_ptr<Resource> get(Args... args);
+	template <typename... Args>
+	std::shared_ptr<Resource> get(std::string const & name, Args... args);
 
 	/// Removes and destroys the resources that aren't referenced anywhere else. O(number of loaded resources)
 	void clean();
 
 private:
-	std::map<std::tuple<Args...>, std::shared_ptr<Resource>> mResources;
+	std::map<std::string, std::shared_ptr<Resource>> mResources;
 };
 
 // Template Implementations
 
-template <typename Resource, typename... Args>
-ResourceManager<Resource, Args...>::ResourceManager()
+template <typename Resource>
+ResourceManager<Resource>::ResourceManager()
 {
 }
 
-template <typename Resource, typename... Args>
-ResourceManager<Resource, Args...>::~ResourceManager()
+template <typename Resource>
+ResourceManager<Resource>::~ResourceManager()
 {
 	clean();
 	if(!mResources.empty())
@@ -42,30 +43,39 @@ ResourceManager<Resource, Args...>::~ResourceManager()
 		std::string message {"Resources not released:\n"};
 		for(auto const & pair : mResources)
 		{
-			message += "\t" + pair.second->toString() + "\n";
+			message += "\t" + pair.first + "\n";
 		}
 		throw std::runtime_error(message);
 	}
 }
 
-template <typename Resource, typename... Args>
-std::shared_ptr<Resource> ResourceManager<Resource, Args...>::get(Args... args)
+template <typename Resource>
+template <typename... Args>
+std::shared_ptr<Resource> ResourceManager<Resource>::get(std::string const & name, Args... args)
 {
-	auto it = mResources.find(std::tuple<Args...>(args...));
+	auto it = mResources.find(name);
 	if(it != mResources.end())
 	{
 		return it->second;
 	}
 	else
 	{
-		std::shared_ptr<Resource> resource {std::make_shared<Resource>(args...)};
-		mResources[std::tuple<Args...>(args...)] = resource;
+		std::shared_ptr<Resource> resource;
+		try
+		{
+			resource = std::make_shared<Resource>(args...);
+		}
+		catch(std::runtime_error const & e)
+		{
+			throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+		}
+		mResources[name] = resource;
 		return resource;
 	}
 }
 
-template <typename Resource, typename... Args>
-void ResourceManager<Resource, Args...>::clean()
+template <typename Resource>
+void ResourceManager<Resource>::clean()
 {
 	for(auto it = mResources.begin(); it != mResources.end(); )
 	{

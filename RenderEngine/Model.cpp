@@ -134,7 +134,7 @@ void Model::addTexture(std::string const & filename, std::string const & type, u
 {
 	mRenderEngine->removeModel(this);
 	TextureInfo textureInfo;
-	textureInfo.texture = mRenderEngine->getTextureManager().get(filename);
+	textureInfo.texture = mRenderEngine->getTextureManager().get(filename, filename);
 	textureInfo.type = type;
 	textureInfo.samplerLocation = -1;
 	textureInfo.uvIndex = uvIndex;
@@ -169,7 +169,13 @@ std::shared_ptr<Shader const> Model::getShader() const
 
 void Model::updateShader()
 {
-	std::string code[Shader::NumTypes];
+	std::string code [Shader::NumTypes];
+
+	std::vector<std::string> uvIndexStrings;
+	for(unsigned int uvIndex = 0; uvIndex < mNumVertexUVs; uvIndex++)
+	{
+		uvIndexStrings.push_back(std::to_string(uvIndex));
+	}
 
 	/** VERTEX **/
 	code[Shader::Vertex] += "#version 120\n";
@@ -184,20 +190,20 @@ void Model::updateShader()
 		code[Shader::Vertex] += "attribute vec3 aNormal;\n";
 		code[Shader::Vertex] += "varying vec3 vNormal;\n";
 	}
-	if(mVertexHasColor)
-	{
-		code[Shader::Vertex] += "attribute vec4 aColor;\n";
-		code[Shader::Vertex] += "varying vec4 vColor;\n";
-	}
 	if(mVertexHasTangent)
 	{
 		code[Shader::Vertex] += "attribute vec3 aTangent;\n";
 		code[Shader::Vertex] += "varying vec3 vTangent;\n";
 	}
+	if(mVertexHasColor)
+	{
+		code[Shader::Vertex] += "attribute vec4 aColor;\n";
+		code[Shader::Vertex] += "varying vec4 vColor;\n";
+	}
 	for(unsigned int uvIndex = 0; uvIndex < mNumVertexUVs; uvIndex++)
 	{
-		code[Shader::Vertex] += "attribute vec2 aUV" + std::to_string(uvIndex) + ";\n";
-		code[Shader::Vertex] += "varying vec2 vUV" + std::to_string(uvIndex) + ";\n";
+		code[Shader::Vertex] += "attribute vec2 aUV" + uvIndexStrings[uvIndex] + ";\n";
+		code[Shader::Vertex] += "varying vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
 	}
 
 	// Add the main function.
@@ -219,7 +225,7 @@ void Model::updateShader()
 	}
 	for(unsigned int uvIndex = 0; uvIndex < mNumVertexUVs; uvIndex++)
 	{
-		code[Shader::Vertex] += "	vUV" + std::to_string(uvIndex) + " = aUV" + std::to_string(uvIndex) + ";\n";
+		code[Shader::Vertex] += "	vUV" + uvIndexStrings[uvIndex] + " = aUV" + uvIndexStrings[uvIndex] + ";\n";
 	}
 	code[Shader::Vertex] += "}\n";
 
@@ -232,17 +238,17 @@ void Model::updateShader()
 	{
 		code[Shader::Fragment] += "varying vec3 vNormal;\n";
 	}
-	if(mVertexHasColor)
-	{
-		code[Shader::Fragment] += "varying vec4 vColor;\n";
-	}
 	if(mVertexHasTangent)
 	{
 		code[Shader::Fragment] += "varying vec3 vTangent;\n";
 	}
+	if(mVertexHasColor)
+	{
+		code[Shader::Fragment] += "varying vec4 vColor;\n";
+	}
 	for(unsigned int uvIndex = 0; uvIndex < mNumVertexUVs; uvIndex++)
 	{
-		code[Shader::Fragment] += "varying vec2 vUV" + std::to_string(uvIndex) + ";\n";
+		code[Shader::Fragment] += "varying vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
 	}
 	code[Shader::Fragment] += "uniform vec4 uColor;\n";
 	unsigned int samplerIndex = 0;
@@ -263,10 +269,11 @@ void Model::updateShader()
 	samplerIndex = 0;
 	for(TextureInfo const & textureInfo : mTextureInfos)
 	{
+		std::string samplerIndexString = std::to_string(samplerIndex);
 		if(textureInfo.type == "diffuse")
 		{
-			code[Shader::Fragment] += "	vec4 textureColor" + std::to_string(samplerIndex) + " = texture2D(uSampler" + std::to_string(samplerIndex) + ", vUV" + std::to_string(textureInfo.uvIndex) + ");\n";
-			code[Shader::Fragment] += "	color = (1.0f - textureColor" + std::to_string(samplerIndex) + ".w) * color + textureColor" + std::to_string(samplerIndex) + ".w * textureColor" + std::to_string(samplerIndex) + ";\n";
+			code[Shader::Fragment] += "	vec4 textureColor" + samplerIndexString + " = texture2D(uSampler" + samplerIndexString + ", vUV" + std::to_string(textureInfo.uvIndex) + ");\n";
+			code[Shader::Fragment] += "	color = (1.0f - textureColor" + samplerIndexString + ".w) * color + textureColor" + samplerIndexString + ".w * textureColor" + samplerIndexString + ";\n";
 		}
 		else if(textureInfo.type == "normal")
 		{
@@ -279,7 +286,28 @@ void Model::updateShader()
 	code[Shader::Fragment] += "	gl_Color = color;\n";
 	code[Shader::Fragment] += "}\n";
 
-	mShader = std::make_shared<Shader>(code);
+	// Create a unique name for the shader.
+	std::string name;
+	name = "Model";
+	if(mVertexHasNormal)
+	{
+		name += "n";
+	}
+	if(mVertexHasTangent)
+	{
+		name += "t";
+	}
+	if(mVertexHasColor)
+	{
+		name += "c";
+	}
+	name += std::to_string(mNumVertexUVs);
+	for(TextureInfo const & textureInfo : mTextureInfos)
+	{
+		name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
+	}
+
+	mShader = mRenderEngine->getShaderManager().get(name, code);
 
 	// Update attribute locations
 	mVertexBufferObject->clearVertexComponents();

@@ -6,18 +6,12 @@
 
 Texture::Texture(std::string const & filename)
 {
-	mFilename = filename;
 	glGenTextures(1, &mHandle);
 }
 
 Texture::~Texture()
 {
 	glDeleteTextures(1, &mHandle);
-}
-
-std::string Texture::toString() const
-{
-	return mFilename;
 }
 
 void Texture::activate(unsigned int slot)

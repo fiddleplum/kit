@@ -10,9 +10,14 @@ void RenderEngine::removeModel(Model * model)
 	mModels.erase(model);
 }
 
-ResourceManager<Texture, std::string const &> & RenderEngine::getTextureManager()
+ResourceManager<Texture> & RenderEngine::getTextureManager()
 {
 	return mTextureManager;
+}
+
+ResourceManager<Shader> & RenderEngine::getShaderManager()
+{
+	return mShaderManager;
 }
 
 void RenderEngine::render() const

@@ -4,15 +4,17 @@
 #include <vector>
 #include <stdexcept>
 
-Shader::Shader(std::map<std::string, std::string> const & code)
+Shader::Shader(std::string code [NumTypes])
 {
 	std::vector<unsigned int> shaderObjects;
-	mCode = code;
 	try
 	{
-		for(auto const & pair : code)
+		for(unsigned int type = 0; type < NumTypes; type++)
 		{
-			shaderObjects.push_back(compileShaderObject(pair.first, pair.second));
+			if(!code[type].empty())
+			{
+				shaderObjects.push_back(compileShaderObject((Type)type, code[type]));
+			}
 		}
 	}
 	catch(...)
@@ -23,24 +25,19 @@ Shader::Shader(std::map<std::string, std::string> const & code)
 		}
 		throw;
 	}
-	linkShaderProgram(shaderObjects); // delete shader objects as well
+	mProgram = linkShaderProgram(shaderObjects); // delete shader objects as well
 	populateVariableLocations();
 }
 
 Shader::~Shader()
 {
-	glDeleteProgram(program);
-}
-
-std::string Shader::toString() const
-{
-	
+	glDeleteProgram(mProgram);
 }
 
 int Shader::getUniformLocation(std::string const & name) const
 {
-	auto it = uniforms.find(name);
-	if(it == uniforms.end())
+	auto it = mUniforms.find(name);
+	if(it == mUniforms.end())
 	{
 		return -1;
 	}
@@ -49,8 +46,8 @@ int Shader::getUniformLocation(std::string const & name) const
 
 int Shader::getAttributeLocation(std::string const & name) const
 {
-	auto it = attributes.find(name);
-	if(it == attributes.end())
+	auto it = mAttributes.find(name);
+	if(it == mAttributes.end())
 	{
 		return -1;
 	}
@@ -59,7 +56,7 @@ int Shader::getAttributeLocation(std::string const & name) const
 
 void Shader::activate()
 {
-	glUseProgram(program);
+	glUseProgram(mProgram);
 }
 
 void Shader::deactivate()
@@ -112,20 +109,20 @@ void Shader::setUniform(int location, Matrix44f value)
 	glUniformMatrix4fv(location, 1, false, value.ptr());
 }
 
-unsigned int Shader::compileShaderObject(std::string const & type, std::string const & code)
+unsigned int Shader::compileShaderObject(Type type, std::string const & code)
 {
 	unsigned int glType = 0;
-	if(type == "vertex")
+	if(type == Vertex)
 	{
 		glType = GL_VERTEX_SHADER;
 	}
-	else if(type == "fragment")
+	else if(type == Fragment)
 	{
 		glType = GL_FRAGMENT_SHADER;
 	}
 	else
 	{
-		throw std::runtime_error("Unknown shader object type '" + type + "', with code:\n" + code + "\n");
+		throw std::runtime_error("Unknown shader object type '" + std::to_string(type) + "', with code:\n" + code + "\n");
 	}
 	unsigned int handle;
 	handle = glCreateShader(glType);
@@ -144,13 +141,13 @@ unsigned int Shader::compileShaderObject(std::string const & type, std::string c
 		glGetShaderInfoLog(handle, logLength, 0, &log[0]);
 		std::string typeString;
 		glDeleteShader(handle);
-		throw std::runtime_error("Error compiling shader object " + type + ".\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
+		throw std::runtime_error("Error compiling shader object " + std::to_string(type) + ".\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
 	}
 }
 
-void Shader::linkShaderProgram(std::vector<unsigned int> const & shaderObjects)
+unsigned int Shader::linkShaderProgram(std::vector<unsigned int> const & shaderObjects)
 {
-	program = glCreateProgram();
+	unsigned int program = glCreateProgram();
 	for(unsigned int shaderObject : shaderObjects)
 	{
 		glAttachShader(program, shaderObject);
@@ -173,6 +170,7 @@ void Shader::linkShaderProgram(std::vector<unsigned int> const & shaderObjects)
 		glDeleteProgram(program);
 		throw std::runtime_error("Error linking shader: " + log);
 	}
+	return program;
 }
 
 void Shader::populateVariableLocations()
@@ -180,36 +178,36 @@ void Shader::populateVariableLocations()
 	GLint numVariables;
 	GLint maxNameSize;
 	std::string name;
-	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numVariables);
-	glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxNameSize);
+	glGetProgramiv(mProgram, GL_ACTIVE_UNIFORMS, &numVariables);
+	glGetProgramiv(mProgram, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxNameSize);
 	for(int i = 0; i < numVariables; i++)
 	{
 		GLsizei nameSize;
 		GLint size;
 		GLenum type;
 		name.resize(maxNameSize);
-		glGetActiveUniform(program, i, maxNameSize, &nameSize, &size, &type, &name[0]);
+		glGetActiveUniform(mProgram, i, maxNameSize, &nameSize, &size, &type, &name[0]);
 		name.resize(nameSize);
-		GLint location = glGetUniformLocation(program, name.c_str());
+		GLint location = glGetUniformLocation(mProgram, name.c_str());
 		if(location != -1)
 		{
-			uniforms[name] = location;
+			mUniforms[name] = location;
 		}
 	}
-	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numVariables);
-	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxNameSize);
+	glGetProgramiv(mProgram, GL_ACTIVE_ATTRIBUTES, &numVariables);
+	glGetProgramiv(mProgram, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxNameSize);
 	for(int i = 0; i < numVariables; i++)
 	{
 		GLsizei nameSize;
 		GLint size;
 		GLenum type;
 		name.resize(maxNameSize);
-		glGetActiveAttrib(program, i, maxNameSize, &nameSize, &size, &type, &name[0]);
+		glGetActiveAttrib(mProgram, i, maxNameSize, &nameSize, &size, &type, &name[0]);
 		name.resize(nameSize);
-		GLint location = glGetAttribLocation(program, name.c_str());
+		GLint location = glGetAttribLocation(mProgram, name.c_str());
 		if(location != -1)
 		{
-			attributes[name] = location;
+			mAttributes[name] = location;
 		}
 	}
 }
