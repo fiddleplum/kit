@@ -13,14 +13,15 @@ Camera::Camera()
 	view = Matrix44f::identity();
 }
 
-Matrix<4, 4, float> Camera::projection_matrix() const
+Framef const & Camera::getFrame() const
 {
-  return ::perspective_matrix<float>(focal_length, aspect_ratio, near_z, far_z);
+	return frame;
 }
 
-Matrix<4, 4, float> Camera::view_matrix() const
+Framef & Camera::getFrame()
 {
-  return ::view_matrix<float>(position, basis(0), basis(1));
+	viewNeedsUpdate = true;
+	return frame;
 }
 
 Ray<3, float> Camera::get_ray(Vector<2, int> const& position_in_window,
@@ -38,14 +39,24 @@ Ray<3, float> Camera::get_ray(Vector<2, int> const& position_in_window,
 void Camera::activate()
 {
 	glViewport(viewport.min[0], viewport.min[1], viewport.max[0] - viewport.min[0], viewport.max[1] - viewport.min[1]);
+}
 
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
-  glMatrixMode(GL_PROJECTION);
-  glLoadMatrixf(projection_matrix().c);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadMatrixf(view_matrix().c);
+Matrix44f const & Camera::getProjection() const
+{
+	if(projectionNeedsUpdate)
+	{
+		const_cast<Camera *>(this)->updateProjection();
+	}
+	return projection;
+}
+
+Matrix44f const & Camera::getView() const
+{
+	if(viewNeedsUpdate)
+	{
+		const_cast<Camera *>(this)->updateView();
+	}
+	return view;
 }
 
 void Camera::updateProjection()
@@ -91,5 +102,19 @@ void Camera::updateProjection()
 
 void Camera::updateView()
 {
+	Vector3f position = frame.getPosition();
+	Matrix<3, 3, T> rot = frame.getOrientation().getMatrix();
+	view(0, 0) = rot(0, 0);
+	view(1, 0) = rot(0, 1);
+	view(2, 0) = rot(0, 2);
+	view(0, 1) = rot(2, 0);
+	view(1, 1) = rot(2, 1);
+	view(2, 1) = rot(2, 2);
+	view(0, 2) = -rot(1, 0);
+	view(1, 2) = -rot(1, 1);
+	view(2, 2) = -rot(1, 2);
+	view(0, 3) = (-position[0] * rot(0, 0) - position[1] * rot(2, 0) + position[2] * rot(1, 0));
+	view(1, 3) = (-position[0] * rot(0, 1) - position[1] * rot(2, 1) + position[2] * rot(1, 1));
+	view(2, 3) = (-position[0] * rot(0, 2) - position[1] * rot(2, 2) + position[2] * rot(1, 2));
 }
 

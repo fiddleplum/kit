@@ -34,6 +34,11 @@ ResourceManager<Shader> & RenderEngine::getShaderManager()
 
 void RenderEngine::render()
 {
+	// Set the OpenGL settings.
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
 	// Check for sorting.
 	std::vector<std::shared_ptr<Model>> modelsToInsert;
 	for(std::shared_ptr<Model> model : mModels)
@@ -85,6 +90,7 @@ void RenderEngine::render()
 			currentTextures[slot] = nullptr;
 		}
 
+		// Do the render.
 		model->render();
 	}
 	if(currentShader != nullptr)

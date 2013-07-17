@@ -1,8 +1,9 @@
 #include "Model.h"
+#include "Camera.h"
+#include "RenderEngine.h"
+#include "Shader.h"
 #include "Texture.h"
 #include "VertexBufferObject.h"
-#include "Shader.h"
-#include "RenderEngine.h"
 #include "../Serialize.h"
 #include "../SerializeStdString.h"
 #include "../SerializeStdVector.h"
@@ -156,16 +157,22 @@ void Model::setSpecular(unsigned int level, float strength)
 	mSpecularStrength = strength;
 }
 
-Frame & Model::getFrame()
+Framef const & Model::getFrame() const
 {
 	return mFrame;
 }
 
-void Model::render() const
+Framef & Model::getFrame()
+{
+	return mFrame;
+}
+
+void Model::render(Camera const * camera) const
 {
 	// The render engine handles shader and texture activation.
 	mShader->activate();
-	mShader->setUniform(mFrame.getMatrix());
+	mShader->setUniform(mProjection, camera->getProjection());
+	mShader->setUniform(mWorldView, camera->getView() * mFrame.getMatrix());
 	unsigned int samplerIndex = 0;
 	for(unsigned int i = 0; i < mTextureInfos.size(); i++)
 	{
@@ -398,5 +405,7 @@ void Model::updateShader()
 	{
 		textureInfo.samplerLocation = mShader->getUniformLocation("uSampler" + std::to_string(samplerIndex));
 	}
+	mProjectionLocation = mShader->getUniformLocation("uProjection");
+	mWorldViewLocation = mShader->getUniformLocation("uWorldView");
 }
 

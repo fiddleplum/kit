@@ -7,6 +7,7 @@
 #include <memory>
 
 class RenderEngine;
+class Camera;
 class VertexBufferObject;
 class Texture;
 class Shader;
@@ -38,7 +39,9 @@ public:
 
 	void setSpecular(unsigned int level, float strength);
 
-	Frame & getFrame();
+	Framef const & getFrame() const;
+
+	Framef & getFrame();
 
 	Model(Model const &) = delete;
 
@@ -46,7 +49,7 @@ public:
 
 	// For use with RenderEngine
 	
-	void render() const;
+	void render(Camera const * camera) const;
 
 	bool needsResorting() const;
 
@@ -88,6 +91,8 @@ private:
 	bool mNeedsResorting;
 
 	Framef mFrame;
+	int mProjectionLocation;
+	int mWorldViewLocation;
 };
 
 /*
