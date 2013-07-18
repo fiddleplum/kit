@@ -1,38 +1,52 @@
-#include "RenderEngine.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "Scene.h"
+#include "Model.h"
+#include "Camera.h"
 
-RenderEngine::RenderEngine()
+Scene::Scene()
 {
 }
 
-RenderEngine::~RenderEngine()
+Scene::~Scene()
 {
 }
 
-std::shared_ptr<Model> RenderEngine::createModel()
+Model * Scene::createModel()
 {
-	std::shared_ptr<Model> model;
+	Model * model = new Model(this);
 	mModels.insert(model);
 	return model;
 }
 
-void RenderEngine::destroyModel(std::shared_ptr<Model> model)
+void Scene::destroyModel(Model * model)
 {
 	mModels.erase(model);
+	delete model;
 }
 
-ResourceManager<Texture> & RenderEngine::getTextureManager()
+Camera * Scene::createCamera()
+{
+	Camera * camera = new Camera(this);
+	mCameras.insert(camera);
+	return camera;
+}
+
+void Scene::destroyCamera(Camera * camera)
+{
+	mCameras.erase(camera);
+	delete camera;
+}
+
+ResourceManager<Texture> & Scene::getTextureManager()
 {
 	return mTextureManager;
 }
 
-ResourceManager<Shader> & RenderEngine::getShaderManager()
+ResourceManager<Shader> & Scene::getShaderManager()
 {
 	return mShaderManager;
 }
 
-void RenderEngine::render()
+void Scene::render()
 {
 	// Set the OpenGL settings.
 	glEnable(GL_DEPTH_TEST);

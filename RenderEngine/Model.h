@@ -1,12 +1,13 @@
 #pragma once
 
 #include "../Vector.h"
+#include "Frame.h"
 #include <vector>
 #include <istream>
 #include <string>
 #include <memory>
 
-class RenderEngine;
+class Scene;
 class Camera;
 class VertexBufferObject;
 class Texture;
@@ -17,7 +18,7 @@ class Shader;
 class Model
 {
 public:
-	Model(RenderEngine * renderEngine);
+	Model(Scene * scene);
 
 	~Model();
 
@@ -69,7 +70,7 @@ private:
 
 	void updateShader();
 
-	RenderEngine * mRenderEngine;
+	Scene * mScene;
 
 	Vector4f mColor;
 	int mColorLocation;

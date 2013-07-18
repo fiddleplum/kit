@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "Camera.h"
-#include "RenderEngine.h"
+#include "Scene.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexBufferObject.h"
@@ -11,9 +11,9 @@
 #include <fstream>
 #include <stdexcept>
 
-Model::Model(RenderEngine * renderEngine)
+Model::Model(Scene * scene)
 {
-	mRenderEngine = renderEngine;
+	mScene = scene;
 	mVertexHasNormal = false;
 	mVertexHasTangent = false;
 	mVertexHasColor = false;
@@ -132,7 +132,7 @@ void Model::setIndices(unsigned int const * indices, unsigned int numIndices)
 void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 {
 	TextureInfo textureInfo;
-	textureInfo.texture = mRenderEngine->getTextureManager().get(filename, filename);
+	textureInfo.texture = mScene->getTextureManager().get(filename, filename);
 	textureInfo.type = type;
 	textureInfo.samplerLocation = -1;
 	textureInfo.uvIndex = uvIndex;
@@ -171,12 +171,12 @@ void Model::render(Camera const * camera) const
 {
 	// The render engine handles shader and texture activation.
 	mShader->activate();
-	mShader->setUniform(mProjection, camera->getProjection());
-	mShader->setUniform(mWorldView, camera->getView() * mFrame.getMatrix());
+	mShader->setUniform(mProjectionLocation, camera->getProjection());
+	mShader->setUniform(mWorldViewLocation, camera->getView() * mFrame.getMatrix());
 	unsigned int samplerIndex = 0;
 	for(unsigned int i = 0; i < mTextureInfos.size(); i++)
 	{
-		mTextureInfos[i].texture->activate();
+		mTextureInfos[i].texture->activate(i);
 		mShader->setUniform(mTextureInfos[i].samplerLocation, (int)samplerIndex);
 		samplerIndex++;
 	}
@@ -369,7 +369,7 @@ void Model::updateShader()
 		name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 	}
 
-	mShader = mRenderEngine->getShaderManager().get(name, code);
+	mShader = mScene->getShaderManager().get(name, code);
 	mNeedsResorting = true;
 
 	// Update attribute locations

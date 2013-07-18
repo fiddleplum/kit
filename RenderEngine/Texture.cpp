@@ -3,6 +3,7 @@
 #include <SDL_Image.h>
 #include <stdexcept>
 #include <fstream>
+#include <vector>
 
 std::vector<unsigned int> gCurrentTextures;
 
@@ -16,7 +17,7 @@ Texture::~Texture()
 	glDeleteTextures(1, &mHandle);
 }
 
-void Texture::activate(unsigned int slot)
+void Texture::activate(unsigned int slot) const
 {
 	if(slot >= gCurrentTextures.size() || mHandle != gCurrentTextures[slot])
 	{

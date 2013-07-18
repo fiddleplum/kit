@@ -75,7 +75,7 @@ Quaternion<T>::Quaternion(T r, T i, T j, T k)
 }
 
 template <typename T>
-Quaternion::Quaternion(T r, Vector<3, T> ijk)
+Quaternion<T>::Quaternion(T r, Vector<3, T> ijk)
 : r(r), ijk(ijk)
 {
 }
@@ -174,18 +174,18 @@ Vector<3, T> Quaternion<T>::rotate(Vector<3, T> const & v) const
 }
 
 template <typename T>
-Vector<3, T> Quaternion<T>::getAxis(int i) const
+Vector<3, T> Quaternion<T>::getAxis(unsigned int i) const
 {
 	if(i >= 3)
 	{
 		throw std::exception();
 	}
 	Vector3f axis;
-	j = (i + 1) % 3;
-	k = (i + 2) % 3;
-	axis[i] = 1.0f - 2.0f * (ori.ijk[j] * ori.ijk[j] + ori.ijk[k] * ori.ijk[k]);
-	axis[j] = 2.0f * (ori.ijk[i] * ori.ijk[j] + ori.ijk[k] * ori.r);
-	axis[k] = 2.0f * (ori.ijk[i] * ori.ijk[k] - ori.ijk[j] * ori.r);
+	unsigned int j = (i + 1) % 3;
+	unsigned int k = (i + 2) % 3;
+	axis[i] = 1.0f - 2.0f * (ijk[j] * ijk[j] + ijk[k] * ijk[k]);
+	axis[j] = 2.0f * (ijk[i] * ijk[j] + ijk[k] * r);
+	axis[k] = 2.0f * (ijk[i] * ijk[k] - ijk[j] * r);
 	return axis;
 }
 

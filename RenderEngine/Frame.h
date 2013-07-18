@@ -4,6 +4,7 @@
 #include "../Quaternion.h"
 #include "../Matrix.h"
 
+template <typename T>
 class Frame
 {
 public:
@@ -24,8 +25,8 @@ private:
 	Quaternion<T> mOrientation;
 	Vector<3, T> mScale;
 	bool mMatricesNeedUpdate;
-	Matrix<4, 4, T> matrix;
-	Matrix<4, 4, T> matrixInverse;
+	Matrix<4, 4, T> mMatrix;
+	Matrix<4, 4, T> mMatrixInverse;
 };
 
 typedef Frame<float> Framef;
@@ -82,21 +83,21 @@ Vector<3, T> & Frame<T>::getScale()
 }
 
 template <typename T>
-Matrix<4, 4, T> const & Matrix<4, 4, T>::getMatrix() const
+Matrix<4, 4, T> const & Frame<T>::getMatrix() const
 {
 	if(mMatricesNeedUpdate)
 	{
-		const_cast<Matrix<4, 4, T> *>(this)->updateMatrices();
+		const_cast<Frame<T> *>(this)->updateMatrices();
 	}
 	return mMatrix;
 }
 
 template <typename T>
-Matrix<4, 4, T>  const & Matrix<4, 4, T>::getMatrixInverse() const
+Matrix<4, 4, T>  const & Frame<T>::getMatrixInverse() const
 {
 	if(mMatricesNeedUpdate)
 	{
-		const_cast<Matrix<4, 4, T> *>(this)->updateMatrices();
+		const_cast<Frame<T> *>(this)->updateMatrices();
 	}
 	return mMatrixInverse;
 }

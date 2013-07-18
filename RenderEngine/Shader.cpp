@@ -58,7 +58,7 @@ int Shader::getAttributeLocation(std::string const & name) const
 
 void Shader::activate()
 {
-	if(gCurrentHandle != mProgram)
+	if(gCurrentProgram != mProgram)
 	{
 		gCurrentProgram = mProgram;
 		glUseProgram(mProgram);

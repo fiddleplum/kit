@@ -12,7 +12,7 @@ public:
 	~Texture();
 
 	// Activates the texture at the slot.
-	void activate(unsigned int slot);
+	void activate(unsigned int slot) const;
 
 	// Deactivates all slots equal to or greater than slot.
 	static void deactivateRest(unsigned int slot);
