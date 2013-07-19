@@ -157,12 +157,12 @@ void Model::setSpecular(unsigned int level, float strength)
 	mSpecularStrength = strength;
 }
 
-Framef const & Model::getFrame() const
+Frame const & Model::getFrame() const
 {
 	return mFrame;
 }
 
-Framef & Model::getFrame()
+Frame & Model::getFrame()
 {
 	return mFrame;
 }

@@ -4,133 +4,123 @@
 #include "../Quaternion.h"
 #include "../Matrix.h"
 
-template <typename T>
 class Frame
 {
 public:
 	Frame();
-	Vector<3, T> const & getPosition() const;
-	Vector<3, T> & getPosition();
-	Quaternion<T> const & getOrientation() const;
-	Quaternion<T> & getOrientation();
-	Vector<3, T> const & getScale() const;
-	Vector<3, T> & getScale();
-	Matrix<4, 4, T> const & getMatrix() const;
-	Matrix<4, 4, T>  const & getMatrixInverse() const;
+
+	Vector3f const & getPosition() const;
+	void setPosition(Vector3f);
+
+	Quaternionf const & getOrientation() const;
+	void setOrientation(Quaternionf);
+
+	Vector3f const & getScale() const;
+	void setScale(Vector3f);
+
+	Matrix44f const & getMatrix() const;
+	Matrix44f  const & getMatrixInverse() const;
 
 private:
 	void updateMatrices();
 
-	Vector<3, T> mPosition;
-	Quaternion<T> mOrientation;
-	Vector<3, T> mScale;
-	bool mMatricesNeedUpdate;
-	Matrix<4, 4, T> mMatrix;
-	Matrix<4, 4, T> mMatrixInverse;
+	Vector3f position;
+	Quaternionf orientation;
+	Vector3f scale;
+	bool matricesNeedUpdate;
+	Matrix44f matrix;
+	Matrix44f matrixInverse;
 };
-
-typedef Frame<float> Framef;
-typedef Frame<double> Framed;
 
 // Template implementation
 
-template <typename T>
-Frame<T>::Frame()
+Frame::Frame()
 {
-	mPosition = Vector<3, T>::zero();
-	mScale = Vector<3, T>::filled(1);
-	mMatrixInverse = mMatrix = Matrix<4, 4, T>::identity();
-	mMatricesNeedUpdate = false;
+	position = Vector3f::zero();
+	scale = Vector3f::filled(1);
+	matrixInverse = matrix = Matrix44f::identity();
+	matricesNeedUpdate = false;
 }
 
-template <typename T>
-Vector<3, T> const & Frame<T>::getPosition() const
+Vector3f const & Frame::getPosition() const
 {
-	return mPosition;
+	return position;
 }
 
-template <typename T>
-Vector<3, T> & Frame<T>::getPosition()
+void Frame::setPosition(Vector3f newPosition)
 {
-	mMatricesNeedUpdate = true;
-	return mPosition;
+	position = newPosition;
+	matricesNeedUpdate = true;
 }
 
-template <typename T>
-Quaternion<T> const & Frame<T>::getOrientation() const
+Quaternionf const & Frame::getOrientation() const
 {
-	return mOrientation;
+	return orientation;
 }
 
-template <typename T>
-Quaternion<T> & Frame<T>::getOrientation()
+void Frame::setOrientation(Quaternionf newOrientation)
 {
-	mMatricesNeedUpdate = true;
-	return mOrientation;
+	orientation = newOrientation;
+	matricesNeedUpdate = true;
 }
 
-template <typename T>
-Vector<3, T> const & Frame<T>::getScale() const
+Vector3f const & Frame::getScale() const
 {
-	return mScale;
+	return scale;
 }
 
-template <typename T>
-Vector<3, T> & Frame<T>::getScale()
+void Frame::setScale(Vector3f newScale)
 {
-	mMatricesNeedUpdate = true;
-	return mScale;
+	scale = newScale;
+	matricesNeedUpdate = true;
 }
 
-template <typename T>
-Matrix<4, 4, T> const & Frame<T>::getMatrix() const
+Matrix44f const & Frame::getMatrix() const
 {
-	if(mMatricesNeedUpdate)
+	if(matricesNeedUpdate)
 	{
-		const_cast<Frame<T> *>(this)->updateMatrices();
+		const_cast<Frame *>(this)->updateMatrices();
 	}
-	return mMatrix;
+	return matrix;
 }
 
-template <typename T>
-Matrix<4, 4, T>  const & Frame<T>::getMatrixInverse() const
+Matrix44f  const & Frame::getMatrixInverse() const
 {
-	if(mMatricesNeedUpdate)
+	if(matricesNeedUpdate)
 	{
-		const_cast<Frame<T> *>(this)->updateMatrices();
+		const_cast<Frame *>(this)->updateMatrices();
 	}
-	return mMatrixInverse;
+	return matrixInverse;
 }
 
-template <typename T>
-void Frame<T>::updateMatrices()
+void Frame::updateMatrices()
 {
-	Matrix<3, 3, T> rot = mOrientation.getMatrix();
-	mMatrix(0, 0) = rot(0, 0) * mScale[0];
-	mMatrix(1, 0) = rot(1, 0) * mScale[0];
-	mMatrix(2, 0) = rot(2, 0) * mScale[0];
-	mMatrix(0, 1) = rot(0, 1) * mScale[1];
-	mMatrix(1, 1) = rot(1, 1) * mScale[1];
-	mMatrix(2, 1) = rot(2, 1) * mScale[1];
-	mMatrix(0, 2) = rot(0, 2) * mScale[2];
-	mMatrix(1, 2) = rot(1, 2) * mScale[2];
-	mMatrix(2, 2) = rot(2, 2) * mScale[2];
-	mMatrix(0, 3) = mPosition[0];
-	mMatrix(1, 3) = mPosition[1];
-	mMatrix(2, 3) = mPosition[2];
-	mMatrixInverse(0, 0) = rot(0, 0) / mScale[0];
-	mMatrixInverse(1, 0) = rot(0, 1) / mScale[1];
-	mMatrixInverse(2, 0) = rot(0, 2) / mScale[2];
-	mMatrixInverse(0, 1) = rot(1, 0) / mScale[0];
-	mMatrixInverse(1, 1) = rot(1, 1) / mScale[1];
-	mMatrixInverse(2, 1) = rot(1, 2) / mScale[2];
-	mMatrixInverse(0, 2) = rot(2, 0) / mScale[0];
-	mMatrixInverse(1, 2) = rot(2, 1) / mScale[1];
-	mMatrixInverse(2, 2) = rot(2, 2) / mScale[2];
-	mMatrixInverse(0, 3) = (-mPosition[0] * rot(0, 0) - mPosition[1] * rot(1, 0) - mPosition[2] * rot(2, 0)) / mScale[0];
-	mMatrixInverse(1, 3) = (-mPosition[0] * rot(0, 1) - mPosition[1] * rot(1, 1) - mPosition[2] * rot(2, 1)) / mScale[1];
-	mMatrixInverse(2, 3) = (-mPosition[0] * rot(0, 2) - mPosition[1] * rot(1, 2) - mPosition[2] * rot(2, 2)) / mScale[2];
-	mMatricesNeedUpdate = false;
+	Matrix33f rot = orientation.getMatrix();
+	matrix(0, 0) = rot(0, 0) * scale[0];
+	matrix(1, 0) = rot(1, 0) * scale[0];
+	matrix(2, 0) = rot(2, 0) * scale[0];
+	matrix(0, 1) = rot(0, 1) * scale[1];
+	matrix(1, 1) = rot(1, 1) * scale[1];
+	matrix(2, 1) = rot(2, 1) * scale[1];
+	matrix(0, 2) = rot(0, 2) * scale[2];
+	matrix(1, 2) = rot(1, 2) * scale[2];
+	matrix(2, 2) = rot(2, 2) * scale[2];
+	matrix(0, 3) = position[0];
+	matrix(1, 3) = position[1];
+	matrix(2, 3) = position[2];
+	matrixInverse(0, 0) = rot(0, 0) / scale[0];
+	matrixInverse(1, 0) = rot(0, 1) / scale[1];
+	matrixInverse(2, 0) = rot(0, 2) / scale[2];
+	matrixInverse(0, 1) = rot(1, 0) / scale[0];
+	matrixInverse(1, 1) = rot(1, 1) / scale[1];
+	matrixInverse(2, 1) = rot(1, 2) / scale[2];
+	matrixInverse(0, 2) = rot(2, 0) / scale[0];
+	matrixInverse(1, 2) = rot(2, 1) / scale[1];
+	matrixInverse(2, 2) = rot(2, 2) / scale[2];
+	matrixInverse(0, 3) = (-position[0] * rot(0, 0) - position[1] * rot(1, 0) - position[2] * rot(2, 0)) / scale[0];
+	matrixInverse(1, 3) = (-position[0] * rot(0, 1) - position[1] * rot(1, 1) - position[2] * rot(2, 1)) / scale[1];
+	matrixInverse(2, 3) = (-position[0] * rot(0, 2) - position[1] * rot(1, 2) - position[2] * rot(2, 2)) / scale[2];
+	matricesNeedUpdate = false;
 }
 
 

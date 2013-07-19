@@ -62,6 +62,8 @@ private:
   T c[rows * cols];
 };
 
+typedef Matrix<3, 3, float> Matrix33f;
+typedef Matrix<3, 3, double> Matrix33d;
 typedef Matrix<4, 4, float> Matrix44f;
 typedef Matrix<4, 4, double> Matrix44d;
 

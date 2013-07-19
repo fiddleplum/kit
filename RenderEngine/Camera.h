@@ -7,17 +7,15 @@ class Camera
 {
 public:
 	Camera();
-	void setAspectRatio(float aspectRatio);
-	void setNearFar(float near, float far);
-	void setPerspective(float fov);
-	void setOrthogonal(float size);
-	Framef const & getFrame() const;
-	Framef & getFrame();
-	Vector3f const & getPosition() const;
-	void setPosition(Vector3f const & position);
-	Quaternionf const & getOrientation() const;
-	void setOrientation(Quaternionf const & orientation);
-	Ray3f getRay(Vector2f const& ndcPosition) const;
+	void setAspectRatio(float);
+	void setNear(float);
+	void setFar(float);
+	void setPerspective(float);
+	void setOrthogonal(float);
+	Frame const & getFrame() const;
+	void setFrame(Frame const &);
+	Vector2f getNdcPosition(Vector3f worldPosition) const;
+	Ray3f getRay(Vector2f ndcPosition) const;
 	Matrix44f const & getProjection() const;
 	Matrix44f const & getView() const;
 
@@ -31,8 +29,12 @@ private:
 	float fov;
 	float size;
 	bool perspective;
-	Framef frame;
+	Frame frame;
+	bool projectionNeedsUpdate;
+	bool viewNeedsUpdate;
 	Matrix44f projection;
+	Matrix44f projectionInverse;
 	Matrix44f view;
+	Matrix44f viewInverse;
 };
 

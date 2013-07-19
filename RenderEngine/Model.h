@@ -40,9 +40,9 @@ public:
 
 	void setSpecular(unsigned int level, float strength);
 
-	Framef const & getFrame() const;
+	Frame const & getFrame() const;
 
-	Framef & getFrame();
+	Frame & getFrame();
 
 	Model(Model const &) = delete;
 
@@ -91,7 +91,7 @@ private:
 	std::shared_ptr<Shader> mShader;
 	bool mNeedsResorting;
 
-	Framef mFrame;
+	Frame mFrame;
 	int mProjectionLocation;
 	int mWorldViewLocation;
 };
