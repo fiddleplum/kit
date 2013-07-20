@@ -3,10 +3,12 @@
 #include "Frame.h"
 #include "Ray.h"
 
+class Scene;
+
 class Camera
 {
 public:
-	Camera();
+	Camera(Scene *);
 	void setAspectRatio(float);
 	void setNear(float);
 	void setFar(float);
@@ -18,11 +20,13 @@ public:
 	Ray3f getRay(Vector2f ndcPosition) const;
 	Matrix44f const & getProjection() const;
 	Matrix44f const & getView() const;
+	void render();
 
 private:
 	void updateProjection();
 	void updateView();
 
+	Scene * scene;
 	float aspectRatio;
 	float near;
 	float far;

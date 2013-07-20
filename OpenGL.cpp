@@ -1,9 +1,10 @@
 #include "OpenGL.h"
 #include <SDL.h>
 
-#include <stack>
-
+PFNGLENABLEPROC glEnable;
+PFNGLCULLFACEPROC glCullFace;
 PFNGLSCISSORPROC glScissor;
+PFNGLVIEWPORTPROC glViewport;
 
 PFNGLCREATESHADERPROC glCreateShader;
 PFNGLSHADERSOURCEPROC glShaderSource;
@@ -50,7 +51,10 @@ PFNGLBINDTEXTUREPROC glBindTexture;
 void glInitialize()
 {
 	// Replace RegEx: ([^ ]+) ([^ ]+);   ->   \t\2 = (\1)SDL_GL_GetProcAddress("\2");
+	glEnable = (PFNGLENABLEPROC)SDL_GL_GetProcAddress("glEnable");
+	glCullFace = (PFNGLCULLFACEPROC)SDL_GL_GetProcAddress("glCullFace");
 	glScissor = (PFNGLSCISSORPROC)SDL_GL_GetProcAddress("glScissor");
+	glViewport = (PFNGLVIEWPORTPROC)SDL_GL_GetProcAddress("glViewport");
 
 	glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");

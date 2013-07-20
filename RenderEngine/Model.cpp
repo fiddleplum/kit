@@ -10,6 +10,7 @@
 #include "../StringUtil.h"
 #include <fstream>
 #include <stdexcept>
+#include <iostream>
 
 Model::Model(Scene * scene)
 {
@@ -21,8 +22,11 @@ Model::Model(Scene * scene)
 	mColor = Vector4f(1, 1, 1, 1);
 	mSpecularLevel = 1;
 	mSpecularStrength = 0;
+	std::cout << "HERE5" << std::endl;
 	mVertexBufferObject = new VertexBufferObject();
+	std::cout << "HERE6" << std::endl;
 	updateShader();
+	std::cout << "HERE7" << std::endl;
 	mNeedsResorting = true;
 }
 

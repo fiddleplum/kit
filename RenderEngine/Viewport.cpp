@@ -1,5 +1,6 @@
 #include "Viewport.h"
-#include <stack>
+#include "OpenGL.h"
+#include "Camera.h"
 
 Viewport::Viewport()
 {
@@ -27,8 +28,7 @@ void Viewport::setCamera(Camera * newCamera)
 	camera = newCamera;
 }
 
-
-void Viewport()::render() const
+void Viewport::render() const
 {
 	glViewport(bounds.min[0], windowSize[1] - bounds.max[1], bounds.max[0] - bounds.min[0], bounds.max[1] - bounds.min[1]);
 

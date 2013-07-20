@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Model.h"
 #include "Camera.h"
+#include "OpenGL.h"
 
 Scene::Scene()
 {
@@ -46,7 +47,7 @@ ResourceManager<Shader> & Scene::getShaderManager()
 	return mShaderManager;
 }
 
-void Scene::render()
+void Scene::render(Camera * camera)
 {
 	// Set the OpenGL settings.
 	glEnable(GL_DEPTH_TEST);
@@ -54,8 +55,8 @@ void Scene::render()
 	glCullFace(GL_BACK);
 
 	// Check for sorting.
-	std::vector<std::shared_ptr<Model>> modelsToInsert;
-	for(std::shared_ptr<Model> model : mModels)
+	std::vector<Model *> modelsToInsert;
+	for(Model * model : mModels)
 	{
 		if(model->needsResorting())
 		{
@@ -63,53 +64,19 @@ void Scene::render()
 			modelsToInsert.push_back(model);
 		}
 	}
-	for(std::shared_ptr<Model> model : modelsToInsert)
+	for(Model * model : modelsToInsert)
 	{
 		mModels.insert(model);
 		model->resortingDone();
 	}
 
-	std::shared_ptr<Shader const> currentShader = nullptr;
-	std::vector<std::shared_ptr<Texture const>> currentTextures;
-	for(std::shared_ptr<Model> model : mModels)
+	for(Model * model : mModels)
 	{
-		// Activate a new shader.
-		std::shared_ptr<Shader> modelShader = model->getShader();
-		if(modelShader != currentShader)
-		{
-			modelShader->activate();
-			currentShader = modelShader;
-		}
-
-		// Activate new textures.
-		std::vector<std::shared_ptr<Texture>> const & modelTextures = model->getTextures();
-		unsigned int slot = 0;
-		for(slot = 0; slot < modelTextures.size(); slot++)
-		{
-			if(slot >= currentTextures.size() || modelTextures[slot] != currentTextures[slot])
-			{
-				modelTextures[slot]->activate(slot);
-				if(slot >= currentTextures.size())
-				{
-					currentTextures.resize(slot + 1);
-				}
-				currentTextures[slot] = modelTextures[slot];
-			}
-		}
-
-		// Deactivate unused textures.
-		for(; slot < currentTextures.size(); slot++)
-		{
-			currentTextures[slot]->deactivate(slot);
-			currentTextures[slot] = nullptr;
-		}
-
-		// Do the render.
-		model->render();
-	}
-	if(currentShader != nullptr)
-	{
-		currentShader->deactivate();
+		model->render(camera);
 	}
 }
 
+bool Scene::ModelCompare::operator ()(Model const * model0, Model const * model1)
+{
+	return *model0 < *model1;
+}
