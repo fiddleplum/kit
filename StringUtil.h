@@ -18,7 +18,8 @@ bool endsWith(std::string const & s, std::string const & pattern);
 std::string trim(std::string const & s, bool left = true, bool right = true);
 std::vector<std::string> split(std::string const & s, char delimiter, bool trim = true); // if s is empty, then vector still contains one empty string
 
-/// THESE FUNCTIONS CAN BE DELETED ONCE std::to_string works!
+#ifdef __GNUC__
+/// THESE FUNCTIONS CAN BE DELETED ONCE std::to_string works in GCC!
 #include <cstdio>
 
 namespace std
@@ -33,3 +34,4 @@ namespace std
 	inline string to_string(double value) { char buf [256] {0}; std::sprintf(buf, "%f", value); return buf; }
 	inline string to_string(long double value) { char buf [256] {0}; std::sprintf(buf, "%Lf", value); return buf; }
 }
+#endif

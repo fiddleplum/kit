@@ -1,10 +1,15 @@
 #include "OpenGL.h"
 #include <SDL.h>
 
+#include <iostream>
+
 PFNGLENABLEPROC glEnable;
+PFNGLDISABLEPROC glDisable;
+PFNGLBLENDFUNCPROC glBlendFunc;
 PFNGLCULLFACEPROC glCullFace;
 PFNGLSCISSORPROC glScissor;
 PFNGLVIEWPORTPROC glViewport;
+PFNGLCLEARPROC glClear;
 
 PFNGLCREATESHADERPROC glCreateShader;
 PFNGLSHADERSOURCEPROC glShaderSource;
@@ -48,13 +53,19 @@ PFNGLDELETETEXTURESPROC glDeleteTextures;
 PFNGLACTIVETEXTUREPROC glActiveTexture;
 PFNGLBINDTEXTUREPROC glBindTexture;
 
+#define STR2(X) STR(X)
+#define STR(X) #X
+
 void glInitialize()
 {
 	// Replace RegEx: ([^ ]+) ([^ ]+);   ->   \t\2 = (\1)SDL_GL_GetProcAddress("\2");
 	glEnable = (PFNGLENABLEPROC)SDL_GL_GetProcAddress("glEnable");
+	glDisable = (PFNGLDISABLEPROC)SDL_GL_GetProcAddress("glDisable");
+	glBlendFunc = (PFNGLBLENDFUNCPROC)SDL_GL_GetProcAddress("glBlendFunc");
 	glCullFace = (PFNGLCULLFACEPROC)SDL_GL_GetProcAddress("glCullFace");
 	glScissor = (PFNGLSCISSORPROC)SDL_GL_GetProcAddress("glScissor");
 	glViewport = (PFNGLVIEWPORTPROC)SDL_GL_GetProcAddress("glViewport");
+	glClear = (PFNGLCLEARPROC)SDL_GL_GetProcAddress("glClear");
 
 	glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");

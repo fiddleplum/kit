@@ -1,12 +1,12 @@
 #include "Shader.h"
-#include "OpenGL.h"
+#include "../OpenGL.h"
 #include "../StringUtil.h"
 #include <vector>
 #include <stdexcept>
 
 unsigned int gCurrentProgram = 0;
 
-Shader::Shader(std::string code [NumTypes])
+Shader::Shader(std::string const code [NumTypes])
 {
 	std::vector<unsigned int> shaderObjects;
 	try
@@ -146,10 +146,12 @@ unsigned int Shader::compileShaderObject(Type type, std::string const & code)
 		glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLength);
 		log.resize(logLength);
 		glGetShaderInfoLog(handle, logLength, 0, &log[0]);
+		log.pop_back(); // get rid of \0
 		std::string typeString;
 		glDeleteShader(handle);
-		throw std::runtime_error("Error compiling shader object " + std::to_string(type) + ".\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
+		throw std::runtime_error("\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
 	}
+	return handle;
 }
 
 unsigned int Shader::linkShaderProgram(std::vector<unsigned int> const & shaderObjects)

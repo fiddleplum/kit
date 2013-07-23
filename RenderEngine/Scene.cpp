@@ -51,8 +51,6 @@ void Scene::render(Camera * camera)
 {
 	// Set the OpenGL settings.
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
 
 	// Check for sorting.
 	std::vector<Model *> modelsToInsert;

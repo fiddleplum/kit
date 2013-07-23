@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "OpenGL.h"
+#include "../OpenGL.h"
 #include <SDL_Image.h>
 #include <stdexcept>
 #include <fstream>

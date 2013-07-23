@@ -1,12 +1,11 @@
 #pragma once
 
 #include "../Box.h"
-
-// This is a widget. When we get widgets.
+#include "Widget.h"
 
 class Camera;
 
-class Viewport
+class Viewport : public Widget
 {
 public:
 	Viewport();
@@ -19,7 +18,7 @@ public:
 	Camera * getCamera() const;
 	void setCamera(Camera *);
 
-	void render() const;
+	void render() const override;
 
 private:
 	Vector2i windowSize;

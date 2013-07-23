@@ -1,13 +1,11 @@
 #include "App.h"
+#include "OpenGL.h"
 #include <SDL.h>
-#include <SDL_opengl.h>
-#ifdef __WIN32__
-#include <windows.h>
-#endif
 #include <sstream>
 #include <stdexcept>
 #include <cassert>
 #include <iostream>
+#include <fstream>
 
 void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event const & sdlEvent);
 void startupInput();
@@ -77,36 +75,6 @@ namespace App
 
 	void render()
 	{
-		// mostly reset to basic state
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glDisable(GL_LIGHTING);
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		for(int i = 0; i < GL_MAX_LIGHTS; i++)
-		{
-			glDisable(GL_LIGHT0 + i);
-		}
-		glColor4f(1, 1, 1, 1);
-
-		// clear window
-		glEnable(GL_SCISSOR_TEST);
-		glScissor(0, 0, mWindowSize[0], mWindowSize[1]);
-		glViewport(0, 0, mWindowSize[0], mWindowSize[1]);
-		glClearColor(0, 0, 0, 0);
-		glClearDepth(1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// reset the matrices
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
 		onRender(); // calls user-defined function
 
 		SDL_GL_SwapBuffers();
@@ -140,6 +108,8 @@ namespace App
 
 	void showMessage(std::string const & text)
 	{
+		std::fstream log ("log.txt", std::ios::out);
+		log << text;
 	#ifdef __WIN32__
 		MessageBoxA(NULL, text.c_str(), "Message", MB_OK);
 	#else
@@ -217,6 +187,7 @@ int main(int argc, char *argv[])
     }
     SDL_EnableUNICODE(SDL_ENABLE);
     App::setSize(false, Vector2i(800, 600));
+	glInitialize();
 	startupInput();
 
     // Run the user onStartup function.

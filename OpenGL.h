@@ -5,9 +5,11 @@
 void glInitialize();
 
 extern PFNGLENABLEPROC glEnable;
-extern PFNGLCULLFACEPROC glCullFace;
+extern PFNGLDISABLEPROC glDisable;
+extern PFNGLBLENDFUNCPROC glBlendFunc;
 extern PFNGLSCISSORPROC glScissor;
 extern PFNGLVIEWPORTPROC glViewport;
+extern PFNGLCLEARPROC glClear;
 
 // Shaders
 extern PFNGLCREATESHADERPROC glCreateShader;

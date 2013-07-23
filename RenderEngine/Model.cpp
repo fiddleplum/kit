@@ -10,7 +10,6 @@
 #include "../StringUtil.h"
 #include <fstream>
 #include <stdexcept>
-#include <iostream>
 
 Model::Model(Scene * scene)
 {
@@ -22,11 +21,8 @@ Model::Model(Scene * scene)
 	mColor = Vector4f(1, 1, 1, 1);
 	mSpecularLevel = 1;
 	mSpecularStrength = 0;
-	std::cout << "HERE5" << std::endl;
 	mVertexBufferObject = new VertexBufferObject();
-	std::cout << "HERE6" << std::endl;
 	updateShader();
-	std::cout << "HERE7" << std::endl;
 	mNeedsResorting = true;
 }
 
@@ -37,7 +33,7 @@ Model::~Model()
 
 void Model::load(std::string const & filename)
 {
-	std::fstream in { filename, std::fstream::in | std::fstream::binary };
+	std::fstream in (filename, std::fstream::in | std::fstream::binary);
 
 	// Material
 	Vector4f color;
@@ -68,7 +64,8 @@ void Model::load(std::string const & filename)
 	}
 
 	// Vertex format
-	unsigned int vertexHasNormal, vertexHasTangent, vertexHasColor, numVertexUVs;
+	bool vertexHasNormal, vertexHasTangent, vertexHasColor;
+	unsigned int numVertexUVs;
 	deserialize(in, vertexHasNormal);
 	deserialize(in, vertexHasTangent);
 	deserialize(in, vertexHasColor);
@@ -275,15 +272,15 @@ void Model::updateShader()
 	// Add the main function.
 	code[Shader::Vertex] += "void main()\n";
 	code[Shader::Vertex] += "{\n";
-	code[Shader::Vertex] += "	gl_Position = uProjection * uWorldView * aPosition;\n";
-	code[Shader::Vertex] += "	vPosition = uWorldView * aPosition;\n";
+	code[Shader::Vertex] += "	gl_Position = uProjection * uWorldView * vec4(aPosition, 1);\n";
+	code[Shader::Vertex] += "	vPosition = (uWorldView * vec4(aPosition, 1)).xyz;\n";
 	if(mVertexHasNormal)
 	{
-		code[Shader::Vertex] += "	vNormal = uWorldView * aNormal;\n";
+		code[Shader::Vertex] += "	vNormal = (uWorldView * vec4(aNormal, 0)).xyz;\n";
 	}
 	if(mVertexHasTangent)
 	{
-		code[Shader::Vertex] += "	vTangent = uWorldView * aTangent;\n";
+		code[Shader::Vertex] += "	vTangent = (uWorldView * vec4(aTangent, 0)).xyz;\n";
 	}
 	if(mVertexHasColor)
 	{
@@ -327,7 +324,7 @@ void Model::updateShader()
 	// Add the main function.
 	code[Shader::Fragment] += "void main()\n";
 	code[Shader::Fragment] += "{\n";
-	code[Shader::Fragment] += "	color = vec4(0,0,0,0);\n";
+	code[Shader::Fragment] += "	vec4 color = vec4(0,0,0,0);\n";
 	if(mVertexHasColor)
 	{
 		code[Shader::Fragment] += "	color = vColor;\n";
@@ -349,7 +346,7 @@ void Model::updateShader()
 		}
 		samplerIndex++;
 	}
-	code[Shader::Fragment] += "	gl_Color = color;\n";
+	code[Shader::Fragment] += "	gl_FragColor = color;\n";
 	code[Shader::Fragment] += "}\n";
 
 	// Create a unique name for the shader.

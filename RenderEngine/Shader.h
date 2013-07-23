@@ -10,7 +10,7 @@ class Shader
 {
 public:
 	enum Type { Vertex, Fragment, NumTypes };
-	Shader(std::string code [NumTypes]);
+	Shader(std::string const code [NumTypes]);
 
 	~Shader();
 

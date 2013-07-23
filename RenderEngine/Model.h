@@ -44,10 +44,6 @@ public:
 
 	Frame & getFrame();
 
-	Model(Model const &) = delete;
-
-	Model & operator =(Model const &) = delete;
-
 	// For use with RenderEngine
 	
 	void render(Camera const * camera) const;
@@ -59,6 +55,9 @@ public:
 	bool operator < (Model const & model) const;
 
 private:
+	Model(Model const &);
+	Model & operator =(Model const &);
+
 	class TextureInfo
 	{
 	public:

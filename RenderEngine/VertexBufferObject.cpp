@@ -1,11 +1,15 @@
 #include "VertexBufferObject.h"
-#include "OpenGL.h"
+#include "../OpenGL.h"
 #include <stdexcept>
 
 VertexBufferObject::VertexBufferObject()
 {
-	glGenBuffers(1, &mArrayBuffer);
-	glGenBuffers(1, &mElementArrayBuffer);
+	GLuint arrayBuffer;
+	GLuint elementArrayBuffer;
+	glGenBuffers(1, &arrayBuffer);
+	mArrayBuffer = arrayBuffer;
+	glGenBuffers(1, &elementArrayBuffer);
+	mElementArrayBuffer = elementArrayBuffer;
 	mMode = GL_TRIANGLES;
 	mNumIndices = 0;
 	mBytesPerVertex = 0;
