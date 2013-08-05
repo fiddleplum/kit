@@ -3,3 +3,4 @@ lib/
 *.opensdf
 *.suo
 *.vcxproj.user
+*.pyc
