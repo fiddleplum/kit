@@ -170,16 +170,6 @@ namespace App
 		}
 		return resolutions;
 	}
-
-	template <typename T> T * App::setWidget()
-	{
-		Widget * widget = new T();
-		if(mWidget != nullptr)
-		{
-			delete mWidget;
-		}
-		mWidget = widget;
-	}
 }
 
 int main(int argc, char *argv[])

@@ -10,6 +10,8 @@ This is a simple wrapper for SDL. It provides windowing, input, and OpenGL capab
 five functions below, and you're ready to go!
 **/
 
+class Widget;
+
 namespace App
 {
 	/******* Implement *******/
@@ -57,5 +59,16 @@ namespace App
 
 	/// Sets the top-level widget to a new Widget of subclass T. Deletes any previous widget.
 	template <typename T> T * setWidget();
-}
 
+// Internal
+
+	extern Widget * mWidget;
+
+	template <typename T> T * App::setWidget()
+	{
+		T * widget = new T;
+		delete mWidget;
+		mWidget = widget;
+		return widget;
+	}
+}

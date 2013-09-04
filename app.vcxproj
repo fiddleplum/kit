@@ -102,6 +102,7 @@
     <ClInclude Include="include\Matrix.h" />
     <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\OpenGL.h" />
+    <ClInclude Include="include\Partition.h" />
     <ClInclude Include="include\Ptr.h" />
     <ClInclude Include="include\Quaternion.h" />
     <ClInclude Include="include\Ray.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\OpenGL.cpp" />
+    <ClCompile Include="src\Partition.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\SDLApp.cpp" />
     <ClCompile Include="src\Shader.cpp" />

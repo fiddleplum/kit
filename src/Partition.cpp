@@ -2,60 +2,102 @@
 
 Partition::Partition()
 {
-	horizontal = true;
+	axis = 0;
 	updatePanels();
 }
 
 void Partition::setHorizontal()
 {
-	horizontal = true;
+	axis = 0;
 	updatePanels();
 }
 
 void Partition::setVertical()
 {
-	horizontal = false;
+	axis = 1;
 	updatePanels();
 }
 
-template <typename T> T * Partition::addPanel(unsigned int pixelSize, float percentageSize)
+template <typename T> T * Partition::addPanel(int pixelSize, float percentageSize)
 {
+	Panel panel;
+	panel.widget = new T;
+	panel.pixelSize = pixelSize;
+	panel.percentageSize = percentageSize;
+	updatePanels();
+	return widget;
+}
+
+template <typename T> T * Partition::setPanelWidget(int index)
+{
+	if(index >= panels.size())
+	{
+		throw std::exception();
+	}
+	delete panels[index].widget;
+	panels[index].widget = new T;
 	updatePanels();
 }
 
-template <typename T> T * Partition::setPanelWidget(unsigned int index)
+void Partition::setPanelSize(int index, int pixelSize, float percentageSize)
 {
+	if(index >= (signed)panels.size())
+	{
+		throw std::exception();
+	}
+	panels[index].pixelSize = pixelSize;
+	panels[index].percentageSize = percentageSize;
 	updatePanels();
 }
 
-void Partition::setPanelSize(unsigned int index, unsigned int pixelSize, float percentageSize)
+void Partition::removePanel(int index)
 {
-	updatePanels();
-}
-
-void Partition::removePanel(unsigned int index)
-{
+	if(index >= (signed)panels.size())
+	{
+		throw std::exception();
+	}
+	panels.erase(panels.begin() + index);
 	updatePanels();
 }
 
 Box2i Partition::getBounds() const
 {
+	return bounds;
 }
 
-void Partition::setPosition(Vector2i)
+void Partition::setPosition(Vector2i position)
 {
+	bounds.setMinKeepSize(position);
 }
 
-void Partition::setMaxSize(Vector2i)
+void Partition::setMaxSize(Vector2i maxSize)
 {
+	bounds.setSize(maxSize);
 	updatePanels();
 }
 
 void Partition::render() const
 {
+	for(Panel const & panel : panels)
+	{
+		panel.widget->render();
+	}
 }
 
 void Partition::updatePanels()
 {
+	int remainingSize = bounds.getSize()[axis];
+	for(Panel & panel : panels)
+	{
+		panel.actualSize = std::min(panel.pixelSize, remainingSize);
+		remainingSize -= panel.actualSize;
+	}
+	for(Panel & panel : panels)
+	{
+		panel.actualSize += (int)(panel.percentageSize * remainingSize);
+		Vector2i size = getBounds().getSize();
+		size[axis] = panel.actualSize;
+		panel.widget->setMaxSize(size);
+	}
 }
 

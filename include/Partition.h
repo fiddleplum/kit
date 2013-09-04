@@ -16,16 +16,16 @@ public:
 	void setVertical();
 
 	/// Appends a panel to the stack. See setPanelWidget and setPanelSize for details on params.
-	template <typename T> T * addPanel(unsigned int pixelSize, float percentageSize);
+	template <typename T> T * addPanel(int pixelSize, float percentageSize);
 
 	/// Creates a widget set in the panel at the specified index.
-	template <typename T> T * setPanelWidget(unsigned int index);
+	template <typename T> T * setPanelWidget(int index);
 
 	/// Sets the panel size at the specified index according to: pixelSize + percentageSize * (pixels remaining after pixelSizes of all panels are taken into account).
-	void setPanelSize(unsigned int index, unsigned int pixelSize, float percentageSize);
+	void setPanelSize(int index, int pixelSize, float percentageSize);
 
 	/// Removes the panel at the specified index. If the panel does not exist, does nothing.
-	void removePanel(unsigned int index);
+	void removePanel(int index);
 
 	/// Inherited from Widget.
 	virtual Box2i getBounds() const override;
@@ -44,11 +44,13 @@ private:
 	{
 	public:
 		Widget * widget;
-		unsigned int pixels;
-		float percentage;
+		int pixelSize;
+		float percentageSize;
+		int actualSize;
 	};
 	void updatePanels();
 	std::vector<Panel> panels;
-	bool horizontal;
+	int axis;
+	Box2i bounds;
 };
 

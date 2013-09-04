@@ -16,7 +16,7 @@ WidgetContainer::~WidgetContainer()
 
 template <typename T> T * WidgetContainer::addWidget()
 {
-	Widget * widget = new T();
+	Widget * widget = new T;
 	widgets.push_back(widget);
 	return widget;
 }
