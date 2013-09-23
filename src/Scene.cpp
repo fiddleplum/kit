@@ -37,14 +37,8 @@ void Scene::destroyCamera(Camera * camera)
 	delete camera;
 }
 
-ResourceManager<Texture> & Scene::getTextureManager()
+void Scene::handleEvent(Event const & event)
 {
-	return mTextureManager;
-}
-
-ResourceManager<Shader> & Scene::getShaderManager()
-{
-	return mShaderManager;
 }
 
 void Scene::render(Camera * camera)
@@ -52,7 +46,7 @@ void Scene::render(Camera * camera)
 	// Set the OpenGL settings.
 	glEnable(GL_DEPTH_TEST);
 
-	// Check for sorting.
+	// Check for sorting. Pull out the ones that need to be resorted, and put them back in the proper place.
 	std::vector<Model *> modelsToInsert;
 	for(auto it = mModels.begin(); it != mModels.end();)
 	{
@@ -73,6 +67,7 @@ void Scene::render(Camera * camera)
 		model->resortingDone();
 	}
 
+	// Do the render.
 	for(Model * model : mModels)
 	{
 		model->render(camera);

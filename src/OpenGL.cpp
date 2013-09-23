@@ -1,5 +1,5 @@
 #include "OpenGL.h"
-#include <SDL.h>
+#include "../../SDL2-2.0.0/include/SDL.h"
 
 #include <iostream>
 

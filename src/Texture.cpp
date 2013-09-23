@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "OpenGL.h"
-#include <SDL_Image.h>
+#include "../../SDL2_image-2.0.0/include/SDL_image.h"
 #include <stdexcept>
 #include <fstream>
 #include <vector>

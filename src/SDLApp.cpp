@@ -1,105 +1,131 @@
 #include "App.h"
+#include "Input.h"
 #include "OpenGL.h"
-#include "Widget.h"
-#include <SDL.h>
+#include "Gui\Widget.h"
+#include "..\..\SDL2-2.0.0\include\SDL.h"
 #include <sstream>
 #include <stdexcept>
 #include <cassert>
 #include <iostream>
 #include <fstream>
 
-void createEventsFromSDLEvent(std::vector<Input::Event> & events, SDL_Event const & sdlEvent);
-void startupInput();
-void shutdownInput();
-extern bool gCursorPositionValid;
-extern bool gCursorEnabled;
-extern Vector2i gCursorPosition;
-
 namespace App
 {
-	bool mFullscreen = false;
-	Vector2i mWindowSize(800, 600);
-	bool mRunning = false;
-	float mLastTime = 0.0f;
-	Widget * mWidget = nullptr;
+	void startupInput();
+	void shutdownInput();
+	void setCursorPositionValid(bool valid);
+	void handleEvent(Event const & event);
+	void handleSDLInputEvent(SDL_Event const & sdlEvent);
+
+	SDL_Window * window = nullptr;
+	SDL_GLContext glContext = nullptr;
+
+	bool running = false;
+	float lastTime = 0.0f;
+	std::shared_ptr<Widget> widget;
+
+	ResourceManager<Texture> textureManager;
+	ResourceManager<Shader> shaderManager;
 
 	/*** Internal functions ***/
 
+	void handleEvent(Event const & event)
+	{
+//		OutputDebugStringA((event->toString() + "\n").c_str());
+		if(widget != nullptr)
+		{
+			widget->handleEvent(event);
+		}
+	}
+
 	void handleSDLEvents()
 	{
-		SDL_Event event;
-		std::vector<Input::Event> events;
+		// Get SDL Events
+		std::vector<SDL_Event> sdlEvents;
 		SDL_PumpEvents();
-		while(SDL_PollEvent(&event) == 1)
+		do
 		{
-			if(event.type == SDL_QUIT)
+			SDL_Event sdlEvent;
+			if(SDL_PollEvent(&sdlEvent) == 0)
+			{
+				break;
+			}
+			sdlEvents.push_back(sdlEvent);
+		} while(true);
+
+		// Process the SDL events.
+		for(SDL_Event const & sdlEvent : sdlEvents)
+		{
+			OutputDebugStringA((std::to_string(sdlEvent.type) + "\n").c_str());
+			if(sdlEvent.type == SDL_QUIT)
 			{
 				quit();
 			}
-			else if(event.type == SDL_VIDEOEXPOSE || event.type == SDL_USEREVENT || event.type == SDL_SYSWMEVENT)
-			{ // Do nothing.
-			}
-			else if(event.type == SDL_VIDEORESIZE)
+			else if(sdlEvent.type == SDL_WINDOWEVENT)
 			{
-				if(!mFullscreen)
+//				OutputDebugStringA((" " + std::to_string(sdlEvent.window.event) + "\n").c_str());
+				switch(sdlEvent.window.event)
 				{
-					Vector2i size(event.resize.w, event.resize.h);
-					setSize(mFullscreen, size);
-					onResize(mWindowSize); // calls user-defined function
-					mLastTime = SDL_GetTicks() / 1000.0f;
-				}
-			}
-			else if(event.type == SDL_ACTIVEEVENT)
-			{
-				if(mFullscreen && (event.active.type & SDL_APPACTIVE) != 0 && event.active.gain == 0)
-				{
-					setSize(true, getSize());
-				}
-				if((event.active.type & SDL_APPMOUSEFOCUS) != 0)
-				{
-					gCursorPositionValid = (event.active.gain == 1);
+					case SDL_WINDOWEVENT_CLOSE:
+						quit();
+						break;
+					case SDL_WINDOWEVENT_RESIZED:
+					case SDL_WINDOWEVENT_MAXIMIZED:
+					case SDL_WINDOWEVENT_RESTORED:
+						{
+							ResizeEvent event;
+							event.size = getSize();
+							handleEvent(event);
+						}
+						break;
+					case SDL_WINDOWEVENT_MINIMIZED:
+					case SDL_WINDOWEVENT_FOCUS_LOST:
+					case SDL_WINDOWEVENT_LEAVE:
+						setCursorPositionValid(false);
+						break;
+					case SDL_WINDOWEVENT_FOCUS_GAINED:
+					case SDL_WINDOWEVENT_ENTER:
+						setCursorPositionValid(true);
+						break;
 				}
 			}
 			else
 			{
-				createEventsFromSDLEvent(events, event);
+				handleSDLInputEvent(sdlEvent);
 			}
-		}
-		if(gCursorEnabled)
-		{
-			SDL_GetMouseState(&gCursorPosition[0], &gCursorPosition[1]);
-		}
-		for(unsigned int i = 0; i < events.size(); ++i)
-		{
-			onInputEvent(events[i]); // calls user-defined function
 		}
 	}
 
 	void render()
 	{
-		onRender(); // calls user-defined function
-
-		SDL_GL_SwapBuffers();
+		if(widget != nullptr)
+		{
+			widget->render();
+		}
+		SDL_GL_SwapWindow(window);
 	}
 
 	void doLoop()
 	{
-		mRunning = true;
-		mLastTime = SDL_GetTicks() / 1000.0f;
-		while(mRunning)
+		running = true;
+		lastTime = SDL_GetTicks() / 1000.0f;
+		while(running)
 		{
 			float newTime = SDL_GetTicks() / 1000.0f;
-			float deltaTime = newTime - mLastTime; // calculate the last frame's duration
-			mLastTime = newTime;
-			if(mRunning)
+			float deltaTime = newTime - lastTime; // calculate the last frame's duration
+			lastTime = newTime;
+			if(running)
 			{
 				handleSDLEvents();
 			}
-			if(mRunning)
+			if(running)
 			{
-				onFrame(deltaTime); // calls user-defined function
+				if(widget != nullptr)
+				{
+					widget->handleEvent(UpdateEvent());
+				}
 			}
-			if(mRunning)
+			if(running)
 			{
 				render();
 			}
@@ -112,63 +138,55 @@ namespace App
 	{
 		std::fstream log ("log.txt", std::ios::out);
 		log << text;
-	#ifdef __WIN32__
-		MessageBoxA(NULL, text.c_str(), "Message", MB_OK);
-	#else
-		std::cout << text << std::endl;
-	#endif
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", text.c_str(), window);
 	}
 
 	void setTitle(std::string const & title)
 	{
-		SDL_WM_SetCaption(title.c_str(), title.c_str());
+		SDL_SetWindowTitle(window, title.c_str());
 	}
 
 	bool isFullscreen()
 	{
-		return mFullscreen;
+		return (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
 	Vector2i getSize()
 	{
-		return mWindowSize;
+		Vector2i size;
+		SDL_GetWindowSize(window, &size[0], &size[1]);
+		return size;
 	}
 
-	void setSize(bool fullscreen, Vector2i windowSize)
+	void setFullscreen()
 	{
-		Uint32 flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL;
-		if(fullscreen)
-		{
-			flags |= SDL_FULLSCREEN;
-		}
-		else
-		{
-			flags |= SDL_ANYFORMAT | SDL_RESIZABLE;
-		}
-		if(SDL_SetVideoMode(windowSize[0], windowSize[1], 32, flags) == NULL)
-		{
-			std::stringstream ss;
-			ss << "A window size of " << windowSize[0] << "x" << windowSize[1] << " is not supported while in " << (fullscreen ? "fullscreen" : "windowed") << " mode. ";
-			throw std::runtime_error(ss.str());
-		}
-		mWindowSize = windowSize;
-		mFullscreen = fullscreen;
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	}
+
+	void setWindowed(Vector2i size)
+	{
+		SDL_SetWindowFullscreen(window, 0);
+		SDL_SetWindowSize(window, size[0], size[1]);
 	}
 
 	void quit()
 	{
-		mRunning = false;
+		running = false;
 	}
 
-	std::vector<Vector2i> getAllResolutions()
+	void setWidget(std::shared_ptr<Widget> widget)
 	{
-		std::vector<Vector2i> resolutions;
-		SDL_Rect ** rects = SDL_ListModes(0, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL | SDL_FULLSCREEN);
-		for(int i = 0; rects[i] != 0; ++i)
-		{
-			resolutions.push_back(Vector2i(rects[i]->w, rects[i]->h));
-		}
-		return resolutions;
+		App::widget = widget;
+	}
+
+	ResourceManager<Texture> & getTextureManager()
+	{
+		return textureManager;
+	}
+
+	ResourceManager<Shader> & getShaderManager()
+	{
+		return shaderManager;
 	}
 }
 
@@ -181,16 +199,23 @@ int main(int argc, char *argv[])
 		params.push_back(std::string(argv[i]));
 	}
     
-    // Open the window.
-    if(SDL_Init(SDL_INIT_VIDEO) == -1)
+    // Initialize SDL.
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) == -1)
     {
         App::showMessage(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
 		return -1;
     }
-    SDL_EnableUNICODE(SDL_ENABLE);
-    App::setSize(false, Vector2i(800, 600));
+
+	// Create the window and renderer.
+	App::window = SDL_CreateWindow("Untitled", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	if(App::window == NULL)
+	{
+		App::showMessage(std::string("Failed to create the SDL window:  ") + SDL_GetError() + ". ");
+		return -1;
+	}
+	App::glContext = SDL_GL_CreateContext(App::window);
 	glInitialize();
-	startupInput();
+	App::startupInput();
 
     // Run the user onStartup function.
 	try
@@ -216,7 +241,9 @@ int main(int argc, char *argv[])
 	}
 
     // Close window.
-	shutdownInput();
+	App::shutdownInput();
+	SDL_GL_DeleteContext(App::glContext);
+	SDL_DestroyWindow(App::window);
     SDL_Quit();
 
 	return 0;

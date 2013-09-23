@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "Camera.h"
-#include "Scene.h"
+#include "App.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexBufferObject.h"
@@ -142,7 +142,7 @@ void Model::setIndices(unsigned int const * indices, unsigned int numIndices)
 void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 {
 	TextureInfo textureInfo;
-	textureInfo.texture = mScene->getTextureManager().get(filename, filename);
+	textureInfo.texture = App::getTextureManager().get(filename, filename);
 	textureInfo.type = type;
 	textureInfo.samplerLocation = -1;
 	textureInfo.uvIndex = uvIndex;
@@ -233,7 +233,7 @@ bool Model::operator <(Model const & model) const
 
 void Model::updateShader()
 {
-	std::string code [Shader::NumTypes];
+	std::string code [Shader::NumCodeTypes];
 
 	std::vector<std::string> uvIndexStrings;
 	for(unsigned int uvIndex = 0; uvIndex < mNumVertexUVs; uvIndex++)
@@ -375,7 +375,7 @@ void Model::updateShader()
 		name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 	}
 
-	mShader = mScene->getShaderManager().get(name, code);
+	mShader = App::getShaderManager().get(name, code);
 	mNeedsResorting = true;
 
 	// Update attribute locations

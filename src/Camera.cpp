@@ -115,6 +115,11 @@ Matrix44f const & Camera::getView() const
 	return view;
 }
 
+void Camera::handleEvent(Event const & event)
+{
+	scene->handleEvent(event);
+}
+
 void Camera::render()
 {
 	scene->render(this);

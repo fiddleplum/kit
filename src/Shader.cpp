@@ -6,16 +6,16 @@
 
 unsigned int gCurrentProgram = 0;
 
-Shader::Shader(std::string const code [NumTypes])
+Shader::Shader(std::string const code [NumCodeTypes])
 {
 	std::vector<unsigned int> shaderObjects;
 	try
 	{
-		for(unsigned int type = 0; type < NumTypes; type++)
+		for(unsigned int type = 0; type < NumCodeTypes; type++)
 		{
 			if(!code[type].empty())
 			{
-				shaderObjects.push_back(compileShaderObject((Type)type, code[type]));
+				shaderObjects.push_back(compileShaderObject((CodeType)type, code[type]));
 			}
 		}
 	}
@@ -116,7 +116,7 @@ void Shader::setUniform(int location, Matrix44f const & value)
 	glUniformMatrix4fv(location, 1, false, value.ptr());
 }
 
-unsigned int Shader::compileShaderObject(Type type, std::string const & code)
+unsigned int Shader::compileShaderObject(CodeType type, std::string const & code)
 {
 	unsigned int glType = 0;
 	if(type == Vertex)
