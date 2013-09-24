@@ -21,18 +21,11 @@ VertexBufferObject::~VertexBufferObject()
 	glDeleteBuffers(1, &mArrayBuffer);
 }
 
-void VertexBufferObject::addVertexComponent(int location, unsigned int offset, Type type, unsigned int numDimensions)
+void VertexBufferObject::addVertexComponent(int location, unsigned int offset, unsigned int numDimensions)
 {
 	VertexComponent vertexComponent;
 	vertexComponent.index = location;
 	vertexComponent.size = numDimensions;
-	switch(type)
-	{
-		case Float:
-			vertexComponent.type = GL_FLOAT; break;
-		case Int:
-			vertexComponent.type = GL_INT; break;
-	}
 	vertexComponent.offset = offset;
 	mVertexComponents.push_back(vertexComponent);
 }
@@ -95,8 +88,8 @@ void VertexBufferObject::render() const
 	glBindBuffer(GL_ARRAY_BUFFER, mArrayBuffer);
 	for(VertexComponent const & vertexComponent : mVertexComponents)
 	{
-		glEnableVertexAttribArray(vertexComponent.index); // DO I NEED THIS?
-		glVertexAttribPointer(vertexComponent.index, vertexComponent.size, vertexComponent.type, GL_FALSE, mBytesPerVertex, (void const *)vertexComponent.offset);
+		glEnableVertexAttribArray(vertexComponent.index);
+		glVertexAttribPointer(vertexComponent.index, vertexComponent.size, GL_FLOAT, GL_FALSE, mBytesPerVertex, (void const *)vertexComponent.offset);
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementArrayBuffer);
 	glDrawElements(mMode, mNumIndices, GL_UNSIGNED_INT, 0);

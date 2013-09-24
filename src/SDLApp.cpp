@@ -72,10 +72,9 @@ namespace App
 					case SDL_WINDOWEVENT_RESIZED:
 					case SDL_WINDOWEVENT_MAXIMIZED:
 					case SDL_WINDOWEVENT_RESTORED:
+						if(widget != nullptr)
 						{
-							ResizeEvent event;
-							event.size = getSize();
-							handleEvent(event);
+							widget->setMaxSize(getSize());
 						}
 						break;
 					case SDL_WINDOWEVENT_MINIMIZED:
@@ -98,6 +97,7 @@ namespace App
 
 	void render()
 	{
+		glEnable(GL_TEXTURE_2D);
 		if(widget != nullptr)
 		{
 			widget->render();
@@ -177,6 +177,10 @@ namespace App
 	void setWidget(std::shared_ptr<Widget> widget)
 	{
 		App::widget = widget;
+		if(widget != nullptr)
+		{
+			widget->setMaxSize(getSize());
+		}
 	}
 
 	ResourceManager<Texture> & getTextureManager()
@@ -231,6 +235,7 @@ int main(int argc, char *argv[])
 	App::doLoop();
 
     // Run the user onShutdown function.
+	App::widget.reset();
 	try
 	{
 		App::onShutdown(); // calls user-defined function

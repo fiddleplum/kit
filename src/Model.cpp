@@ -381,26 +381,26 @@ void Model::updateShader()
 	// Update attribute locations
 	mVertexBufferObject->clearVertexComponents();
 	unsigned int offset = 0;
-	mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aPosition"), offset, VertexBufferObject::Float, 3);
+	mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aPosition"), offset, 3);
 	offset += sizeof(Vector3f);
 	if(mVertexHasNormal)
 	{
-		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aNormal"), offset, VertexBufferObject::Float, 3);
+		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aNormal"), offset, 3);
 		offset += sizeof(Vector3f);
 	}
 	if(mVertexHasTangent)
 	{
-		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aTangent"), offset, VertexBufferObject::Float, 3);
+		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aTangent"), offset, 3);
 		offset += sizeof(Vector3f);
 	}
 	if(mVertexHasColor)
 	{
-		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aColor"), offset, VertexBufferObject::Float, 4);
+		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aColor"), offset, 4);
 		offset += sizeof(Vector4f);
 	}
 	for(TextureInfo const & textureInfo : mTextureInfos)
 	{
-		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aUV" + std::to_string(textureInfo.uvIndex)), offset + textureInfo.uvIndex * sizeof(Vector2f), VertexBufferObject::Float, 2);
+		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aUV" + std::to_string(textureInfo.uvIndex)), offset + textureInfo.uvIndex * sizeof(Vector2f), 2);
 	}
 
 	// Update uniform locations

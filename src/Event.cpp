@@ -5,11 +5,6 @@ std::string ShutdownEvent::toString() const
 	return "Shutdown";
 }
 
-std::string ResizeEvent::toString() const
-{
-	return "Resize: " + std::to_string(size[0]) + " × " + std::to_string(size[1]);
-}
-
 std::string UpdateEvent::toString() const
 {
 	return "Update";

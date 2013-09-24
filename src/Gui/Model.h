@@ -17,24 +17,27 @@ namespace Gui
 		class Vertex
 		{
 		public:
-			Vector2i pos;
-			Vector2i uv;
+			Vector2f pos;
+			Vector2f uv;
 		};
 
 		Model();
+		Vector2i getPosition() const;
+		void setPosition(Vector2i position);
 		void setTexture(std::string const & filename);
 		void setVertices(std::vector<Vertex> const & vertices);
-		void setNumFrames(int numFrames);
-		void setFrame(int frame);
-		void render(Vector2i windowSize);
+		void setIndices(std::vector<unsigned int> const & indices);
+		void render();
 
 	private:
-		void initShader();
-
+		Vector2i position;
 		std::shared_ptr<Texture> texture;
 		std::shared_ptr<Shader> shader;
 		std::shared_ptr<VertexBufferObject> vbo;
-		int numFrames;
+		int windowSizeLocation;
+		int positionLocation;
+		int textureSizeLocation;
+		int samplerLocation;
 	};
 }
 

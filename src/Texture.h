@@ -1,23 +1,23 @@
 #pragma once
 
+#include "Vector.h"
 #include <string>
 
 class Texture
 {
 public:
-	// Constructs from a file.
 	Texture(std::string const & filename);
 
-	// Destructs.
 	~Texture();
 
-	// Activates the texture at the slot.
+	Vector2i getSize() const;
+
 	void activate(unsigned int slot) const;
 
-	// Deactivates all slots equal to or greater than slot.
-	static void deactivateRest(unsigned int slot);
+	static void deactivateRest(unsigned int slot); // Deactivates all slots equal to or greater than slot.
 
 private:
-	unsigned int mHandle;
+	Vector2i size;
+	unsigned int id;
 };
 

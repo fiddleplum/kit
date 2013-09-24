@@ -5,17 +5,11 @@
 class VertexBufferObject
 {
 public:
-	enum Type
-	{
-		Float,
-		Int
-	};
-
 	VertexBufferObject();
 
 	~VertexBufferObject();
 
-	void addVertexComponent(int location, unsigned int offset, Type type, unsigned int numDimensions);
+	void addVertexComponent(int location, unsigned int offset, unsigned int numDimensions);
 
 	void clearVertexComponents();
 
@@ -37,7 +31,6 @@ private:
 	public:
 		unsigned int index;
 		unsigned int size;
-		unsigned int type;
 		unsigned int offset;
 	};
 	unsigned int mArrayBuffer;

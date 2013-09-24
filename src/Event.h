@@ -9,7 +9,6 @@ public:
 	enum Type
 	{
 		Shutdown, // no class
-		Resize,
 		Update,
 		Key,
 		Text,
@@ -30,14 +29,6 @@ class ShutdownEvent : public Event
 {
 public:
 	virtual std::string toString() const override;
-};
-
-class ResizeEvent : public Event
-{
-public:
-	virtual std::string toString() const override;
-
-	Vector2i size; // size of client portion of the window (not including borders/title/etc)
 };
 
 class UpdateEvent : public Event

@@ -55,12 +55,12 @@ ResourceManager<Resource>::~ResourceManager()
 	clean();
 	if(!mResources.empty())
 	{
-		std::string message ("Resources not released:\n");
+		std::string message (std::string() + "At least one " + typeid(Resource).name() + " not released:\n");
 		for(auto const & pair : mResources)
 		{
 			message += "\t" + pair.first + "\n";
 		}
-		throw std::runtime_error(message);
+		App::showMessage(message);
 	}
 }
 
