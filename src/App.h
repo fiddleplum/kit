@@ -46,6 +46,9 @@ namespace App
 	/// Sets the top-level widget. Removes any previous widget.
 	void setWidget(std::shared_ptr<Widget> widget);
 
+	/// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
+	float getTime();
+
 	ResourceManager<Texture> & getTextureManager();
 
 	ResourceManager<Shader> & getShaderManager();

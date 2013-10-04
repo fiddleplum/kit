@@ -10,7 +10,7 @@ public:
 	{
 		Shutdown, // no class
 		Update,
-		Key,
+		Keyboard,
 		Text,
 		MouseButton,
 		MouseMove,
@@ -20,6 +20,8 @@ public:
 		ControllerBall,
 	};
 
+	Event(Type type);
+
 	virtual std::string toString() const = 0;
 
 	Type type;
@@ -28,12 +30,16 @@ public:
 class ShutdownEvent : public Event
 {
 public:
+	ShutdownEvent();
+
 	virtual std::string toString() const override;
 };
 
 class UpdateEvent : public Event
 {
 public:
+	UpdateEvent();
+
 	virtual std::string toString() const override;
 };
 
@@ -56,6 +62,8 @@ public:
 		Pause
 	};
 
+	KeyboardEvent();
+
 	virtual std::string toString() const override;
 
 	Key key;
@@ -65,6 +73,8 @@ public:
 class TextEvent : public Event
 {
 public:
+	TextEvent();
+
 	virtual std::string toString() const override;
 
 	std::string text; // UTF-8 encoded
@@ -80,6 +90,8 @@ public:
 		Right
 	};
 
+	MouseButtonEvent();
+
 	virtual std::string toString() const override;
 
 	int button;
@@ -89,14 +101,19 @@ public:
 class MouseMoveEvent : public Event
 {
 public:
+	MouseMoveEvent();
+
 	virtual std::string toString() const override;
 
-	Vector2i offset;
+	Vector2i relative;
+	Vector2i absolute;
 };
 
 class MouseWheelEvent : public Event
 {
 public:
+	MouseWheelEvent();
+
 	virtual std::string toString() const override;
 
 	bool up;
@@ -105,6 +122,8 @@ public:
 class ControllerButtonEvent : public Event
 {
 public:
+	ControllerButtonEvent();
+
 	virtual std::string toString() const override;
 
 	int controller;
@@ -115,6 +134,8 @@ public:
 class ControllerAxisEvent : public Event
 {
 public:
+	ControllerAxisEvent();
+
 	virtual std::string toString() const override;
 
 	int controller;
@@ -125,6 +146,8 @@ public:
 class ControllerBallEvent : public Event
 {
 public:
+	ControllerBallEvent();
+
 	virtual std::string toString() const override;
 
 	int controller;

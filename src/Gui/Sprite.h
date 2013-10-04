@@ -19,13 +19,14 @@ namespace Gui
 		void render() override;
 
 		void setTexture(std::string const & filename);
-		void setUVBounds(Box2i bounds);
+		void setTextureBounds(Box2i bounds);
+		Box2i getTextureBounds() const;
 
 	private:
 		void updateVertices();
 
 		Model model;
-		Box2i uvBounds;
+		Box2i textureBounds;
 		Vector2i maxSize;
 	};
 }

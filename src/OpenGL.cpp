@@ -10,6 +10,7 @@ PFNGLCULLFACEPROC glCullFace;
 PFNGLSCISSORPROC glScissor;
 PFNGLVIEWPORTPROC glViewport;
 PFNGLCLEARPROC glClear;
+PFNGLCLEARCOLORPROC glClearColor;
 
 PFNGLCREATESHADERPROC glCreateShader;
 PFNGLSHADERSOURCEPROC glShaderSource;
@@ -66,6 +67,7 @@ void glInitialize()
 	glScissor = (PFNGLSCISSORPROC)SDL_GL_GetProcAddress("glScissor");
 	glViewport = (PFNGLVIEWPORTPROC)SDL_GL_GetProcAddress("glViewport");
 	glClear = (PFNGLCLEARPROC)SDL_GL_GetProcAddress("glClear");
+	glClearColor = (PFNGLCLEARCOLORPROC)SDL_GL_GetProcAddress("glClearColor");
 
 	glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");

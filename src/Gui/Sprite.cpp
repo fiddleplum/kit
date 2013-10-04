@@ -22,7 +22,7 @@ namespace Gui
 
 	Box2i Sprite::getBounds() const
 	{
-		return Box2i::minSize(model.getPosition(), uvBounds.getSize());
+		return Box2i::minSize(model.getPosition(), textureBounds.getSize());
 	}
 
 	void Sprite::setPosition(Vector2i position)
@@ -50,26 +50,31 @@ namespace Gui
 		model.setTexture(filename);
 	}
 
-	void Sprite::setUVBounds(Box2i bounds)
+	void Sprite::setTextureBounds(Box2i bounds)
 	{
-		uvBounds = bounds;
+		textureBounds = bounds;
 		updateVertices();
+	}
+
+	Box2i Sprite::getTextureBounds() const
+	{
+		return textureBounds;
 	}
 
 	void Sprite::updateVertices()
 	{
 		Vector2i size;
-		size[0] = std::min(uvBounds.getSize()[0], maxSize[0]);
-		size[1] = std::min(uvBounds.getSize()[1], maxSize[1]);
+		size[0] = std::min(textureBounds.getSize()[0], maxSize[0]);
+		size[1] = std::min(textureBounds.getSize()[1], maxSize[1]);
 		std::vector<Model::Vertex> vertices (4);
 		vertices[0].pos.set(0, 0);
-		vertices[0].uv.set((float)uvBounds.min[0], (float)uvBounds.min[1]);
+		vertices[0].uv.set((float)textureBounds.min[0], (float)textureBounds.min[1]);
 		vertices[1].pos.set((float)size[0], 0);
-		vertices[1].uv.set((float)uvBounds.min[0] + (float)size[0], (float)uvBounds.min[1]);
+		vertices[1].uv.set((float)textureBounds.min[0] + (float)size[0], (float)textureBounds.min[1]);
 		vertices[2].pos.set((float)size[0], (float)size[1]);
-		vertices[2].uv.set((float)uvBounds.min[0] + (float)size[0], (float)uvBounds.min[1] + (float)size[1]);
+		vertices[2].uv.set((float)textureBounds.min[0] + (float)size[0], (float)textureBounds.min[1] + (float)size[1]);
 		vertices[3].pos.set(0, (float)size[1]);
-		vertices[3].uv.set((float)uvBounds.min[0], (float)uvBounds.min[1] + (float)size[1]);
+		vertices[3].uv.set((float)textureBounds.min[0], (float)textureBounds.min[1] + (float)size[1]);
 		model.setVertices(vertices);
 	}
 }

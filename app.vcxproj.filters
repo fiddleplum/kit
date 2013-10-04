@@ -44,6 +44,12 @@
     <ClInclude Include="src\Gui\Model.h">
       <Filter>Gui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Gui\Button.h">
+      <Filter>Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\Layering.h">
+      <Filter>Gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Shader.cpp" />
@@ -71,6 +77,12 @@
       <Filter>Gui</Filter>
     </ClCompile>
     <ClCompile Include="src\Gui\Model.cpp">
+      <Filter>Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\Button.cpp">
+      <Filter>Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\Layering.cpp">
       <Filter>Gui</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,13 +1,33 @@
 #include "Event.h"
 
+Event::Event(Event::Type type)
+{
+	this->type = type;
+}
+
+ShutdownEvent::ShutdownEvent()
+	: Event(Shutdown)
+{
+}
+
 std::string ShutdownEvent::toString() const
 {
 	return "Shutdown";
 }
 
+UpdateEvent::UpdateEvent()
+	: Event(Update)
+{
+}
+
 std::string UpdateEvent::toString() const
 {
 	return "Update";
+}
+
+KeyboardEvent::KeyboardEvent()
+	: Event(Keyboard)
+{
 }
 
 std::string KeyboardEvent::toString() const
@@ -121,9 +141,19 @@ std::string KeyboardEvent::toString() const
 	return r;
 }
 
+TextEvent::TextEvent()
+	: Event(Text)
+{
+}
+
 std::string TextEvent::toString() const
 {
 	return "Text: " + text;
+}
+
+MouseButtonEvent::MouseButtonEvent()
+	: Event(MouseButton)
+{
 }
 
 std::string MouseButtonEvent::toString() const
@@ -140,9 +170,19 @@ std::string MouseButtonEvent::toString() const
 	return r;
 }
 
+MouseMoveEvent::MouseMoveEvent()
+	: Event(MouseMove)
+{
+}
+
 std::string MouseMoveEvent::toString() const
 {
-	return "Mouse Move: " + std::to_string(offset[0]) + ", " + std::to_string(offset[1]);
+	return "Mouse Move: " + std::to_string(relative[0]) + ", " + std::to_string(relative[1]);
+}
+
+MouseWheelEvent::MouseWheelEvent()
+	: Event(MouseWheel)
+{
 }
 
 std::string MouseWheelEvent::toString() const
@@ -150,14 +190,29 @@ std::string MouseWheelEvent::toString() const
 	return std::string("Mouse Wheel: ") + (up ? "Up" : "Down");
 }
 
+ControllerButtonEvent::ControllerButtonEvent()
+	: Event(ControllerButton)
+{
+}
+
 std::string ControllerButtonEvent::toString() const
 {
 	return "Controller " + std::to_string(controller) + " Button " + std::to_string(button) + ": " + (pressed ? "Pressed" : "Unpressed");
 }
 
+ControllerAxisEvent::ControllerAxisEvent()
+	: Event(ControllerAxis)
+{
+}
+
 std::string ControllerAxisEvent::toString() const
 {
 	return "Controller " + std::to_string(controller) + " Axis " + std::to_string(axis) + ": " + std::to_string(value);
+}
+
+ControllerBallEvent::ControllerBallEvent()
+	: Event(ControllerBall)
+{
 }
 
 std::string ControllerBallEvent::toString() const

@@ -31,7 +31,6 @@ namespace App
 
 	void handleEvent(Event const & event)
 	{
-//		OutputDebugStringA((event->toString() + "\n").c_str());
 		if(widget != nullptr)
 		{
 			widget->handleEvent(event);
@@ -56,14 +55,12 @@ namespace App
 		// Process the SDL events.
 		for(SDL_Event const & sdlEvent : sdlEvents)
 		{
-			OutputDebugStringA((std::to_string(sdlEvent.type) + "\n").c_str());
 			if(sdlEvent.type == SDL_QUIT)
 			{
 				quit();
 			}
 			else if(sdlEvent.type == SDL_WINDOWEVENT)
 			{
-//				OutputDebugStringA((" " + std::to_string(sdlEvent.window.event) + "\n").c_str());
 				switch(sdlEvent.window.event)
 				{
 					case SDL_WINDOWEVENT_CLOSE:
@@ -97,7 +94,15 @@ namespace App
 
 	void render()
 	{
+		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glClearColor(0, 0, 0, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		Vector2i windowSize = getSize();
+		glViewport(0, 0, windowSize[0], windowSize[1]);
 		if(widget != nullptr)
 		{
 			widget->render();
@@ -181,6 +186,11 @@ namespace App
 		{
 			widget->setMaxSize(getSize());
 		}
+	}
+
+	float getTime()
+	{
+		return (float)SDL_GetTicks() / 1000.0f;
 	}
 
 	ResourceManager<Texture> & getTextureManager()

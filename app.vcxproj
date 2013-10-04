@@ -17,6 +17,8 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\gl3.h" />
+    <ClInclude Include="src\Gui\Button.h" />
+    <ClInclude Include="src\Gui\Layering.h" />
     <ClInclude Include="src\Gui\Partition.h" />
     <ClInclude Include="src\Gui\Model.h" />
     <ClInclude Include="src\Gui\Sprite.h" />
@@ -47,6 +49,8 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\Gui\Button.cpp" />
+    <ClCompile Include="src\Gui\Layering.cpp" />
     <ClCompile Include="src\Gui\Partition.cpp" />
     <ClCompile Include="src\Gui\Model.cpp" />
     <ClCompile Include="src\Gui\Sprite.cpp" />

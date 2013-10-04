@@ -164,8 +164,10 @@ namespace App
 			if(!gFirstMouseMoveEvent) // the first mouse motion event always gives absolute values in its xrel and yrel, and so is invalid
 			{
 				MouseMoveEvent event;
-				event.offset[0] = sdlEvent.motion.xrel;
-				event.offset[1] = sdlEvent.motion.yrel;
+				event.relative[0] = sdlEvent.motion.xrel;
+				event.relative[1] = sdlEvent.motion.yrel;
+				event.absolute[0] = sdlEvent.motion.x;
+				event.absolute[1] = sdlEvent.motion.y;
 				handleEvent(event);
 				gCursorPositionValid = true;
 			}

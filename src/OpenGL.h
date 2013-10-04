@@ -10,6 +10,7 @@ extern PFNGLBLENDFUNCPROC glBlendFunc;
 extern PFNGLSCISSORPROC glScissor;
 extern PFNGLVIEWPORTPROC glViewport;
 extern PFNGLCLEARPROC glClear;
+extern PFNGLCLEARCOLORPROC glClearColor;
 
 // Shaders
 extern PFNGLCREATESHADERPROC glCreateShader;
