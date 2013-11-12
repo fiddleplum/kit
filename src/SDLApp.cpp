@@ -1,6 +1,8 @@
 #include "App.h"
 #include "Input.h"
 #include "OpenGL.h"
+#include "Shader.h"
+#include "Texture.h"
 #include "Gui\Widget.h"
 #include "..\..\SDL2-2.0.0\include\SDL.h"
 #include <sstream>
@@ -22,7 +24,7 @@ namespace App
 
 	bool running = false;
 	float lastTime = 0.0f;
-	std::shared_ptr<Widget> widget;
+	std::shared_ptr<Gui::Widget> widget;
 
 	ResourceManager<Texture> textureManager;
 	ResourceManager<Shader> shaderManager;
@@ -95,11 +97,15 @@ namespace App
 	void render()
 	{
 		glDisable(GL_DEPTH_TEST);
+		glDepthFunc(GL_GREATER);
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(0, 0, 0, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearDepth(0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Vector2i windowSize = getSize();
 		glViewport(0, 0, windowSize[0], windowSize[1]);
@@ -107,6 +113,7 @@ namespace App
 		{
 			widget->render();
 		}
+
 		SDL_GL_SwapWindow(window);
 	}
 
@@ -125,9 +132,10 @@ namespace App
 			}
 			if(running)
 			{
+				UpdateEvent updateEvent;
 				if(widget != nullptr)
 				{
-					widget->handleEvent(UpdateEvent());
+					widget->handleEvent(updateEvent);
 				}
 			}
 			if(running)
@@ -179,7 +187,7 @@ namespace App
 		running = false;
 	}
 
-	void setWidget(std::shared_ptr<Widget> widget)
+	void setWidget(std::shared_ptr<Gui::Widget> widget)
 	{
 		App::widget = widget;
 		if(widget != nullptr)

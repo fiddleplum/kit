@@ -2,11 +2,16 @@
 
 #include "ResourceManager.h"
 #include "Vector.h"
+#include "Event.h"
 #include <string>
 #include <vector>
 #include <memory>
 
-class Widget;
+namespace Gui
+{
+	class Widget;
+}
+
 class Texture;
 class Shader;
 
@@ -44,7 +49,7 @@ namespace App
 	void quit();
 
 	/// Sets the top-level widget. Removes any previous widget.
-	void setWidget(std::shared_ptr<Widget> widget);
+	void setWidget(std::shared_ptr<Gui::Widget> widget);
 
 	/// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
 	float getTime();

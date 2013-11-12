@@ -14,6 +14,7 @@ namespace Gui
 			throw std::runtime_error("Layering::addLayer, widget == nullptr");
 		}
 		layers.push_back(widget);
+		widget->setMaxSize(bounds.getSize());
 	}
 
 	void Layering::insertLayerBefore(std::shared_ptr<Widget> widget, std::shared_ptr<Widget> relativeTo)
@@ -27,6 +28,7 @@ namespace Gui
 			if(*it == relativeTo)
 			{
 				layers.insert(it, widget);
+				widget->setMaxSize(bounds.getSize());
 				break;
 			}
 		}
@@ -44,6 +46,7 @@ namespace Gui
 			{
 				it++;
 				layers.insert(it, widget);
+				widget->setMaxSize(bounds.getSize());
 				break;
 			}
 		}

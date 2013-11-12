@@ -11,6 +11,9 @@ extern PFNGLSCISSORPROC glScissor;
 extern PFNGLVIEWPORTPROC glViewport;
 extern PFNGLCLEARPROC glClear;
 extern PFNGLCLEARCOLORPROC glClearColor;
+extern PFNGLCLEARDEPTHPROC glClearDepth;
+extern PFNGLDEPTHFUNCPROC glDepthFunc;
+extern PFNGLCULLFACEPROC glCullFace;
 
 // Shaders
 extern PFNGLCREATESHADERPROC glCreateShader;

@@ -123,6 +123,10 @@ namespace App
 	{
 		if(sdlEvent.type == SDL_KEYDOWN || sdlEvent.type == SDL_KEYUP)
 		{
+			if(sdlEvent.key.repeat > 0)
+			{
+				return; // only record actual press and releases
+			}
 			KeyboardEvent event;
 			try
 			{

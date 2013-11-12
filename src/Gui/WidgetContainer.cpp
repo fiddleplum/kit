@@ -16,93 +16,84 @@ namespace Gui
 	void WidgetContainer::setPosition(Vector2i position)
 	{
 		bounds.setMinKeepSize(position);
-		for(WidgetPlacement & widgetPlacement : widgetPlacements)
-		{
-			setWidgetBounds(widgetPlacement);
-		}
+		updateWidgetBounds();
 	}
 
 	void WidgetContainer::setMaxSize(Vector2i maxSize)
 	{
 		bounds.setSize(maxSize);
-		for(WidgetPlacement & widgetPlacement : widgetPlacements)
-		{
-			setWidgetBounds(widgetPlacement);
-		}
+		updateWidgetBounds();
 	}
 
 	void WidgetContainer::handleEvent(Event const & event)
 	{
-		for(WidgetPlacement & widgetPlacement : widgetPlacements)
+		for(auto widgetIterator = widgets.rbegin(); widgetIterator != widgets.rend(); widgetIterator++)
 		{
-			widgetPlacement.widget->handleEvent(event);
+			(*widgetIterator)->handleEvent(event);
 		}
 	}
 
 	void WidgetContainer::render()
 	{
-		for(WidgetPlacement & widgetPlacement : widgetPlacements)
+		for(auto widget : widgets)
 		{
-			widgetPlacement.widget->render();
+			widget->render();
 		}
 	}
 
-	void WidgetContainer::addWidget(std::shared_ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i offset)
+	void WidgetContainer::insertWidgetBefore(std::shared_ptr<Widget> widget, std::shared_ptr<Widget> beforeWidget)
 	{
 		if(widget == nullptr)
 		{
-			throw std::runtime_error("WidgetContainer::addWidget, widget == nullptr");
+			throw std::runtime_error("WidgetContainer::insertWidgetBefore, widget == nullptr");
 		}
-		WidgetPlacement wp;
-		wp.widget = widget;
-		wp.externalFractionalOffset = externalFractionalOffset;
-		wp.internalFractionalOffset = internalFractionalOffset;
-		wp.offset = offset;
-		wp.fractionalSizeOffset = Vector2f::one();
-		wp.sizeOffset = Vector2i::zero();
-		widgetPlacements.push_back(wp);
-		setWidgetBounds(widgetPlacements.back());
+		auto lookupIterator = widgetLookup.find(beforeWidget);
+		if(lookupIterator == widgetLookup.end())
+		{
+			throw std::runtime_error("WidgetContainer::insertWidgetBefore, widgetBefore not found");
+		}
+		auto widgetIterator = widgets.insert(lookupIterator->second, widget);
+		widgetLookup[widget] = widgetIterator;
 	}
 
-	void WidgetContainer::setWidgetPlacementSize(std::shared_ptr<Widget> widget, Vector2f fractionalOffset, Vector2i offset)
+	void WidgetContainer::appendWidget(std::shared_ptr<Widget> widget)
 	{
-		for(auto it = widgetPlacements.begin(); it != widgetPlacements.end(); it++)
+		if(widget == nullptr)
 		{
-			if(it->widget == widget)
-			{
-				it->fractionalSizeOffset = fractionalOffset;
-				it->sizeOffset = offset;
-				setWidgetBounds(*it);
-				break;
-			}
+			throw std::runtime_error("WidgetContainer::appendWidget, widget == nullptr");
 		}
+		auto widgetIterator = widgets.insert(widgets.end(), widget);
+		widgetLookup[widget] = widgetIterator;
 	}
 
 	void WidgetContainer::removeWidget(std::shared_ptr<Widget> widget)
 	{
-		for(auto it = widgetPlacements.begin(); it != widgetPlacements.end(); it++)
+		auto lookupIterator = widgetLookup.find(widget);
+		if(lookupIterator == widgetLookup.end())
 		{
-			if(it->widget == widget)
-			{
-				widgetPlacements.erase(it);
-				break;
-			}
+			throw std::runtime_error("WidgetContainer::removeWidget, widget not found");
 		}
+		widgets.erase(lookupIterator->second);
+		widgetLookup.erase(lookupIterator);
 	}
 
-	void WidgetContainer::setWidgetBounds(WidgetPlacement & widgetPlacement)
+	void WidgetContainer::setWidgetPlacement(std::shared_ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset)
 	{
-		widgetPlacement.widget->setMaxSize(bounds.getSize()); // first set it to the container size so it can positioned correctly
 		Vector2i position = bounds.min;
-		position = Vector2i(widgetPlacement.externalFractionalOffset.scale(bounds.getSize()))
-					- Vector2i(widgetPlacement.internalFractionalOffset.scale(widgetPlacement.widget->getBounds().getSize()))
-					+ widgetPlacement.offset;
-		widgetPlacement.widget->setPosition(position);
-		Vector2i maxSize = Vector2i(widgetPlacement.fractionalSizeOffset.scale(bounds.getSize()))
-					+ widgetPlacement.offset;
+		position = Vector2i(externalFractionalOffset.scale(bounds.getSize()))
+					- Vector2i(internalFractionalOffset.scale(widget->getBounds().getSize()))
+					+ pixelOffset;
+		widget->setPosition(position);
+	}
+
+	void WidgetContainer::setWidgetPlacementSize(std::shared_ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize)
+	{
+		Vector2i position = widget->getBounds().min;
+		Vector2i maxSize = Vector2i(fractionalSize.scale(bounds.getSize()))
+					+ pixelSize;
 		maxSize[0] = std::min(maxSize[0], bounds.getSize()[0] - position[0]);
 		maxSize[1] = std::min(maxSize[1], bounds.getSize()[1] - position[1]);
-		widgetPlacement.widget->setMaxSize(maxSize);
+		widget->setMaxSize(maxSize);
 	}
 }
 

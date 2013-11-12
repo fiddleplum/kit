@@ -6,11 +6,13 @@
 PFNGLENABLEPROC glEnable;
 PFNGLDISABLEPROC glDisable;
 PFNGLBLENDFUNCPROC glBlendFunc;
-PFNGLCULLFACEPROC glCullFace;
 PFNGLSCISSORPROC glScissor;
 PFNGLVIEWPORTPROC glViewport;
 PFNGLCLEARPROC glClear;
 PFNGLCLEARCOLORPROC glClearColor;
+PFNGLCLEARDEPTHPROC glClearDepth;
+PFNGLDEPTHFUNCPROC glDepthFunc;
+PFNGLCULLFACEPROC glCullFace;
 
 PFNGLCREATESHADERPROC glCreateShader;
 PFNGLSHADERSOURCEPROC glShaderSource;
@@ -63,11 +65,13 @@ void glInitialize()
 	glEnable = (PFNGLENABLEPROC)SDL_GL_GetProcAddress("glEnable");
 	glDisable = (PFNGLDISABLEPROC)SDL_GL_GetProcAddress("glDisable");
 	glBlendFunc = (PFNGLBLENDFUNCPROC)SDL_GL_GetProcAddress("glBlendFunc");
-	glCullFace = (PFNGLCULLFACEPROC)SDL_GL_GetProcAddress("glCullFace");
 	glScissor = (PFNGLSCISSORPROC)SDL_GL_GetProcAddress("glScissor");
 	glViewport = (PFNGLVIEWPORTPROC)SDL_GL_GetProcAddress("glViewport");
 	glClear = (PFNGLCLEARPROC)SDL_GL_GetProcAddress("glClear");
 	glClearColor = (PFNGLCLEARCOLORPROC)SDL_GL_GetProcAddress("glClearColor");
+	glClearDepth = (PFNGLCLEARDEPTHPROC)SDL_GL_GetProcAddress("glClearDepth");
+	glDepthFunc = (PFNGLDEPTHFUNCPROC)SDL_GL_GetProcAddress("glDepthFunc");
+	glCullFace = (PFNGLCULLFACEPROC)SDL_GL_GetProcAddress("glCullFace");
 
 	glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");

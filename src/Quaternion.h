@@ -19,6 +19,8 @@ public:
 
 	Quaternion(Vector<3, T> const & startVector, Vector<3, T> const & endVector, bool vectorsAreNormalized);
 
+	Quaternion(T yaw, T pitch, T roll);
+
 	Quaternion<T> conjugate() const;
 
 	Quaternion<T> inverse() const; // alias for conjugate
@@ -120,6 +122,21 @@ Quaternion<T>::Quaternion(T angle, Vector<3, T> const & axis, bool axisIsNormali
 }
 
 template <typename T>
+Quaternion<T>::Quaternion(T yaw, T pitch, T roll)
+{
+	T cosYaw2 = cos(yaw / 2);
+	T sinYaw2 = sin(yaw / 2);
+	T cosPitch2 = cos(pitch / 2);
+	T sinPitch2 = sin(pitch / 2);
+	T cosRoll2 = cos(roll / 2);
+	T sinRoll2 = sin(roll / 2);
+	r =      cosYaw2 * cosPitch2 * cosRoll2 + sinYaw2 * sinPitch2 * sinRoll2;
+	ijk[1] = cosYaw2 * cosPitch2 * sinRoll2 - sinYaw2 * sinPitch2 * cosRoll2;
+	ijk[0] = cosYaw2 * sinPitch2 * cosRoll2 + sinYaw2 * cosPitch2 * sinRoll2;
+	ijk[2] = sinYaw2 * cosPitch2 * cosRoll2 - cosYaw2 * sinPitch2 * sinRoll2;
+}
+
+template <typename T>
 Quaternion<T> Quaternion<T>::conjugate() const
 {
 	return Quaternion<T>(r, -ijk);
@@ -184,8 +201,8 @@ Vector<3, T> Quaternion<T>::getAxis(unsigned int i) const
 	unsigned int j = (i + 1) % 3;
 	unsigned int k = (i + 2) % 3;
 	axis[i] = 1.0f - 2.0f * (ijk[j] * ijk[j] + ijk[k] * ijk[k]);
-	axis[j] = 2.0f * (ijk[i] * ijk[j] + ijk[k] * r);
-	axis[k] = 2.0f * (ijk[i] * ijk[k] - ijk[j] * r);
+	axis[j] = 2.0f * (ijk[i] * ijk[j] - ijk[k] * r);
+	axis[k] = 2.0f * (ijk[i] * ijk[k] + ijk[j] * r);
 	return axis;
 }
 

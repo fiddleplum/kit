@@ -13,8 +13,6 @@
   <ItemGroup>
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\Box.h" />
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\gl3.h" />
     <ClInclude Include="src\Gui\Button.h" />
@@ -28,13 +26,17 @@
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\MathUtil.h" />
     <ClInclude Include="src\Matrix.h" />
-    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\OpenGL.h" />
     <ClInclude Include="src\Ptr.h" />
     <ClInclude Include="src\Quaternion.h" />
     <ClInclude Include="src\Ray.h" />
     <ClInclude Include="src\ResourceManager.h" />
-    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Scene\Camera.h" />
+    <ClInclude Include="src\Scene\Controller.h" />
+    <ClInclude Include="src\Scene\Entity.h" />
+    <ClInclude Include="src\Scene\FreeFlyCameraController.h" />
+    <ClInclude Include="src\Scene\Model.h" />
+    <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Serialize.h" />
     <ClInclude Include="src\SerializeStdString.h" />
     <ClInclude Include="src\SerializeStdVector.h" />
@@ -46,8 +48,6 @@
     <ClInclude Include="src\VertexBufferObject.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\Gui\Button.cpp" />
     <ClCompile Include="src\Gui\Layering.cpp" />
@@ -57,9 +57,12 @@
     <ClCompile Include="src\Gui\Viewport.cpp" />
     <ClCompile Include="src\Gui\WidgetContainer.cpp" />
     <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\OpenGL.cpp" />
-    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Scene\Camera.cpp" />
+    <ClCompile Include="src\Scene\Entity.cpp" />
+    <ClCompile Include="src\Scene\FreeFlyCameraController.cpp" />
+    <ClCompile Include="src\Scene\Model.cpp" />
+    <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\SDLApp.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\StringUtil.cpp" />

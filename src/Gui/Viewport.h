@@ -1,27 +1,40 @@
 #pragma once
 
 #include "Widget.h"
+#include <memory>
 
-class Camera;
-
-class Viewport : public Widget
+namespace Scene
 {
-public:
-	Viewport();
+	class Camera;
+	class Scene;
+}
 
-	// Inherited from Widget.
-	Box2i getBounds() const override;
-	void setPosition(Vector2i position) override;
-	void setMaxSize(Vector2i maxSize) override;
-	void handleEvent(Event const & event) override;
-	void render() override;
+namespace Gui
+{
+	class Viewport : public Widget
+	{
+	public:
+		Viewport();
 
-	// You can attach a camera.
-	Camera * getCamera() const;
-	void setCamera(Camera *);
+		// Inherited from Widget.
+		Box2i getBounds() const override;
+		void setPosition(Vector2i position) override;
+		void setMaxSize(Vector2i maxSize) override;
+		void handleEvent(Event const & event) override;
+		void render() override;
 
-private:
-	Box2i bounds;
-	Camera * camera;
-};
+		// You can attach a camera.
+		std::shared_ptr<Scene::Camera> getCamera() const;
+		void setCamera(std::shared_ptr<Scene::Camera>);
+
+		// You can attach a scene.
+		std::shared_ptr<Scene::Scene> getScene() const;
+		void setScene(std::shared_ptr<Scene::Scene>);
+
+	private:
+		Box2i bounds;
+		std::shared_ptr<Scene::Camera> camera;
+		std::shared_ptr<Scene::Scene> scene;
+	};
+}
 
