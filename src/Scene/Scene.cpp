@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Model.h"
+#include "Light.h"
 #include "Camera.h"
 #include "Controller.h"
 #include "../OpenGL.h"
@@ -8,6 +9,16 @@ namespace Scene
 {
 	Scene::Scene()
 	{
+	}
+
+	void Scene::addLight(std::shared_ptr<Light> light)
+	{
+		lights.insert(light);
+	}
+
+	void Scene::removeLight(std::shared_ptr<Light> light)
+	{
+		lights.erase(light);
 	}
 
 	void Scene::addCamera(std::shared_ptr<Camera> camera)
@@ -74,10 +85,24 @@ namespace Scene
 			model->resortingDone();
 		}
 
+		// Prepare the lights.
+		std::vector<Vector3f> lightPositions;
+		std::vector<Vector3f> lightColors;
+		for(std::shared_ptr<Light> light : lights)
+		{
+			lightPositions.push_back(camera->getView().transform(light->getPosition(), 1));
+			lightColors.push_back(light->getColor());
+		}
+		while(lightPositions.size() < Model::maxLights)
+		{
+			lightPositions.push_back(Vector3f::zero());
+			lightColors.push_back(Vector3f::zero());
+		}
+
 		// Do the render.
 		for(std::shared_ptr<Model> model : mModels)
 		{
-			model->render(camera);
+			model->render(camera, lightPositions, lightColors);
 		}
 	}
 

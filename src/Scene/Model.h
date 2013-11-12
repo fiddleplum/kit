@@ -6,6 +6,7 @@
 #include <istream>
 #include <string>
 #include <memory>
+#include <set>
 
 class VertexBufferObject;
 class Texture;
@@ -13,7 +14,7 @@ class Shader;
 
 namespace Scene
 {
-	class Scene;
+	class Light;
 	class Camera;
 
 	// The model serialized format is at the bottom.
@@ -45,13 +46,15 @@ namespace Scene
 
 		// For use with RenderEngine
 	
-		void render(std::shared_ptr<Camera const> camera) const;
+		void render(std::shared_ptr<Camera const> camera, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const;
 
 		bool needsResorting() const;
 
 		void resortingDone();
 
 		bool operator < (Model const & model) const;
+
+		static const unsigned int maxLights = 4;
 
 	private:
 		Model(Model const &);
@@ -76,6 +79,9 @@ namespace Scene
 		int mSpecularLevelLocation;
 		float mSpecularStrength;
 		int mSpecularStrengthLocation;
+
+		int mLightPositionsLocation;
+		int mLightColorsLocation;
 
 		std::vector<TextureInfo> mTextureInfos;
 

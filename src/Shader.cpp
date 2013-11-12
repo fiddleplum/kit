@@ -116,6 +116,11 @@ void Shader::setUniform(int location, Matrix44f const & value)
 	glUniformMatrix4fv(location, 1, false, value.ptr());
 }
 
+void Shader::setUniform(int location, Vector3f const * value, unsigned int count)
+{
+	glUniform3fv(location, count, (GLfloat const *)value);
+}
+
 unsigned int Shader::compileShaderObject(CodeType type, std::string const & code)
 {
 	unsigned int glType = 0;

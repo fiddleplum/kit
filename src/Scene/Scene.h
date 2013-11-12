@@ -7,6 +7,7 @@ class Event;
 
 namespace Scene
 {
+	class Light;
 	class Camera;
 	class Model;
 	class Controller;
@@ -15,6 +16,10 @@ namespace Scene
 	{
 	public:
 		Scene();
+
+		void addLight(std::shared_ptr<Light>);
+
+		void removeLight(std::shared_ptr<Light>);
 
 		void addCamera(std::shared_ptr<Camera> camera);
 
@@ -44,6 +49,7 @@ namespace Scene
 			bool operator ()(std::shared_ptr<Model> model0, std::shared_ptr<Model> model1);
 		};
 
+		std::set<std::shared_ptr<Light>> lights;
 		std::set<std::shared_ptr<Camera>> cameras;
 		std::set<std::shared_ptr<Model>, ModelCompare> mModels;
 		std::set<std::shared_ptr<Controller>> controllers;

@@ -56,7 +56,7 @@ public:
   Vector<rows - 1, T> transform (Vector<cols - 1, T> v, T v3) const;
 
   //! Returns v this. Used for dealing with row-major systems.
-  Vector<cols, T> preMultiply (Vector<rows, T> v);
+  Vector<cols, T> preMultiply (Vector<rows, T> v) const;
 
 private:
   T c[rows * cols];
@@ -232,7 +232,7 @@ Vector<rows - 1, T> Matrix<rows, cols, T>::transform (Vector<cols - 1, T> v, T v
 }
 
 template <int rows, int cols, typename T>
-Vector<cols, T> Matrix<rows, cols, T>::preMultiply (Vector<rows, T> v)
+Vector<cols, T> Matrix<rows, cols, T>::preMultiply (Vector<rows, T> v) const
 {
   Vector<cols, T> r;
   for (int i = 0; i < cols; ++i)

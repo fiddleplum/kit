@@ -64,6 +64,9 @@
     <ClInclude Include="src\Scene\FreeFlyCameraController.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene\Light.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Shader.cpp" />
@@ -108,6 +111,9 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\FreeFlyCameraController.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Light.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>

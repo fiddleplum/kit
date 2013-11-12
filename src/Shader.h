@@ -40,6 +40,8 @@ public:
 
 	static void setUniform(int location, Matrix44f const & value);
 
+	static void setUniform(int location, Vector3f const * value, unsigned int count);
+
 private:
 	static unsigned int compileShaderObject(CodeType type, std::string const & code);
 	static unsigned int linkShaderProgram(std::vector<unsigned int> const & shaderObjects);

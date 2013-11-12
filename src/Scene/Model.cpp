@@ -167,7 +167,7 @@ namespace Scene
 		mSpecularStrength = strength;
 	}
 
-	void Model::render(std::shared_ptr<Camera const> camera) const
+	void Model::render(std::shared_ptr<Camera const> camera, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
 	{
 		// The render engine handles shader and texture activation.
 		mShader->activate();
@@ -181,6 +181,8 @@ namespace Scene
 			samplerIndex++;
 		}
 		Texture::deactivateRest(mTextureInfos.size());
+		mShader->setUniform(mLightPositionsLocation, &lightPositions[0], lightPositions.size());
+		mShader->setUniform(mLightColorsLocation, &lightColors[0], lightColors.size());
 		mShader->setUniform(mEmitColorLocation, mEmitColor);
 		mShader->setUniform(mDiffuseColorLocation, mDiffuseColor);
 		mShader->setUniform(mSpecularLevelLocation, (int)mSpecularLevel);
@@ -297,6 +299,11 @@ namespace Scene
 
 		// Add the global variables.
 		code[Shader::Fragment] += "in vec3 vPosition;\n";
+		if(mVertexHasNormal || mVertexHasTangent)
+		{
+			code[Shader::Fragment] += "uniform vec3 uLightPositions [" + std::to_string(maxLights) + "];\n";
+			code[Shader::Fragment] += "uniform vec3 uLightColors [" + std::to_string(maxLights) + "];\n";
+		}
 		if(mVertexHasNormal)
 		{
 			code[Shader::Fragment] += "in vec3 vNormal;\n";
@@ -328,7 +335,7 @@ namespace Scene
 		code[Shader::Fragment] += "	vec4 color = uEmitColor;\n";
 		if(mVertexHasColor)
 		{
-			code[Shader::Fragment] += "	color = vColor;\n";
+			code[Shader::Fragment] += "	color += vColor;\n";
 		}
 		samplerIndex = 0;
 		for(TextureInfo const & textureInfo : mTextureInfos)
@@ -347,7 +354,18 @@ namespace Scene
 			}
 			samplerIndex++;
 		}
-		code[Shader::Fragment] += "	gl_FragColor = vec4(vPosition, 1);\n";
+		code[Shader::Fragment] += "	gl_FragColor = vec4(0, 0, 0, color.a);\n";
+		if(mVertexHasNormal)
+		{
+			code[Shader::Fragment] += "	for(int i = 0; i < " + std::to_string(maxLights) + "; i++)\n";
+			code[Shader::Fragment] += "	{\n";
+			code[Shader::Fragment] += "		gl_FragColor.rgb += color.rgb * uLightColors[i] * dot(normalize(uLightPositions[i] - vPosition), vNormal);\n";
+			code[Shader::Fragment] += "	}\n";
+		}
+		else
+		{
+			code[Shader::Fragment] += "	gl_FragColor.rgb += color.rgb;\n";
+		}
 		code[Shader::Fragment] += "}\n";
 
 		// Create a unique name for the shader.
@@ -401,6 +419,8 @@ namespace Scene
 		mVertexBufferObject->setNumIndicesPerPrimitive(3);
 
 		// Update uniform locations
+		mLightPositionsLocation = mShader->getUniformLocation("uLightPositions");
+		mLightColorsLocation = mShader->getUniformLocation("uLightColors");
 		mEmitColorLocation = mShader->getUniformLocation("uEmitColor");
 		mDiffuseColorLocation = mShader->getUniformLocation("uDiffuseColor");
 		mSpecularLevelLocation = mShader->getUniformLocation("uSpecularLevel");
