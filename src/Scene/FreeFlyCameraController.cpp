@@ -47,7 +47,7 @@ namespace Scene
 		{
 		case Event::Keyboard:
 			{
-				KeyboardEvent const & kEvent = dynamic_cast<KeyboardEvent const &>(event);
+				KeyboardEvent const & kEvent = event.as<KeyboardEvent>();
 				switch(kEvent.key)
 				{
 				case KeyboardEvent::W:
@@ -127,7 +127,7 @@ namespace Scene
 			}
 		case Event::MouseButton:
 			{
-				MouseButtonEvent const & mbEvent = dynamic_cast<MouseButtonEvent const &>(event);
+				MouseButtonEvent const & mbEvent = event.as<MouseButtonEvent>();
 				if(mbEvent.button == MouseButtonEvent::Right)
 				{
 					looking = mbEvent.pressed;
@@ -136,7 +136,7 @@ namespace Scene
 			}
 		case Event::MouseMove:
 			{
-				MouseMoveEvent const & mmEvent = dynamic_cast<MouseMoveEvent const &>(event);
+				MouseMoveEvent const & mmEvent = event.as<MouseMoveEvent>();
 				if(looking)
 				{
 					yaw += lookSensitivity * mmEvent.relative[0];

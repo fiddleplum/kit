@@ -9,20 +9,19 @@
 #include <cctype>
 #include <locale>
 
-
 bool readFile(std::string & content, std::string const & filename)
 {
-	std::fstream f (filename, std::ios::in);
-	if(f.good() == false)
+	std::fstream f (filename, std::ios::in | std::ios::binary);
+	if(f.is_open() == false)
 	{
 		return false;
 	}
 	f.seekg(0, std::ios::end);
-	std::streampos size = f.tellg();
-	content.resize((std::size_t)size);
-	f.seekg(0);
-	f.read(&content[0], size); 
-	return f.good();
+	content.resize((unsigned int)f.tellg());
+	f.seekg(0, std::ios::beg);
+	f.read(&content[0], content.size());
+	f.close();
+	return true;
 }
 
 bool stringToBool(bool & b, std::string const & s)

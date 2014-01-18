@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Widget.h"
-#include <vector>
-#include <memory>
+#include "WidgetContainer.h"
 
 namespace Gui
 {
-	class Partition : public Widget
+	class Partition : public WidgetContainer
 	{
 	public:
 		// Constructs the partition. Defaults to a horizontal stack of panels.
@@ -21,14 +19,14 @@ namespace Gui
 		// Appends a panel to the stack. See setPanelWidget and setPanelSize for details on params.
 		void addPanel(std::shared_ptr<Widget> widget, int pixelSize, float scaleSize);
 
+		// Removes the panel at the specified index. If the panel does not exist, does nothing.
+		void removePanel(int index);
+
 		// Creates a widget set in the panel at the specified index.
 		void setPanelWidget(int index, std::shared_ptr<Widget> widget);
 
 		// Sets the panel size at the specified index according to: pixelSize + scaleSize * (pixels remaining after pixelSizes of all panels are taken into account).
 		void setPanelSize(int index, int pixelSize, float scaleSize);
-
-		// Removes the panel at the specified index. If the panel does not exist, does nothing.
-		void removePanel(int index);
 
 		// Inherited from Widget.
 		virtual Box2i getBounds() const override;
@@ -46,10 +44,10 @@ namespace Gui
 			float scaleSize;
 			int actualSize;
 		};
-		void updatePanels();
-		std::vector<Panel> panels;
+		void updateWidgetBounds() override;
+
+		std::list<Panel> panels;
 		int axis;
-		Box2i bounds;
 	};
 }
 

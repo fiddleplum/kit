@@ -16,7 +16,6 @@ namespace App
 	void startupInput();
 	void shutdownInput();
 	void setCursorPositionValid(bool valid);
-	void handleEvent(Event const & event);
 	void handleSDLInputEvent(SDL_Event const & sdlEvent);
 
 	SDL_Window * window = nullptr;
@@ -26,13 +25,14 @@ namespace App
 	float lastTime = 0.0f;
 	std::shared_ptr<Gui::Widget> widget;
 
-	ResourceManager<Texture> textureManager;
-	ResourceManager<Shader> shaderManager;
+	std::shared_ptr<ResourceManager<Texture>> textureManager;
+	std::shared_ptr<ResourceManager<Shader>> shaderManager;
 
 	/*** Internal functions ***/
 
 	void handleEvent(Event const & event)
 	{
+		handleAppEvent(event);
 		if(widget != nullptr)
 		{
 			widget->handleEvent(event);
@@ -133,10 +133,7 @@ namespace App
 			if(running)
 			{
 				UpdateEvent updateEvent;
-				if(widget != nullptr)
-				{
-					widget->handleEvent(updateEvent);
-				}
+				handleEvent(updateEvent);
 			}
 			if(running)
 			{
@@ -149,9 +146,14 @@ namespace App
 
 	void showMessage(std::string const & text)
 	{
-		std::fstream log ("log.txt", std::ios::out);
-		log << text;
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", text.c_str(), window);
+		log(text);
+	}
+
+	void log(std::string const & text)
+	{
+		std::fstream logFile ("log.txt", std::ios::app);
+		logFile << text << std::endl;		
 	}
 
 	void setTitle(std::string const & title)
@@ -201,12 +203,12 @@ namespace App
 		return (float)SDL_GetTicks() / 1000.0f;
 	}
 
-	ResourceManager<Texture> & getTextureManager()
+	std::shared_ptr<ResourceManager<Texture>> getTextureManager()
 	{
 		return textureManager;
 	}
 
-	ResourceManager<Shader> & getShaderManager()
+	std::shared_ptr<ResourceManager<Shader>> getShaderManager()
 	{
 		return shaderManager;
 	}
@@ -239,29 +241,28 @@ int main(int argc, char *argv[])
 	glInitialize();
 	App::startupInput();
 
-    // Run the user onStartup function.
+	App::textureManager = std::make_shared<ResourceManager<Texture>>();
+	App::shaderManager = std::make_shared<ResourceManager<Shader>>();
+
+	int returnStatus = 0;
 	try
 	{
 		App::onStartup(params); // calls user-defined function
+
+		App::doLoop(); // Do the loop.
 	}
 	catch(std::runtime_error const & err)
 	{
 		App::showMessage(err.what());
+		returnStatus = -1;
+		throw;
 	}
 
-	// Do the loop.
-	App::doLoop();
+	App::widget.reset(); // clear the widget to release resources
+	App::onShutdown(); // calls user-defined function
 
-    // Run the user onShutdown function.
-	App::widget.reset();
-	try
-	{
-		App::onShutdown(); // calls user-defined function
-	}
-	catch(std::runtime_error const & err)
-	{
-		App::showMessage(err.what());
-	}
+	App::textureManager.reset();
+	App::shaderManager.reset();
 
     // Close window.
 	App::shutdownInput();

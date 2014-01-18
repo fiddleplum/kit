@@ -4,8 +4,6 @@
 #include "../Ray.h"
 #include <memory>
 
-class Event;
-
 namespace Scene
 {
 	class Camera : public Entity
@@ -19,7 +17,6 @@ namespace Scene
 		void setOrthogonal(float);
 		virtual void setPosition(Vector3f) override;
 		virtual void setOrientation(Quaternionf) override;
-		virtual void setScale(Vector3f) override;
 		Vector2f getNdcPosition(Vector3f worldPosition) const;
 		Ray3f getRay(Vector2f ndcPosition) const;
 		Matrix44f const & getProjection() const;

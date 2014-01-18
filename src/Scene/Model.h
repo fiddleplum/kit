@@ -40,10 +40,10 @@ namespace Scene
 
 		void clearTextures();
 
-		void setColor(Vector4f const & emitColor, Vector4f const & diffuseColor);
+		void setColor(Vector3f const & emitColor, Vector4f const & diffuseColor);
 
 		void setSpecular(unsigned int level, float strength);
-
+		
 		// For use with RenderEngine
 	
 		void render(std::shared_ptr<Camera const> camera, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const;
@@ -71,7 +71,7 @@ namespace Scene
 
 		void updateShader();
 
-		Vector4f mEmitColor;
+		Vector3f mEmitColor;
 		int mEmitColorLocation;
 		Vector4f mDiffuseColor;
 		int mDiffuseColorLocation;
@@ -120,7 +120,8 @@ unsigned int - number of indices per primitive
 int list - list of indices that make up triangles
 
 material:
-float[4] - color (0..1)
+float[3] - emmisive color (0..1)
+float[4] - diffuse color (0..1)
 unsigned int - shininess (>= 1)
 float - shininess strength (>= 0)
 texture list - list of textures

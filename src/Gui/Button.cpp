@@ -43,7 +43,7 @@ namespace Gui
 			}
 			case Event::MouseMove:
 			{
-				MouseMoveEvent const & mmEvent = dynamic_cast<MouseMoveEvent const &>(event);
+				MouseMoveEvent const & mmEvent = event.as<MouseMoveEvent>();
 				if(getBounds().containsInc(mmEvent.absolute))
 				{
 					if(hovered == false)
@@ -71,7 +71,7 @@ namespace Gui
 			}
 			case Event::MouseButton:
 			{
-				MouseButtonEvent const & mbEvent = dynamic_cast<MouseButtonEvent const &>(event);
+				MouseButtonEvent const & mbEvent = event.as<MouseButtonEvent>();
 				if(mbEvent.button == mbEvent.Left)
 				{
 					if(mbEvent.pressed)

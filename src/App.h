@@ -22,6 +22,9 @@ namespace App
 	/// This function is called just before the loop. The params are the given at the command prompt.
 	void onStartup(std::vector<std::string> const & params);
 
+	/// Called after the widget handles the event.
+	void handleAppEvent(Event const & event);
+
 	/// This function is called just after the loop.
 	void onShutdown();
 
@@ -29,6 +32,9 @@ namespace App
 
 	/// This shows a system message. If in Windows, it opens a popup window, otherwise it prints to stdout.
 	void showMessage(std::string const & text);
+
+	/// Logs a message.
+	void log(std::string const & text);
 
 	/// Sets the title of the window. The window starts with "Untitled".
 	void setTitle(std::string const & title);
@@ -54,9 +60,8 @@ namespace App
 	/// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
 	float getTime();
 
-	ResourceManager<Texture> & getTextureManager();
+	std::shared_ptr<ResourceManager<Texture>> getTextureManager();
 
-	ResourceManager<Shader> & getShaderManager();
-
+	std::shared_ptr<ResourceManager<Shader>> getShaderManager();
 }
 

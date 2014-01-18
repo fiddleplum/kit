@@ -32,7 +32,7 @@ namespace Scene
 		void addController(std::shared_ptr<Controller> controller);
 
 		void removeController(std::shared_ptr<Controller> controller);
-
+		
 		// Called my Camera.
 		void handleEvent(Event const & event);
 

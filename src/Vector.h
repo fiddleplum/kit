@@ -674,7 +674,7 @@ Vector<dim, T> operator /(Vector<dim, T> v, T a)
 	Vector<dim, T> r;
 	for(unsigned int i = 0; i < dim; ++i)
 	{
-		r.c[i] = v.c[i] / a;
+		r[i] = v[i] / a;
 	}
 	return r;
 }

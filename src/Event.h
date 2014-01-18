@@ -24,6 +24,9 @@ public:
 
 	virtual std::string toString() const = 0;
 
+	template <typename EventType>
+	EventType as() const;
+
 	Type type;
 };
 
@@ -154,4 +157,10 @@ public:
 	int ball;
 	Vector2i offset;
 };
+
+template <typename EventType>
+EventType Event::as() const
+{
+	 return dynamic_cast<EventType const &>(*this);
+}
 

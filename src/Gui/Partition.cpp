@@ -5,103 +5,85 @@ namespace Gui
 	Partition::Partition()
 	{
 		axis = 0;
-		updatePanels();
 	}
 
 	void Partition::setHorizontal()
 	{
 		axis = 0;
-		updatePanels();
+		updateWidgetBounds();
 	}
 
 	void Partition::setVertical()
 	{
 		axis = 1;
-		updatePanels();
+		updateWidgetBounds();
 	}
 
 	void Partition::addPanel(std::shared_ptr<Widget> widget, int pixelSize, float scaleSize)
 	{
+		addWidget(widget);
 		Panel panel;
 		panel.widget = widget;
 		panel.pixelSize = pixelSize;
 		panel.scaleSize = scaleSize;
-		panels.push_back(panel);
-		updatePanels();
-	}
-
-	void Partition::setPanelWidget(int index, std::shared_ptr<Widget> widget)
-	{
-		if(index >= (signed)panels.size())
-		{
-			throw std::runtime_error("Index for Partition is out of range.");
-		}
-		panels[index].widget = widget;
-		updatePanels();
-	}
-
-	void Partition::setPanelSize(int index, int pixelSize, float scaleSize)
-	{
-		if(index >= (signed)panels.size())
-		{
-			throw std::runtime_error("Index for Partition is out of range.");
-		}
-		panels[index].pixelSize = pixelSize;
-		panels[index].scaleSize = scaleSize;
-		updatePanels();
+		panels.insert(panels.end(), panel);
+		updateWidgetBounds();
 	}
 
 	void Partition::removePanel(int index)
 	{
-		if(index >= (signed)panels.size())
+		int i = 0;
+		for(auto it = panels.begin(); it != panels.end(); it++)
 		{
-			throw std::runtime_error("Index for Partition is out of range.");
-		}
-		panels.erase(panels.begin() + index);
-		updatePanels();
-	}
-
-	Box2i Partition::getBounds() const
-	{
-		return bounds;
-	}
-
-	void Partition::setPosition(Vector2i position)
-	{
-		bounds.setMinKeepSize(position);
-	}
-
-	void Partition::setMaxSize(Vector2i maxSize)
-	{
-		bounds.setSize(maxSize);
-		updatePanels();
-	}
-
-	void Partition::handleEvent(Event const & event)
-	{
-		for(Panel const & panel : panels)
-		{
-			if(panel.widget != nullptr)
+			if(i == index)
 			{
-				panel.widget->handleEvent(event);
+				removeWidget(it->widget);
+				panels.erase(it);
+				updateWidgetBounds();
+				break;
 			}
+			i++;
 		}
 	}
 
-	void Partition::render()
+	void Partition::setPanelWidget(int index, std::shared_ptr<Widget> widget)
 	{
-		for(Panel const & panel : panels)
+		int i = 0;
+		for(auto it = panels.begin(); it != panels.end(); it++)
 		{
-			if(panel.widget != nullptr)
+			if(i == index)
 			{
-				panel.widget->render();
+				removeWidget(it->widget);
+				addWidget(widget);
+				it->widget = widget;
+				updateWidgetBounds();
+				break;
 			}
+			i++;
 		}
 	}
 
-	void Partition::updatePanels()
+	void Partition::setPanelSize(int index, int pixelSize, float scaleSize)
 	{
+		int i = 0;
+		for(auto it = panels.begin(); it != panels.end(); it++)
+		{
+			if(i == index)
+			{
+				it->pixelSize = pixelSize;
+				it->scaleSize = scaleSize;
+				updateWidgetBounds();
+				break;
+			}
+			i++;
+		}
+	}
+
+	void Partition::updateWidgetBounds()
+	{
+		Box2i bounds = getBounds();
 		int remainingSize = bounds.getSize()[axis];
+
 		// fixed pixels
 		for(Panel & panel : panels)
 		{
@@ -129,8 +111,9 @@ namespace Gui
 				break;
 			}
 		}
+
 		// adjust widget sizes
-		Vector2i size = getBounds().getSize();
+		Vector2i size = bounds.getSize();
 		for(Panel & panel : panels)
 		{
 			size[axis] = panel.actualSize;

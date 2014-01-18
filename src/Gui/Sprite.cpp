@@ -7,10 +7,10 @@ namespace Gui
 	{
 		std::vector<unsigned int> indices (6);
 		indices[0] = 0;
-		indices[1] = 1;
+		indices[1] = 3;
 		indices[2] = 2;
 		indices[3] = 2;
-		indices[4] = 3;
+		indices[4] = 1;
 		indices[5] = 0;
 		model.setIndices(indices);
 		updateVertices();

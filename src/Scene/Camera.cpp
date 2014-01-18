@@ -11,8 +11,8 @@ namespace Scene
 		fov = 3.14159f / 2.0f;
 		size = 1.0f;
 		perspective = true;
-		projection = Matrix44f::zero();
-		view = Matrix44f::identity();
+		projection = projectionInverse = Matrix44f::zero();
+		view = viewInverse = Matrix44f::identity();
 		projectionNeedsUpdate = true;
 		viewNeedsUpdate = true;
 	}
@@ -58,12 +58,6 @@ namespace Scene
 	void Camera::setOrientation(Quaternionf orientation)
 	{
 		Entity::setOrientation(orientation);
-		viewNeedsUpdate = true;
-	}
-
-	void Camera::setScale(Vector3f scale)
-	{
-		Entity::setScale(scale);
 		viewNeedsUpdate = true;
 	}
 
@@ -161,12 +155,16 @@ namespace Scene
 		}
 		else
 		{
-			// z = (z - near) / (near - far) - 1
-			projection(2, 2) = 0;
-			projection(2, 3) = (far - near);
+			float nmf = near - far;
+			float npf = near + far;
+			projection(2, 2) = 2 * nmf;
+			projection(2, 3) = npf / nmf;
 			projection(3, 2) = 0;
 			projection(3, 3) = 1;
-			// TODO: projection and projectionInverse need to be finished
+			projectionInverse(2, 2) = nmf / 2;
+			projectionInverse(2, 3) = npf / 2;
+			projectionInverse(3, 2) = 0;
+			projectionInverse(3, 3) = 1;
 		}
 		projectionNeedsUpdate = false;
 	}

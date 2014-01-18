@@ -35,7 +35,7 @@ namespace Gui
 			"{\n"
 			"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 			"}\n";
-		shader = App::getShaderManager().get("guiShader", code);
+		shader = App::getShaderManager()->get("guiShader", code);
 
 		vbo = std::make_shared<VertexBufferObject>();
 		vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
@@ -61,7 +61,7 @@ namespace Gui
 
 	void Model::setTexture(std::string const & filename)
 	{
-		texture = App::getTextureManager().get(filename, filename);
+		texture = App::getTextureManager()->get(filename, filename);
 	}
 
 	void Model::setVertices(std::vector<Vertex> const & vertices)

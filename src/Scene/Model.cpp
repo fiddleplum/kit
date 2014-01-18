@@ -19,7 +19,7 @@ namespace Scene
 		mVertexHasTangent = false;
 		mVertexHasColor = false;
 		mNumVertexUVs = 0;
-		mEmitColor = Vector4f::zero();
+		mEmitColor = Vector3f::zero();
 		mDiffuseColor = Vector4f(1, 1, 1, 1);
 		mSpecularLevel = 1;
 		mSpecularStrength = 0;
@@ -39,11 +39,10 @@ namespace Scene
 		std::fstream in (filename, std::fstream::in | std::fstream::binary);
 
 		// Material
-		Vector4f emitColor;
+		Vector3f emitColor;
 		deserialize(in, emitColor[0]);
 		deserialize(in, emitColor[1]);
 		deserialize(in, emitColor[2]);
-		deserialize(in, emitColor[3]);
 		Vector4f diffuseColor;
 		deserialize(in, diffuseColor[0]);
 		deserialize(in, diffuseColor[1]);
@@ -141,7 +140,7 @@ namespace Scene
 	void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 	{
 		TextureInfo textureInfo;
-		textureInfo.texture = App::getTextureManager().get(filename, filename);
+		textureInfo.texture = App::getTextureManager()->get(filename, filename);
 		textureInfo.type = type;
 		textureInfo.samplerLocation = -1;
 		textureInfo.uvIndex = uvIndex;
@@ -155,7 +154,7 @@ namespace Scene
 		updateShader();
 	}
 
-	void Model::setColor(Vector4f const & emitColor, Vector4f const & diffuseColor)
+	void Model::setColor(Vector3f const & emitColor, Vector4f const & diffuseColor)
 	{
 		mEmitColor = emitColor;
 		mDiffuseColor = diffuseColor;
@@ -181,8 +180,11 @@ namespace Scene
 			samplerIndex++;
 		}
 		Texture::deactivateRest(mTextureInfos.size());
-		mShader->setUniform(mLightPositionsLocation, &lightPositions[0], lightPositions.size());
-		mShader->setUniform(mLightColorsLocation, &lightColors[0], lightColors.size());
+		if(lightPositions.size() > 0)
+		{
+			mShader->setUniform(mLightPositionsLocation, &lightPositions[0], lightPositions.size());
+			mShader->setUniform(mLightColorsLocation, &lightColors[0], lightColors.size());
+		}
 		mShader->setUniform(mEmitColorLocation, mEmitColor);
 		mShader->setUniform(mDiffuseColorLocation, mDiffuseColor);
 		mShader->setUniform(mSpecularLevelLocation, (int)mSpecularLevel);
@@ -299,29 +301,29 @@ namespace Scene
 
 		// Add the global variables.
 		code[Shader::Fragment] += "in vec3 vPosition;\n";
-		if(mVertexHasNormal || mVertexHasTangent)
+		code[Shader::Fragment] += "uniform vec3 uEmitColor;\n";
+		if(mVertexHasNormal)
 		{
 			code[Shader::Fragment] += "uniform vec3 uLightPositions [" + std::to_string(maxLights) + "];\n";
 			code[Shader::Fragment] += "uniform vec3 uLightColors [" + std::to_string(maxLights) + "];\n";
-		}
-		if(mVertexHasNormal)
-		{
 			code[Shader::Fragment] += "in vec3 vNormal;\n";
-		}
-		if(mVertexHasTangent)
-		{
-			code[Shader::Fragment] += "in vec3 vTangent;\n";
+			if(mVertexHasTangent)
+			{
+				code[Shader::Fragment] += "in vec3 vTangent;\n";
+			}
 		}
 		if(mVertexHasColor)
 		{
 			code[Shader::Fragment] += "in vec4 vColor;\n";
 		}
+		else
+		{
+			code[Shader::Fragment] += "uniform vec4 uDiffuseColor;\n";
+		}
 		for(unsigned int uvIndex = 0; uvIndex < mNumVertexUVs; uvIndex++)
 		{
 			code[Shader::Fragment] += "in vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
 		}
-		code[Shader::Fragment] += "uniform vec4 uEmitColor;\n";
-		code[Shader::Fragment] += "uniform vec4 uDiffuseColor;\n";
 		unsigned int samplerIndex = 0;
 		for(TextureInfo const & textureInfo : mTextureInfos)
 		{
@@ -332,10 +334,13 @@ namespace Scene
 		// Add the main function.
 		code[Shader::Fragment] += "void main()\n";
 		code[Shader::Fragment] += "{\n";
-		code[Shader::Fragment] += "	vec4 color = uEmitColor;\n";
 		if(mVertexHasColor)
 		{
-			code[Shader::Fragment] += "	color += vColor;\n";
+			code[Shader::Fragment] += "	vec4 color = vColor;\n";
+		}
+		else
+		{
+			code[Shader::Fragment] += "	vec4 color = uDiffuseColor;\n";
 		}
 		samplerIndex = 0;
 		for(TextureInfo const & textureInfo : mTextureInfos)
@@ -354,18 +359,23 @@ namespace Scene
 			}
 			samplerIndex++;
 		}
-		code[Shader::Fragment] += "	gl_FragColor = vec4(0, 0, 0, color.a);\n";
 		if(mVertexHasNormal)
 		{
+			code[Shader::Fragment] += "	gl_FragColor = vec4(0, 0, 0, color.a);\n";
 			code[Shader::Fragment] += "	for(int i = 0; i < " + std::to_string(maxLights) + "; i++)\n";
 			code[Shader::Fragment] += "	{\n";
-			code[Shader::Fragment] += "		gl_FragColor.rgb += color.rgb * uLightColors[i] * dot(normalize(uLightPositions[i] - vPosition), vNormal);\n";
+			code[Shader::Fragment] += "		float dotLight = dot(normalize(uLightPositions[i] - vPosition), vNormal);\n";
+			code[Shader::Fragment] += "		if(dotLight > 0)\n";
+			code[Shader::Fragment] += "		{\n";
+			code[Shader::Fragment] += "			gl_FragColor.rgb += color.rgb * uLightColors[i] * dotLight;\n";
+			code[Shader::Fragment] += "		}\n";
 			code[Shader::Fragment] += "	}\n";
 		}
 		else
 		{
-			code[Shader::Fragment] += "	gl_FragColor.rgb += color.rgb;\n";
+			code[Shader::Fragment] += "	gl_FragColor = color;\n";
 		}
+		code[Shader::Fragment] += "	gl_FragColor.rgb += uEmitColor;\n";
 		code[Shader::Fragment] += "}\n";
 
 		// Create a unique name for the shader.
@@ -389,7 +399,7 @@ namespace Scene
 			name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 		}
 
-		mShader = App::getShaderManager().get(name, code);
+		mShader = App::getShaderManager()->get(name, code);
 		mNeedsResorting = true;
 
 		// Update attribute locations

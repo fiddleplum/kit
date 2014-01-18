@@ -4,48 +4,27 @@ namespace Gui
 {
 	Layering::Layering()
 	{
-		bounds.min = bounds.max = Vector2i::zero();
 	}
 
 	void Layering::addLayer(std::shared_ptr<Widget> widget)
 	{
-		if(widget == nullptr)
-		{
-			throw std::runtime_error("Layering::addLayer, widget == nullptr");
-		}
-		layers.push_back(widget);
+		Box2i bounds = getBounds();
+		addWidget(widget);
+		layers.insert(layers.end(), widget);
+		widget->setPosition(bounds.min);
 		widget->setMaxSize(bounds.getSize());
 	}
 
-	void Layering::insertLayerBefore(std::shared_ptr<Widget> widget, std::shared_ptr<Widget> relativeTo)
+	void Layering::insertLayerBefore(std::shared_ptr<Widget> widget, std::shared_ptr<Widget> beforeWidget)
 	{
-		if(widget == nullptr)
-		{
-			throw std::runtime_error("Layering::insertLayerBefore, widget == nullptr");
-		}
+		insertWidgetBefore(widget, beforeWidget);
 		for(auto it = layers.begin(); it != layers.end(); it++)
 		{
-			if(*it == relativeTo)
+			if(*it == beforeWidget)
 			{
+				Box2i bounds = getBounds();
 				layers.insert(it, widget);
-				widget->setMaxSize(bounds.getSize());
-				break;
-			}
-		}
-	}
-
-	void Layering::insertLayerAfter(std::shared_ptr<Widget> widget, std::shared_ptr<Widget> relativeTo)
-	{
-		if(widget == nullptr)
-		{
-			throw std::runtime_error("Layering::insertLayerAfter, widget == nullptr");
-		}
-		for(auto it = layers.begin(); it != layers.end(); it++)
-		{
-			if(*it == relativeTo)
-			{
-				it++;
-				layers.insert(it, widget);
+				widget->setPosition(bounds.min);
 				widget->setMaxSize(bounds.getSize());
 				break;
 			}
@@ -54,6 +33,7 @@ namespace Gui
 
 	void Layering::removeLayer(std::shared_ptr<Widget> widget)
 	{
+		removeWidget(widget);
 		for(auto it = layers.begin(); it != layers.end(); it++)
 		{
 			if(*it == widget)
@@ -64,42 +44,13 @@ namespace Gui
 		}
 	}
 
-	Box2i Layering::getBounds() const
+	void Layering::updateWidgetBounds()
 	{
-		return bounds;
-	}
-
-	void Layering::setPosition(Vector2i position)
-	{
-		bounds.setMinKeepSize(position);
+		Box2i bounds = getBounds();
 		for(std::shared_ptr<Widget> widget : layers)
 		{
-			widget->setPosition(position);
-		}
-	}
-
-	void Layering::setMaxSize(Vector2i maxSize)
-	{
-		bounds.setSize(maxSize);
-		for(std::shared_ptr<Widget> widget : layers)
-		{
-			widget->setMaxSize(maxSize);
-		}
-	}
-
-	void Layering::handleEvent(Event const & event)
-	{
-		for(auto it = layers.rbegin(); it != layers.rend(); it++)
-		{
-			(*it)->handleEvent(event);
-		}
-	}
-
-	void Layering::render()
-	{
-		for(auto it = layers.begin(); it != layers.end(); it++)
-		{
-			(*it)->render();
+			widget->setPosition(bounds.min);
+			widget->setMaxSize(bounds.getSize());
 		}
 	}
 }
