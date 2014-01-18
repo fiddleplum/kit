@@ -132,7 +132,7 @@ Quaternion<T>::Quaternion(T yaw, T pitch, T roll)
 	T sinRoll2 = sin(roll / 2);
 	r =      cosYaw2 * cosPitch2 * cosRoll2 + sinYaw2 * sinPitch2 * sinRoll2;
 	ijk[1] = cosYaw2 * cosPitch2 * sinRoll2 - sinYaw2 * sinPitch2 * cosRoll2;
-	ijk[0] = cosYaw2 * sinPitch2 * cosRoll2 + sinYaw2 * cosPitch2 * sinRoll2;
+	ijk[0] = -cosYaw2 * sinPitch2 * cosRoll2 - sinYaw2 * cosPitch2 * sinRoll2;
 	ijk[2] = sinYaw2 * cosPitch2 * cosRoll2 - cosYaw2 * sinPitch2 * sinRoll2;
 }
 
