@@ -255,7 +255,6 @@ int main(int argc, char *argv[])
 	{
 		App::showMessage(err.what());
 		returnStatus = -1;
-		throw;
 	}
 
 	App::widget.reset(); // clear the widget to release resources

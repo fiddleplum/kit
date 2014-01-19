@@ -45,6 +45,9 @@ public:
 
   //! Returns true if every element v[i] in \b v is within [min, max).
   bool containsEx (Vector<dim, T> v) const;
+  
+  //! Returns true if any part of b is within (not just touching) the box.
+  bool intersects (Box<dim, T> b) const;
 
   //! Returns a position or size aligned to the box.
   Vector<dim, T> getAligned (Vector<dim, float> fractionOfBoxSize, Vector<dim, T> offset);
@@ -172,6 +175,19 @@ bool Box<dim, T>::containsEx (Vector<dim, T> v) const
     }
   }
   return true;
+}
+
+template <int dim, typename T>
+bool Box<dim, T>::intersects (Box<dim, T> b) const
+{
+	for(int i = 0; i < dim; ++i)
+	{
+		if(min[i] >= b.max[i] || max[i] <= b.min[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 template <int dim, typename T>

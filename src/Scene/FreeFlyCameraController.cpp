@@ -140,7 +140,7 @@ namespace Scene
 				if(looking)
 				{
 					yaw += lookSensitivity * mmEvent.relative[0];
-					pitch += lookSensitivity * mmEvent.relative[1];
+					pitch -= lookSensitivity * mmEvent.relative[1];
 				}
 				break;
 			}
