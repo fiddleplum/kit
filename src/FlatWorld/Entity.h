@@ -68,9 +68,9 @@ namespace FlatWorld
 		Vector2f accumForce;
 		float accumTorque;
 
-		bool matricesNeedUpdate;
 		Matrix33f matrix;
 		Matrix33f matrixInverse;
+		bool matricesNeedUpdate;
 	};
 }
 

@@ -7,6 +7,7 @@
 #include <map>
 #include <memory>
 #include <functional>
+#include <set>
 
 namespace FlatWorld
 {
@@ -19,32 +20,30 @@ namespace FlatWorld
 		Ray2f ray;
 	};
 
-	class Attributes
-	{
-	public:
-		Attributes();
+	//class Attributes
+	//{
+	//public:
+	//	Attributes();
 
-		Vector2f tryPositionOffset;
-		float tryRotationOffset;
-		float earliestCollisionTime; // (0 -> 1) * deltaTime
-		Vector2f earliestCollisionOffset;
-		Ray2f earliestCollisionImpulse;
-		Vector2f velocity;
-		float angularVelocity;
-		float mass;
-		float density;
-		bool immovable;
-	};
+	//	Vector2f tryPositionOffset;
+	//	float tryRotationOffset;
+	//	float earliestCollisionTime; // (0 -> 1) * deltaTime
+	//	Vector2f earliestCollisionOffset;
+	//	Ray2f earliestCollisionImpulse;
+	//	Vector2f velocity;
+	//	float angularVelocity;
+	//	float mass;
+	//	float density;
+	//	bool immovable;
+	//};
 
 	class FlatWorld
 	{
 	public:
-		void simpleTick(float deltaTime);
-		void tick(float deltaTime);
+		void iteratePhysics(float deltaTime);
 
-		void addEntity(std::shared_ptr<Entity>, Attributes const &);
+		void addEntity(std::shared_ptr<Entity>);
 		void removeEntity(std::shared_ptr<Entity>);
-		Attributes & getAttributes(std::shared_ptr<Entity>);
 
 		//Intersection getIntersection(std::shared_ptr<Entity> entity1, std::shared_ptr<Entity> entity2);
 
@@ -52,8 +51,8 @@ namespace FlatWorld
 
 	private:
 		std::function<void ()> generateForces;
-		std::vector<std::shared_ptr<Entity>> entities;
-		std::map<std::shared_ptr<Entity>, Attributes> entityAttributes;
+		std::set<std::shared_ptr<Entity>> entities;
+		//std::map<std::shared_ptr<Entity>, Attributes> entityAttributes;
 	};
 
 	Collision getCollision(std::shared_ptr<Polygon> polygon1, Vector2f const & offset1, std::shared_ptr<Polygon> polygon2, Vector2f const & offset2);

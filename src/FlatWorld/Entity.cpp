@@ -6,9 +6,16 @@ namespace FlatWorld
 	Entity::Entity()
 	{
 		position = Vector2f::zero();
+		velocity = Vector2f::zero();
 		orientation = 0;
+		angularVelocity = 0;
 		scale = Vector2f::filled(1);
 		z = 0;
+		solid = false;
+		inverseMass = 0;
+		density = 0;
+		accumForce = Vector2f::zero();
+		accumTorque = 0;
 		matrixInverse = matrix = Matrix33f::identity();
 		matricesNeedUpdate = false;
 	}

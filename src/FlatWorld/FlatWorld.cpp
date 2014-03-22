@@ -4,16 +4,16 @@
 
 namespace FlatWorld
 {
-	Attributes::Attributes()
-	{
-		velocity = Vector2f::zero();
-		angularVelocity = 0.0f;
-		mass = 1.0f;
-		density = 1.0f;
-		immovable = false;
-	}
+	//Attributes::Attributes()
+	//{
+	//	velocity = Vector2f::zero();
+	//	angularVelocity = 0.0f;
+	//	mass = 1.0f;
+	//	density = 1.0f;
+	//	immovable = false;
+	//}
 
-	void FlatWorld::simpleTick(float deltaTime)
+	void FlatWorld::iteratePhysics(float deltaTime)
 	{
 		// Clear accumulated forces
 		for (auto entity : entities)
@@ -39,6 +39,34 @@ namespace FlatWorld
 			entity->setPosition(entity->getPosition() + entity->getVelocity() * deltaTime);
 			entity->setOrientation(entity->getOrientation() + entity->getAngularVelocity() * deltaTime);
 		}
+	}
+
+	//void FlatWorld::simpleTick(float deltaTime)
+	//{
+	//	// Clear accumulated forces
+	//	for (auto entity : entities)
+	//	{
+	//		entity->clearForces();
+	//	}
+
+	//	// Accumulate forces (user function)
+	//	if(generateForces)
+	//	{
+	//		generateForces();
+	//	}
+
+	//	// Integrate velocity and position
+	//	for (auto entity : entities)
+	//	{
+	//		Vector2f acceleration = entity->getAccumForce() * entity->getInverseMass();
+	//		float angularAcceleration = entity->getAccumTorque() * entity->getInverseMass() * entity->getInverseMass() * entity->getDensity();
+
+	//		entity->setVelocity(entity->getVelocity() + acceleration * deltaTime);
+	//		entity->setAngularVelocity(entity->getAngularVelocity() + angularAcceleration * deltaTime);
+
+	//		entity->setPosition(entity->getPosition() + entity->getVelocity() * deltaTime);
+	//		entity->setOrientation(entity->getOrientation() + entity->getAngularVelocity() * deltaTime);
+	//	}
 
 		// Populate impulses from collisions/contacts/constraints
 
@@ -56,144 +84,139 @@ namespace FlatWorld
 		// You still need TOI to find the impulse direction
 
 		// Move the entities.
-		for(auto & it : entityAttributes)
-		{
-			auto & entity = it.first;
-			auto & attributes = it.second;
-			attributes.tryPositionOffset = attributes.velocity * deltaTime;
-			attributes.tryRotationOffset = attributes.angularVelocity * deltaTime;
-			entity->setPosition(entity->getPosition() + attributes.tryPositionOffset);
-			entity->setOrientation(entity->getOrientation() + attributes.tryRotationOffset);
-		}
+		//for(auto & it : entityAttributes)
+		//{
+		//	auto & entity = it.first;
+		//	auto & attributes = it.second;
+		//	attributes.tryPositionOffset = attributes.velocity * deltaTime;
+		//	attributes.tryRotationOffset = attributes.angularVelocity * deltaTime;
+		//	entity->setPosition(entity->getPosition() + attributes.tryPositionOffset);
+		//	entity->setOrientation(entity->getOrientation() + attributes.tryRotationOffset);
+		//}
 
 		// Handle collisions.
-		for(auto & it1 : entityAttributes)
-		{
-			auto & entity1 = it1.first;
-			auto & attributes1 = it1.second;
-			for(auto & it2 : entityAttributes)
-			{
-				auto & entity2 = it2.first;
-				auto & attributes2 = it2.second;
-				if(entity1 >= entity2)
-				{
-					continue; // only consider any pair only once
-				}
-				//Intersection intersection = getIntersection(entity1, entity2);
-				//if(intersection.yes)
-				//{
-				//}
-			}
-		}
+		//for(auto & it1 : entityAttributes)
+		//{
+		//	auto & entity1 = it1.first;
+		//	auto & attributes1 = it1.second;
+		//	for(auto & it2 : entityAttributes)
+		//	{
+		//		auto & entity2 = it2.first;
+		//		auto & attributes2 = it2.second;
+		//		if(entity1 >= entity2)
+		//		{
+		//			continue; // only consider any pair only once
+		//		}
+		//		//Intersection intersection = getIntersection(entity1, entity2);
+		//		//if(intersection.yes)
+		//		//{
+		//		//}
+		//	}
+		//}
 
-	}
+	//}
 
-	void FlatWorld::tick(float deltaTime)
-	{
+	//void FlatWorld::tick(float deltaTime)
+	//{
 		// Move the entities.
-		for(auto & it : entityAttributes)
-		{
-			auto & entity = it.first;
-			auto & attributes = it.second;
-			attributes.tryPositionOffset = attributes.velocity * deltaTime;
-			attributes.tryRotationOffset = attributes.angularVelocity * deltaTime;
-			attributes.earliestCollisionTime = 1.0f;
-			entity->setPosition(entity->getPosition() + attributes.tryPositionOffset);
-			entity->setOrientation(entity->getOrientation() + attributes.tryRotationOffset);
-		}
+		//for(auto & it : entityAttributes)
+		//{
+		//	auto & entity = it.first;
+		//	auto & attributes = it.second;
+		//	attributes.tryPositionOffset = attributes.velocity * deltaTime;
+		//	attributes.tryRotationOffset = attributes.angularVelocity * deltaTime;
+		//	attributes.earliestCollisionTime = 1.0f;
+		//	entity->setPosition(entity->getPosition() + attributes.tryPositionOffset);
+		//	entity->setOrientation(entity->getOrientation() + attributes.tryRotationOffset);
+		//}
 
 		// Handle collisions.
-		for(auto & it1 : entityAttributes)
-		{
-			auto & entity1 = it1.first;
-			auto & attributes1 = it1.second;
-			for(auto & it2 : entityAttributes)
-			{
-				auto & entity2 = it2.first;
-				auto & attributes2 = it2.second;
-				if(entity1 >= entity2)
-				{
-					continue; // only consider any pair only once
-				}
-				//Intersection intersection = getIntersection(entity1, entity2);
-			//	if(intersection.yes)
-			//	{
-			//		float massFactor = 0; // 0 means only entity1 moves, 1 means only entity2 moves
-			//		if(!attributes1.immovable && !attributes2.immovable && (attributes1.mass + attributes2.mass) > 0)
-			//		{
-			//			massFactor = attributes1.mass / (attributes1.mass + attributes2.mass);
-			//		}
-			//		else if(!attributes1.immovable)
-			//		{
-			//			massFactor = 0;
-			//		}
-			//		else if(!attributes2.immovable)
-			//		{
-			//			massFactor = 1;
-			//		}
-			//		if(!attributes1.immovable && !attributes1.tryPositionOffset.isZero())
-			//		{
-			//			float collisionTime = attributes1.tryPositionOffset.dot(-intersection.ray.direction * (1.0f - massFactor)) / attributes1.tryPositionOffset.normSq();
-			//			if(attributes1.earliestCollisionTime > collisionTime)
-			//			{
-			//				attributes1.earliestCollisionTime = collisionTime;
-			//				attributes1.earliestCollisionImpulse = intersection.ray.scaled(massFactor - 1.0f);
-			//			}
-			//		}
-			//		else
-			//		{
-			//			attributes1.earliestCollisionTime = 0.0f;
-			//			attributes1.earliestCollisionImpulse = intersection.ray.scaled(massFactor - 1.0f);
-			//		}
-			//		if(!attributes2.immovable && !attributes2.tryPositionOffset.isZero())
-			//		{
-			//			float collisionTime = attributes2.tryPositionOffset.dot(intersection.ray.direction * massFactor) / attributes2.tryPositionOffset.normSq();
-			//			if(attributes2.earliestCollisionTime > collisionTime)
-			//			{
-			//				attributes2.earliestCollisionTime = collisionTime;
-			//				attributes2.earliestCollisionImpulse = intersection.ray.scaled(massFactor);
-			//			}
-			//		}
-			//		else
-			//		{
-			//			attributes2.earliestCollisionTime = 0.0f;
-			//			attributes2.earliestCollisionImpulse = intersection.ray.scaled(massFactor);
-			//		}
-			//		attributes1.earliestCollisionTime = 0.0f;
-			//		attributes2.earliestCollisionTime = 0.0f;
-			//	}
-			}
-		}
+		//for(auto & it1 : entityAttributes)
+		//{
+		//	auto & entity1 = it1.first;
+		//	auto & attributes1 = it1.second;
+		//	for(auto & it2 : entityAttributes)
+		//	{
+		//		auto & entity2 = it2.first;
+		//		auto & attributes2 = it2.second;
+		//		if(entity1 >= entity2)
+		//		{
+		//			continue; // only consider any pair only once
+		//		}
+		//		//Intersection intersection = getIntersection(entity1, entity2);
+		//	//	if(intersection.yes)
+		//	//	{
+		//	//		float massFactor = 0; // 0 means only entity1 moves, 1 means only entity2 moves
+		//	//		if(!attributes1.immovable && !attributes2.immovable && (attributes1.mass + attributes2.mass) > 0)
+		//	//		{
+		//	//			massFactor = attributes1.mass / (attributes1.mass + attributes2.mass);
+		//	//		}
+		//	//		else if(!attributes1.immovable)
+		//	//		{
+		//	//			massFactor = 0;
+		//	//		}
+		//	//		else if(!attributes2.immovable)
+		//	//		{
+		//	//			massFactor = 1;
+		//	//		}
+		//	//		if(!attributes1.immovable && !attributes1.tryPositionOffset.isZero())
+		//	//		{
+		//	//			float collisionTime = attributes1.tryPositionOffset.dot(-intersection.ray.direction * (1.0f - massFactor)) / attributes1.tryPositionOffset.normSq();
+		//	//			if(attributes1.earliestCollisionTime > collisionTime)
+		//	//			{
+		//	//				attributes1.earliestCollisionTime = collisionTime;
+		//	//				attributes1.earliestCollisionImpulse = intersection.ray.scaled(massFactor - 1.0f);
+		//	//			}
+		//	//		}
+		//	//		else
+		//	//		{
+		//	//			attributes1.earliestCollisionTime = 0.0f;
+		//	//			attributes1.earliestCollisionImpulse = intersection.ray.scaled(massFactor - 1.0f);
+		//	//		}
+		//	//		if(!attributes2.immovable && !attributes2.tryPositionOffset.isZero())
+		//	//		{
+		//	//			float collisionTime = attributes2.tryPositionOffset.dot(intersection.ray.direction * massFactor) / attributes2.tryPositionOffset.normSq();
+		//	//			if(attributes2.earliestCollisionTime > collisionTime)
+		//	//			{
+		//	//				attributes2.earliestCollisionTime = collisionTime;
+		//	//				attributes2.earliestCollisionImpulse = intersection.ray.scaled(massFactor);
+		//	//			}
+		//	//		}
+		//	//		else
+		//	//		{
+		//	//			attributes2.earliestCollisionTime = 0.0f;
+		//	//			attributes2.earliestCollisionImpulse = intersection.ray.scaled(massFactor);
+		//	//		}
+		//	//		attributes1.earliestCollisionTime = 0.0f;
+		//	//		attributes2.earliestCollisionTime = 0.0f;
+		//	//	}
+		//	}
+		//}
 
-		// Move the entities after collisions.
-		for(auto & it : entityAttributes)
-		{
-			auto & entity = it.first;
-			auto & attributes = it.second;
-			if(!attributes.immovable && attributes.earliestCollisionTime < 1.0f)
-			{
-				applyImpulse(entity, attributes.earliestCollisionImpulse);
-				if(attributes.earliestCollisionImpulse.direction.dot(attributes.velocity) < 0)
-				{
-					entity->setPosition(entity->getPosition() + attributes.earliestCollisionImpulse.direction);
-				}
-			}
-		}
-	}
+		//// Move the entities after collisions.
+		//for(auto & it : entityAttributes)
+		//{
+		//	auto & entity = it.first;
+		//	auto & attributes = it.second;
+		//	if(!attributes.immovable && attributes.earliestCollisionTime < 1.0f)
+		//	{
+		//		applyImpulse(entity, attributes.earliestCollisionImpulse);
+		//		if(attributes.earliestCollisionImpulse.direction.dot(attributes.velocity) < 0)
+		//		{
+		//			entity->setPosition(entity->getPosition() + attributes.earliestCollisionImpulse.direction);
+		//		}
+		//	}
+		//}
+	//}
 
-	void FlatWorld::addEntity(std::shared_ptr<Entity> entity, Attributes const & attributes)
+	void FlatWorld::addEntity(std::shared_ptr<Entity> entity)
 	{
-		entityAttributes[entity] = attributes;
+		entities.insert(entity);
 	}
 
 	void FlatWorld::removeEntity(std::shared_ptr<Entity> entity)
 	{
-		entityAttributes.erase(entity);
-	}
-
-	Attributes & FlatWorld::getAttributes(std::shared_ptr<Entity> entity)
-	{
-		return entityAttributes.at(entity);
+		entities.erase(entity);
 	}
 
 	//Intersection FlatWorld::getIntersection(std::shared_ptr<Entity> entity1, std::shared_ptr<Entity> entity2)
@@ -203,13 +226,13 @@ namespace FlatWorld
 
 	void FlatWorld::applyImpulse(std::shared_ptr<Entity> entity, Ray2f ray)
 	{
-		Attributes & attributes = entityAttributes.find(entity)->second;
-		Vector2f r = ray.start - entity->getPosition();
-		if(r.normSq() > 0 && attributes.mass > 0 && attributes.density > 0)
-		{
-			attributes.velocity += ray.direction / attributes.mass;
-			attributes.angularVelocity += r.cross2d(ray.direction) * attributes.density / (attributes.mass * attributes.mass);
-		}
+		//Attributes & attributes = entityAttributes.find(entity)->second;
+		//Vector2f r = ray.start - entity->getPosition();
+		//if(r.normSq() > 0 && attributes.mass > 0 && attributes.density > 0)
+		//{
+		//	attributes.velocity += ray.direction / attributes.mass;
+		//	attributes.angularVelocity += r.cross2d(ray.direction) * attributes.density / (attributes.mass * attributes.mass);
+		//}
 	}
 
 	Collision getCollision(std::shared_ptr<Polygon> polygon1, Vector2f const & offset1, std::shared_ptr<Polygon> polygon2, Vector2f const & offset2)
