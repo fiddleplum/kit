@@ -20,9 +20,9 @@ namespace Gui
 	{
 	}
 
-	Box2i Sprite::getBounds() const
+	Recti Sprite::getBounds() const
 	{
-		return Box2i::minSize(model.getPosition(), textureBounds.getSize());
+		return Recti::minSize(model.getPosition(), textureBounds.getSize());
 	}
 
 	void Sprite::setPosition(Vector2i position)
@@ -50,13 +50,13 @@ namespace Gui
 		model.setTexture(filename);
 	}
 
-	void Sprite::setTextureBounds(Box2i bounds)
+	void Sprite::setTextureBounds(Recti bounds)
 	{
 		textureBounds = bounds;
 		updateVertices();
 	}
 
-	Box2i Sprite::getTextureBounds() const
+	Recti Sprite::getTextureBounds() const
 	{
 		return textureBounds;
 	}

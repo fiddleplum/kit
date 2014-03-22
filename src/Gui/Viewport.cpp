@@ -8,10 +8,10 @@ namespace Gui
 {
 	Viewport::Viewport()
 	{
-		bounds = Box2i::zero();
+		bounds = Recti::zero();
 	}
 
-	Box2i Viewport::getBounds() const
+	Recti Viewport::getBounds() const
 	{
 		return bounds;
 	}

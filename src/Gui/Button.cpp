@@ -12,7 +12,7 @@ namespace Gui
 		shotInterval = .5f;
 	}
 
-	Box2i Button::getBounds() const
+	Recti Button::getBounds() const
 	{
 		return sprite.getBounds();
 	}
@@ -126,7 +126,7 @@ namespace Gui
 		sprite.setTexture(filename);
 	}
 
-	void Button::setTextureBounds(Box2i bounds)
+	void Button::setTextureBounds(Recti bounds)
 	{
 		defaultTextureBounds = bounds;
 		sprite.setTextureBounds(bounds);
@@ -183,7 +183,7 @@ namespace Gui
 		{
 			index += 2;
 		}
-		Box2i stateTextureBounds = sprite.getTextureBounds();
+		Recti stateTextureBounds = sprite.getTextureBounds();
 		stateTextureBounds.setMinKeepSize(defaultTextureBounds.min + Vector2i(defaultTextureBounds.getSize()[0] * index, 0));
 		sprite.setTextureBounds(stateTextureBounds);
 	}

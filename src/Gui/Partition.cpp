@@ -81,7 +81,7 @@ namespace Gui
 
 	void Partition::updateWidgetBounds()
 	{
-		Box2i bounds = getBounds();
+		Recti bounds = getBounds();
 		int remainingSize = bounds.getSize()[axis];
 
 		// fixed pixels

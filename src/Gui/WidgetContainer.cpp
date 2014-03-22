@@ -8,7 +8,7 @@ namespace Gui
 		bounds.min = bounds.max = Vector2i::zero();
 	}
 
-	Box2i WidgetContainer::getBounds() const
+	Recti WidgetContainer::getBounds() const
 	{
 		return bounds;
 	}

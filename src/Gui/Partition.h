@@ -29,7 +29,7 @@ namespace Gui
 		void setPanelSize(int index, int pixelSize, float scaleSize);
 
 		// Inherited from Widget.
-		virtual Box2i getBounds() const override;
+		virtual Recti getBounds() const override;
 		virtual void setPosition(Vector2i) override;
 		virtual void setMaxSize(Vector2i) override;
 		virtual void handleEvent(Event const & event) override;

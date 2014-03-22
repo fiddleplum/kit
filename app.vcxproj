@@ -12,8 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h" />
-    <ClInclude Include="src\Box.h" />
+    <ClInclude Include="src\Interval.h" />
     <ClInclude Include="src\Event.h" />
+    <ClInclude Include="src\FlatWorld\Entity.h" />
+    <ClInclude Include="src\FlatWorld\FlatWorld.h" />
+    <ClInclude Include="src\FlatWorld\Polygon.h" />
     <ClInclude Include="src\gl3.h" />
     <ClInclude Include="src\Gui\Button.h" />
     <ClInclude Include="src\Gui\Layering.h" />
@@ -43,6 +46,7 @@
     <ClInclude Include="src\SerializeStdVector.h" />
     <ClInclude Include="src\SerializeVector.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Storage.h" />
     <ClInclude Include="src\StringUtil.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Vector.h" />
@@ -50,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\FlatWorld\Entity.cpp" />
+    <ClCompile Include="src\FlatWorld\FlatWorld.cpp" />
+    <ClCompile Include="src\FlatWorld\Polygon.cpp" />
     <ClCompile Include="src\Gui\Button.cpp" />
     <ClCompile Include="src\Gui\Layering.cpp" />
     <ClCompile Include="src\Gui\Partition.cpp" />

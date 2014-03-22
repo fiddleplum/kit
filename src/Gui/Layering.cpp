@@ -8,7 +8,7 @@ namespace Gui
 
 	void Layering::addLayer(std::shared_ptr<Widget> widget)
 	{
-		Box2i bounds = getBounds();
+		Recti bounds = getBounds();
 		addWidget(widget);
 		layers.insert(layers.end(), widget);
 		widget->setPosition(bounds.min);
@@ -22,7 +22,7 @@ namespace Gui
 		{
 			if(*it == beforeWidget)
 			{
-				Box2i bounds = getBounds();
+				Recti bounds = getBounds();
 				layers.insert(it, widget);
 				widget->setPosition(bounds.min);
 				widget->setMaxSize(bounds.getSize());
@@ -46,7 +46,7 @@ namespace Gui
 
 	void Layering::updateWidgetBounds()
 	{
-		Box2i bounds = getBounds();
+		Recti bounds = getBounds();
 		for(std::shared_ptr<Widget> widget : layers)
 		{
 			widget->setPosition(bounds.min);

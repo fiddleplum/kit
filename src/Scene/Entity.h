@@ -22,7 +22,7 @@ namespace Scene
 		virtual void setScale(Vector3f);
 
 		Matrix44f const & getMatrix() const;
-		Matrix44f  const & getMatrixInverse() const;
+		Matrix44f const & getMatrixInverse() const;
 
 		void updateMatrices();
 

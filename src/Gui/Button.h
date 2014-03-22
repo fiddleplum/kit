@@ -16,14 +16,14 @@ namespace Gui
 
 		Button();
 
-		Box2i getBounds() const override;
+		Recti getBounds() const override;
 		void setPosition(Vector2i position) override;
 		void setMaxSize(Vector2i maxSize) override;
 		void handleEvent(Event const & event) override;
 		void render() override;
 
 		void setTexture(std::string const & filename);
-		void setTextureBounds(Box2i bounds); // Frames are stacked horizontally: default, hovered, pressed, pressed-hovered
+		void setTextureBounds(Recti bounds); // Frames are stacked horizontally: default, hovered, pressed, pressed-hovered
 
 		void setType(Type type);
 		void setShotInterval(float interval);
@@ -49,7 +49,7 @@ namespace Gui
 		bool toggled;
 		float timePressed;
 		Sprite sprite;
-		Box2i defaultTextureBounds;
+		Recti defaultTextureBounds;
 	};
 }
 

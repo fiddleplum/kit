@@ -11,6 +11,9 @@ public:
 	//! Default constructor.
 	Vector();
 
+	//! Constructor for a one dimensional vector.
+	Vector(T a0);
+
 	//! Constructor for a two dimensional vector.
 	Vector(T a0, T a1);
 
@@ -35,6 +38,9 @@ public:
 	//! Returns a vector with all elements equal to a.
 	static Vector<dim, T> filled(T a);
 
+	//! Implicit conversion from one dimensional vector to type T
+	operator T();
+
 	//! Access element at index i.
 	T & operator [](unsigned int i);
 
@@ -43,6 +49,9 @@ public:
 	
 	//! Assignment operator. Each element in v is converted from type Y to type T.
 	template <typename Y> Vector<dim, T> operator =(Vector<dim, Y> v);
+
+	//! Set the elements for a one dimensional vector.
+	void set(T a0);
 
 	//! Set the elements for a two dimensional vector.
 	void set(T a0, T a1);
@@ -178,6 +187,13 @@ Vector<dim, T>::Vector()
 }
 
 template <unsigned int dim, typename T>
+Vector<dim, T>::Vector(T a0)
+{
+	assert(dim == 1);
+	set(a0);
+}
+
+template <unsigned int dim, typename T>
 Vector<dim, T>::Vector(T a0, T a1)
 {
 	assert(dim == 2);
@@ -258,6 +274,13 @@ Vector<dim, T> Vector<dim, T>::filled(T a)
 }
 
 template <unsigned int dim, typename T>
+Vector<dim, T>::operator T()
+{
+	assert(dim == 1);
+	return c[0];
+}
+
+template <unsigned int dim, typename T>
 T & Vector<dim, T>::operator [](unsigned int i)
 {
 	if(i >= dim)
@@ -285,6 +308,13 @@ Vector<dim, T> Vector<dim, T>::operator =(Vector<dim, Y> v)
 		c[i] =(T)v.c[i];
 	}
 	return *this;
+}
+
+template <unsigned int dim, typename T>
+void Vector<dim, T>::set(T a0)
+{
+	assert(dim == 1);
+	c[0] = a0;
 }
 
 template <unsigned int dim, typename T>

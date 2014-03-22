@@ -17,7 +17,7 @@ namespace Gui
 		Viewport();
 
 		// Inherited from Widget.
-		Box2i getBounds() const override;
+		Recti getBounds() const override;
 		void setPosition(Vector2i position) override;
 		void setMaxSize(Vector2i maxSize) override;
 		void handleEvent(Event const & event) override;
@@ -32,7 +32,7 @@ namespace Gui
 		void setScene(std::shared_ptr<Scene::Scene>);
 
 	private:
-		Box2i bounds;
+		Recti bounds;
 		std::shared_ptr<Scene::Camera> camera;
 		std::shared_ptr<Scene::Scene> scene;
 	};

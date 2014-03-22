@@ -12,7 +12,7 @@ namespace Gui
 	public:
 		WidgetContainer();
 
-		Box2i getBounds() const override;
+		Recti getBounds() const override;
 		void setPosition(Vector2i position) override;
 		void setMaxSize(Vector2i maxSize) override;
 
@@ -47,7 +47,7 @@ namespace Gui
 		void handleEvent(Event const & event) override;
 		void render() override;
 
-		Box2i bounds;
+		Recti bounds;
 		std::list<WidgetInfo> widgetInfos;
 		std::map<std::shared_ptr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
 	};
