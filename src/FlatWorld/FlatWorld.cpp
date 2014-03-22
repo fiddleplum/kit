@@ -13,6 +13,11 @@ namespace FlatWorld
 	//	immovable = false;
 	//}
 
+	FlatWorld::FlatWorld(std::shared_ptr<Scene::Scene> scene)
+	{
+		marker = std::make_shared<Polygon>(scene);
+	}
+
 	void FlatWorld::iteratePhysics(float deltaTime)
 	{
 		// Clear accumulated forces
@@ -39,34 +44,18 @@ namespace FlatWorld
 			entity->setPosition(entity->getPosition() + entity->getVelocity() * deltaTime);
 			entity->setOrientation(entity->getOrientation() + entity->getAngularVelocity() * deltaTime);
 		}
+
+		// TESTING
+		std::vector<Polygon::Vertex> vertices;
+		vertices.push_back(Polygon::Vertex(Vector2f(0, 0)));
+		vertices.push_back(Polygon::Vertex(Vector2f(1, 0)));
+		vertices.push_back(Polygon::Vertex(Vector2f(0, 1)));
+		marker->setVertices(vertices);
 	}
 
 	//void FlatWorld::simpleTick(float deltaTime)
 	//{
-	//	// Clear accumulated forces
-	//	for (auto entity : entities)
-	//	{
-	//		entity->clearForces();
-	//	}
 
-	//	// Accumulate forces (user function)
-	//	if(generateForces)
-	//	{
-	//		generateForces();
-	//	}
-
-	//	// Integrate velocity and position
-	//	for (auto entity : entities)
-	//	{
-	//		Vector2f acceleration = entity->getAccumForce() * entity->getInverseMass();
-	//		float angularAcceleration = entity->getAccumTorque() * entity->getInverseMass() * entity->getInverseMass() * entity->getDensity();
-
-	//		entity->setVelocity(entity->getVelocity() + acceleration * deltaTime);
-	//		entity->setAngularVelocity(entity->getAngularVelocity() + angularAcceleration * deltaTime);
-
-	//		entity->setPosition(entity->getPosition() + entity->getVelocity() * deltaTime);
-	//		entity->setOrientation(entity->getOrientation() + entity->getAngularVelocity() * deltaTime);
-	//	}
 
 		// Populate impulses from collisions/contacts/constraints
 

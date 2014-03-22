@@ -9,6 +9,8 @@
 #include <functional>
 #include <set>
 
+
+#include "../Scene/Scene.h"
 namespace FlatWorld
 {
 	class Polygon;
@@ -40,6 +42,8 @@ namespace FlatWorld
 	class FlatWorld
 	{
 	public:
+		FlatWorld(std::shared_ptr<Scene::Scene> scene);
+
 		void iteratePhysics(float deltaTime);
 
 		void addEntity(std::shared_ptr<Entity>);
@@ -52,7 +56,8 @@ namespace FlatWorld
 	private:
 		std::function<void ()> generateForces;
 		std::set<std::shared_ptr<Entity>> entities;
-		//std::map<std::shared_ptr<Entity>, Attributes> entityAttributes;
+
+		std::shared_ptr<Polygon> marker;
 	};
 
 	Collision getCollision(std::shared_ptr<Polygon> polygon1, Vector2f const & offset1, std::shared_ptr<Polygon> polygon2, Vector2f const & offset2);
