@@ -45,6 +45,10 @@ namespace FlatWorld
 			entity->setOrientation(entity->getOrientation() + entity->getAngularVelocity() * deltaTime);
 		}
 
+		// Generate collisions for all entities
+
+		// For each entity, use the collision with the min toi.
+
 		// TESTING
 		std::vector<Polygon::Vertex> vertices;
 		vertices.push_back(Polygon::Vertex(Vector2f(0, 0)));
@@ -226,9 +230,11 @@ namespace FlatWorld
 
 	Collision getCollision(std::shared_ptr<Polygon> polygon1, Vector2f const & offset1, std::shared_ptr<Polygon> polygon2, Vector2f const & offset2)
 	{
-		// Use SAT, but include offsets to calculate a collision.toi.
+		// Use SAT, but include offsets to calculate a collision.toi. (always >= 0)
 		// Just project the offsets on each axis to get a moving range, and then intersect the moving ranges.
 		// We're not worrying about rotation offsets, because it's too complicated, and probably won't change things much.
+		// Use the minimum > 0 toi.
+		// If all axes have a 0 toi (they were intersecting at the start), use the axis with the min overlap.
 		return Collision();
 	}
 

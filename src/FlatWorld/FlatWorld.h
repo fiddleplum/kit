@@ -19,7 +19,9 @@ namespace FlatWorld
 	{
 	public:
 		float timeOfImpact;
-		Ray2f ray;
+		Ray2f ray; // the length of the ray is the interpenetration, the direction goes from object1 to object2
+		bool useRayStart1; // if false, only use the direction of the ray, and apply only the linear impulse (no rotation)
+		bool useRayStart2;
 	};
 
 	//class Attributes
