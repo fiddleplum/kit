@@ -8,7 +8,8 @@ class Event
 public:
 	enum Type
 	{
-		Shutdown, // no class
+		Shutdown,
+		Resize,
 		Update,
 		Keyboard,
 		Text,
@@ -36,6 +37,16 @@ public:
 	ShutdownEvent();
 
 	virtual std::string toString() const override;
+};
+
+class ResizeEvent : public Event
+{
+public:
+	ResizeEvent();
+
+	virtual std::string toString() const override;
+
+	Vector2i size;
 };
 
 class UpdateEvent : public Event

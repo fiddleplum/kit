@@ -1,5 +1,6 @@
 #pragma once
 
+#include "App.h"
 #include <map>
 #include <stdexcept>
 #include <string>

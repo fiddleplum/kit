@@ -4,7 +4,7 @@
 #include "Model.h"
 #include <memory>
 
-namespace Gui
+namespace app
 {
 	class Sprite : public Widget
 	{

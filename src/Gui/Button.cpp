@@ -1,7 +1,7 @@
 #include "Button.h"
 #include "../App.h"
 
-namespace Gui
+namespace app
 {
 	Button::Button()
 	{

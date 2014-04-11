@@ -4,13 +4,10 @@
 #include "../Vector.h"
 #include "../Interval.h"
 #include "../Ray.h"
-#include "../Scene/Model.h"
+#include "../Model.h"
 #include <vector>
 
-namespace Scene
-{
-	class Scene;
-}
+class Scene;
 
 namespace FlatWorld
 {
@@ -24,7 +21,7 @@ namespace FlatWorld
 			Vector2f position;
 		};
 
-		Polygon(std::shared_ptr<Scene::Scene>);
+		Polygon(std::shared_ptr<Scene>);
 		~Polygon();
 
 		void setPosition(Vector2f) override;
@@ -53,8 +50,8 @@ namespace FlatWorld
 		Vector3f color;
 
 		std::vector<Vertex> vertices;
-		std::shared_ptr<Scene::Scene> scene;
-		std::shared_ptr<Scene::Model> model;
+		std::shared_ptr<Scene> scene;
+		std::shared_ptr<Model> model;
 	};
 }
 

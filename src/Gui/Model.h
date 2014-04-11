@@ -9,7 +9,7 @@ class Texture;
 class Shader;
 class VertexBufferObject;
 
-namespace Gui
+namespace app
 {
 	class Model
 	{

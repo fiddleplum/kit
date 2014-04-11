@@ -10,7 +10,7 @@ namespace App
 	void render();
 }
 
-namespace Gui
+namespace app
 {
 	class Widget
 	{

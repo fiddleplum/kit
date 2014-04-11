@@ -1,9 +1,9 @@
 #include "Polygon.h"
-#include "../Scene/Scene.h"
+#include "../Scene.h"
 
 namespace FlatWorld
 {
-	Polygon::Polygon(std::shared_ptr<Scene::Scene> newScene)
+	Polygon::Polygon(std::shared_ptr<Scene> newScene)
 	{
 		scene = newScene;
 
@@ -11,7 +11,7 @@ namespace FlatWorld
 
 		color.set(1, 1, 1);
 
-		model = std::make_shared<Scene::Model>();
+		model = std::make_shared<Model>();
 		model->setNumIndicesPerPrimitive(3);
 		model->setColor(Vector3f::zero(), color.extend<4>(1));
 		model->setVertexFormat(false, false, false, 0);

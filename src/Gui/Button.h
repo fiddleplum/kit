@@ -4,7 +4,7 @@
 #include "Widget.h"
 #include <functional>
 
-namespace Gui
+namespace app
 {
 	class Button : public Widget
 	{

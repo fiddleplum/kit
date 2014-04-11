@@ -2,7 +2,7 @@
 
 #include "WidgetContainer.h"
 
-namespace Gui
+namespace app
 {
 	class Partition : public WidgetContainer
 	{

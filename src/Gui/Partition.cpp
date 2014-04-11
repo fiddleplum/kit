@@ -1,6 +1,6 @@
 #include "Partition.h"
 
-namespace Gui
+namespace app
 {
 	Partition::Partition()
 	{

@@ -1,7 +1,7 @@
 #include "WidgetContainer.h"
 #include <algorithm>
 
-namespace Gui
+namespace app
 {
 	WidgetContainer::WidgetContainer()
 	{

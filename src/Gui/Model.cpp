@@ -4,7 +4,7 @@
 #include "../VertexBufferObject.h"
 #include "../App.h"
 
-namespace Gui
+namespace app
 {
 	Model::Model()
 	{

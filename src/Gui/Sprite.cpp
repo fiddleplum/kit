@@ -1,7 +1,7 @@
 #include "Sprite.h"
 #include "../Texture.h"
 
-namespace Gui
+namespace app
 {
 	Sprite::Sprite()
 	{

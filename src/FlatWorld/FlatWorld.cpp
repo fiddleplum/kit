@@ -13,7 +13,7 @@ namespace FlatWorld
 	//	immovable = false;
 	//}
 
-	FlatWorld::FlatWorld(std::shared_ptr<Scene::Scene> scene)
+	FlatWorld::FlatWorld(std::shared_ptr<Scene> scene)
 	{
 		marker = std::make_shared<Polygon>(scene);
 	}

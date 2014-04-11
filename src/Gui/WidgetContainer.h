@@ -5,7 +5,7 @@
 #include <list>
 #include <memory>
 
-namespace Gui
+namespace app
 {
 	class WidgetContainer : public Widget
 	{

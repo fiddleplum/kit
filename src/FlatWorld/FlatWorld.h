@@ -10,7 +10,7 @@
 #include <set>
 
 
-#include "../Scene/Scene.h"
+#include "../Scene.h"
 namespace FlatWorld
 {
 	class Polygon;
@@ -44,7 +44,7 @@ namespace FlatWorld
 	class FlatWorld
 	{
 	public:
-		FlatWorld(std::shared_ptr<Scene::Scene> scene);
+		FlatWorld(std::shared_ptr<Scene> scene);
 
 		void iteratePhysics(float deltaTime);
 

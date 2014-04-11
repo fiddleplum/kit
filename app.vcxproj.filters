@@ -8,10 +8,8 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Vector.h" />
     <ClInclude Include="src\VertexBufferObject.h" />
-    <ClInclude Include="src\App.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\gl3.h" />
-    <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\MathUtil.h" />
     <ClInclude Include="src\OpenGL.h" />
     <ClInclude Include="src\Ptr.h" />
@@ -19,53 +17,26 @@
     <ClInclude Include="src\Serialize.h" />
     <ClInclude Include="src\SerializeStdString.h" />
     <ClInclude Include="src\Gui\Sprite.h">
-      <Filter>Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Gui\Viewport.h">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="src\Gui\Widget.h">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="src\Gui\WidgetContainer.h">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="src\Gui\Partition.h">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="src\Gui\Model.h">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="src\Gui\Button.h">
-      <Filter>Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Gui\Layering.h">
-      <Filter>Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Entity.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Model.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Camera.h">
-      <Filter>Scene</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="src\Matrix.h" />
     <ClInclude Include="src\Quaternion.h" />
     <ClInclude Include="src\Ray.h" />
-    <ClInclude Include="src\Scene\Controller.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\FreeFlyCameraController.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene\Light.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\Storage.h" />
     <ClInclude Include="src\FlatWorld\Polygon.h">
       <Filter>FlatWorld</Filter>
@@ -77,6 +48,20 @@
       <Filter>FlatWorld</Filter>
     </ClInclude>
     <ClInclude Include="src\Interval.h" />
+    <ClInclude Include="src\Gui\View.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\Layers.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneEntity.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\Controller.h" />
+    <ClInclude Include="src\FreeFlyCameraController.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\App.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Shader.cpp" />
@@ -84,47 +69,22 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\VertexBufferObject.cpp" />
     <ClCompile Include="src\Event.cpp" />
-    <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\OpenGL.cpp" />
     <ClCompile Include="src\SDLApp.cpp" />
     <ClCompile Include="src\Gui\Sprite.cpp">
-      <Filter>Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Gui\Viewport.cpp">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="src\Gui\WidgetContainer.cpp">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="src\Gui\Partition.cpp">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="src\Gui\Model.cpp">
-      <Filter>Gui</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="src\Gui\Button.cpp">
-      <Filter>Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Gui\Layering.cpp">
-      <Filter>Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Entity.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Model.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Camera.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\FreeFlyCameraController.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Light.cpp">
-      <Filter>Scene</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="src\FlatWorld\Polygon.cpp">
       <Filter>FlatWorld</Filter>
@@ -135,16 +95,26 @@
     <ClCompile Include="src\FlatWorld\FlatWorld.cpp">
       <Filter>FlatWorld</Filter>
     </ClCompile>
+    <ClCompile Include="src\Gui\View.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\Layers.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneEntity.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Light.cpp" />
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\FreeFlyCameraController.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\App.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Gui">
-      <UniqueIdentifier>{859d9a5a-10f7-496c-a619-ab86fac63c02}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{e6caf646-7777-4fb6-9dab-23fb14106fa9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FlatWorld">
       <UniqueIdentifier>{28e8b669-f795-446f-ba83-72dee5394698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{859d9a5a-10f7-496c-a619-ab86fac63c02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
