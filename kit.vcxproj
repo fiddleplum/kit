@@ -15,6 +15,9 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\csv.cpp" />
     <ClCompile Include="src\event.cpp" />
+    <ClCompile Include="src\flat_world\entity.cpp" />
+    <ClCompile Include="src\flat_world\flat_world.cpp" />
+    <ClCompile Include="src\flat_world\polygon.cpp" />
     <ClCompile Include="src\free_fly_camera_controller.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\model.cpp" />
@@ -28,11 +31,15 @@
     <ClCompile Include="src\vertex_buffer_object.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\app.h" />
     <ClInclude Include="src\app.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\controller.h" />
     <ClInclude Include="src\csv.h" />
     <ClInclude Include="src\event.h" />
+    <ClInclude Include="src\flat_world\entity.h" />
+    <ClInclude Include="src\flat_world\flat_world.h" />
+    <ClInclude Include="src\flat_world\polygon.h" />
     <ClInclude Include="src\free_fly_camera_controller.h" />
     <ClInclude Include="src\gl3.h" />
     <ClInclude Include="src\interval.h" />

@@ -1,5 +1,5 @@
-#include "Button.h"
-#include "../App.h"
+#include "button.h"
+#include "../app.h"
 
 namespace app
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Vector.h"
-#include "../Interval.h"
-#include "../Event.h"
+#include "../vector.h"
+#include "../interval.h"
+#include "../event.h"
 
 namespace App
 {

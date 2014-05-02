@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Widget.h"
+#include "widget.h"
 #include <memory>
 
 class Camera;

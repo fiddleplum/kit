@@ -1,5 +1,5 @@
-#include "FlatWorld.h"
-#include "Polygon.h"
+#include "flat_world.h"
+#include "polygon.h"
 #include <cmath>
 
 namespace FlatWorld

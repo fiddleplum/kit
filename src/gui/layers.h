@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WidgetContainer.h"
+#include "widget_container.h"
 
 namespace app
 {

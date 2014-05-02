@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Entity.h"
-#include "../Interval.h"
-#include "../Ray.h"
+#include "entity.h"
+#include "../interval.h"
+#include "../ray.h"
 #include <vector>
 #include <map>
 #include <memory>

@@ -21,6 +21,9 @@
     <ClCompile Include="src\string_util.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\vertex_buffer_object.cpp" />
+    <ClCompile Include="src\flat_world\entity.cpp" />
+    <ClCompile Include="src\flat_world\flat_world.cpp" />
+    <ClCompile Include="src\flat_world\polygon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app.h" />
@@ -52,5 +55,9 @@
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
+    <ClInclude Include="inc\app.h" />
+    <ClInclude Include="src\flat_world\polygon.h" />
+    <ClInclude Include="src\flat_world\entity.h" />
+    <ClInclude Include="src\flat_world\flat_world.h" />
   </ItemGroup>
 </Project>

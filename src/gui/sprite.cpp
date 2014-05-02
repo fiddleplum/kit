@@ -1,5 +1,5 @@
-#include "Sprite.h"
-#include "../Texture.h"
+#include "sprite.h"
+#include "../texture.h"
 
 namespace app
 {

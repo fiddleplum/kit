@@ -1,4 +1,4 @@
-#include "WidgetContainer.h"
+#include "widget_container.h"
 #include <algorithm>
 
 namespace app

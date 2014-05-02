@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Entity.h"
-#include "../Vector.h"
-#include "../Interval.h"
-#include "../Ray.h"
-#include "../Model.h"
+#include "entity.h"
+#include "../vector.h"
+#include "../interval.h"
+#include "../ray.h"
+#include "../model.h"
 #include <vector>
 
 class Scene;

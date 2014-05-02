@@ -1,5 +1,5 @@
-#include "Polygon.h"
-#include "../Scene.h"
+#include "polygon.h"
+#include "../scene.h"
 
 namespace FlatWorld
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Vector.h"
-#include "../Matrix.h"
-#include "../Interval.h"
+#include "../vector.h"
+#include "../matrix.h"
+#include "../interval.h"
 
 namespace FlatWorld
 {

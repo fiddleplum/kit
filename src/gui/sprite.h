@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Widget.h"
-#include "Model.h"
+#include "widget.h"
+#include "model.h"
 #include <memory>
 
 namespace app

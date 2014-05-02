@@ -1,8 +1,8 @@
-#include "Model.h"
-#include "../Texture.h"
-#include "../Shader.h"
-#include "../VertexBufferObject.h"
-#include "../App.h"
+#include "model.h"
+#include "../texture.h"
+#include "../shader.h"
+#include "../vertex_buffer_object.h"
+#include "../app.h"
 
 namespace app
 {

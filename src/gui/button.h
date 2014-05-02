@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Sprite.h"
-#include "Widget.h"
+#include "sprite.h"
+#include "widget.h"
 #include <functional>
 
 namespace app

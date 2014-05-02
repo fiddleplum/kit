@@ -1,8 +1,8 @@
-#include "View.h"
-#include "../App.h"
-#include "../OpenGL.h"
-#include "../Camera.h"
-#include "../Scene.h"
+#include "view.h"
+#include "../app.h"
+#include "../open_gl.h"
+#include "../camera.h"
+#include "../scene.h"
 
 namespace app
 {
