@@ -2,6 +2,7 @@
 
 #include <exception>
 #include <cassert>
+#include <cmath>
 
 //! This is a standard mathematical vector class. Dim is the dimensions of the vector and T is the type of its elements.
 template <unsigned int dim, typename T>
@@ -101,8 +102,11 @@ public:
 	//! Returns the two dimensional cross product of this and v(abs(this) abs(v) sin(the angle between the vectors). The vectors must be two dimensional.
 	T cross2d(Vector<dim, T> v) const;
 	
-	//! Returns a vector that is this from the reference frame of v with a norm that is the product of the norms of this and v. The vectors must be two dimensional.
+	//! Returns a vector that is this from the reference frame of v (as an x-axis) with a norm that is the product of the norms of this and v. The vectors must be two dimensional.
 	Vector<dim, T> relative2d(Vector<dim, T> v) const;
+
+	//! Returns a vector rotated counter-clockwise by the angle a. The vector must be two dimensional.
+	Vector<dim, T> rotate2d(float a);
 
 	//! Returns an arbitrary vector perpendicular to this. The result is of arbitrary norm. The vector must be three dimensional.
 	Vector<dim, T> perpendicular() const;
@@ -484,6 +488,15 @@ Vector<dim, T> Vector<dim, T>::relative2d(Vector<dim, T> v) const
 {
 	assert(dim == 2);
 	return Vector<dim, T>(dot(v), cross2D(v));
+}
+
+template <unsigned int dim, typename T>
+Vector<dim, T> Vector<dim, T>::rotate2d(float a)
+{
+	assert(dim == 2);
+	T cosa = std::cos(a);
+	T sina = std::sin(a);
+	return Vector<dim, T>(c[0] * cosa - c[1] * sina, c[0] * sina + c[1] * cosa);
 }
 
 template <unsigned int dim, typename T>

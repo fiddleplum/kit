@@ -17,8 +17,9 @@ namespace FlatWorld
 		class Vertex
 		{
 		public:
-			Vertex(Vector2f p) { position = p; }
-			Vector2f position;
+			Vertex(Vector2f p, Vector2f uv) { this->p = p; this->uv = uv; }
+			Vector2f p;
+			Vector2f uv;
 		};
 
 		Polygon(std::shared_ptr<Scene>);
@@ -31,6 +32,7 @@ namespace FlatWorld
 
 		std::vector<Vertex> const & getVertices() const { return vertices; }
 		void setVertices(std::vector<Vertex>);
+		void setRectSprite(Vector2f size, Vector2i uvStart, std::string textureFilename);
 
 		void setColor(Vector3f);
 		Rectf getBoundingRect() const;

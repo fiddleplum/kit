@@ -135,6 +135,18 @@ void Model::setIndices(unsigned int const * indices, unsigned int numIndices)
 	mVertexBufferObject->setIndices(indices, numIndices);
 }
 
+std::shared_ptr<Texture> Model::getTexture(unsigned int textureIndex) const
+{
+	if(textureIndex < mTextureInfos.size())
+	{
+		return mTextureInfos[textureIndex].texture;
+	}
+	else
+	{
+		return std::shared_ptr<Texture>();
+	}
+}
+
 void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 {
 	TextureInfo textureInfo;
@@ -424,7 +436,6 @@ void Model::updateShader()
 	{
 		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aUV" + std::to_string(textureInfo.uvIndex)), offset + textureInfo.uvIndex * sizeof(Vector2f), 2);
 	}
-	mVertexBufferObject->setNumIndicesPerPrimitive(3);
 
 	// Update uniform locations
 	mLightPositionsLocation = mShader->getUniformLocation("uLightPositions");

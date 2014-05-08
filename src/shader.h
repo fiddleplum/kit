@@ -38,9 +38,13 @@ public:
 
 	static void setUniform(int location, Vector4f value);
 
+	static void setUniform(int location, Matrix33f const & value);
+
 	static void setUniform(int location, Matrix44f const & value);
 
 	static void setUniform(int location, Vector3f const * value, unsigned int count);
+
+	static void setUniform(int location, Vector2f const * value, unsigned int count);
 
 private:
 	static unsigned int compileShaderObject(CodeType type, std::string const & code);

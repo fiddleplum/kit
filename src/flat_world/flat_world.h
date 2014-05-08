@@ -13,6 +13,11 @@
 #include "../Scene.h"
 namespace FlatWorld
 {
+	enum BoundsType
+	{
+		Circle, Rectangle, Polygon
+	};
+	
 	class Polygon;
 
 	class Collision

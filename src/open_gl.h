@@ -42,6 +42,7 @@ extern PFNGLUNIFORM3IVPROC glUniform3iv;
 extern PFNGLUNIFORM3FVPROC glUniform3fv;
 extern PFNGLUNIFORM4IVPROC glUniform4iv;
 extern PFNGLUNIFORM4FVPROC glUniform4fv;
+extern PFNGLUNIFORMMATRIX3FVPROC glUniformMatrix3fv;
 extern PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
 
 extern PFNGLGENBUFFERSPROC glGenBuffers;

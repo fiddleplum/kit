@@ -1,5 +1,6 @@
 #include "polygon.h"
 #include "../scene.h"
+#include "../texture.h"
 
 namespace FlatWorld
 {
@@ -14,7 +15,7 @@ namespace FlatWorld
 		model = std::make_shared<Model>();
 		model->setNumIndicesPerPrimitive(3);
 		model->setColor(Vector3f::zero(), color.extend<4>(1));
-		model->setVertexFormat(false, false, false, 0);
+		model->setVertexFormat(false, false, false, 1);
 
 		scene->addModel(model);
 	}
@@ -57,7 +58,7 @@ namespace FlatWorld
 		vertices = newVertices;
 		if(vertices.size() > 0)
 		{
-			boundingRect.min = boundingRect.max = vertices[0].position;
+			boundingRect.min = boundingRect.max = vertices[0].p;
 		}
 		else
 		{
@@ -65,8 +66,24 @@ namespace FlatWorld
 		}
 		for(Vertex const & v : vertices)
 		{
-			boundingRect.extendTo(v.position);
+			boundingRect.extendTo(v.p);
 		}
+		updateTransformedBoundingRect();
+		updateModel();
+	}
+
+	void Polygon::setRectSprite(Vector2f size, Vector2i textureOffset, std::string textureFilename)
+	{
+		model->addTexture(textureFilename, "diffuse", 0);
+		std::shared_ptr<Texture> texture = model->getTexture(0);
+		Vector2f uvStart = textureOffset.scaleInv(texture->getSize());
+		Vector2f uvSize = size.scaleInv(texture->getSize());
+		vertices.push_back(Vertex(Vector2f(0, 0), Vector2f(uvStart[0], uvStart[1])));
+		vertices.push_back(Vertex(Vector2f(size[0], 0), Vector2f(uvStart[0] + uvSize[0], uvStart[1])));
+		vertices.push_back(Vertex(Vector2f(size[0], size[1]), Vector2f(uvStart[0] + uvSize[0], uvStart[1] + uvSize[1])));
+		vertices.push_back(Vertex(Vector2f(0, size[1]), Vector2f(uvStart[0], uvStart[1] + uvSize[1])));
+		boundingRect.min = Vector2f(0, 0);
+		boundingRect.max = size;
 		updateTransformedBoundingRect();
 		updateModel();
 	}
@@ -166,7 +183,7 @@ namespace FlatWorld
 
 	Vector2f Polygon::getWorldPositionOfVertex(unsigned int i) const
 	{
-		Vector2f v = vertices[i].position;
+		Vector2f v = vertices[i].p;
 		v = v.scale(getScale());
 		v.set(v[0] * cos(getOrientation()) - v[1] * sin(getOrientation()), v[1] * cos(getOrientation()) + v[0] * sin(getOrientation()));
 		v += getPosition();
@@ -200,15 +217,17 @@ namespace FlatWorld
 
 	void Polygon::updateModel()
 	{
-		unsigned int numFloatPerVertex = 3;
+		unsigned int numFloatPerVertex = 5;
 		std::vector<float> vs;
 		std::vector<unsigned int> is;
 		for(unsigned int i = 0; i < vertices.size(); i++)
 		{
 			auto const & v = vertices[i];
-			vs.push_back(v.position[0]);
-			vs.push_back(v.position[1]);
+			vs.push_back(v.p[0]);
+			vs.push_back(v.p[1]);
 			vs.push_back(0.0f);
+			vs.push_back(v.uv[0]);
+			vs.push_back(v.uv[1]);
 			if(i >= 2)
 			{
 				is.push_back(0);

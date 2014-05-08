@@ -111,9 +111,19 @@ void Shader::setUniform(int location, Vector4f value)
 	glUniform4fv(location, 1, value.ptr());
 }
 
+void Shader::setUniform(int location, Matrix33f const & value)
+{
+	glUniformMatrix3fv(location, 1, false, value.ptr());
+}
+
 void Shader::setUniform(int location, Matrix44f const & value)
 {
 	glUniformMatrix4fv(location, 1, false, value.ptr());
+}
+
+void Shader::setUniform(int location, Vector2f const * value, unsigned int count)
+{
+	glUniform2fv(location, count, (GLfloat const *)value);
 }
 
 void Shader::setUniform(int location, Vector3f const * value, unsigned int count)

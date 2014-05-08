@@ -40,6 +40,7 @@ PFNGLUNIFORM3IVPROC glUniform3iv;
 PFNGLUNIFORM3FVPROC glUniform3fv;
 PFNGLUNIFORM4IVPROC glUniform4iv;
 PFNGLUNIFORM4FVPROC glUniform4fv;
+PFNGLUNIFORMMATRIX3FVPROC glUniformMatrix3fv;
 PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
 
 PFNGLGENBUFFERSPROC glGenBuffers;
@@ -99,6 +100,7 @@ void glInitialize()
 	glUniform3fv = (PFNGLUNIFORM3FVPROC)SDL_GL_GetProcAddress("glUniform3fv");
 	glUniform4iv = (PFNGLUNIFORM4IVPROC)SDL_GL_GetProcAddress("glUniform4iv");
 	glUniform4fv = (PFNGLUNIFORM4FVPROC)SDL_GL_GetProcAddress("glUniform4fv");
+	glUniformMatrix3fv = (PFNGLUNIFORMMATRIX3FVPROC)SDL_GL_GetProcAddress("glUniformMatrix3fv");
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)SDL_GL_GetProcAddress("glUniformMatrix4fv");
 
 	glGenBuffers = (PFNGLGENBUFFERSPROC)SDL_GL_GetProcAddress("glGenBuffers");

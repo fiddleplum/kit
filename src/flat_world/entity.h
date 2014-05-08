@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../vector.h"
-#include "../matrix.h"
-#include "../interval.h"
+#include "../model_2d.h"
 
 namespace FlatWorld
 {
@@ -12,29 +10,29 @@ namespace FlatWorld
 		Entity();
 		virtual ~Entity() {}
 
-		Vector2f const & getPosition() const { return position; }
-		virtual void setPosition(Vector2f);
+		Vector2f getPosition() const { return model->getPosition(); }
+		void setPosition(Vector2f newPosition) { model->setPosition(newPosition); }
+
+		float getOrientation() const { return model->getOrientation(); }
+		void setOrientation(float newOrientation) { model->setPosition(newOrientation); }
+
+		Vector2f getScale() const { return model->getScale(); }
+		void setScale(Vector2f newScale) { model->setScale(newScale); }
+
+		int getZ() const { return model->getZ(); }
+		void setZ(int newZ) { model->setZ(newZ); }
 
 		Vector2f const & getVelocity() const { return velocity; }
-		virtual void setVelocity(Vector2f);
-
-		float const & getOrientation() const { return orientation; }
-		virtual void setOrientation(float); // in radians
+		void setVelocity(Vector2f newVelocity) { velocity = newVelocity; }
 
 		float const & getAngularVelocity() const { return angularVelocity; }
-		virtual void setAngularVelocity(float); // in radians
-
-		Vector2f const & getScale() const { return scale; }
-		virtual void setScale(Vector2f);
-
-		int getZ() const { return z; }
-		virtual void setZ(int);
+		void setAngularVelocity(float newAngularVelocity) { angularVelocity = newAngularVelocity; }
 
 		bool isSolid() const { return solid; }
-		virtual void setSolid(bool);
+		void setSolid(bool);
 
 		float getInverseMass() const { return inverseMass; }
-		virtual void setInverseMass(float);
+		void setInverseMass(float);
 
 		float getDensity() const { return density; }
 		void setDensity(float);
@@ -49,28 +47,20 @@ namespace FlatWorld
 		//virtual bool intersects(Entity *);
 		//virtual Box2f getBoundingBox() const;
 
-		Matrix33f const & getMatrix() const;
-		Matrix33f const & getMatrixInverse() const;
+		Matrix33f const & getTransform() const { return model->getTransform(); }
+		Matrix33f const & getTransformInv() const { return model->getTransformInv(); }
 
 	private:
-		void updateMatrices();
+		std::shared_ptr<Model2D> model;
 
-		Vector2f position;
 		Vector2f velocity;
-		float orientation;
 		float angularVelocity;
-		Vector2f scale;
-		int z;
 
 		bool solid;
 		float inverseMass;
 		float density; // moment of inertia = mass^2 / density
 		Vector2f accumForce;
 		float accumTorque;
-
-		Matrix33f matrix;
-		Matrix33f matrixInverse;
-		bool matricesNeedUpdate;
 	};
 }
 

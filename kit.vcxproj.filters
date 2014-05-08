@@ -31,6 +31,13 @@
     <ClCompile Include="src\gui\sprite.cpp" />
     <ClCompile Include="src\gui\view.cpp" />
     <ClCompile Include="src\gui\widget_container.cpp" />
+    <ClCompile Include="src\flat_world\scene_polygon.cpp" />
+    <ClCompile Include="src\camera_2d.cpp" />
+    <ClCompile Include="src\scene_2d.cpp" />
+    <ClCompile Include="src\light_2d.cpp" />
+    <ClCompile Include="src\model_2d.cpp" />
+    <ClCompile Include="src\frame_2d.cpp" />
+    <ClCompile Include="src\entity_2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app.h" />
@@ -74,5 +81,13 @@
     <ClInclude Include="src\gui\view.h" />
     <ClInclude Include="src\gui\Widget.h" />
     <ClInclude Include="src\gui\widget_container.h" />
+    <ClInclude Include="src\flat_world\scene_polygon.h" />
+    <ClInclude Include="src\camera_2d.h" />
+    <ClInclude Include="src\circle.h" />
+    <ClInclude Include="src\scene_2d.h" />
+    <ClInclude Include="src\light_2d.h" />
+    <ClInclude Include="src\model_2d.h" />
+    <ClInclude Include="src\frame_2d.h" />
+    <ClInclude Include="src\entity_2d.h" />
   </ItemGroup>
 </Project>

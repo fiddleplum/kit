@@ -34,6 +34,8 @@ public:
 
 	void setIndices(unsigned int const * indices, unsigned int numIndices);
 
+	std::shared_ptr<Texture> getTexture (unsigned int textureIndex) const;
+
 	void addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex);
 
 	void clearTextures();

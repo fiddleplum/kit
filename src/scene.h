@@ -30,7 +30,7 @@ public:
 
 	void removeController(std::shared_ptr<Controller> controller);
 		
-	// Called my Camera.
+	// Called by Camera.
 	void handleEvent(Event const & event);
 
 	// Called by Camera.
