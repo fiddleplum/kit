@@ -15,8 +15,8 @@ public:
 	float getOrientation() const { return orientation; }
 	void setOrientation(float);
 
-	Matrix33f getTransform() const;
-	Matrix33f getTransformInv() const;
+	Matrix33f const & getTransform() const;
+	Matrix33f const & getTransformInv() const;
 
 private:
 	void updateTransforms();

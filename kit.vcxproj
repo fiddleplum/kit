@@ -15,12 +15,12 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\csv.cpp" />
-    <ClCompile Include="src\entity_2d.cpp" />
     <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\flat_world\entity.cpp" />
     <ClCompile Include="src\flat_world\flat_world.cpp" />
     <ClCompile Include="src\flat_world\polygon.cpp" />
     <ClCompile Include="src\flat_world\scene_polygon.cpp" />
+    <ClCompile Include="src\flat_world\sprite.cpp" />
     <ClCompile Include="src\free_fly_camera_controller.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
     <ClCompile Include="src\gui\layers.cpp" />
@@ -52,12 +52,12 @@
     <ClInclude Include="src\circle.h" />
     <ClInclude Include="src\controller.h" />
     <ClInclude Include="src\csv.h" />
-    <ClInclude Include="src\entity_2d.h" />
     <ClInclude Include="src\event.h" />
     <ClInclude Include="src\flat_world\entity.h" />
     <ClInclude Include="src\flat_world\flat_world.h" />
     <ClInclude Include="src\flat_world\polygon.h" />
     <ClInclude Include="src\flat_world\scene_polygon.h" />
+    <ClInclude Include="src\flat_world\sprite.h" />
     <ClInclude Include="src\free_fly_camera_controller.h" />
     <ClInclude Include="src\gl3.h" />
     <ClInclude Include="src\gui\button.h" />

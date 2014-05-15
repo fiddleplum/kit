@@ -1,5 +1,5 @@
 #include "polygon.h"
-#include "../scene.h"
+#include "../scene_2d.h"
 #include "../texture.h"
 
 namespace FlatWorld
@@ -16,26 +16,21 @@ namespace FlatWorld
 		model->setNumIndicesPerPrimitive(3);
 		model->setColor(Vector3f::zero(), color.extend<4>(1));
 		model->setVertexFormat(false, false, false, 1);
-
-		scene->addModel(model);
 	}
 
 	Polygon::~Polygon()
 	{
-		scene->removeModel(model);
 	}
 
-	void Polygon::setPosition(Vector2f newPosition)
+	void Polygon::setPosition(Vector2f position)
 	{
-		Entity::setPosition(newPosition);
-		model->setPosition(newPosition.extend<3>((float)getZ()));
+		Entity::setPosition(position);
 		updateTransformedBoundingRect();
 	}
 
-	void Polygon::setOrientation(float newOrientation)
+	void Polygon::setOrientation(float orientation)
 	{
-		Entity::setOrientation(newOrientation);
-		model->setOrientation(Quaternionf(newOrientation, Vector3f::axis(2), true));
+		Entity::setOrientation(orientation);
 		updateTransformedBoundingRect();
 	}
 

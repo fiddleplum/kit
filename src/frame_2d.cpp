@@ -20,7 +20,7 @@ void Frame2D::setOrientation(float newOrientation)
 	transformsDirty = true;
 }
 
-Matrix33f Frame2D::getTransform() const
+Matrix33f const & Frame2D::getTransform() const
 {
 	if(transformsDirty)
 	{
@@ -29,7 +29,7 @@ Matrix33f Frame2D::getTransform() const
 	return transform;
 }
 
-Matrix33f Frame2D::getTransformInv() const
+Matrix33f const & Frame2D::getTransformInv() const
 {
 	if(transformsDirty)
 	{

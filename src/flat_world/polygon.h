@@ -1,13 +1,9 @@
 #pragma once
 
 #include "entity.h"
-#include "../vector.h"
-#include "../interval.h"
-#include "../ray.h"
-#include "../model.h"
 #include <vector>
 
-class Scene;
+class Scene2D;
 
 namespace FlatWorld
 {
@@ -22,7 +18,7 @@ namespace FlatWorld
 			Vector2f uv;
 		};
 
-		Polygon(std::shared_ptr<Scene>);
+		Polygon(std::shared_ptr<Scene2D>);
 		~Polygon();
 
 		void setPosition(Vector2f) override;

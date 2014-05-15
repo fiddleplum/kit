@@ -37,7 +37,7 @@
     <ClCompile Include="src\light_2d.cpp" />
     <ClCompile Include="src\model_2d.cpp" />
     <ClCompile Include="src\frame_2d.cpp" />
-    <ClCompile Include="src\entity_2d.cpp" />
+    <ClCompile Include="src\flat_world\sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app.h" />
@@ -88,6 +88,6 @@
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\model_2d.h" />
     <ClInclude Include="src\frame_2d.h" />
-    <ClInclude Include="src\entity_2d.h" />
+    <ClInclude Include="src\flat_world\sprite.h" />
   </ItemGroup>
 </Project>

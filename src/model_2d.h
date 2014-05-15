@@ -11,7 +11,6 @@
 class VertexBufferObject;
 class Texture;
 class Shader;
-
 class Camera2D;
 
 // The Model2D serialized format is at the bottom.
@@ -19,6 +18,13 @@ class Camera2D;
 class Model2D
 {
 public:
+	class Vertex
+	{
+	public:
+		Vector2f pos;
+		Vector2f uv;
+	};
+
 	Model2D();
 	~Model2D();
 
