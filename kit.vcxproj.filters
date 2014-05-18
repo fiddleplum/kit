@@ -21,9 +21,6 @@
     <ClCompile Include="src\string_util.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\vertex_buffer_object.cpp" />
-    <ClCompile Include="src\flat_world\entity.cpp" />
-    <ClCompile Include="src\flat_world\flat_world.cpp" />
-    <ClCompile Include="src\flat_world\polygon.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
     <ClCompile Include="src\gui\layers.cpp" />
     <ClCompile Include="src\gui\model.cpp" />
@@ -31,13 +28,17 @@
     <ClCompile Include="src\gui\sprite.cpp" />
     <ClCompile Include="src\gui\view.cpp" />
     <ClCompile Include="src\gui\widget_container.cpp" />
-    <ClCompile Include="src\flat_world\scene_polygon.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\scene_2d.cpp" />
     <ClCompile Include="src\light_2d.cpp" />
     <ClCompile Include="src\model_2d.cpp" />
     <ClCompile Include="src\frame_2d.cpp" />
-    <ClCompile Include="src\flat_world\sprite.cpp" />
+    <ClCompile Include="src\geometry_2d.cpp" />
+    <ClCompile Include="src\geometry_1d.cpp" />
+    <ClCompile Include="src\flat\shape.cpp" />
+    <ClCompile Include="src\flat\sprite.cpp" />
+    <ClCompile Include="src\flat\world.cpp" />
+    <ClCompile Include="src\flat\body.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app.h" />
@@ -70,9 +71,6 @@
     <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
     <ClInclude Include="inc\app.h" />
-    <ClInclude Include="src\flat_world\polygon.h" />
-    <ClInclude Include="src\flat_world\entity.h" />
-    <ClInclude Include="src\flat_world\flat_world.h" />
     <ClInclude Include="src\gui\button.h" />
     <ClInclude Include="src\gui\layers.h" />
     <ClInclude Include="src\gui\model.h" />
@@ -81,13 +79,16 @@
     <ClInclude Include="src\gui\view.h" />
     <ClInclude Include="src\gui\Widget.h" />
     <ClInclude Include="src\gui\widget_container.h" />
-    <ClInclude Include="src\flat_world\scene_polygon.h" />
     <ClInclude Include="src\camera_2d.h" />
-    <ClInclude Include="src\circle.h" />
     <ClInclude Include="src\scene_2d.h" />
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\model_2d.h" />
     <ClInclude Include="src\frame_2d.h" />
-    <ClInclude Include="src\flat_world\sprite.h" />
+    <ClInclude Include="src\geometry_2d.h" />
+    <ClInclude Include="src\geometry_1d.h" />
+    <ClInclude Include="src\flat\shape.h" />
+    <ClInclude Include="src\flat\sprite.h" />
+    <ClInclude Include="src\flat\world.h" />
+    <ClInclude Include="src\flat\body.h" />
   </ItemGroup>
 </Project>

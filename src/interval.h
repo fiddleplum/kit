@@ -64,10 +64,13 @@ public:
 
 typedef Interval<1, int> Rangei;
 typedef Interval<1, float> Rangef;
+typedef Interval<1, double> Ranged;
 typedef Interval<2, int> Recti;
 typedef Interval<2, float> Rectf;
+typedef Interval<2, double> Rectd;
 typedef Interval<3, int> Boxi;
 typedef Interval<3, float> Boxf;
+typedef Interval<3, double> Boxd;
 
 template <int dim, typename T>
 Interval<dim, T>::Interval()
