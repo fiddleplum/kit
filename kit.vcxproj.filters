@@ -39,6 +39,8 @@
     <ClCompile Include="src\flat\sprite.cpp" />
     <ClCompile Include="src\flat\world.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
+    <ClCompile Include="src\window.cpp" />
+    <ClCompile Include="src\entry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app.h" />
@@ -66,9 +68,7 @@
     <ClInclude Include="src\serialize_vector.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\storage.h" />
-    <ClInclude Include="src\string_util.h" />
     <ClInclude Include="src\texture.h" />
-    <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
     <ClInclude Include="inc\app.h" />
     <ClInclude Include="src\gui\button.h" />
@@ -90,5 +90,9 @@
     <ClInclude Include="src\flat\world.h" />
     <ClInclude Include="src\flat\body.h" />
     <ClInclude Include="src\gui\widget.h" />
+    <ClInclude Include="inc\kit\entry.h" />
+    <ClInclude Include="inc\kit\string_util.h" />
+    <ClInclude Include="inc\kit\vector.h" />
+    <ClInclude Include="inc\kit\window.h" />
   </ItemGroup>
 </Project>

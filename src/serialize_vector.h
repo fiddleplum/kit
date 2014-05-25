@@ -1,7 +1,7 @@
 #pragma once
 
 #include "serialize.h"
-#include "vector.h"
+#include <kit/vector.h>
 
 namespace kit
 {

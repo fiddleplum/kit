@@ -1,7 +1,7 @@
 #pragma once
 
 #include "controller.h"
-#include "vector.h"
+#include <kit/vector.h>
 #include <memory>
 
 namespace kit

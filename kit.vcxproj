@@ -15,6 +15,7 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\csv.cpp" />
+    <ClCompile Include="src\entry.cpp" />
     <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
     <ClCompile Include="src\flat\shape.cpp" />
@@ -44,9 +45,14 @@
     <ClCompile Include="src\string_util.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\vertex_buffer_object.cpp" />
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
+    <ClInclude Include="inc\kit\entry.h" />
+    <ClInclude Include="inc\kit\string_util.h" />
+    <ClInclude Include="inc\kit\vector.h" />
+    <ClInclude Include="inc\kit\window.h" />
     <ClInclude Include="src\app.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\camera_2d.h" />
@@ -91,9 +97,7 @@
     <ClInclude Include="src\serialize_vector.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\storage.h" />
-    <ClInclude Include="src\string_util.h" />
     <ClInclude Include="src\texture.h" />
-    <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -126,18 +130,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\projects\_third_party\SDL2_image-2.0.0\include;D:\projects\_third_party\SDL2_net-2.0.0\include;D:\projects\_third_party\SDL2_ttf-2.0.12\include;D:\projects\_third_party\SDL2-2.0.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\projects\kit\external\SDL2_image-2.0.0\include;D:\projects\kit\external\SDL2_net-2.0.0\include;D:\projects\kit\external\SDL2_ttf-2.0.12\include;D:\projects\kit\external\SDL2-2.0.0\include;D:\projects\kit\inc;$(IncludePath)</IncludePath>
     <TargetName>kit-d</TargetName>
     <OutDir>lib\</OutDir>
     <IntDir>build\</IntDir>
-    <LibraryPath>D:\projects\_third_party\SDL2_image-2.0.0\lib\x86;D:\projects\_third_party\SDL2_net-2.0.0\lib\x86;D:\projects\_third_party\SDL2_ttf-2.0.12\lib\x86;D:\projects\_third_party\SDL2-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\projects\_third_party\SDL2_image-2.0.0\include;D:\projects\_third_party\SDL2_net-2.0.0\include;D:\projects\_third_party\SDL2_ttf-2.0.12\include;D:\projects\_third_party\SDL2-2.0.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\projects\kit\external\SDL2_image-2.0.0\include;D:\projects\kit\external\SDL2_net-2.0.0\include;D:\projects\kit\external\SDL2_ttf-2.0.12\include;D:\projects\kit\external\SDL2-2.0.0\include;D:\projects\kit\inc;$(IncludePath)</IncludePath>
     <TargetName>kit</TargetName>
     <OutDir>lib\</OutDir>
     <IntDir>build\</IntDir>
-    <LibraryPath>D:\projects\_third_party\SDL2_image-2.0.0\lib\x86;D:\projects\_third_party\SDL2_net-2.0.0\lib\x86;D:\projects\_third_party\SDL2_ttf-2.0.12\lib\x86;D:\projects\_third_party\SDL2-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "resource_manager.h"
-#include "vector.h"
+#include "kit/vector.h"
 #include "event.h"
 #include <string>
 #include <vector>
@@ -18,7 +18,7 @@ namespace kit
 	class Shader;
 
 	/// This function is called just before the loop. The params are the given at the command prompt.
-	void onStartup(std::vector<std::string> const & params);
+	//void onStartup(std::vector<std::string> const & params);
 
 	/// This function is called just after the loop.
 	void onShutdown();

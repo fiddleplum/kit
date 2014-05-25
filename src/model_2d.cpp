@@ -7,7 +7,7 @@
 #include "serialize.h"
 #include "serialize_std_string.h"
 #include "serialize_std_vector.h"
-#include "string_util.h"
+#include <kit/string_util.h>
 #include <fstream>
 #include <stdexcept>
 

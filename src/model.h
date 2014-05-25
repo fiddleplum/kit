@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include <kit/vector.h>
 #include "scene_entity.h"
 #include <vector>
 #include <istream>

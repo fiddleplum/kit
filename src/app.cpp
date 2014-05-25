@@ -1,4 +1,5 @@
 #include "app.h"
+#include <kit/entry.h>
 #include "shader.h"
 #include "texture.h"
 #include "open_gl.h"
@@ -63,7 +64,7 @@ namespace kit
 				shaderManager = std::make_shared<ResourceManager<Shader>>();
 
 				// Call user-defined startup function.
-				onStartup(params); 
+				entry(params); 
 
 				// Do loop.
 				running = true;

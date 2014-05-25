@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include <kit/vector.h>
 #include <cassert>
 
 namespace kit

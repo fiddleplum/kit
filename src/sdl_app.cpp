@@ -450,41 +450,42 @@ namespace kit
 			}
 		}
 	}
-
-	int main(int argc, char *argv[])
-	{
-		// Grab the params.
-		std::vector<std::string> params;
-		for(int i = 1; i < argc; ++i)
-		{
-			params.push_back(std::string(argv[i]));
-		}
-    
-		// Initialize SDL.
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) == -1)
-		{
-			App::showMessage(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
-			return -1;
-		}
-
-		// Create the window and renderer.
-		App::window = SDL_CreateWindow("Untitled", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-		if(App::window == NULL)
-		{
-			App::showMessage(std::string("Failed to create the SDL window:  ") + SDL_GetError() + ". ");
-			return -1;
-		}
-		App::glContext = SDL_GL_CreateContext(App::window);
-
-		App::start(params);
-
-		// Close window.
-		App::shutdownInput();
-		SDL_GL_DeleteContext(App::glContext);
-		SDL_DestroyWindow(App::window);
-		SDL_Quit();
-
-		return 0;
-	}
 }
 
+// Called by SDL to start things off.
+//int main(int argc, char *argv[])
+//{
+//	// Grab the params.
+//	std::vector<std::string> params;
+//	for(int i = 1; i < argc; ++i)
+//	{
+//		params.push_back(std::string(argv[i]));
+//	}
+//    
+//	// Initialize SDL.
+//	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) == -1)
+//	{
+//		kit::App::showMessage(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
+//		return -1;
+//	}
+//
+//	// Create the window and renderer.
+//	kit::App::window = SDL_CreateWindow("Untitled", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+//	if(kit::App::window == NULL)
+//	{
+//		kit::App::showMessage(std::string("Failed to create the SDL window:  ") + SDL_GetError() + ". ");
+//		return -1;
+//	}
+//	kit::App::glContext = SDL_GL_CreateContext(kit::App::window);
+//
+//	kit::App::start(params);
+//
+//	// Close window.
+//	kit::App::shutdownInput();
+//	SDL_GL_DeleteContext(kit::App::glContext);
+//	SDL_DestroyWindow(kit::App::window);
+//	SDL_Quit();
+//
+//	return 0;
+//}
+//
