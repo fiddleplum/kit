@@ -1,17 +1,20 @@
 #include "light.h"
 
-Light::Light()
+namespace kit
 {
-	color.set(1, 1, 1);
-}
+	Light::Light()
+	{
+		color.set(1, 1, 1);
+	}
 
-Vector3f Light::getColor() const
-{
-	return color;
-}
+	Vector3f Light::getColor() const
+	{
+		return color;
+	}
 
-void Light::setColor(Vector3f newColor)
-{
-	color = newColor;
+	void Light::setColor(Vector3f newColor)
+	{
+		color = newColor;
+	}
 }
 

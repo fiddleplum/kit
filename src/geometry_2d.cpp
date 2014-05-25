@@ -1,20 +1,23 @@
 #include "geometry_2d.h"
 
-Rectf Polygon::getBoundingRect() const
+namespace kit
 {
-	Rectf boundingRect;
-	if(vertices.size() > 0)
+	Rectf Polygon::getBoundingRect() const
 	{
-		boundingRect.min = boundingRect.max = vertices[0];
-		for(unsigned int i = 1; i < vertices.size(); i++)
+		Rectf boundingRect;
+		if(vertices.size() > 0)
 		{
-			boundingRect.extendTo(vertices[i]);
+			boundingRect.min = boundingRect.max = vertices[0];
+			for(unsigned int i = 1; i < vertices.size(); i++)
+			{
+				boundingRect.extendTo(vertices[i]);
+			}
 		}
+		else
+		{
+			boundingRect.min = boundingRect.max = Vector2f::zero();
+		}
+		return boundingRect;
 	}
-	else
-	{
-		boundingRect.min = boundingRect.max = Vector2f::zero();
-	}
-	return boundingRect;
 }
 

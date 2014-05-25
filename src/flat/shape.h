@@ -3,40 +3,43 @@
 #include "../vector.h"
 #include <vector>
 
-namespace Flat
+namespace kit
 {
-	class Shape
+	namespace Flat
 	{
-	public:
-		enum { None, Circle, Rectangle, Polygon, NumTypes };
+		class Shape
+		{
+		public:
+			enum { None, Circle, Rectangle, Polygon, NumTypes };
 
-		int type;
-	};
+			int type;
+		};
 
-	class Circle : public Shape
-	{
-	public:
-		Circle() { type = Shape::Circle; }
+		class Circle : public Shape
+		{
+		public:
+			Circle() { type = Shape::Circle; }
 
-		Vector2f center;
-		float radius;
-	};
+			Vector2f center;
+			float radius;
+		};
 
-	class Rectangle : public Shape
-	{
-	public:
-		Rectangle() { type = Shape::Rectangle; }
+		class Rectangle : public Shape
+		{
+		public:
+			Rectangle() { type = Shape::Rectangle; }
 
-		float min;
-		float max;
-	};
+			float min;
+			float max;
+		};
 
-	class Polygon : public Shape
-	{
-	public:
-		Polygon() { type = Shape::Polygon; }
+		class Polygon : public Shape
+		{
+		public:
+			Polygon() { type = Shape::Polygon; }
 
-		std::vector<Vector2f> vertices;
-	};
+			std::vector<Vector2f> vertices;
+		};
+	}
 }
 

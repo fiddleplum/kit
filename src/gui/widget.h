@@ -4,39 +4,42 @@
 #include "../interval.h"
 #include "../event.h"
 
-namespace App
+namespace kit
 {
-	void handleEvent(Event const & event);
-	void render();
-}
-
-namespace app
-{
-	class Widget
+	namespace App
 	{
-	public:
-		Widget() {} // Empty default constructor.
-		virtual ~Widget() {} // Virtual destructor for subclasses.
+		void handleEvent(Event const & event);
+		void render();
+	}
 
-		virtual Recti getBounds() const = 0; // Gets the bounds of the widget.
-		virtual void setPosition(Vector2i position) = 0; // Sets the position of the widget.
-		virtual void setMaxSize(Vector2i maxSize) = 0; // Sets the maximum size this widget can be. The widget can max out to this size (text box), or not change its size at all (check box).
+	namespace app
+	{
+		class Widget
+		{
+		public:
+			Widget() {} // Empty default constructor.
+			virtual ~Widget() {} // Virtual destructor for subclasses.
 
-	protected:
-		virtual void handleEvent(Event const & event) = 0; // Handles events.
-		virtual void render() = 0; // Renders the widget.
+			virtual Recti getBounds() const = 0; // Gets the bounds of the widget.
+			virtual void setPosition(Vector2i position) = 0; // Sets the position of the widget.
+			virtual void setMaxSize(Vector2i maxSize) = 0; // Sets the maximum size this widget can be. The widget can max out to this size (text box), or not change its size at all (check box).
 
-	private:
-		// TODO: Make these public and with the delete specifier, once MSVC upgrades.
-		/// Not copy-constructable.
-		Widget(Widget const &);
+		protected:
+			virtual void handleEvent(Event const & event) = 0; // Handles events.
+			virtual void render() = 0; // Renders the widget.
 
-		/// Not copyable.
-		Widget & operator = (Widget const &);
+		private:
+			// TODO: Make these public and with the delete specifier, once MSVC upgrades.
+			/// Not copy-constructable.
+			Widget(Widget const &);
 
-		friend void App::handleEvent(Event const & event);
-		friend void App::render();
-		friend class WidgetContainer;
-	};
+			/// Not copyable.
+			Widget & operator = (Widget const &);
+
+			friend void App::handleEvent(Event const & event);
+			friend void App::render();
+			friend class WidgetContainer;
+		};
+	}
 }
 

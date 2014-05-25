@@ -4,32 +4,35 @@
 #include "vector.h"
 #include <memory>
 
-class Camera;
-
-class FreeFlyCameraController : public Controller
+namespace kit
 {
-public:
-	FreeFlyCameraController();
+	class Camera;
 
-	float getMoveSensitivity() const;
+	class FreeFlyCameraController : public Controller
+	{
+	public:
+		FreeFlyCameraController();
+
+		float getMoveSensitivity() const;
 	
-	void setMoveSensitivity(float);
+		void setMoveSensitivity(float);
 
-	float getLookSensitivity() const;
+		float getLookSensitivity() const;
 
-	void setLookSensitivity(float);
+		void setLookSensitivity(float);
 
-	void setCamera(std::shared_ptr<Camera>);
+		void setCamera(std::shared_ptr<Camera>);
 
-	void handleEvent(Event const &) override;
+		void handleEvent(Event const &) override;
 
-private:
-	std::shared_ptr<Camera> camera;
-	float lookSensitivity;
-	float moveSensitivity;
-	Vector3i moving;
-	float yaw;
-	float pitch;
-	bool looking;
-};
+	private:
+		std::shared_ptr<Camera> camera;
+		float lookSensitivity;
+		float moveSensitivity;
+		Vector3i moving;
+		float yaw;
+		float pitch;
+		bool looking;
+	};
+}
 

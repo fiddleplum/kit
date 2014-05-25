@@ -67,7 +67,7 @@
     <ClInclude Include="src\gui\partition.h" />
     <ClInclude Include="src\gui\sprite.h" />
     <ClInclude Include="src\gui\view.h" />
-    <ClInclude Include="src\gui\Widget.h" />
+    <ClInclude Include="src\gui\widget.h" />
     <ClInclude Include="src\gui\widget_container.h" />
     <ClInclude Include="src\interval.h" />
     <ClInclude Include="src\light.h" />

@@ -3,29 +3,32 @@
 #include "serialize.h"
 #include "vector.h"
 
-template <unsigned int dim, typename T>
-bool serialize(std::ostream & out, Vector<dim, T> const & v)
+namespace kit
 {
-	for(unsigned int i = 0; i < dim; i++)
+	template <unsigned int dim, typename T>
+	bool serialize(std::ostream & out, Vector<dim, T> const & v)
 	{
-		if(!serialize(out, v[i]))
+		for(unsigned int i = 0; i < dim; i++)
 		{
-			return false;
+			if(!serialize(out, v[i]))
+			{
+				return false;
+			}
 		}
+		return true;
 	}
-	return true;
-}
 
-template <unsigned int dim, typename T>
-bool deserialize(std::istream & in, Vector<dim, T> & v)
-{
-	for(unsigned int i = 0; i < dim; i++)
+	template <unsigned int dim, typename T>
+	bool deserialize(std::istream & in, Vector<dim, T> & v)
 	{
-		if(!deserialize(in, v[i]))
+		for(unsigned int i = 0; i < dim; i++)
 		{
-			return false;
+			if(!deserialize(in, v[i]))
+			{
+				return false;
+			}
 		}
+		return true;
 	}
-	return true;
 }
 

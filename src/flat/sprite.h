@@ -4,30 +4,33 @@
 #include <memory>
 #include <string>
 
-class Model2D;
-
-namespace Flat
+namespace kit
 {
-	class Sprite
+	class Model2D;
+
+	namespace Flat
 	{
-	public:
-		Sprite();
-		~Sprite();
+		class Sprite
+		{
+		public:
+			Sprite();
+			~Sprite();
 
-		Vector2f getSize() const;
-		void setTexture(std::string const & filename);
-		void setTextureBounds(Recti bounds);
-		Recti getTextureBounds() const;
-		void setFrame(int frame);
+			Vector2f getSize() const;
+			void setTexture(std::string const & filename);
+			void setTextureBounds(Recti bounds);
+			Recti getTextureBounds() const;
+			void setFrame(int frame);
 
-		std::shared_ptr<Model2D> getModel() const { return model; }
+			std::shared_ptr<Model2D> getModel() const { return model; }
 
-	private:
-		void updateVertices();
+		private:
+			void updateVertices();
 
-		std::shared_ptr<Model2D> model;
-		Recti textureBounds;
-		int frame;
-	};
+			std::shared_ptr<Model2D> model;
+			Recti textureBounds;
+			int frame;
+		};
+	}
 }
 

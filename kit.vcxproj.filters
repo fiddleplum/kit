@@ -77,7 +77,6 @@
     <ClInclude Include="src\gui\partition.h" />
     <ClInclude Include="src\gui\sprite.h" />
     <ClInclude Include="src\gui\view.h" />
-    <ClInclude Include="src\gui\Widget.h" />
     <ClInclude Include="src\gui\widget_container.h" />
     <ClInclude Include="src\camera_2d.h" />
     <ClInclude Include="src\scene_2d.h" />
@@ -90,5 +89,6 @@
     <ClInclude Include="src\flat\sprite.h" />
     <ClInclude Include="src\flat\world.h" />
     <ClInclude Include="src\flat\body.h" />
+    <ClInclude Include="src\gui\widget.h" />
   </ItemGroup>
 </Project>

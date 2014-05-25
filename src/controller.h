@@ -1,10 +1,13 @@
 #pragma once
 
-class Event;
-
-class Controller
+namespace kit
 {
-public:
-	virtual void handleEvent(Event const &) = 0;
-};
+	class Event;
+
+	class Controller
+	{
+	public:
+		virtual void handleEvent(Event const &) = 0;
+	};
+}
 

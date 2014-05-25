@@ -2,14 +2,17 @@
 
 #include "scene_entity.h"
 
-class Light : public SceneEntity
+namespace kit
 {
-public:
-	Light();
-	Vector3f getColor() const;
-	void setColor(Vector3f);
+	class Light : public SceneEntity
+	{
+	public:
+		Light();
+		Vector3f getColor() const;
+		void setColor(Vector3f);
 
-private:
-	Vector3f color;
-};
+	private:
+		Vector3f color;
+	};
+}
 

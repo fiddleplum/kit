@@ -3,18 +3,21 @@
 #include "geometry_1d.h"
 #include <vector>
 
-class Circle
+namespace kit
 {
-public:
-	Vector2f center;
-	float radius;
-};
+	class Circle
+	{
+	public:
+		Vector2f center;
+		float radius;
+	};
 
-class Polygon
-{
-public:
-	std::vector<Vector2f> vertices;
+	class Polygon
+	{
+	public:
+		std::vector<Vector2f> vertices;
 
-	Rectf getBoundingRect() const;
-};
+		Rectf getBoundingRect() const;
+	};
+}
 
