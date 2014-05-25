@@ -8,7 +8,7 @@ namespace Flat
 	class Shape
 	{
 	public:
-		enum { Circle, Rectangle, Polygon, NumTypes };
+		enum { None, Circle, Rectangle, Polygon, NumTypes };
 
 		int type;
 	};

@@ -11,15 +11,20 @@
 #include <functional>
 #include <set>
 
+class Entity2D;
+class Scene2D;
+
 namespace Flat
 {
 	class Entity
 	{
 	public:
+		Entity(bool frame, bool sprite, int shape, bool body, std::shared_ptr<Scene2D> scene);
 		std::shared_ptr<Frame2D> frame;
 		std::shared_ptr<Sprite> sprite;
 		std::shared_ptr<Shape> shape;
 		std::shared_ptr<Body> body;
+		std::shared_ptr<Entity2D> entity2D;
 	};
 
 	class Impact

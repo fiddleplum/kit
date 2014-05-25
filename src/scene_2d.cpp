@@ -22,7 +22,7 @@ void Scene2D::removeCamera(std::shared_ptr<Camera2D> camera)
 void Scene2D::addEntity(std::shared_ptr<Entity2D> entity)
 {
 	entities.insert(entity);
-	entity->model.setSorted();
+	entity->model->setSorted();
 }
 
 void Scene2D::removeEntity(std::shared_ptr<Entity2D> entity)
@@ -58,7 +58,7 @@ void Scene2D::render(std::shared_ptr<Camera2D> camera)
 	for(auto it = entities.begin(); it != entities.end();)
 	{
 		std::shared_ptr<Entity2D> entity = *it;
-		if(!entity->model.isSorted())
+		if(!entity->model->isSorted())
 		{
 			it = entities.erase(it);
 			entitiesToInsert.push_back(entity);
@@ -71,13 +71,13 @@ void Scene2D::render(std::shared_ptr<Camera2D> camera)
 	for(auto entity : entitiesToInsert)
 	{
 		entities.insert(entity);
-		entity->model.setSorted();
+		entity->model->setSorted();
 	}
 
 	// Do the render.
 	for(auto entity : entities)
 	{
-		entity->model.render(camera, entity->frame.getTransform());
+		entity->model->render(camera, entity->frame->getTransform());
 	}
 }
 

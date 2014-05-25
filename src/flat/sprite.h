@@ -11,7 +11,7 @@ namespace Flat
 	class Sprite
 	{
 	public:
-		Sprite(std::shared_ptr<Model2D> model);
+		Sprite();
 		~Sprite();
 
 		Vector2f getSize() const;
@@ -19,6 +19,8 @@ namespace Flat
 		void setTextureBounds(Recti bounds);
 		Recti getTextureBounds() const;
 		void setFrame(int frame);
+
+		std::shared_ptr<Model2D> getModel() const { return model; }
 
 	private:
 		void updateVertices();

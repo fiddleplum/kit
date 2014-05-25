@@ -4,13 +4,10 @@
 
 namespace Flat
 {
-	Sprite::Sprite(std::shared_ptr<Model2D> model)
+	Sprite::Sprite()
 	{
-		if(model == nullptr)
-		{
-			throw std::exception();
-		}
-		this->model = model;
+		model = std::make_shared<Model2D>();
+		frame = 0;
 		std::vector<unsigned int> indices (6);
 		indices[0] = 0;
 		indices[1] = 3;

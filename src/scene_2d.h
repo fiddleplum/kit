@@ -1,19 +1,20 @@
 #pragma once
 
-#include "frame_2d.h"
-#include "model_2d.h"
 #include <set>
 #include <memory>
 
 class Event;
 class Camera2D;
 class Controller;
+class Frame2D;
+class Model2D;
 
 class Entity2D
 {
 public:
-	Model2D model;
-	Frame2D frame;
+	Entity2D(std::shared_ptr<Model2D> model, std::shared_ptr<Frame2D> frame) { this->model = model; this->frame = frame; }
+	std::shared_ptr<Model2D> model;
+	std::shared_ptr<Frame2D> frame;
 };
 
 class Scene2D

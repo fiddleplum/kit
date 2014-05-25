@@ -1,11 +1,43 @@
 #include "world.h"
+#include "sprite.h"
+#include "../scene_2d.h"
 #include <cmath>
 
 namespace Flat
 {
+	Entity::Entity(bool frame, bool sprite, int shape, bool body, std::shared_ptr<Scene2D> scene)
+	{
+		if(frame)
+		{
+			this->frame = std::make_shared<Frame2D>();
+		}
+		if(sprite)
+		{
+			this->sprite = std::make_shared<Sprite>();
+		}
+		if(frame && sprite && scene)
+		{
+			entity2D = std::make_shared<Entity2D>(this->sprite->getModel(), this->frame);
+			scene->addEntity(entity2D);
+		}
+		switch(shape)
+		{
+		case Shape::Circle:
+			this->shape = std::make_shared<Circle>(); break;
+		case Shape::Rectangle:
+			this->shape = std::make_shared<Rectangle>(); break;
+		case Shape::Polygon:
+			this->shape = std::make_shared<Polygon>(); break;
+		}
+		if(body)
+		{
+			this->body = std::make_shared<Body>();
+		}
+	}
+
 	World::World()
 	{
-		marker = std::make_shared<Entity>();
+		marker = std::make_shared<Entity>(true, true, Shape::None, false, nullptr);
 	}
 
 	void World::iteratePhysics(float deltaTime)
