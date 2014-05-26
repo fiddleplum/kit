@@ -24,25 +24,24 @@ namespace kit
 	/**
 		In reference to cycles: The solution is to unlink all objects first, and then delete them. For doubly-linked trees, unlink the upward links first. For doubly linked lists, unlink all connections, etc.
 	**/
-
 	template <class T>
 	class OwnPtr
 	{
 	public:
 		//! Initialize the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
-		OwnPtr(void(*destroy)(T *) = nullptr);
+		OwnPtr (void(*destroy)(T *) = nullptr);
 
 		//! Initialize the pointer to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. It can also take a function that destroys the object (default is the standard delete operator).
-		template <class Y> explicit OwnPtr(Y * newP, void(* destroy)(T *) = nullptr);
+		template <class Y> explicit OwnPtr (Y * newP, void(* destroy)(T *) = nullptr);
 
 		//! Default copy constructor. Needed otherwise C++ will create its own.
-		OwnPtr(OwnPtr<T> const & ptr);
+		OwnPtr (OwnPtr<T> const & ptr);
 
 		//! Templated copy constructor. It can take a pointer that has a type that is a subclass of T.
-		template <class Y> OwnPtr(OwnPtr<Y> const & ptr);
+		template <class Y> OwnPtr (OwnPtr<Y> const & ptr);
 
 		//! Destructor. If this is the last OwnPtr reference to the object, either delete is called or the destroy function is called if it is specified. There must be no UsePtrs pointing to the object. Note that it is not virtual, so don't subclass OwnPtr.
-		~OwnPtr();
+		~OwnPtr ();
 
 		//! Default assignment operator. Needed otherwise C++ will create its own.
 		OwnPtr<T> & operator = (OwnPtr<T> const & ptr);
@@ -51,46 +50,46 @@ namespace kit
 		template <class Y> OwnPtr<T> & operator = (OwnPtr<Y> const & ptr);
 
 		//! Returns true if this points to zero.
-		bool isNull() const;
+		bool isNull () const;
 
 		//! Returns true if this points to something non-zero.
-		bool isValid() const;
+		bool isValid () const;
 
 		//! Returns true if there is at least one UsePtr that points to the object this points to.
-		bool isUsed() const;
+		bool isUsed () const;
 
 		//! Change the object that this points to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
-		template <class Y> void set(Y * newP, void(*newDestroy)(T *) = nullptr);
+		template <class Y> void set (Y * newP, void(*newDestroy)(T *) = nullptr);
 
 		//! Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
-		void setNull();
+		void setNull ();
 
 		//! Provides access to the object's members.
-		T * operator ->() const;
+		T * operator -> () const;
 
 		//! Provides access to the element located at index. Warning: this provides no index out-of-bounds checking.
-		T & operator [](int index) const;
+		T & operator [] (int index) const;
 
 		//! Provides reference access to the object.
-		T & operator *() const;
+		T & operator * () const;
 
 		//! Only to be used for functions that require a pointer. Be careful how you use this.
-		T * raw() const;
+		T * raw () const;
 
-		//! Get the unsigned integer value of the pointer's object.
-		operator unsigned int() const;
+		//! Get the unsigned integer value of the address of ptr's object.
+		operator unsigned int () const;
 
 		//! Returns a use pointer statically casted to Y.
-		template <class Y> UsePtr<Y> staticCast() const;
+		template <class Y> UsePtr<Y> staticCast () const;
 
 		//! Returns a use pointer dynamically casted to Y.
-		template <class Y> UsePtr<Y> dynamicCast() const;
+		template <class Y> UsePtr<Y> dynamicCast () const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator <(OwnPtr<T> const & ptr) const;
+		bool operator < (OwnPtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator <(UsePtr<T> const & ptr) const;
+		bool operator < (UsePtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
 		bool operator == (OwnPtr<T> const & ptr) const;
@@ -101,31 +100,30 @@ namespace kit
 	private:
 		T * p;
 		_OwnPtrCounter * c;
-		void(* destroy)(T *);
+		void (* destroy) (T *);
 		template <class Y> friend class OwnPtr;
 		template <class Y> friend class UsePtr;
 	};
 
 	//! UsePtr is a smart pointer that has no ownership and so never deletes the pointer that it references. The object it points to is guaranteed to exist while the UsePtr points to it.
-
 	template <class T>
 	class UsePtr
 	{
 	public:
 		//! Default constructor. Initializes the pointer to null.
-		UsePtr();
+		UsePtr ();
 
 		//! Default copy constructor. Needed otherwise C++ will create its own.
-		UsePtr(UsePtr<T> const & ptr);
+		UsePtr (UsePtr<T> const & ptr);
 
 		//! Templated copy constructor.
-		template <class Y> UsePtr(UsePtr<Y> const & ptr);
+		template <class Y> UsePtr (UsePtr<Y> const & ptr);
 
 		//! Initializes this to point to the same object that ptr points to. While this exists and points to the object, it has a guarantee that the object exists.
-		template <class Y> UsePtr(OwnPtr<Y> const & ptr);
+		template <class Y> UsePtr (OwnPtr<Y> const & ptr);
 
 		//! Destructor.
-		~UsePtr();
+		~UsePtr ();
 
 		//! Default assignment operator. Needed, otherwise C++ will create its own.
 		UsePtr<T> & operator = (UsePtr<T> const & ptr);
@@ -133,44 +131,44 @@ namespace kit
 		//! Templated assignment operator.
 		template <class Y> UsePtr<T> & operator = (UsePtr<Y> const & ptr);
 
-		//! Assigns this to point to the same object that ptr points to. If this pointed to a previous object, then that reference is removed. While this exists and points to the new object, it has a guarantee that the object exists.
+		//! Assigns this to point to the same object that ptr points to. If this pointed to a previous object, then that reference is removed.
 		template <class Y> UsePtr<T> & operator = (OwnPtr<Y> const & ptr);
 
 		//! Returns true if this points to zero.
-		bool isNull() const;
+		bool isNull () const;
 
 		//! Returns true if this points to something non-zero.
-		bool isValid() const;
+		bool isValid () const;
 
 		//! Makes this point to nothing.
-		void setNull();
+		void setNull ();
 
 		//! Provides access to the object's members.
-		T * operator ->() const;
+		T * operator -> () const;
 
 		//! Provides access to the element located at index. Warning: this provides no index out-of-bounds checking.
-		T & operator [](int index) const;
+		T & operator [] (int index) const;
 
 		//! Provides reference access to the object.
-		T & operator *() const;
+		T & operator * () const;
 
-		//! Get the unsigned integer value of the pointer's object.
-		operator unsigned int() const;
+		//! Get the unsigned integer value of the address of ptr's object.
+		operator unsigned int () const;
 
 		//! Only to be used for functions that require a pointer. Be careful how you use this.
-		T * raw() const;
+		T * raw () const;
 
 		//! Returns a use pointer statically casted to Y.
-		template <class Y> UsePtr<Y> staticCast() const;
+		template <class Y> UsePtr<Y> staticCast () const;
 
 		//! Returns a use pointer dynamically casted to Y.
-		template <class Y> UsePtr<Y> dynamicCast() const;
+		template <class Y> UsePtr<Y> dynamicCast () const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator <(UsePtr<T> const & ptr) const;
+		bool operator < (UsePtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator <(OwnPtr<T> const & ptr) const;
+		bool operator < (OwnPtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
 		template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
@@ -195,12 +193,12 @@ namespace kit
 	};
 
 	template <class T>
-	OwnPtr<T>::OwnPtr(void(*destroy)(T *)) : p(nullptr), c(nullptr), destroy(destroy)
+	OwnPtr<T>::OwnPtr (void(*destroy)(T *)) : p(nullptr), c(nullptr), destroy(destroy)
 	{
 	}
 
 	template <class T> template <class Y>
-	OwnPtr<T>::OwnPtr(Y * newP, void(*destroy)(T *)) : p(newP), destroy(destroy)
+	OwnPtr<T>::OwnPtr (Y * newP, void(*destroy)(T *)) : p(newP), destroy(destroy)
 	{
 		if(p != nullptr)
 		{
@@ -215,7 +213,7 @@ namespace kit
 	}
 
 	template <class T>
-	OwnPtr<T>::OwnPtr(OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c), destroy(ptr.destroy)
+	OwnPtr<T>::OwnPtr (OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c), destroy(ptr.destroy)
 	{
 		if(p != 0)
 		{
@@ -224,7 +222,7 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
-	OwnPtr<T>::OwnPtr(OwnPtr<Y> const & ptr) : p(ptr.p), c((_OwnPtrCounter *)ptr.c), destroy((void(*)(T *))ptr.destroy)
+	OwnPtr<T>::OwnPtr (OwnPtr<Y> const & ptr) : p(ptr.p), c((_OwnPtrCounter *)ptr.c), destroy((void(*)(T *))ptr.destroy)
 	{
 		if(p != nullptr)
 		{
@@ -233,7 +231,7 @@ namespace kit
 	}
 
 	template <class T>
-	OwnPtr<T>::~OwnPtr()
+	OwnPtr<T>::~OwnPtr ()
 	{
 		setNull();
 	}
@@ -275,26 +273,26 @@ namespace kit
 	}
 
 	template <class T>
-	bool OwnPtr<T>::isNull() const
+	bool OwnPtr<T>::isNull () const
 	{
 		return p == nullptr;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::isValid() const
+	bool OwnPtr<T>::isValid () const
 	{
 		return p != nullptr;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::isUsed() const
+	bool OwnPtr<T>::isUsed () const
 	{
 		assert(p != nullptr);
 		return c->cc != 0;
 	}
 
 	template <class T> template <class Y>
-	void OwnPtr<T>::set(Y * newP, void(*newDestroy)(T *))
+	void OwnPtr<T>::set (Y * newP, void(*newDestroy)(T *))
 	{
 		setNull();
 		destroy = newDestroy;
@@ -312,7 +310,7 @@ namespace kit
 	}
 
 	template <class T>
-	void OwnPtr<T>::setNull()
+	void OwnPtr<T>::setNull ()
 	{
 		if(p != nullptr)
 		{
@@ -336,40 +334,40 @@ namespace kit
 	}
 
 	template <class T>
-	T * OwnPtr<T>::operator ->() const
+	T * OwnPtr<T>::operator -> () const
 	{
 		assert(p != nullptr);
 		return p;
 	}
 
 	template <class T>
-	T & OwnPtr<T>::operator [](int index) const
+	T & OwnPtr<T>::operator [] (int index) const
 	{
 		assert(p != nullptr);
 		return p[index];
 	}
 
 	template <class T>
-	T & OwnPtr<T>::operator *() const
+	T & OwnPtr<T>::operator * () const
 	{
 		assert(p != nullptr);
 		return *p;
 	}
 
 	template <class T>
-	T * OwnPtr<T>::raw() const
+	T * OwnPtr<T>::raw () const
 	{
 		assert(p != nullptr);
 		return p;
 	}
 
 	template <class T>
-	OwnPtr<T>::operator unsigned int() const
+	OwnPtr<T>::operator unsigned int () const
 	{
 		return(unsigned int)p;
 	}
 
-	template <class T> template <class Y> UsePtr<Y> OwnPtr<T>::staticCast() const
+	template <class T> template <class Y> UsePtr<Y> OwnPtr<T>::staticCast () const
 	{
 		UsePtr<Y> cp;
 		cp.p = static_cast<Y *>(p);
@@ -381,7 +379,7 @@ namespace kit
 		return cp;
 	}
 
-	template <class T> template <class Y> UsePtr<Y> OwnPtr<T>::dynamicCast() const
+	template <class T> template <class Y> UsePtr<Y> OwnPtr<T>::dynamicCast () const
 	{
 		UsePtr<Y> cp;
 		cp.p = dynamic_cast<Y *>(p);
@@ -394,13 +392,13 @@ namespace kit
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator <(OwnPtr<T> const & ptr) const
+	bool OwnPtr<T>::operator < (OwnPtr<T> const & ptr) const
 	{
 		return p < ptr.p;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator <(UsePtr<T> const & ptr) const
+	bool OwnPtr<T>::operator < (UsePtr<T> const & ptr) const
 	{
 		return p < ptr.p;
 	}
@@ -418,12 +416,12 @@ namespace kit
 	}
 
 	template <class T>
-	UsePtr<T>::UsePtr() : p(nullptr), cc(nullptr)
+	UsePtr<T>::UsePtr () : p(nullptr), cc(nullptr)
 	{
 	}
 
 	template <class T>
-	UsePtr<T>::UsePtr(UsePtr<T> const & ptr) : p(ptr.p), cc(ptr.cc)
+	UsePtr<T>::UsePtr (UsePtr<T> const & ptr) : p(ptr.p), cc(ptr.cc)
 	{
 		if(p != nullptr)
 		{
@@ -432,7 +430,7 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
-	UsePtr<T>::UsePtr(UsePtr<Y> const & ptr) : p(ptr.p), cc(ptr.cc)
+	UsePtr<T>::UsePtr (UsePtr<Y> const & ptr) : p(ptr.p), cc(ptr.cc)
 	{
 		if(p != nullptr)
 		{
@@ -441,7 +439,7 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
-	UsePtr<T>::UsePtr(OwnPtr<Y> const & ptr) : p(ptr.p), cc(&ptr.c->cc)
+	UsePtr<T>::UsePtr (OwnPtr<Y> const & ptr) : p(ptr.p), cc(&ptr.c->cc)
 	{
 		if(p != nullptr)
 		{
@@ -450,7 +448,7 @@ namespace kit
 	}
 
 	template <class T>
-	UsePtr<T>::~UsePtr()
+	UsePtr<T>::~UsePtr ()
 	{
 		if(p != nullptr)
 		{
@@ -525,13 +523,13 @@ namespace kit
 	}
 
 	template <class T>
-	bool UsePtr<T>::isValid() const
+	bool UsePtr<T>::isValid () const
 	{
 		return p != nullptr;
 	}
 
 	template <class T>
-	void UsePtr<T>::setNull()
+	void UsePtr<T>::setNull ()
 	{
 		if(p != nullptr)
 		{
@@ -542,40 +540,40 @@ namespace kit
 	}
 
 	template <class T>
-	T * UsePtr<T>::operator ->() const
+	T * UsePtr<T>::operator -> () const
 	{
 		assert(p != nullptr);
 		return p;
 	}
 
 	template <class T>
-	T & UsePtr<T>::operator [](int index) const
+	T & UsePtr<T>::operator [] (int index) const
 	{
 		assert(p != nullptr);
 		return p[index];
 	}
 
 	template <class T>
-	T & UsePtr<T>::operator *() const
+	T & UsePtr<T>::operator * () const
 	{
 		assert(p != nullptr);
 		return *p;
 	}
 
 	template <class T>
-	T * UsePtr<T>::raw() const
+	T * UsePtr<T>::raw () const
 	{
 		assert(p != nullptr);
 		return p;
 	}
 
 	template <class T>
-	UsePtr<T>::operator unsigned int() const
+	UsePtr<T>::operator unsigned int () const
 	{
 		return(unsigned int)p;
 	}
 
-	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::staticCast() const
+	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::staticCast () const
 	{
 		UsePtr<Y> cp;
 		cp.p = static_cast<Y *>(p);
@@ -587,7 +585,7 @@ namespace kit
 		return cp;
 	}
 
-	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::dynamicCast() const
+	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::dynamicCast () const
 	{
 		UsePtr<Y> cp;
 		cp.p = dynamic_cast<Y *>(p);
@@ -600,13 +598,13 @@ namespace kit
 	}
 
 	template <class T>
-	bool UsePtr<T>::operator <(UsePtr<T> const & ptr) const
+	bool UsePtr<T>::operator < (UsePtr<T> const & ptr) const
 	{
 		return p < ptr.p;
 	}
 
 	template <class T>
-	bool UsePtr<T>::operator <(OwnPtr<T> const & ptr) const
+	bool UsePtr<T>::operator < (OwnPtr<T> const & ptr) const
 	{
 		return p < ptr.p;
 	}
