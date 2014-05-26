@@ -917,7 +917,7 @@ namespace kit
 	template <class T>
 	T * Ptr<T>::operator -> () const
 	{
-		if(p == nullptr)
+		if(p == nullptr || c->oc == 0)
 		{
 			throw nullptr_exception;
 		}
@@ -927,7 +927,7 @@ namespace kit
 	template <class T>
 	T & Ptr<T>::operator [] (int index) const
 	{
-		if(p == nullptr)
+		if(p == nullptr || c->oc == 0)
 		{
 			throw nullptr_exception;
 		}
@@ -937,7 +937,7 @@ namespace kit
 	template <class T>
 	T & Ptr<T>::operator * () const
 	{
-		if(p == nullptr)
+		if(p == nullptr || c->oc == 0)
 		{
 			throw nullptr_exception;
 		}
