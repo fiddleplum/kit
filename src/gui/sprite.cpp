@@ -38,7 +38,7 @@ namespace kit
 			updateVertices();
 		}
 
-		void Sprite::handleEvent(Event const & event)
+		void Sprite::handleEvent(Event const &)
 		{
 		}
 

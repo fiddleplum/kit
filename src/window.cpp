@@ -2,9 +2,12 @@
 #include "../external/SDL2-2.0.0/include/SDL.h"
 #include <string>
 #include <algorithm>
+#include <map>
 
 namespace kit
 {
+	std::map<Window, OwnPtr<IWindow>> windows;
+
 	class MWindow : public IWindow
 	{
 	public:
@@ -93,9 +96,16 @@ namespace kit
 		}
 	};
 
-	Window createWindow (char const * title)
+	Window addWindow (char const * title)
 	{
-		return std::make_shared<MWindow>(title);
+		OwnPtr<IWindow> window (new MWindow (title));
+		windows[window] = window;
+		return window;
+	}
+
+	void removeWindow (Window window)
+	{
+		windows.erase(window);
 	}
 
 	int getNumDisplays ()

@@ -72,7 +72,7 @@ namespace kit
 				while(running)
 				{
 					float newTime = getTime();
-					float deltaTime = newTime - lastTime; // calculate the last frame's duration
+					//float deltaTime = newTime - lastTime; // calculate the last frame's duration
 					lastTime = newTime;
 					// Process Events
 					if(running)

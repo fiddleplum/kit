@@ -19,7 +19,7 @@ namespace kit
 			void setMaxSize(Vector2i maxSize) override;
 
 		protected:
-			virtual void handleContainerEvent(Event const & event) {}; // handles container-wide events
+			virtual void handleContainerEvent(Event const &) {}; // handles container-wide events
 			virtual void updateWidgetBounds() = 0; // updates the widget bounds after the container has moved or otherwise changed
 
 			void insertWidgetBefore(std::shared_ptr<Widget> widget, std::shared_ptr<Widget> beforeWidget);

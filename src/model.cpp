@@ -336,11 +336,9 @@ namespace kit
 		{
 			code[Shader::Fragment] += "in vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
 		}
-		unsigned int samplerIndex = 0;
-		for(TextureInfo const & textureInfo : mTextureInfos)
+		for(unsigned int samplerIndex = 0; samplerIndex < mTextureInfos.size(); samplerIndex++)
 		{
 			code[Shader::Fragment] += "uniform sampler2D uSampler" + std::to_string(samplerIndex) + ";\n";
-			samplerIndex++;
 		}
 
 		// Add the main function.
@@ -354,7 +352,7 @@ namespace kit
 		{
 			code[Shader::Fragment] += "	vec4 color = uDiffuseColor;\n";
 		}
-		samplerIndex = 0;
+		unsigned int samplerIndex = 0;
 		for(TextureInfo const & textureInfo : mTextureInfos)
 		{
 			std::string samplerIndexString = std::to_string(samplerIndex);

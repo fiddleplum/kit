@@ -69,13 +69,13 @@ namespace kit
 
 	bool stringToFloat(float & f, std::string const & s)
 	{
-		char * end (0);
 		errno = 0;
 		if(s.size() == 0)
 		{
 			return false;
 		}
 	#ifndef _MSC_VER
+		char * end (0);
 		f = strtof(s.c_str(), &end);
 		if(errno == ERANGE || end != s.c_str() + s.size())
 		{

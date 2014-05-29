@@ -1,9 +1,5 @@
 #pragma once
 
-// TO IMPLEMENT: Change this to 1 to track which UsePtrs are still holding onto an OwnPtr, and blocking it from destroying itself.
-#define TRACK_USE_PTRS 0
-
-// Dependencies
 #include <exception>
 
 namespace kit
@@ -11,6 +7,9 @@ namespace kit
 	// Forward declarations
 	template <class T>
 	class UsePtr;
+
+	template <class T>
+	class Ptr;
 
 	//! This is a function that can be passed to OwnPtr to delete arrays properly.
 	template <class T>
@@ -23,7 +22,7 @@ namespace kit
 	class nullptr_exception : public std::exception
 	{
 	public:
-		char const * what ()
+		char const * what () const override
 		{
 			return "Null pointer exception. ";
 		}
@@ -189,26 +188,26 @@ namespace kit
 		template <class Y> UsePtr<Y> dynamicCast () const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (UsePtr<T> const & ptr) const;
+		bool operator < (OwnPtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (OwnPtr<T> const & ptr) const;
+		bool operator < (UsePtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
 		bool operator < (Ptr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
-		template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
+		template <class Y> bool operator == (OwnPtr<Y> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
-		template <class Y> bool operator == (OwnPtr<Y> const & ptr) const;
+		template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
 		template <class Y> bool operator == (Ptr<Y> const & ptr) const;
 
 	private:
 		T * p;
-		OwnPtr::Counter * c;
+		typename OwnPtr<T>::Counter * c;
 		template <class Y> friend class OwnPtr;
 		template <class Y> friend class UsePtr;
 		template <class Y> friend class Ptr;
@@ -223,7 +222,7 @@ namespace kit
 		Ptr ();
 
 		//! Default copy constructor. Needed otherwise C++ will create its own.
-		UsePtr (Ptr<T> const & ptr);
+		Ptr (Ptr<T> const & ptr);
 
 		//! Templated copy constructor.
 		template <class Y> Ptr (Ptr<Y> const & ptr);
@@ -280,26 +279,26 @@ namespace kit
 		template <class Y> Ptr<Y> dynamicCast () const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (UsePtr<T> const & ptr) const;
+		bool operator < (OwnPtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (OwnPtr<T> const & ptr) const;
+		bool operator < (UsePtr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is less than the address of ptr's object.
 		bool operator < (Ptr<T> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
-		template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
+		template <class Y> bool operator == (OwnPtr<Y> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
-		template <class Y> bool operator == (OwnPtr<Y> const & ptr) const;
+		template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
 
 		//! Returns true if the address of this object is equal to the address of ptr's object.
 		template <class Y> bool operator == (Ptr<Y> const & ptr) const;
 
 	private:
 		T * p;
-		OwnPtr::Counter * c;
+		typename OwnPtr<T>::Counter * c;
 		template <class Y> friend class OwnPtr;
 		template <class Y> friend class UsePtr;
 		template <class Y> friend class Ptr;

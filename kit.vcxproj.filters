@@ -94,5 +94,6 @@
     <ClInclude Include="inc\kit\string_util.h" />
     <ClInclude Include="inc\kit\vector.h" />
     <ClInclude Include="inc\kit\window.h" />
+    <ClInclude Include="inc\kit\ptr.h" />
   </ItemGroup>
 </Project>

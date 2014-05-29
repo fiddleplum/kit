@@ -1,6 +1,7 @@
 #pragma once
 
 #include <kit/vector.h>
+#include <kit/ptr.h>
 #include <memory>
 #include <vector>
 
@@ -9,6 +10,9 @@ namespace kit
 	class IWindow
 	{
 	public:
+		// Default destructor.
+		virtual ~IWindow () {}
+
 		// Sets the title of the window.
 		virtual void setTitle (char const * title) = 0;
 
@@ -31,10 +35,13 @@ namespace kit
 		virtual int getDisplay () const = 0;	
 	};
 
-	typedef std::shared_ptr<IWindow> Window;
+	typedef Ptr<IWindow> Window;
 
-	// Creates a new window.
-	Window createWindow (char const * title);
+	// Adds a new window.
+	Window addWindow (char const * title);
+
+	// Removes a window.
+	void removeWindow (Window window);
 
 	// Returns the number of displays in the system.
 	int getNumDisplays ();
