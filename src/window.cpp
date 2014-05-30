@@ -6,104 +6,115 @@
 
 namespace kit
 {
-	std::map<Window, OwnPtr<IWindow>> windows;
+	std::map<Ptr<Window>, OwnPtr<Window>> windows;
 
-	class MWindow : public IWindow
+	class Window::Data
 	{
 	public:
 		SDL_Window * sdlWindow;
 		SDL_GLContext sdlGlContext;
-
-		MWindow (char const * title)
-		{
-			sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-			if(sdlWindow == nullptr)
-			{
-				throw std::runtime_error("Failed to create the window. ");
-			}
-			sdlGlContext = SDL_GL_CreateContext(sdlWindow);
-		}
-
-		~MWindow ()
-		{
-			SDL_GL_DeleteContext(sdlGlContext);
-			SDL_DestroyWindow(sdlWindow);
-		}
-
-		void setTitle (char const * title) override
-		{
-			SDL_SetWindowTitle(sdlWindow, title);
-		}
-
-		void setWindowed ()
-		{
-			SDL_SetWindowFullscreen(sdlWindow, 0);
-			SDL_EnableScreenSaver();
-		}
-
-		void setFullscreen (int display, Vector2i size) override
-		{
-			try
-			{
-				SDL_DisplayMode mode;
-				if(SDL_GetDesktopDisplayMode(display, &mode) < 0)
-				{
-					throw std::exception();
-				}
-				mode.w = size[0];
-				mode.h = size[1];
-				SDL_DisableScreenSaver();
-				if(SDL_SetWindowDisplayMode(sdlWindow, &mode) < 0)
-				{
-					throw std::exception();
-				}
-				if(SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
-				{
-					throw std::exception();
-				}
-			}
-			catch (...)
-			{
-				throw std::runtime_error("Could not set display " + std::to_string(display) + " to the resolution " + std::to_string(size[0]) + "x" + std::to_string(size[1]) + ". ");
-			}
-		}
-
-		void setFullscreen () override
-		{
-			setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
-		}
-
-		Vector2i getSize () const override
-		{
-			Vector2i size;
-			SDL_GetWindowSize(sdlWindow, &size[0], &size[1]);
-			return size;
-		}
-
-		bool isFullscreen () const override
-		{
-			return (SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
-		}
-
-		int getDisplay() const override
-		{
-			int display = SDL_GetWindowDisplayIndex(sdlWindow);
-			if(display >= 0)
-			{
-				return display;
-			}
-			throw std::runtime_error("Could not get the display the window is within. ");
-		}
+		OwnPtr<Widget> rootWidget;
 	};
 
-	Window addWindow (char const * title)
+	Window::Window (char const * title)
 	{
-		OwnPtr<IWindow> window (new MWindow (title));
+		data->sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		if(data->sdlWindow == nullptr)
+		{
+			throw std::runtime_error("Failed to create the window. ");
+		}
+		data->sdlGlContext = SDL_GL_CreateContext(data->sdlWindow);
+	}
+
+	Window::~Window ()
+	{
+		SDL_GL_DeleteContext(data->sdlGlContext);
+		SDL_DestroyWindow(data->sdlWindow);
+	}
+
+	void Window::setTitle (char const * title)
+	{
+		SDL_SetWindowTitle(data->sdlWindow, title);
+	}
+
+	void Window::setWindowed ()
+	{
+		SDL_SetWindowFullscreen(data->sdlWindow, 0);
+		SDL_EnableScreenSaver();
+	}
+
+	void Window::setFullscreen (int display, Vector2i size)
+	{
+		try
+		{
+			SDL_DisplayMode mode;
+			if(SDL_GetDesktopDisplayMode(display, &mode) < 0)
+			{
+				throw std::exception();
+			}
+			mode.w = size[0];
+			mode.h = size[1];
+			SDL_DisableScreenSaver();
+			if(SDL_SetWindowDisplayMode(data->sdlWindow, &mode) < 0)
+			{
+				throw std::exception();
+			}
+			if(SDL_SetWindowFullscreen(data->sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
+			{
+				throw std::exception();
+			}
+		}
+		catch (...)
+		{
+			throw std::runtime_error("Could not set display " + std::to_string(display) + " to the resolution " + std::to_string(size[0]) + "x" + std::to_string(size[1]) + ". ");
+		}
+	}
+
+	void Window::setFullscreen ()
+	{
+		setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
+	}
+
+	Vector2i Window::getSize () const
+	{
+		Vector2i size;
+		SDL_GetWindowSize(data->sdlWindow, &size[0], &size[1]);
+		return size;
+	}
+
+	bool Window::isFullscreen () const
+	{
+		return (SDL_GetWindowFlags(data->sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
+	}
+
+	int Window::getDisplay() const
+	{
+		int display = SDL_GetWindowDisplayIndex(data->sdlWindow);
+		if(display >= 0)
+		{
+			return display;
+		}
+		throw std::runtime_error("Could not get the display the window is within. ");
+	}
+
+	void Window::setRootWidget (OwnPtr<Widget> widget)
+	{
+		data->rootWidget = widget;
+	}
+
+	void Window::clearRootWidget ()
+	{
+		data->rootWidget.setNull();
+	}
+
+	WindowPtr addWindow (char const * title)
+	{
+		OwnPtr<Window> window (new Window (title));
 		windows[window] = window;
 		return window;
 	}
 
-	void removeWindow (Window window)
+	void removeWindow (WindowPtr window)
 	{
 		windows.erase(window);
 	}

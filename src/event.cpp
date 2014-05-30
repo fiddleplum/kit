@@ -1,4 +1,4 @@
-#include "event.h"
+#include <kit/event.h>
 
 namespace kit
 {

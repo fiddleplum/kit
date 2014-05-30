@@ -1,8 +1,8 @@
 #pragma once
 
 #include "resource_manager.h"
-#include "kit/vector.h"
-#include "event.h"
+#include <kit/vector.h>
+#include <kit/event.h>
 #include <string>
 #include <vector>
 #include <memory>

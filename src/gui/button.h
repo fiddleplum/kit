@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sprite.h"
-#include "widget.h"
+#include <kit/widget.h>
 #include <functional>
 
 namespace kit

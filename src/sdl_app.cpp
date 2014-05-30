@@ -1,5 +1,5 @@
 #include "app.h"
-#include "gui/widget.h"
+#include <kit/widget.h>
 #include "../external/SDL2-2.0.0/include/SDL.h"
 #include <sstream>
 #include <stdexcept>

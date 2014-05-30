@@ -2,46 +2,62 @@
 
 #include <kit/vector.h>
 #include <kit/ptr.h>
+#include <kit/widget.h>
 #include <memory>
 #include <vector>
 
 namespace kit
 {
-	class IWindow
+	class Window
 	{
 	public:
+		// Constructor.
+		Window (char const * title);
+
 		// Default destructor.
-		virtual ~IWindow () {}
+		~Window ();
 
 		// Sets the title of the window.
-		virtual void setTitle (char const * title) = 0;
+		void setTitle (char const * title);
 
 		// Sets the window to windowed mode.
-		virtual void setWindowed () = 0;
+		void setWindowed ();
 
 		// Sets the window to fullscreen on a given display and resolution.
-		virtual void setFullscreen (int display, Vector2i size) = 0;
+		void setFullscreen (int display, Vector2i size);
 
 		// Sets the window to fullscreen on the display the window is within at its desktop resolution.
-		virtual void setFullscreen () = 0;
+		void setFullscreen ();
 
 		// Returns the size of the window, exluding the borders and title bar.
-		virtual Vector2i getSize () const = 0;
+		Vector2i getSize () const;
 
 		// Returns true if the window is fullscreen.
-		virtual bool isFullscreen () const = 0;
+		bool isFullscreen () const;
 
 		// Returns the display that the window is within, determined by its center.
-		virtual int getDisplay () const = 0;	
+		int getDisplay () const;
+
+		// Sets the root widget to be rendered, handle events, etc.
+		template <typename WidgetType> Ptr<WidgetType> setRootWidget ();
+
+		// Sets the root widget to null.
+		void clearRootWidget ();
+
+	private:
+		void setRootWidget (OwnPtr<Widget> widget);
+
+		class Data;
+		OwnPtr<Data> data;
 	};
 
-	typedef Ptr<IWindow> Window;
+	typedef Ptr<Window> WindowPtr;
 
 	// Adds a new window.
-	Window addWindow (char const * title);
+	WindowPtr addWindow (char const * title);
 
 	// Removes a window.
-	void removeWindow (Window window);
+	void removeWindow (WindowPtr window);
 
 	// Returns the number of displays in the system.
 	int getNumDisplays ();
@@ -54,5 +70,14 @@ namespace kit
 
 	// Returns a list of all of the resolutions a display can support.
 	std::vector<Vector2i> getAllResolutions (int display);
+
+	// Template Implementation
+
+	template <typename WidgetType> Ptr<WidgetType> Window::setRootWidget ()
+	{
+		OwnPtr<WidgetType> widget (new WidgetType);
+		setRootWidget(widget);
+		return widget;
+	}
 };
 

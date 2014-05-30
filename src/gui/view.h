@@ -1,6 +1,6 @@
 #pragma once
 
-#include "widget.h"
+#include <kit/widget.h>
 #include <memory>
 
 namespace kit

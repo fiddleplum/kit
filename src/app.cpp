@@ -3,7 +3,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "open_gl.h"
-#include "gui\widget.h"
+#include <kit/widget.h>
 #include <fstream>
 
 namespace kit

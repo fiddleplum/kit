@@ -460,7 +460,7 @@ namespace kit
 	{
 		if(p == nullptr)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return p;
 	}
@@ -470,7 +470,7 @@ namespace kit
 	{
 		if(p == nullptr)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return p[index];
 	}
@@ -480,7 +480,7 @@ namespace kit
 	{
 		if(p == nullptr)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return *p;
 	}
@@ -685,7 +685,7 @@ namespace kit
 	{
 		if(p == nullptr)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return p;
 	}
@@ -695,7 +695,7 @@ namespace kit
 	{
 		if(p == nullptr)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return p[index];
 	}
@@ -705,7 +705,7 @@ namespace kit
 	{
 		if(p == nullptr)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return *p;
 	}
@@ -918,7 +918,7 @@ namespace kit
 	{
 		if(p == nullptr || c->oc == 0)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return p;
 	}
@@ -928,7 +928,7 @@ namespace kit
 	{
 		if(p == nullptr || c->oc == 0)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return p[index];
 	}
@@ -938,7 +938,7 @@ namespace kit
 	{
 		if(p == nullptr || c->oc == 0)
 		{
-			throw nullptr_exception;
+			throw nullptr_exception ();
 		}
 		return *p;
 	}

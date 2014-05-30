@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../interval.h"
+#include <kit/rect.h>
 #include <memory>
 #include <string>
 
