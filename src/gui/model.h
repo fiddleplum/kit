@@ -1,6 +1,8 @@
 #pragma once
 
+#include "../vertex_buffer_object.h"
 #include <kit/vector.h>
+#include <kit/ptr.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -10,8 +12,9 @@ namespace kit
 	class Texture;
 	class Shader;
 	class VertexBufferObject;
+	class Window;
 
-	namespace app
+	namespace gui
 	{
 		class Model
 		{
@@ -29,13 +32,13 @@ namespace kit
 			void setTexture(std::string const & filename);
 			void setVertices(std::vector<Vertex> const & vertices);
 			void setIndices(std::vector<unsigned int> const & indices);
-			void render();
+			void render(Vector2i windowSize);
 
 		private:
 			Vector2i position;
-			std::shared_ptr<Texture> texture;
-			std::shared_ptr<Shader> shader;
-			std::shared_ptr<VertexBufferObject> vbo;
+			Ptr<Texture> texture;
+			Ptr<Shader> shader;
+			OwnPtr<VertexBufferObject> vbo;
 			int windowSizeLocation;
 			int positionLocation;
 			int textureSizeLocation;

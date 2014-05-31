@@ -9,7 +9,7 @@ namespace kit
 {
 	std::vector<unsigned int> gCurrentTextures; // current textures in the open gl state
 
-	Texture::Texture(std::string const & filename)
+	Texture::Texture (std::string const & filename)
 	{
 		glGenTextures(1, &id);
 
@@ -36,17 +36,17 @@ namespace kit
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 
-	Texture::~Texture()
+	Texture::~Texture ()
 	{
-		glDeleteTextures(1, &id);
+		glDeleteTextures (1, &id);
 	}
 
-	Vector2i Texture::getSize() const
+	Vector2i Texture::getSize () const
 	{
 		return size;
 	}
 
-	void Texture::activate(unsigned int slot) const
+	void Texture::activate (unsigned int slot) const
 	{
 		if(slot >= gCurrentTextures.size() || id != gCurrentTextures[slot])
 		{
@@ -60,7 +60,7 @@ namespace kit
 		}
 	}
 
-	void Texture::deactivateRest(unsigned int slot)
+	void Texture::deactivateRest (unsigned int slot)
 	{
 		for(; slot < gCurrentTextures.size(); slot++)
 		{

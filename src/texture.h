@@ -8,15 +8,15 @@ namespace kit
 	class Texture
 	{
 	public:
-		Texture(std::string const & filename);
+		Texture (std::string const & filename);
 
-		~Texture();
+		~Texture ();
 
-		Vector2i getSize() const;
+		Vector2i getSize () const;
 
-		void activate(unsigned int slot) const;
+		void activate (unsigned int slot) const;
 
-		static void deactivateRest(unsigned int slot); // Deactivates all slots equal to or greater than slot.
+		static void deactivateRest (unsigned int slot); // Deactivates all slots equal to or greater than slot.
 
 	private:
 		Vector2i size;

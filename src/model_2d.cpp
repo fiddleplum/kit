@@ -7,6 +7,7 @@
 #include "serialize.h"
 #include "serialize_std_string.h"
 #include "serialize_std_vector.h"
+#include "resource.h"
 #include <kit/string_util.h>
 #include <fstream>
 #include <stdexcept>
@@ -42,7 +43,7 @@ namespace kit
 
 	void Model2D::setTexture(std::string const & filename)
 	{
-		texture = App::getTextureManager()->get(filename, filename);
+		texture = getTextureManager()->get(filename, filename);
 		sorted = false;
 	}
 
@@ -193,7 +194,7 @@ namespace kit
 		std::string name;
 		name = "Model2D";
 
-		shader = App::getShaderManager()->get(name, code);
+		shader = getShaderManager()->get(name, code);
 		sorted = false;
 
 		// Update attribute locations

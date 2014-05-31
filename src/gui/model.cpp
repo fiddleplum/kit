@@ -1,12 +1,11 @@
 #include "model.h"
+#include "../resource.h"
 #include "../texture.h"
 #include "../shader.h"
-#include "../vertex_buffer_object.h"
-#include "../app.h"
 
 namespace kit
 {
-	namespace app
+	namespace gui
 	{
 		Model::Model()
 		{
@@ -37,9 +36,9 @@ namespace kit
 				"{\n"
 				"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 				"}\n";
-			shader = App::getShaderManager()->get("guiShader", code);
+			shader = getShaderManager()->get("guiShader", code);
 
-			vbo = std::make_shared<VertexBufferObject>();
+			vbo.set(new VertexBufferObject);
 			vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
 			vbo->addVertexComponent(shader->getAttributeLocation("aUv"), sizeof(Vector2f), 2);
 			vbo->setBytesPerVertex(sizeof(Vertex));
@@ -63,7 +62,7 @@ namespace kit
 
 		void Model::setTexture(std::string const & filename)
 		{
-			texture = App::getTextureManager()->get(filename, filename);
+			texture = getTextureManager()->get(filename, filename);
 		}
 
 		void Model::setVertices(std::vector<Vertex> const & vertices)
@@ -76,12 +75,12 @@ namespace kit
 			vbo->setIndices(&indices[0], indices.size());
 		}
 
-		void Model::render()
+		void Model::render(Vector2i windowSize)
 		{
 			shader->activate();
-			shader->setUniform(windowSizeLocation, App::getSize());
+			shader->setUniform(windowSizeLocation, windowSize);
 			shader->setUniform(positionLocation, position);
-			if(texture != nullptr)
+			if(texture.isValid())
 			{
 				texture->activate(0);
 				shader->setUniform(textureSizeLocation, texture->getSize());

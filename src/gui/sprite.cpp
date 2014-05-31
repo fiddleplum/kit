@@ -1,12 +1,15 @@
-#include "sprite.h"
+#include "model.h"
 #include "../texture.h"
+#include <kit/gui/sprite.h>
+#include <vector>
 
 namespace kit
 {
-	namespace app
+	namespace gui
 	{
 		Sprite::Sprite()
 		{
+			model.set(new Model);
 			std::vector<unsigned int> indices (6);
 			indices[0] = 0;
 			indices[1] = 3;
@@ -14,22 +17,23 @@ namespace kit
 			indices[3] = 2;
 			indices[4] = 1;
 			indices[5] = 0;
-			model.setIndices(indices);
+			model->setIndices(indices);
 			updateVertices();
 		}
 
 		Sprite::~Sprite()
 		{
+			model.setNull();
 		}
 
 		Recti Sprite::getBounds() const
 		{
-			return Recti::minSize(model.getPosition(), textureBounds.getSize());
+			return Recti::minSize(model->getPosition(), textureBounds.getSize());
 		}
 
 		void Sprite::setPosition(Vector2i position)
 		{
-			model.setPosition(position);
+			model->setPosition(position);
 		}
 
 		void Sprite::setMaxSize(Vector2i maxSize)
@@ -38,18 +42,19 @@ namespace kit
 			updateVertices();
 		}
 
-		void Sprite::handleEvent(Event const &)
+		bool Sprite::handleEvent(Event const &, bool)
 		{
+			return true; // change this later
 		}
 
-		void Sprite::render()
+		void Sprite::render(Vector2i windowSize)
 		{
-			model.render();
+			model->render(windowSize);
 		}
 
 		void Sprite::setTexture(std::string const & filename)
 		{
-			model.setTexture(filename);
+			model->setTexture(filename);
 		}
 
 		void Sprite::setTextureBounds(Recti bounds)
@@ -77,7 +82,7 @@ namespace kit
 			vertices[2].uv.set((float)textureBounds.min[0] + (float)size[0], (float)textureBounds.min[1] + (float)size[1]);
 			vertices[3].pos.set(0, (float)size[1]);
 			vertices[3].uv.set((float)textureBounds.min[0], (float)textureBounds.min[1] + (float)size[1]);
-			model.setVertices(vertices);
+			model->setVertices(vertices);
 		}
 	}
 }

@@ -2,13 +2,16 @@
 
 #include <kit/vector.h>
 #include <kit/ptr.h>
-#include <kit/widget.h>
+#include <kit/gui/widget_container.h>
 #include <memory>
 #include <vector>
 
 namespace kit
 {
-	class Window
+	class Texture;
+	class Shader;
+
+	class Window : public gui::WidgetContainer
 	{
 	public:
 		// Constructor.
@@ -38,15 +41,7 @@ namespace kit
 		// Returns the display that the window is within, determined by its center.
 		int getDisplay () const;
 
-		// Sets the root widget to be rendered, handle events, etc.
-		template <typename WidgetType> Ptr<WidgetType> setRootWidget ();
-
-		// Sets the root widget to null.
-		void clearRootWidget ();
-
 	private:
-		void setRootWidget (OwnPtr<Widget> widget);
-
 		class Data;
 		OwnPtr<Data> data;
 	};
@@ -70,14 +65,5 @@ namespace kit
 
 	// Returns a list of all of the resolutions a display can support.
 	std::vector<Vector2i> getAllResolutions (int display);
-
-	// Template Implementation
-
-	template <typename WidgetType> Ptr<WidgetType> Window::setRootWidget ()
-	{
-		OwnPtr<WidgetType> widget (new WidgetType);
-		setRootWidget(widget);
-		return widget;
-	}
 };
 

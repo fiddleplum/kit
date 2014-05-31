@@ -8,7 +8,7 @@ namespace kit
 {
 	unsigned int gCurrentProgram = 0; // maintains current open gl state
 
-	Shader::Shader(std::string const code [NumCodeTypes])
+	Shader::Shader (std::string const code [NumCodeTypes])
 	{
 		std::vector<unsigned int> shaderObjects;
 		try
@@ -33,12 +33,12 @@ namespace kit
 		populateVariableLocations();
 	}
 
-	Shader::~Shader()
+	Shader::~Shader ()
 	{
 		glDeleteProgram(mProgram);
 	}
 
-	int Shader::getUniformLocation(std::string const & name) const
+	int Shader::getUniformLocation (std::string const & name) const
 	{
 		auto it = mUniforms.find(name);
 		if(it == mUniforms.end())
@@ -48,7 +48,7 @@ namespace kit
 		return it->second;
 	}
 
-	int Shader::getAttributeLocation(std::string const & name) const
+	int Shader::getAttributeLocation (std::string const & name) const
 	{
 		auto it = mAttributes.find(name);
 		if(it == mAttributes.end())
@@ -58,7 +58,7 @@ namespace kit
 		return it->second;
 	}
 
-	void Shader::activate()
+	void Shader::activate ()
 	{
 		if(gCurrentProgram != mProgram)
 		{
@@ -67,73 +67,73 @@ namespace kit
 		}
 	}
 
-	void Shader::deactivate()
+	void Shader::deactivate ()
 	{
 		gCurrentProgram = 0;
 		glUseProgram(0);
 	}
 
-	void Shader::setUniform(int location, int value)
+	void Shader::setUniform (int location, int value)
 	{
 		glUniform1i(location, value);
 	}
 
-	void Shader::setUniform(int location, float value)
+	void Shader::setUniform (int location, float value)
 	{
 		glUniform1f(location, value);
 	}
 
-	void Shader::setUniform(int location, Vector2i value)
+	void Shader::setUniform (int location, Vector2i value)
 	{
 		glUniform2iv(location, 1, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Vector2f value)
+	void Shader::setUniform (int location, Vector2f value)
 	{
 		glUniform2fv(location, 1, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Vector3i value)
+	void Shader::setUniform (int location, Vector3i value)
 	{
 		glUniform3iv(location, 1, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Vector3f value)
+	void Shader::setUniform (int location, Vector3f value)
 	{
 		glUniform3fv(location, 1, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Vector4i value)
+	void Shader::setUniform (int location, Vector4i value)
 	{
 		glUniform4iv(location, 1, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Vector4f value)
+	void Shader::setUniform (int location, Vector4f value)
 	{
 		glUniform4fv(location, 1, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Matrix33f const & value)
+	void Shader::setUniform (int location, Matrix33f const & value)
 	{
 		glUniformMatrix3fv(location, 1, false, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Matrix44f const & value)
+	void Shader::setUniform (int location, Matrix44f const & value)
 	{
 		glUniformMatrix4fv(location, 1, false, value.ptr());
 	}
 
-	void Shader::setUniform(int location, Vector2f const * value, unsigned int count)
+	void Shader::setUniform (int location, Vector2f const * value, unsigned int count)
 	{
 		glUniform2fv(location, count, (GLfloat const *)value);
 	}
 
-	void Shader::setUniform(int location, Vector3f const * value, unsigned int count)
+	void Shader::setUniform (int location, Vector3f const * value, unsigned int count)
 	{
 		glUniform3fv(location, count, (GLfloat const *)value);
 	}
 
-	unsigned int Shader::compileShaderObject(CodeType type, std::string const & code)
+	unsigned int Shader::compileShaderObject (CodeType type, std::string const & code)
 	{
 		unsigned int glType = 0;
 		if(type == Vertex)
@@ -171,7 +171,7 @@ namespace kit
 		return handle;
 	}
 
-	unsigned int Shader::linkShaderProgram(std::vector<unsigned int> const & shaderObjects)
+	unsigned int Shader::linkShaderProgram (std::vector<unsigned int> const & shaderObjects)
 	{
 		unsigned int program = glCreateProgram();
 		for(unsigned int shaderObject : shaderObjects)
@@ -199,7 +199,7 @@ namespace kit
 		return program;
 	}
 
-	void Shader::populateVariableLocations()
+	void Shader::populateVariableLocations ()
 	{
 		GLint numVariables;
 		GLint maxNameSize;

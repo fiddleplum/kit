@@ -5,6 +5,7 @@
 #include <vector>
 #include <istream>
 #include <string>
+#include <kit/ptr.h>
 #include <memory>
 #include <set>
 
@@ -36,7 +37,7 @@ namespace kit
 		Vector2f getScale() const { return scale; }
 		void setScale(Vector2f);
 
-		std::shared_ptr<Texture> getTexture() const { return texture; }
+		Ptr<Texture> getTexture() const { return texture; }
 		void setTexture(std::string const & filename);
 
 		Vector3f getColor() const { return color; }
@@ -69,13 +70,13 @@ namespace kit
 		int z;
 		Vector2f scale;
 
-		std::shared_ptr<Texture> texture;
+		Ptr<Texture> texture;
 		Vector3f color;
 
 		int numBytesPerVertex;
 		VertexBufferObject * vertexBufferObject;
 
-		std::shared_ptr<Shader> shader;
+		Ptr<Shader> shader;
 		bool sorted;
 
 		int scaleLocation;

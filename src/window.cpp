@@ -1,4 +1,7 @@
 #include <kit/window.h>
+#include "texture.h"
+#include "shader.h"
+#include "open_gl.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 #include <string>
 #include <algorithm>
@@ -6,29 +9,36 @@
 
 namespace kit
 {
-	std::map<Ptr<Window>, OwnPtr<Window>> windows;
+	extern std::map<Ptr<Window>, OwnPtr<Window>> windows;
+	SDL_GLContext sdlGlContext = nullptr;
 
 	class Window::Data
 	{
 	public:
 		SDL_Window * sdlWindow;
-		SDL_GLContext sdlGlContext;
-		OwnPtr<Widget> rootWidget;
 	};
 
 	Window::Window (char const * title)
 	{
+		data.set(new Data);
 		data->sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 		if(data->sdlWindow == nullptr)
 		{
 			throw std::runtime_error("Failed to create the window. ");
 		}
-		data->sdlGlContext = SDL_GL_CreateContext(data->sdlWindow);
+		if(sdlGlContext == nullptr)
+		{
+			sdlGlContext = SDL_GL_CreateContext(data->sdlWindow);
+			glInitialize();
+		}
 	}
 
 	Window::~Window ()
 	{
-		SDL_GL_DeleteContext(data->sdlGlContext);
+		if(windows.empty())
+		{
+			SDL_GL_DeleteContext(sdlGlContext);
+		}
 		SDL_DestroyWindow(data->sdlWindow);
 	}
 
@@ -97,16 +107,6 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
-	void Window::setRootWidget (OwnPtr<Widget> widget)
-	{
-		data->rootWidget = widget;
-	}
-
-	void Window::clearRootWidget ()
-	{
-		data->rootWidget.setNull();
-	}
-
 	WindowPtr addWindow (char const * title)
 	{
 		OwnPtr<Window> window (new Window (title));
@@ -116,7 +116,13 @@ namespace kit
 
 	void removeWindow (WindowPtr window)
 	{
-		windows.erase(window);
+		auto it = windows.find(window);
+		if(it != windows.end())
+		{
+			OwnPtr<Window> window = it->second;
+			windows.erase(window);
+			window.setNull();
+		}
 	}
 
 	int getNumDisplays ()

@@ -14,7 +14,7 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\csv.cpp" />
-    <ClCompile Include="src\entry.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
     <ClCompile Include="src\flat\shape.cpp" />
@@ -23,13 +23,10 @@
     <ClCompile Include="src\geometry_2d.cpp" />
     <ClCompile Include="src\flat\sprite.cpp" />
     <ClCompile Include="src\free_fly_camera_controller.cpp" />
-    <ClCompile Include="src\gui\button.cpp" />
-    <ClCompile Include="src\gui\layers.cpp" />
     <ClCompile Include="src\gui\model.cpp" />
-    <ClCompile Include="src\gui\partition.cpp" />
     <ClCompile Include="src\gui\sprite.cpp" />
-    <ClCompile Include="src\gui\view.cpp" />
     <ClCompile Include="src\gui\widget_container.cpp" />
+    <ClCompile Include="src\resource.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\light_2d.cpp" />
     <ClCompile Include="src\model.cpp" />
@@ -47,14 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
-    <ClInclude Include="inc\kit\entry.h" />
+    <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
+    <ClInclude Include="src\resource.h" />
     <ClInclude Include="inc\kit\ptr.h" />
     <ClInclude Include="inc\kit\rect.h" />
     <ClInclude Include="inc\kit\string_util.h" />
     <ClInclude Include="inc\kit\vector.h" />
-    <ClInclude Include="inc\kit\widget.h" />
+    <ClInclude Include="inc\kit\gui\widget.h" />
     <ClInclude Include="inc\kit\window.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\camera_2d.h" />
@@ -68,13 +66,9 @@
     <ClInclude Include="src\flat\sprite.h" />
     <ClInclude Include="src\free_fly_camera_controller.h" />
     <ClInclude Include="src\gl3.h" />
-    <ClInclude Include="src\gui\button.h" />
-    <ClInclude Include="inc\kit\layers.h" />
     <ClInclude Include="src\gui\model.h" />
-    <ClInclude Include="src\gui\partition.h" />
-    <ClInclude Include="src\gui\sprite.h" />
-    <ClInclude Include="src\gui\view.h" />
-    <ClInclude Include="inc\kit\widget_container.h" />
+    <ClInclude Include="inc\kit\gui\sprite.h" />
+    <ClInclude Include="inc\kit\gui\widget_container.h" />
     <ClInclude Include="src\light.h" />
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\math_util.h" />

@@ -19,12 +19,8 @@
     <ClCompile Include="src\string_util.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\vertex_buffer_object.cpp" />
-    <ClCompile Include="src\gui\button.cpp" />
-    <ClCompile Include="src\gui\layers.cpp" />
     <ClCompile Include="src\gui\model.cpp" />
-    <ClCompile Include="src\gui\partition.cpp" />
     <ClCompile Include="src\gui\sprite.cpp" />
-    <ClCompile Include="src\gui\view.cpp" />
     <ClCompile Include="src\gui\widget_container.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\scene_2d.cpp" />
@@ -38,7 +34,8 @@
     <ClCompile Include="src\flat\world.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
     <ClCompile Include="src\window.cpp" />
-    <ClCompile Include="src\entry.cpp" />
+    <ClCompile Include="src\resource.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -54,7 +51,6 @@
     <ClInclude Include="src\ptr.h" />
     <ClInclude Include="src\quaternion.h" />
     <ClInclude Include="src\ray.h" />
-    <ClInclude Include="src\resource_manager.h" />
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\scene_entity.h" />
     <ClInclude Include="src\serialize.h" />
@@ -66,11 +62,7 @@
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
     <ClInclude Include="inc\app.h" />
-    <ClInclude Include="src\gui\button.h" />
     <ClInclude Include="src\gui\model.h" />
-    <ClInclude Include="src\gui\partition.h" />
-    <ClInclude Include="src\gui\sprite.h" />
-    <ClInclude Include="src\gui\view.h" />
     <ClInclude Include="src\camera_2d.h" />
     <ClInclude Include="src\scene_2d.h" />
     <ClInclude Include="src\light_2d.h" />
@@ -82,16 +74,18 @@
     <ClInclude Include="src\flat\sprite.h" />
     <ClInclude Include="src\flat\world.h" />
     <ClInclude Include="src\flat\body.h" />
-    <ClInclude Include="inc\kit\entry.h" />
     <ClInclude Include="inc\kit\string_util.h" />
     <ClInclude Include="inc\kit\vector.h" />
     <ClInclude Include="inc\kit\window.h" />
     <ClInclude Include="inc\kit\ptr.h" />
-    <ClInclude Include="inc\kit\widget.h" />
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
     <ClInclude Include="inc\kit\rect.h" />
-    <ClInclude Include="inc\kit\layers.h" />
-    <ClInclude Include="inc\kit\widget_container.h" />
+    <ClInclude Include="inc\kit\gui\widget_container.h" />
+    <ClInclude Include="inc\kit\gui\widget.h" />
+    <ClInclude Include="src\resource_manager.h" />
+    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="inc\kit\gui\sprite.h" />
+    <ClInclude Include="inc\kit\start_finish.h" />
   </ItemGroup>
 </Project>
