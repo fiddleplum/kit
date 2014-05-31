@@ -1,6 +1,7 @@
 #pragma once
 
 #include <kit/vector.h>
+#include <kit/ptr.h>
 #include "scene_entity.h"
 #include <vector>
 #include <istream>
@@ -36,7 +37,7 @@ namespace kit
 
 		void setIndices(unsigned int const * indices, unsigned int numIndices);
 
-		std::shared_ptr<Texture> getTexture (unsigned int textureIndex) const;
+		Ptr<Texture> getTexture (unsigned int textureIndex) const;
 
 		void addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex);
 
@@ -65,7 +66,7 @@ namespace kit
 		class TextureInfo
 		{
 		public:
-			std::shared_ptr<Texture> texture;
+			Ptr<Texture> texture;
 			std::string type;
 			int samplerLocation;
 			int uvIndex;
@@ -94,7 +95,7 @@ namespace kit
 		unsigned int mNumBytesPerVertex;
 		VertexBufferObject * mVertexBufferObject;
 
-		std::shared_ptr<Shader> mShader;
+		Ptr<Shader> mShader;
 		bool mNeedsResorting;
 
 		int mProjectionLocation;

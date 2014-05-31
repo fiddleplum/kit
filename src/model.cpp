@@ -3,6 +3,7 @@
 #include "app.h"
 #include "shader.h"
 #include "texture.h"
+#include "resource.h"
 #include "vertex_buffer_object.h"
 #include "serialize.h"
 #include "serialize_std_string.h"
@@ -137,7 +138,7 @@ namespace kit
 		mVertexBufferObject->setIndices(indices, numIndices);
 	}
 
-	std::shared_ptr<Texture> Model::getTexture(unsigned int textureIndex) const
+	Ptr<Texture> Model::getTexture(unsigned int textureIndex) const
 	{
 		if(textureIndex < mTextureInfos.size())
 		{
@@ -145,14 +146,14 @@ namespace kit
 		}
 		else
 		{
-			return std::shared_ptr<Texture>();
+			Ptr<Texture>();
 		}
 	}
 
 	void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 	{
 		TextureInfo textureInfo;
-		textureInfo.texture = App::getTextureManager()->get(filename, filename);
+		textureInfo.texture = getTextureManager()->get(filename, filename);
 		textureInfo.type = type;
 		textureInfo.samplerLocation = -1;
 		textureInfo.uvIndex = uvIndex;
@@ -409,7 +410,7 @@ namespace kit
 			name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 		}
 
-		mShader = App::getShaderManager()->get(name, code);
+		mShader = getShaderManager()->get(name, code);
 		mNeedsResorting = true;
 
 		// Update attribute locations

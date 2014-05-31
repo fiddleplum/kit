@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\csv.cpp" />
@@ -44,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
+    <ClInclude Include="inc\kit\app.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
+    <ClInclude Include="src\app.h" />
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="inc\kit\ptr.h" />
     <ClInclude Include="inc\kit\rect.h" />
@@ -92,6 +95,7 @@
     <ClInclude Include="src\storage.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DBB65554-520D-48D7-850C-525D88740CF7}</ProjectGuid>

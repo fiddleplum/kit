@@ -36,6 +36,7 @@
     <ClCompile Include="src\window.cpp" />
     <ClCompile Include="src\resource.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\app.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -87,5 +88,8 @@
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="inc\kit\gui\sprite.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
+    <ClInclude Include="inc\kit\app.h" />
+    <ClInclude Include="src\app.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
 </Project>

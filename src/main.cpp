@@ -1,24 +1,11 @@
 #include "resource.h"
 #include "open_gl.h"
+#include "app.h"
 #include <kit/start_finish.h>
-#include "../external/SDL2-2.0.0/include/SDL.h"
 #include <kit/window.h>
+#include "../external/SDL2-2.0.0/include/SDL.h"
 
-namespace kit
-{
-	std::map<Ptr<Window>, OwnPtr<Window>> windows;
-
-	void loop ()
-	{
-		for (auto it : windows)
-		{
-			Ptr<Window> window = it.first;
-			//window->h
-		}
-	}
-}
-
-// Called by SDL to start things off.
+// Called by SDL to run the entire application.
 int main (int argc, char *argv[])
 {
 	try

@@ -1,59 +1,43 @@
-#include <kit/window.h>
-#include "texture.h"
-#include "shader.h"
+#include "window.h"
 #include "open_gl.h"
-#include "../external/SDL2-2.0.0/include/SDL.h"
 #include <string>
 #include <algorithm>
 #include <map>
 
 namespace kit
 {
-	extern std::map<Ptr<Window>, OwnPtr<Window>> windows;
+	extern std::map<Ptr<Window>, OwnPtr<WindowImpl>> windows;
 	SDL_GLContext sdlGlContext = nullptr;
 
-	class Window::Data
+	WindowImpl::WindowImpl (char const * title)
 	{
-	public:
-		SDL_Window * sdlWindow;
-	};
+		Vector2i size (800, 600);
 
-	Window::Window (char const * title)
-	{
-		data.set(new Data);
-		data->sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-		if(data->sdlWindow == nullptr)
+		sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size[0], size[1], SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		if(sdlWindow == nullptr)
 		{
 			throw std::runtime_error("Failed to create the window. ");
 		}
-		if(sdlGlContext == nullptr)
-		{
-			sdlGlContext = SDL_GL_CreateContext(data->sdlWindow);
-			glInitialize();
-		}
+		setMaxSize(size);
 	}
 
-	Window::~Window ()
+	WindowImpl::~WindowImpl ()
 	{
-		if(windows.empty())
-		{
-			SDL_GL_DeleteContext(sdlGlContext);
-		}
-		SDL_DestroyWindow(data->sdlWindow);
+		SDL_DestroyWindow(sdlWindow);
 	}
 
-	void Window::setTitle (char const * title)
+	void WindowImpl::setTitle (char const * title)
 	{
-		SDL_SetWindowTitle(data->sdlWindow, title);
+		SDL_SetWindowTitle(sdlWindow, title);
 	}
 
-	void Window::setWindowed ()
+	void WindowImpl::setWindowed ()
 	{
-		SDL_SetWindowFullscreen(data->sdlWindow, 0);
+		SDL_SetWindowFullscreen(sdlWindow, 0);
 		SDL_EnableScreenSaver();
 	}
 
-	void Window::setFullscreen (int display, Vector2i size)
+	void WindowImpl::setFullscreen (int display, Vector2i size)
 	{
 		try
 		{
@@ -65,11 +49,11 @@ namespace kit
 			mode.w = size[0];
 			mode.h = size[1];
 			SDL_DisableScreenSaver();
-			if(SDL_SetWindowDisplayMode(data->sdlWindow, &mode) < 0)
+			if(SDL_SetWindowDisplayMode(sdlWindow, &mode) < 0)
 			{
 				throw std::exception();
 			}
-			if(SDL_SetWindowFullscreen(data->sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
+			if(SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
 			{
 				throw std::exception();
 			}
@@ -80,26 +64,26 @@ namespace kit
 		}
 	}
 
-	void Window::setFullscreen ()
+	void WindowImpl::setFullscreen ()
 	{
 		setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
 	}
 
-	Vector2i Window::getSize () const
+	Vector2i WindowImpl::getSize () const
 	{
 		Vector2i size;
-		SDL_GetWindowSize(data->sdlWindow, &size[0], &size[1]);
+		SDL_GetWindowSize(sdlWindow, &size[0], &size[1]);
 		return size;
 	}
 
-	bool Window::isFullscreen () const
+	bool WindowImpl::isFullscreen () const
 	{
-		return (SDL_GetWindowFlags(data->sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
+		return (SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
-	int Window::getDisplay() const
+	int WindowImpl::getDisplay() const
 	{
-		int display = SDL_GetWindowDisplayIndex(data->sdlWindow);
+		int display = SDL_GetWindowDisplayIndex(sdlWindow);
 		if(display >= 0)
 		{
 			return display;
@@ -107,21 +91,29 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
+	SDL_Window * WindowImpl::getSDLWindow () const
+	{
+		return sdlWindow;
+	}
+
 	WindowPtr addWindow (char const * title)
 	{
-		OwnPtr<Window> window (new Window (title));
+		OwnPtr<WindowImpl> window (new WindowImpl (title));
+		if(windows.empty())
+		{
+			sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
+			glInitialize();
+		}
 		windows[window] = window;
 		return window;
 	}
 
 	void removeWindow (WindowPtr window)
 	{
-		auto it = windows.find(window);
-		if(it != windows.end())
+		windows.erase(window);
+		if(windows.empty())
 		{
-			OwnPtr<Window> window = it->second;
-			windows.erase(window);
-			window.setNull();
+			SDL_GL_DeleteContext(sdlGlContext);
 		}
 	}
 

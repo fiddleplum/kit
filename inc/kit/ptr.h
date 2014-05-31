@@ -810,6 +810,15 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
+	Ptr<T>::Ptr (Ptr<Y> const & ptr) : p(ptr.p), c(ptr.c)
+	{
+		if(p != nullptr)
+		{
+			c->pc++;
+		}
+	}
+
+	template <class T> template <class Y>
 	Ptr<T>::Ptr (UsePtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 	{
 		if(p != nullptr)

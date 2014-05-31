@@ -8,42 +8,32 @@
 
 namespace kit
 {
-	class Texture;
-	class Shader;
-
 	class Window : public gui::WidgetContainer
 	{
 	public:
-		// Constructor.
-		Window (char const * title);
-
 		// Default destructor.
-		~Window ();
+		virtual ~Window () {}
 
 		// Sets the title of the window.
-		void setTitle (char const * title);
+		virtual void setTitle (char const * title) = 0;
 
 		// Sets the window to windowed mode.
-		void setWindowed ();
+		virtual void setWindowed () = 0;
 
 		// Sets the window to fullscreen on a given display and resolution.
-		void setFullscreen (int display, Vector2i size);
+		virtual void setFullscreen (int display, Vector2i size) = 0;
 
 		// Sets the window to fullscreen on the display the window is within at its desktop resolution.
-		void setFullscreen ();
+		virtual void setFullscreen () = 0;
 
 		// Returns the size of the window, exluding the borders and title bar.
-		Vector2i getSize () const;
+		virtual Vector2i getSize () const = 0;
 
 		// Returns true if the window is fullscreen.
-		bool isFullscreen () const;
+		virtual bool isFullscreen () const = 0;
 
 		// Returns the display that the window is within, determined by its center.
-		int getDisplay () const;
-
-	private:
-		class Data;
-		OwnPtr<Data> data;
+		virtual int getDisplay () const = 0;
 	};
 
 	typedef Ptr<Window> WindowPtr;

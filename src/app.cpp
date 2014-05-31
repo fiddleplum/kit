@@ -1,149 +1,86 @@
 #include "app.h"
-#include <kit/entry.h>
-#include "shader.h"
-#include "texture.h"
-#include "open_gl.h"
-#include <kit/widget.h>
-#include <fstream>
+#include "window.h"
+#include <kit/app.h>
+#include <map>
+#include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
 {
-	namespace App
+	std::map<Ptr<Window>, OwnPtr<WindowImpl>> windows;
+	bool looping = false;
+
+	Ptr<WindowImpl> getWindowFromId (Uint32 id)
 	{
-		float lastTime = 0.0f;
-		bool running = false;
-		std::shared_ptr<app::Widget> widget = nullptr;
-		std::shared_ptr<ResourceManager<Texture>> textureManager = nullptr;
-		std::shared_ptr<ResourceManager<Shader>> shaderManager = nullptr;
-
-		void handleOSEvents();
-		void finishRender();
-
-		void log(std::string const & text)
+		SDL_Window * sdlWindow = SDL_GetWindowFromID(id);
+		if(sdlWindow != NULL)
 		{
-			std::fstream logFile ("log.txt", std::ios::app);
-			logFile << text << std::endl;		
-		}
-
-		void quit()
-		{
-			running = false;
-		}
-
-		std::shared_ptr<app::Widget> getWidget()
-		{
-			return widget;
-		}
-
-		void setWidget(std::shared_ptr<app::Widget> newWidget)
-		{
-			widget = newWidget;
-			if(widget != nullptr)
+			for(auto it : windows)
 			{
-				widget->setMaxSize(getSize());
-			}
-		}
-
-		std::shared_ptr<ResourceManager<Texture>> getTextureManager()
-		{
-			return textureManager;
-		}
-
-		std::shared_ptr<ResourceManager<Shader>> getShaderManager()
-		{
-			return shaderManager;
-		}
-
-		void start(std::vector<std::string> const & params)
-		{
-			try
-			{
-				// Initialize variables.
-				glInitialize();
-				textureManager = std::make_shared<ResourceManager<Texture>>();
-				shaderManager = std::make_shared<ResourceManager<Shader>>();
-
-				// Call user-defined startup function.
-				entry(params); 
-
-				// Do loop.
-				running = true;
-				lastTime = getTime();
-				while(running)
+				Ptr<WindowImpl> window = it.second;
+				if(sdlWindow == window->getSDLWindow())
 				{
-					float newTime = getTime();
-					//float deltaTime = newTime - lastTime; // calculate the last frame's duration
-					lastTime = newTime;
-					// Process Events
-					if(running)
-					{
-						handleOSEvents();
-					}
-					// Update Frame
-					if(running)
-					{
-						handleEvent(UpdateEvent());
-					}
-					// Render Everything
-					if(running)
-					{
-						render();
-					}
-				}
-			}
-			catch(std::runtime_error const & err)
-			{
-				showMessage(err.what());
-			}
-
-			widget.reset(); // clear the widget to release resources
-			onShutdown(); // calls user-defined function
-
-			textureManager.reset();
-			shaderManager.reset();
-		}
-
-		void handleEvent(Event const & event)
-		{
-			if(event.type == Event::Resize)
-			{
-				if(getWidget() != nullptr)
-				{
-					getWidget()->setMaxSize(getSize());
-				}
-			}
-			else
-			{
-				handleAppEvent(event);
-				if(widget != nullptr)
-				{
-					widget->handleEvent(event);
+					return window;
 				}
 			}
 		}
+		return Ptr<WindowImpl> ();
+	}
 
-		void render()
+	void loop ()
+	{
+		looping = true;
+		while(looping)
 		{
-			glDisable(GL_DEPTH_TEST);
-			glDepthFunc(GL_GREATER);
-			glCullFace(GL_BACK);
-			glEnable(GL_CULL_FACE);
-			glEnable(GL_TEXTURE_2D);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glClearColor(0, 0, 0, 1);
-			glClearDepth(0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			Vector2i windowSize = getSize();
-			glViewport(0, 0, windowSize[0], windowSize[1]);
-			if(widget != nullptr)
+			// Get SDL Events
+			SDL_Event sdlEvent;
+			Ptr<WindowImpl> window;
+			while(looping && SDL_PollEvent(&sdlEvent))
 			{
-				widget->render();
+				switch(sdlEvent.type)
+				{
+				case SDL_QUIT:
+					quit();
+					break;
+				case SDL_WINDOWEVENT:
+					window = getWindowFromId(sdlEvent.window.windowID);
+					if(!window.isValid())
+					{
+						continue;
+					}
+					switch(sdlEvent.window.event)
+					{
+					case SDL_WINDOWEVENT_CLOSE:
+						removeWindow(window);
+						break;
+					case SDL_WINDOWEVENT_SIZE_CHANGED:
+						window->setMaxSize(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
+						break;
+					//case SDL_WINDOWEVENT_MINIMIZED:
+					//case SDL_WINDOWEVENT_FOCUS_LOST:
+					//case SDL_WINDOWEVENT_LEAVE:
+					//	setCursorPositionValid(false);
+					//	break;
+					//case SDL_WINDOWEVENT_FOCUS_GAINED:
+					//case SDL_WINDOWEVENT_ENTER:
+					//	setCursorPositionValid(true);
+					//	break;
+					}
+					break;
+				default:
+					//handleSDLInputEvent(sdlEvent);
+					break;
+				}
 			}
 
-			finishRender();
+			// Update
+
+			// Render
 		}
+	}
+
+	void quit ()
+	{
+		looping = false;
 	}
 }
 
