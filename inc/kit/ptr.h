@@ -6,6 +6,9 @@ namespace kit
 {
 	// Forward declarations
 	template <class T>
+	class OwnPtr;
+
+	template <class T>
 	class UsePtr;
 
 	template <class T>
@@ -15,7 +18,7 @@ namespace kit
 
 	// This is a function that can be passed to OwnPtr to delete arrays properly.
 	template <class T>
-	void destroyArray (T * p)
+	void deleteArray (T * p)
 	{
 		delete [] p;
 	}
@@ -39,10 +42,10 @@ namespace kit
 	{
 	public:
 		// Initialize the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
-		OwnPtr (void(*destroy)(T *) = nullptr);
+		OwnPtr ();
 
 		// Initialize the pointer to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. It can also take a function that destroys the object (default is the standard delete operator).
-		template <class Y> explicit OwnPtr (Y * newP, void(* destroy)(T *) = nullptr);
+		template <class Y> explicit OwnPtr (Y * newP, void(* deleteFunction)(Y *) = nullptr);
 
 		// Default copy constructor. Needed otherwise C++ will create its own.
 		OwnPtr (OwnPtr<T> const & ptr);
@@ -72,7 +75,7 @@ namespace kit
 		bool isReferenced () const;
 
 		// Change the object that this points to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
-		template <class Y> void set (Y * newP, void(*newDestroy)(T *) = nullptr);
+		template <class Y> void set (Y * newP, void (*deleteFunction) (Y *) = nullptr);
 
 		// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
 		void setNull ();
@@ -92,11 +95,8 @@ namespace kit
 		// Get the unsigned integer value of the address of the object.
 		operator unsigned int () const;
 
-		// Returns a use pointer statically casted to Y.
-		template <class Y> UsePtr<Y> staticCast () const;
-
 		// Returns a use pointer dynamically casted to Y.
-		template <class Y> UsePtr<Y> dynamicCast () const;
+		template <class Y> OwnPtr<Y> as () const;
 
 		// Returns true if the address of this object is less than the address of ptr's object.
 		bool operator < (OwnPtr<T> const & ptr) const;
@@ -119,7 +119,6 @@ namespace kit
 	private:
 		T * p;
 		_PtrCounter * c;
-		void (* destroy) (T *);
 		template <class Y> friend class OwnPtr;
 		template <class Y> friend class UsePtr;
 		template <class Y> friend class Ptr;
@@ -178,11 +177,8 @@ namespace kit
 		// Only to be used for functions that require a pointer. Be careful how you use this.
 		T * raw () const;
 
-		// Returns a use pointer statically casted to Y.
-		template <class Y> UsePtr<Y> staticCast () const;
-
 		// Returns a use pointer dynamically casted to Y.
-		template <class Y> UsePtr<Y> dynamicCast () const;
+		template <class Y> UsePtr<Y> as () const;
 
 		// Returns true if the address of this object is less than the address of ptr's object.
 		bool operator < (OwnPtr<T> const & ptr) const;
@@ -269,11 +265,8 @@ namespace kit
 		// Only to be used for functions that require a pointer. Be careful how you use this.
 		T * raw () const;
 
-		// Returns a use pointer statically casted to Y.
-		template <class Y> Ptr<Y> staticCast () const;
-
 		// Returns a use pointer dynamically casted to Y.
-		template <class Y> Ptr<Y> dynamicCast () const;
+		template <class Y> Ptr<Y> as () const;
 
 		// Returns true if the address of this object is less than the address of ptr's object.
 		bool operator < (OwnPtr<T> const & ptr) const;
@@ -306,24 +299,54 @@ namespace kit
 	class _PtrCounter
 	{
 	public:
+		virtual void destroy () = 0;
+
 		int oc; // OwnPtr reference counter
 		int uc; // UsePtr reference counter
 		int pc; // Ptr reference counter
 	};
 
+	template <class T>
+	class _PtrCounterTyped : public _PtrCounter
+	{
+	public:
+		_PtrCounterTyped (T * p, void (* deleteFunction) (T *))
+		{
+			this->p = p;
+			this->deleteFunction = deleteFunction;
+		}
+
+		void destroy () override
+		{
+			if (deleteFunction)
+			{
+				deleteFunction(p);
+			}
+			else
+			{
+				delete p;
+			}
+			deleteFunction = nullptr;
+			p = nullptr;
+		}
+
+		T * p; // Derived type for correct destruction, even without base virtual destructor.
+		void (* deleteFunction) (T *); // User-supplied destroy function.
+	};
+
 	// OwnPtr
 
 	template <class T>
-	OwnPtr<T>::OwnPtr (void(*destroy)(T *)) : p(nullptr), c(nullptr), destroy(destroy)
+	OwnPtr<T>::OwnPtr () : p(nullptr), c(nullptr)
 	{
 	}
 
 	template <class T> template <class Y>
-	OwnPtr<T>::OwnPtr (Y * newP, void(*destroy)(T *)) : p(newP), destroy(destroy)
+	OwnPtr<T>::OwnPtr (Y * newP, void (*deleteFunction) (Y *)) : p(newP)
 	{
 		if(p != nullptr)
 		{
-			c = new _PtrCounter;
+			c = new _PtrCounterTyped<Y> (newP, deleteFunction);
 			c->oc = 1;
 			c->uc = 0;
 			c->pc = 0;
@@ -335,7 +358,7 @@ namespace kit
 	}
 
 	template <class T>
-	OwnPtr<T>::OwnPtr (OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c), destroy(ptr.destroy)
+	OwnPtr<T>::OwnPtr (OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c)
 	{
 		if(p != 0)
 		{
@@ -344,7 +367,7 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
-	OwnPtr<T>::OwnPtr (OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c), destroy((void(*)(T *))ptr.destroy)
+	OwnPtr<T>::OwnPtr (OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 	{
 		if(p != nullptr)
 		{
@@ -417,14 +440,13 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
-	void OwnPtr<T>::set (Y * newP, void(*newDestroy)(T *))
+	void OwnPtr<T>::set (Y * newP, void (*deleteFunction) (Y *))
 	{
 		setNull();
-		destroy = newDestroy;
 		p = newP;
 		if(p != nullptr)
 		{
-			c = new _PtrCounter;
+			c = new _PtrCounterTyped<Y> (newP, deleteFunction);
 			c->oc = 1;
 			c->uc = 0;
 			c->pc = 0;
@@ -448,14 +470,7 @@ namespace kit
 					c->oc++; // Rewind function.
 					throw std::exception(); // This OwnPtr still has UsePtrs out there, so it can't be deleted.
 				}
-				if(destroy != nullptr)
-				{
-					destroy(p);
-				}
-				else
-				{
-					delete p;
-				}
+				c->destroy();
 				if(c->pc == 0) // If there are Ptrs still out there, keep the counter around. They'll take care of deleting it.
 				{
 					delete c;
@@ -508,26 +523,14 @@ namespace kit
 		return (unsigned int)p;
 	}
 
-	template <class T> template <class Y> UsePtr<Y> OwnPtr<T>::staticCast () const
+	template <class T> template <class Y> OwnPtr<Y> OwnPtr<T>::as () const
 	{
-		UsePtr<Y> up;
-		up.p = static_cast<Y *>(p);
-		up.c = c;
-		if(p != nullptr)
-		{
-			c->uc++;
-		}
-		return up;
-	}
-
-	template <class T> template <class Y> UsePtr<Y> OwnPtr<T>::dynamicCast () const
-	{
-		UsePtr<Y> up;
+		OwnPtr<Y> up;
 		up.p = dynamic_cast<Y *>(p);
 		up.c = c;
 		if(p != nullptr)
 		{
-			c->uc++;
+			c->oc++;
 		}
 		return up;
 	}
@@ -733,19 +736,7 @@ namespace kit
 		return (unsigned int)p;
 	}
 
-	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::staticCast () const
-	{
-		UsePtr<Y> up;
-		up.p = static_cast<Y *>(p);
-		up.c = c;
-		if(p != nullptr)
-		{
-			c->uc++;
-		}
-		return up;
-	}
-
-	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::dynamicCast () const
+	template <class T> template <class Y> UsePtr<Y> UsePtr<T>::as () const
 	{
 		UsePtr<Y> up;
 		up.p = dynamic_cast<Y *>(p);
@@ -975,21 +966,9 @@ namespace kit
 		return (unsigned int)p;
 	}
 
-	template <class T> template <class Y> Ptr<Y> Ptr<T>::staticCast () const
+	template <class T> template <class Y> Ptr<Y> Ptr<T>::as () const
 	{
 		Ptr<Y> pp;
-		pp.p = static_cast<Y *>(p);
-		pp.c = c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
-		return pp;
-	}
-
-	template <class T> template <class Y> Ptr<Y> Ptr<T>::dynamicCast () const
-	{
-		UsePtr<Y> pp;
 		pp.p = dynamic_cast<Y *>(p);
 		pp.c = c;
 		if(p != nullptr)
