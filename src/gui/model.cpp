@@ -1,5 +1,5 @@
 #include "model.h"
-#include "../resource.h"
+#include "../app_internal.h"
 #include "../texture.h"
 #include "../shader.h"
 
@@ -36,7 +36,7 @@ namespace kit
 				"{\n"
 				"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 				"}\n";
-			shader = getShaderManager()->get("guiShader", code);
+			shader = app()->getShaderManager()->get("guiShader", code);
 
 			vbo.set(new VertexBufferObject);
 			vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
@@ -62,7 +62,7 @@ namespace kit
 
 		void Model::setTexture(std::string const & filename)
 		{
-			texture = getTextureManager()->get(filename, filename);
+			texture = app()->getTextureManager()->get(filename, filename);
 		}
 
 		void Model::setVertices(std::vector<Vertex> const & vertices)

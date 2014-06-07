@@ -1,4 +1,4 @@
-#include "window.h"
+#include "window_internal.h"
 #include "open_gl.h"
 #include <string>
 #include <algorithm>
@@ -6,10 +6,7 @@
 
 namespace kit
 {
-	extern std::map<Ptr<Window>, OwnPtr<WindowImpl>> windows;
-	SDL_GLContext sdlGlContext = nullptr;
-
-	WindowImpl::WindowImpl (char const * title)
+	WindowInternal::WindowInternal (char const * title)
 	{
 		Vector2i size (800, 600);
 
@@ -21,23 +18,23 @@ namespace kit
 		setMaxSize(size);
 	}
 
-	WindowImpl::~WindowImpl ()
+	WindowInternal::~WindowInternal ()
 	{
 		SDL_DestroyWindow(sdlWindow);
 	}
 
-	void WindowImpl::setTitle (char const * title)
+	void WindowInternal::setTitle (char const * title)
 	{
 		SDL_SetWindowTitle(sdlWindow, title);
 	}
 
-	void WindowImpl::setWindowed ()
+	void WindowInternal::setWindowed ()
 	{
 		SDL_SetWindowFullscreen(sdlWindow, 0);
 		SDL_EnableScreenSaver();
 	}
 
-	void WindowImpl::setFullscreen (int display, Vector2i size)
+	void WindowInternal::setFullscreen (int display, Vector2i size)
 	{
 		try
 		{
@@ -64,24 +61,24 @@ namespace kit
 		}
 	}
 
-	void WindowImpl::setFullscreen ()
+	void WindowInternal::setFullscreen ()
 	{
 		setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
 	}
 
-	Vector2i WindowImpl::getSize () const
+	Vector2i WindowInternal::getSize () const
 	{
 		Vector2i size;
 		SDL_GetWindowSize(sdlWindow, &size[0], &size[1]);
 		return size;
 	}
 
-	bool WindowImpl::isFullscreen () const
+	bool WindowInternal::isFullscreen () const
 	{
 		return (SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
-	int WindowImpl::getDisplay() const
+	int WindowInternal::getDisplay() const
 	{
 		int display = SDL_GetWindowDisplayIndex(sdlWindow);
 		if(display >= 0)
@@ -91,30 +88,9 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
-	SDL_Window * WindowImpl::getSDLWindow () const
+	SDL_Window * WindowInternal::getSDLWindow () const
 	{
 		return sdlWindow;
-	}
-
-	WindowPtr addWindow (char const * title)
-	{
-		OwnPtr<WindowImpl> window (new WindowImpl (title));
-		if(windows.empty())
-		{
-			sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
-			glInitialize();
-		}
-		windows[window] = window;
-		return window;
-	}
-
-	void removeWindow (WindowPtr window)
-	{
-		windows.erase(window);
-		if(windows.empty())
-		{
-			SDL_GL_DeleteContext(sdlGlContext);
-		}
 	}
 
 	int getNumDisplays ()

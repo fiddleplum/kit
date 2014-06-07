@@ -1,9 +1,8 @@
 #include "model.h"
 #include "camera.h"
-#include "app.h"
+#include "app_internal.h"
 #include "shader.h"
 #include "texture.h"
-#include "resource.h"
 #include "vertex_buffer_object.h"
 #include "serialize.h"
 #include "serialize_std_string.h"
@@ -153,7 +152,7 @@ namespace kit
 	void Model::addTexture(std::string const & filename, std::string const & type, unsigned int uvIndex)
 	{
 		TextureInfo textureInfo;
-		textureInfo.texture = getTextureManager()->get(filename, filename);
+		textureInfo.texture = app()->getTextureManager()->get(filename, filename);
 		textureInfo.type = type;
 		textureInfo.samplerLocation = -1;
 		textureInfo.uvIndex = uvIndex;
@@ -410,7 +409,7 @@ namespace kit
 			name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 		}
 
-		mShader = getShaderManager()->get(name, code);
+		mShader = app()->getShaderManager()->get(name, code);
 		mNeedsResorting = true;
 
 		// Update attribute locations

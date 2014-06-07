@@ -1,19 +1,13 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/ptr.h>
 #include <kit/gui/widget_container.h>
-#include <memory>
 #include <vector>
 
 namespace kit
 {
-	class Window : public gui::WidgetContainer
+	class Window : virtual public gui::WidgetContainer
 	{
 	public:
-		// Default destructor.
-		virtual ~Window () {}
-
 		// Sets the title of the window.
 		virtual void setTitle (char const * title) = 0;
 
@@ -35,14 +29,6 @@ namespace kit
 		// Returns the display that the window is within, determined by its center.
 		virtual int getDisplay () const = 0;
 	};
-
-	typedef Ptr<Window> WindowPtr;
-
-	// Adds a new window.
-	WindowPtr addWindow (char const * title);
-
-	// Removes a window.
-	void removeWindow (WindowPtr window);
 
 	// Returns the number of displays in the system.
 	int getNumDisplays ();

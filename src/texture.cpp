@@ -28,6 +28,8 @@ namespace kit
 				format = GL_RGB; break;
 			case 32:
 				format = GL_RGBA; break;
+			default:
+				throw std::runtime_error("Only 24 and 32 bits per pixel supported: " + filename);
 		}
 
 		glBindTexture(GL_TEXTURE_2D, id);

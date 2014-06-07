@@ -27,7 +27,6 @@
     <ClCompile Include="src\gui\model.cpp" />
     <ClCompile Include="src\gui\sprite.cpp" />
     <ClCompile Include="src\gui\widget_container.cpp" />
-    <ClCompile Include="src\resource.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\light_2d.cpp" />
     <ClCompile Include="src\model.cpp" />
@@ -46,11 +45,14 @@
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
     <ClInclude Include="inc\kit\app.h" />
+    <ClInclude Include="inc\kit\noncopyable.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
-    <ClInclude Include="src\app.h" />
-    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="src\app_internal.h" />
+    <ClInclude Include="src\gui\sprite_internal.h" />
+    <ClInclude Include="src\gui\widget_internal.h" />
+    <ClInclude Include="src\gui\widget_container_internal.h" />
     <ClInclude Include="inc\kit\ptr.h" />
     <ClInclude Include="inc\kit\rect.h" />
     <ClInclude Include="inc\kit\string_util.h" />
@@ -95,7 +97,7 @@
     <ClInclude Include="src\storage.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
-    <ClInclude Include="src\window.h" />
+    <ClInclude Include="src\window_internal.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DBB65554-520D-48D7-850C-525D88740CF7}</ProjectGuid>
@@ -163,7 +165,7 @@
       </PrecompiledHeader>
       <BrowseInformation>true</BrowseInformation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4127</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4127;4250</DisableSpecificWarnings>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
       <Optimization>Disabled</Optimization>
     </ClCompile>

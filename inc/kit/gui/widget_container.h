@@ -2,88 +2,59 @@
 
 #include <kit/gui/widget.h>
 #include <kit/ptr.h>
-#include <map>
-#include <list>
-#include <memory>
 #include <functional>
 
 namespace kit
 {
 	namespace gui
 	{
-		class WidgetContainer : public Widget
+		enum WidgetType { SPRITE, BUTTON };
+
+		class WidgetContainer : virtual public Widget
 		{
 		public:
-			WidgetContainer ();
+			// Handles container-wide events.
+			virtual void setHandleContainerEventFunction (std::function<bool (Event const &, bool)>) = 0;
 
-			void setHandleContainerEventFunction (std::function<bool (Event const &, bool)>); // handles container-wide events
-			void setUpdateWidgetBoundsFunction (std::function<void ()>); // updates the widget bounds after the container has moved or otherwise changed
+			// Updates the widget bounds after the container has moved or otherwise changed.
+			virtual void setUpdateWidgetBoundsFunction (std::function<void ()>) = 0;
 
-			Recti getBounds () const override;
-			void setPosition (Vector2i position) override;
-			void setMaxSize (Vector2i maxSize) override;
+			// Gets the bounds of the container.
+			virtual Recti getBounds () const = 0;
 
-			template <typename WidgetType> Ptr<WidgetType> insertWidgetBefore (Ptr<Widget> beforeWidget);
-			template <typename WidgetType> Ptr<WidgetType> addWidget ();
-			template <typename WidgetType> Ptr<WidgetType> replaceWidget (Ptr<Widget> oldWidget);
-			void removeWidget (Ptr<Widget> widget);
+			// Sets the position of the container.
+			virtual void setPosition (Vector2i position) = 0;
 
-			void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset);
-			void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize);
+			// Sets the maximum size this container can be.
+			virtual void setMaxSize (Vector2i maxSize) = 0;
 
-			bool isWidgetActive (Ptr<Widget> widget) const;
-			void setWidgetActive (Ptr<Widget> widget, bool active); // The widget does/doesn't handle events.
+			// Inserts a widget before another widget.
+			virtual Ptr<Widget> insertWidgetBefore (WidgetType type, Ptr<Widget> beforeWidget) = 0;
 
-			bool isWidgetVisible (Ptr<Widget> widget) const;
-			void setWidgetVisible (Ptr<Widget> widget, bool visible); // The widget is/isn't rendered and handle events.
+			// Append a widget to the end of the list of widgets.
+			virtual Ptr<Widget> addWidget (WidgetType type) = 0;
 
-		private:
-			class WidgetInfo
-			{
-			public:
-				WidgetInfo (OwnPtr<Widget>);
+			// Remove a widget from the container.
+			virtual void removeWidget (Ptr<Widget> widget) = 0;
 
-				OwnPtr<Widget> widget;
-				bool active; // does it handle events and is it rendered?
-				bool visible; // is it rendered?
-			};
+			// Sets the position of the widget relative to this.
+			virtual void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) = 0;
 
-			void insertWidgetBefore (OwnPtr<Widget> widget, Ptr<Widget> beforeWidget);
-			void addWidget (OwnPtr<Widget> widget);
-			void replaceWidget (OwnPtr<Widget> widget, Ptr<Widget> oldWidget);
+			// Sets the size of the widget relative to this.
+			virtual void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) = 0;
 
-			bool handleEvent(Event const & event, bool cursorIsValid) override;
-			void render(Vector2i windowSize) override;
+			// Does the widget handle events and rendered?
+			virtual bool isWidgetActive (Ptr<Widget> widget) const = 0;
 
-			std::function<bool (Event const &, bool)> handleContainerEventFunction;
-			std::function<void ()> updateWidgetBoundsFunction;
-			Recti bounds;
-			std::list<WidgetInfo> widgetInfos;
-			std::map<Ptr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
+			// Sets whether the widget handles events and rendered.
+			virtual void setWidgetActive (Ptr<Widget> widget, bool active) = 0;
+
+			// Is the widget rendered?
+			virtual bool isWidgetVisible (Ptr<Widget> widget) const = 0;
+
+			// Sets whether the widget is rendered.
+			virtual void setWidgetVisible (Ptr<Widget> widget, bool visible) = 0;
 		};
-
-		// Template Implementation
-
-		template <typename WidgetType> Ptr<WidgetType> WidgetContainer::insertWidgetBefore (Ptr<Widget> beforeWidget)
-		{
-			OwnPtr<WidgetType> widget (new WidgetType);
-			insertWidgetBefore(widget, beforeWidget);
-			return widget;
-		}
-
-		template <typename WidgetType> Ptr<WidgetType> WidgetContainer::addWidget ()
-		{
-			OwnPtr<WidgetType> widget (new WidgetType);
-			addWidget(widget);
-			return widget;
-		}
-
-		template <typename WidgetType> Ptr<WidgetType> WidgetContainer::replaceWidget (Ptr<Widget> oldWidget)
-		{
-			OwnPtr<WidgetType> widget (new WidgetType);
-			replaceWidget(widget, oldWidget);
-			return widget;
-		}
 	}
 }
 

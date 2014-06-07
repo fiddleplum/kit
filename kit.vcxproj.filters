@@ -34,7 +34,6 @@
     <ClCompile Include="src\flat\world.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
     <ClCompile Include="src\window.cpp" />
-    <ClCompile Include="src\resource.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\app.cpp" />
   </ItemGroup>
@@ -85,11 +84,14 @@
     <ClInclude Include="inc\kit\gui\widget_container.h" />
     <ClInclude Include="inc\kit\gui\widget.h" />
     <ClInclude Include="src\resource_manager.h" />
-    <ClInclude Include="src\resource.h" />
     <ClInclude Include="inc\kit\gui\sprite.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\app.h" />
-    <ClInclude Include="src\app.h" />
-    <ClInclude Include="src\window.h" />
+    <ClInclude Include="inc\kit\noncopyable.h" />
+    <ClInclude Include="src\gui\widget_container_internal.h" />
+    <ClInclude Include="src\gui\widget_internal.h" />
+    <ClInclude Include="src\window_internal.h" />
+    <ClInclude Include="src\gui\sprite_internal.h" />
+    <ClInclude Include="src\app_internal.h" />
   </ItemGroup>
 </Project>

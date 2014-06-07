@@ -1,13 +1,12 @@
 #include "model_2d.h"
 #include "camera_2d.h"
-#include "app.h"
+#include "app_internal.h"
 #include "shader.h"
 #include "texture.h"
 #include "vertex_buffer_object.h"
 #include "serialize.h"
 #include "serialize_std_string.h"
 #include "serialize_std_vector.h"
-#include "resource.h"
 #include <kit/string_util.h>
 #include <fstream>
 #include <stdexcept>
@@ -43,7 +42,7 @@ namespace kit
 
 	void Model2D::setTexture(std::string const & filename)
 	{
-		texture = getTextureManager()->get(filename, filename);
+		texture = app()->getTextureManager()->get(filename, filename);
 		sorted = false;
 	}
 
@@ -194,7 +193,7 @@ namespace kit
 		std::string name;
 		name = "Model2D";
 
-		shader = getShaderManager()->get(name, code);
+		shader = app()->getShaderManager()->get(name, code);
 		sorted = false;
 
 		// Update attribute locations

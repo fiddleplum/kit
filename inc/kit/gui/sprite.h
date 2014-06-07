@@ -1,36 +1,25 @@
 #pragma once
 
 #include <kit/gui/widget.h>
-#include <kit/ptr.h>
 
 namespace kit
 {
 	namespace gui
 	{
-		class Model;
-
-		class Sprite : public Widget
+		class Sprite : virtual public Widget
 		{
 		public:
-			Sprite();
-			virtual ~Sprite();
+			virtual Recti getBounds() const = 0;
 
-			Recti getBounds() const override;
-			void setPosition(Vector2i position) override;
-			void setMaxSize(Vector2i maxSize) override;
-			bool handleEvent(Event const & event, bool cursorIsValid) override;
-			void render(Vector2i windowSize) override;
+			virtual void setPosition(Vector2i position) = 0;
 
-			void setTexture(std::string const & filename);
-			void setTextureBounds(Recti bounds);
-			Recti getTextureBounds() const;
+			virtual void setMaxSize(Vector2i maxSize) = 0;
 
-		private:
-			void updateVertices();
+			virtual void setTexture(std::string const & filename) = 0;
 
-			OwnPtr<Model> model;
-			Recti textureBounds;
-			Vector2i maxSize;
+			virtual void setTextureBounds(Recti bounds) = 0;
+
+			virtual Recti getTextureBounds() const = 0;
 		};
 	}
 }
