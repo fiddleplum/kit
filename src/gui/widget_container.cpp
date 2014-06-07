@@ -1,6 +1,7 @@
 #include "widget_container_internal.h"
 #include <kit/gui/widget_container.h>
 #include "sprite_internal.h"
+#include "button_internal.h"
 #include <algorithm>
 
 namespace kit
@@ -15,7 +16,7 @@ namespace kit
 				return OwnPtr<SpriteInternal> (new SpriteInternal);
 				break;
 			case BUTTON:
-				//return OwnPtr<Button> (new Button);
+				return OwnPtr<ButtonInternal> (new ButtonInternal);
 				break;
 			}
 			return OwnPtr<WidgetInternal> ();
@@ -82,6 +83,8 @@ namespace kit
 			{
 				auto widgetIterator = widgetInfos.insert(widgetInfos.end(), WidgetInfo(widget));
 				widgetLookup[widget] = widgetIterator;
+				widget->setPosition(bounds.min);
+				widget->setMaxSize(bounds.getSize());
 			}
 			return widget;
 		}

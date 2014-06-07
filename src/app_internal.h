@@ -23,6 +23,10 @@ namespace kit
 
 		void quit () override;
 
+		float getTime() const override;
+
+		Vector2i getCursorPosition() const override;
+
 		Ptr<Window> addWindow (char const * title) override;
 
 		void removeWindow (Ptr<Window> window) override;
@@ -38,7 +42,8 @@ namespace kit
 		KeyboardEvent::Key sdlKeyToKey (int sdlKey);
 		void handleSDLEvent (SDL_Event const & sdlEvent);
 
-		std::map<Ptr<Window>, OwnPtr<WindowInternal>> windows;
+		std::list<OwnPtr<WindowInternal>> windows;
+		std::map<Ptr<Window>, std::list<OwnPtr<WindowInternal>>::iterator> windowMapping;
 		SDL_GLContext sdlGlContext;
 		bool looping;
 		bool cursorIsValid;

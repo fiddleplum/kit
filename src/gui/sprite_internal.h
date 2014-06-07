@@ -13,25 +13,23 @@ namespace kit
 		public:
 			SpriteInternal ();
 
-			~SpriteInternal ();
+			Recti getBounds () const override;
 
-			Recti getBounds() const;
+			void setPosition (Vector2i position) override;
 
-			void setPosition(Vector2i position);
+			void setMaxSize (Vector2i maxSize) override;
 
-			void setMaxSize(Vector2i maxSize);
+			void setTexture (std::string const & filename) override;
 
-			void setTexture(std::string const & filename);
+			void setTextureBounds (Recti bounds) override;
 
-			void setTextureBounds(Recti bounds);
+			Recti getTextureBounds () const override;
 
-			Recti getTextureBounds() const;
+			bool handleEvent (Event const & event, bool cursorIsValid) override;
 
-			bool handleEvent(Event const & event, bool cursorIsValid) override;
+			void render (Vector2i windowSize) override;
 
-			void render(Vector2i windowSize) override;
-
-			void updateVertices();
+			void updateVertices ();
 
 		private:
 			OwnPtr<Model> model;

@@ -1,12 +1,13 @@
-#include "button.h"
-#include "../app.h"
+#include "button_internal.h"
+#include "../app_internal.h"
 
 namespace kit
 {
-	namespace app
+	namespace gui
 	{
-		Button::Button()
+		ButtonInternal::ButtonInternal ()
 		{
+			sprite.set(new SpriteInternal);
 			type = Hold;
 			hovered = false;
 			pressed = false;
@@ -14,30 +15,38 @@ namespace kit
 			shotInterval = .5f;
 		}
 
-		Recti Button::getBounds() const
+		Recti ButtonInternal::getBounds () const
 		{
-			return sprite.getBounds();
+			return sprite->getBounds();
 		}
 
-		void Button::setPosition(Vector2i position)
+		void ButtonInternal::setPosition (Vector2i position)
 		{
-			sprite.setPosition(position);
+			sprite->setPosition(position);
 		}
 
-		void Button::setMaxSize(Vector2i maxSize)
+		void ButtonInternal::setMaxSize (Vector2i maxSize)
 		{
-			sprite.setMaxSize(maxSize);
+			sprite->setMaxSize(maxSize);
 		}
 
-		void Button::handleEvent(Event const & event)
+		bool ButtonInternal::handleEvent (Event const & event, bool cursorIsValid)
 		{
 			bool oldPressedOrToggled = pressed || toggled;
+
+			if(cursorIsValid)
+			{
+				if(getBounds().containsEx(app()->getCursorPosition()))
+				{
+					cursorIsValid = false;
+				}
+			}
 
 			switch(event.type)
 			{
 				case Event::Update:
 				{
-					if(type == Shot && pressed && App::getTime() - timePressed > shotInterval)
+					if(type == Shot && pressed && app()->getTime() - timePressed > shotInterval)
 					{
 						pressed = false;
 					}
@@ -87,7 +96,7 @@ namespace kit
 								}
 								if(type == Shot)
 								{
-									timePressed = App::getTime();
+									timePressed = app()->getTime();
 								}
 							}
 						}
@@ -99,7 +108,7 @@ namespace kit
 					break;
 				}
 				default:
-					return;
+					break;
 			};
 			if(!oldPressedOrToggled && (pressed || toggled))
 			{
@@ -116,65 +125,66 @@ namespace kit
 				}
 			}
 			setSpriteTextureBoundsFromState();
+			return cursorIsValid;
 		}
 
-		void Button::render()
+		void ButtonInternal::render (Vector2i windowSize)
 		{
-			sprite.render();
+			sprite->render(windowSize);
 		}
 
-		void Button::setTexture(std::string const & filename)
+		void ButtonInternal::setTexture (std::string const & filename)
 		{
-			sprite.setTexture(filename);
+			sprite->setTexture(filename);
 		}
 
-		void Button::setTextureBounds(Recti bounds)
+		void ButtonInternal::setTextureBounds (Recti bounds)
 		{
 			defaultTextureBounds = bounds;
-			sprite.setTextureBounds(bounds);
+			sprite->setTextureBounds(bounds);
 		}
 
-		void Button::setType(Type type)
+		void ButtonInternal::setType (Type type)
 		{
 			this->type = type;
 		}
 
-		void Button::setShotInterval(float interval)
+		void ButtonInternal::setShotInterval (float interval)
 		{
 			shotInterval = interval;
 		}
 
-		void Button::setHoverFunction(std::function<void ()> hoverFunction)
+		void ButtonInternal::setHoverFunction (std::function<void ()> hoverFunction)
 		{
 			this->hoverFunction = hoverFunction;
 		}
 
-		void Button::setUnhoverFunction(std::function<void ()> unhoverFunction)
+		void ButtonInternal::setUnhoverFunction (std::function<void ()> unhoverFunction)
 		{
 			this->unhoverFunction = unhoverFunction;
 		}
 
-		void Button::setPressFunction(std::function<void ()> pressFunction)
+		void ButtonInternal::setPressFunction (std::function<void ()> pressFunction)
 		{
 			this->pressFunction = pressFunction;
 		}
 
-		void Button::setUnpressFunction(std::function<void ()> unpressFunction)
+		void ButtonInternal::setUnpressFunction (std::function<void ()> unpressFunction)
 		{
 			this->unpressFunction = unpressFunction;
 		}
 
-		bool Button::isHovered() const
+		bool ButtonInternal::isHovered () const
 		{
 			return hovered;
 		}
 
-		bool Button::isPressed() const
+		bool ButtonInternal::isPressed () const
 		{
 			return pressed;
 		}
 
-		void Button::setSpriteTextureBoundsFromState()
+		void ButtonInternal::setSpriteTextureBoundsFromState ()
 		{
 			int index = 0;
 			if(hovered)
@@ -185,9 +195,9 @@ namespace kit
 			{
 				index += 2;
 			}
-			Recti stateTextureBounds = sprite.getTextureBounds();
+			Recti stateTextureBounds = sprite->getTextureBounds();
 			stateTextureBounds.setMinKeepSize(defaultTextureBounds.min + Vector2i(defaultTextureBounds.getSize()[0] * index, 0));
-			sprite.setTextureBounds(stateTextureBounds);
+			sprite->setTextureBounds(stateTextureBounds);
 		}
 	}
 

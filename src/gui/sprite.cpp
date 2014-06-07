@@ -20,11 +20,6 @@ namespace kit
 			updateVertices();
 		}
 
-		SpriteInternal::~SpriteInternal()
-		{
-			model.setNull();
-		}
-
 		Recti SpriteInternal::getBounds() const
 		{
 			return Recti::minSize(model->getPosition(), textureBounds.getSize());
@@ -41,9 +36,9 @@ namespace kit
 			updateVertices();
 		}
 
-		bool SpriteInternal::handleEvent(Event const &, bool)
+		bool SpriteInternal::handleEvent(Event const &, bool cursorIsValid)
 		{
-			return true; // change this later
+			return cursorIsValid;
 		}
 
 		void SpriteInternal::render(Vector2i windowSize)

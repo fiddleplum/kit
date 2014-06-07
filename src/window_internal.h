@@ -23,9 +23,13 @@ namespace kit
 
 		Vector2i getSize () const;
 
+		bool contains (Vector2i point) const;
+
 		bool isFullscreen () const;
 
 		int getDisplay () const;
+
+		void render (SDL_GLContext sdlGlContext);
 
 		SDL_Window * getSDLWindow () const;
 

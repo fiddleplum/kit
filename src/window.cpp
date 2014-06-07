@@ -73,6 +73,11 @@ namespace kit
 		return size;
 	}
 
+	bool WindowInternal::contains (Vector2i point) const
+	{
+		return bounds.containsEx(point);
+	}
+
 	bool WindowInternal::isFullscreen () const
 	{
 		return (SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
@@ -86,6 +91,29 @@ namespace kit
 			return display;
 		}
 		throw std::runtime_error("Could not get the display the window is within. ");
+	}
+
+	void WindowInternal::render (SDL_GLContext sdlGlContext)
+	{
+		SDL_GL_MakeCurrent(sdlWindow, sdlGlContext);
+
+		glDisable(GL_DEPTH_TEST);
+		glDepthFunc(GL_GREATER);
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glClearColor(0, 0, 0, 1);
+		glClearDepth(0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		Vector2i windowSize = getSize();
+		glViewport(0, 0, windowSize[0], windowSize[1]);
+
+		WidgetContainerInternal::render(windowSize);
+
+		SDL_GL_SwapWindow(sdlWindow);
 	}
 
 	SDL_Window * WindowInternal::getSDLWindow () const

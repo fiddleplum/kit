@@ -15,6 +15,7 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\csv.cpp" />
+    <ClCompile Include="src\gui\button.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
@@ -45,11 +46,13 @@
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
     <ClInclude Include="inc\kit\app.h" />
+    <ClInclude Include="inc\kit\gui\button.h" />
     <ClInclude Include="inc\kit\noncopyable.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
     <ClInclude Include="src\app_internal.h" />
+    <ClInclude Include="src\gui\button_internal.h" />
     <ClInclude Include="src\gui\sprite_internal.h" />
     <ClInclude Include="src\gui\widget_internal.h" />
     <ClInclude Include="src\gui\widget_container_internal.h" />

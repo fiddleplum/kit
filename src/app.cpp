@@ -50,14 +50,47 @@ namespace kit
 			}
 
 			// Update
+			for(auto window : windows)
+			{
+				if(looping)
+				{
+					window->handleEvent(UpdateEvent(), cursorIsValid);
+				}
+			}
 
 			// Render
+			for(auto window : windows)
+			{
+				if(looping)
+				{
+					window->render(sdlGlContext);
+				}
+			}
 		}
 	}
 
 	void AppInternal::quit ()
 	{
 		looping = false;
+	}
+
+	float AppInternal::getTime() const
+	{
+		return SDL_GetTicks() / 1000.0f;
+	}
+
+	Vector2i AppInternal::getCursorPosition() const
+	{
+		Vector2i position;
+		if(cursorIsValid)
+		{
+			SDL_GetMouseState(&position[0], &position[1]);
+		}
+		else
+		{
+			position.set(0, 0);
+		}
+		return position;
 	}
 
 	Ptr<Window> AppInternal::addWindow (char const * title)
@@ -68,16 +101,23 @@ namespace kit
 			sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
 			glInitialize();
 		}
-		windows[window] = window;
+		auto windowIterator = windows.insert(windows.end(), window);
+		windowMapping[window] = windowIterator;
 		return window;
 	}
 
 	void AppInternal::removeWindow (Ptr<Window> window)
 	{
-		windows.erase(window);
-		if(windows.empty())
+		auto it = windowMapping.find(window);
+		if(it != windowMapping.end())
 		{
-			SDL_GL_DeleteContext(sdlGlContext);
+			auto windowIt = it->second;
+			windowMapping.erase(it);
+			windows.erase(windowIt);
+			if(windows.empty())
+			{
+				SDL_GL_DeleteContext(sdlGlContext);
+			}
 		}
 	}
 
@@ -98,20 +138,18 @@ namespace kit
 
 	Ptr<WindowInternal> AppInternal::getWindowFromId (Uint32 id)
 	{
-		Ptr<WindowInternal> window;
 		SDL_Window * sdlWindow = SDL_GetWindowFromID(id);
 		if(sdlWindow != NULL)
 		{
-			for(auto it : windows)
+			for(auto window : windows)
 			{
-				if(sdlWindow == it.second->getSDLWindow())
+				if(sdlWindow == window->getSDLWindow())
 				{
-					window = it.second;
-					break;
+					return window;
 				}
 			}
 		}
-		return window;
+		return Ptr<WindowInternal> ();
 	}
 
 	KeyboardEvent::Key AppInternal::sdlKeyToKey (int sdlKey)
@@ -326,9 +364,9 @@ namespace kit
 				event.controller = sdlEvent.jbutton.which;
 				event.button = sdlEvent.jbutton.button;
 				event.pressed = (sdlEvent.type == SDL_JOYBUTTONDOWN);
-				for(auto it : windows)
+				for(auto window : windows)
 				{
-					it.second->handleEvent(event, cursorIsValid);
+					window->handleEvent(event, cursorIsValid);
 				}
 			}
 			break;
@@ -345,9 +383,9 @@ namespace kit
 				{
 					event.value = (float)sdlEvent.jaxis.value / 32768.0f;
 				}
-				for(auto it : windows)
+				for(auto window : windows)
 				{
-					it.second->handleEvent(event, cursorIsValid);
+					window->handleEvent(event, cursorIsValid);
 				}
 			}
 			break;
@@ -368,9 +406,9 @@ namespace kit
 				{
 					event.value = 0;
 				}
-				for(auto it : windows)
+				for(auto window : windows)
 				{
-					it.second->handleEvent(event, cursorIsValid);
+					window->handleEvent(event, cursorIsValid);
 				}
 				event.axis++;
 				if((sdlEvent.jhat.value & SDL_HAT_DOWN) != 0)
@@ -385,9 +423,9 @@ namespace kit
 				{
 					event.value = 0;
 				}
-				for(auto it : windows)
+				for(auto window : windows)
 				{
-					it.second->handleEvent(event, cursorIsValid);
+					window->handleEvent(event, cursorIsValid);
 				}
 			}
 			break;
@@ -398,9 +436,9 @@ namespace kit
 				event.ball = sdlEvent.jball.ball;
 				event.offset[0] = sdlEvent.jball.xrel;
 				event.offset[1] = sdlEvent.jball.yrel;
-				for(auto it : windows)
+				for(auto window : windows)
 				{
-					it.second->handleEvent(event, cursorIsValid);
+					window->handleEvent(event, cursorIsValid);
 				}
 			}
 			break;
