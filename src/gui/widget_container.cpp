@@ -29,12 +29,12 @@ namespace kit
 
 		void WidgetContainerInternal::setHandleContainerEventFunction (std::function<bool (Event const &, bool)> handleContainerEventFunction)
 		{
-			handleContainerEventFunction = handleContainerEventFunction;
+			this->handleContainerEventFunction = handleContainerEventFunction;
 		}
 
 		void WidgetContainerInternal::setUpdateWidgetBoundsFunction (std::function<void ()> updateWidgetBoundsFunction)
 		{
-			updateWidgetBoundsFunction = updateWidgetBoundsFunction;
+			this->updateWidgetBoundsFunction = updateWidgetBoundsFunction;
 		}
 
 		Recti WidgetContainerInternal::getBounds () const

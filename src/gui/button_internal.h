@@ -24,16 +24,23 @@ namespace kit
 			void render (Vector2i windowSize) override;
 
 			void setTexture (std::string const & filename) override;
-			void setTextureBounds (Recti bounds) override; // Frames are stacked horizontally: default, hovered, pressed, pressed-hovered
+
+			void setTextureBounds (Recti bounds) override;
 
 			void setType (Type type) override;
+
 			void setShotInterval (float interval) override;
+
 			void setHoverFunction (std::function<void ()> hoverFunction) override;
+
 			void setUnhoverFunction (std::function<void ()> unhoverFunction) override;
+
 			void setPressFunction (std::function<void ()> pressFunction) override;
+
 			void setUnpressFunction (std::function<void ()> unpressFunction) override;
 
 			bool isHovered () const;
+
 			bool isPressed () const;
 
 		private:

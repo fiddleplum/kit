@@ -1,32 +1,32 @@
-#include "view.h"
-#include "../app.h"
+#include "viewport_internal.h"
+#include "../app_internal.h"
 #include "../open_gl.h"
 #include "../camera.h"
 #include "../scene.h"
 
 namespace kit
 {
-	namespace app
+	namespace gui
 	{
-		View::View()
+		ViewportInternal::ViewportInternal ()
 		{
 			bounds = Recti::zero();
 		}
 
-		Recti View::getBounds() const
+		Recti ViewportInternal::getBounds () const
 		{
 			return bounds;
 		}
 
-		void View::setPosition(Vector2i position)
+		void ViewportInternal::setPosition (Vector2i position)
 		{
 			bounds.setMinKeepSize(position);
 		}
 
-		void View::setMaxSize(Vector2i maxSize)
+		void ViewportInternal::setMaxSize (Vector2i maxSize)
 		{
 			bounds.setSize(maxSize);
-			if(camera != nullptr)
+			if(camera.isValid())
 			{
 				if(maxSize[1] != 0)
 				{
@@ -35,20 +35,12 @@ namespace kit
 			}
 		}
 
-		void View::handleEvent(Event const & event)
-		{
-			if(scene != nullptr)
-			{
-				scene->handleEvent(event);
-			}
-		}
-
-		std::shared_ptr<Camera> View::getCamera() const
+		Ptr<Camera> ViewportInternal::getCamera () const
 		{
 			return camera;
 		}
 
-		void View::setCamera(std::shared_ptr<Camera> newCamera)
+		void ViewportInternal::setCamera (Ptr<Camera> newCamera)
 		{
 			camera = newCamera;
 			if(bounds.getSize()[1] != 0)
@@ -57,27 +49,42 @@ namespace kit
 			}
 		}
 
-		std::shared_ptr<Scene> View::getScene() const
+		Ptr<Scene> ViewportInternal::getScene () const
 		{
 			return scene;
 		}
 
-		void View::setScene(std::shared_ptr<Scene> newScene)
+		void ViewportInternal::setScene (Ptr<Scene> newScene)
 		{
 			scene = newScene;
 		}
 
-		void View::render()
+		bool ViewportInternal::handleEvent (Event const & event, bool cursorIsValid)
 		{
-			if(camera == nullptr || scene == nullptr)
+			if(cursorIsValid)
+			{
+				if(getBounds().containsEx(app()->getCursorPosition()))
+				{
+					cursorIsValid = false;
+				}
+			}
+
+			if(scene.isValid())
+			{
+				scene->handleEvent(event);
+			}
+		}
+
+		void ViewportInternal::render (Vector2i windowSize)
+		{
+			if(!camera.isValid() || !camera.isValid())
 			{
 				return;
 			}
 
-			Vector2i windowSize = App::getSize();
 			glViewport(bounds.min[0], windowSize[1] - bounds.max[1], bounds.max[0] - bounds.min[0], bounds.max[1] - bounds.min[1]);
 
-			scene->render(camera);
+			//scene->render(camera);
 
 			glViewport(0, 0, windowSize[0], windowSize[1]);
 		}

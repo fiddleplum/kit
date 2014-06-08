@@ -37,6 +37,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
+    <ClCompile Include="src\gui\viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -96,5 +97,7 @@
     <ClInclude Include="src\app_internal.h" />
     <ClInclude Include="inc\kit\gui\button.h" />
     <ClInclude Include="src\gui\button_internal.h" />
+    <ClInclude Include="inc\kit\gui\viewport.h" />
+    <ClInclude Include="src\gui\viewport_internal.h" />
   </ItemGroup>
 </Project>

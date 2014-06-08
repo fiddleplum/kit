@@ -39,6 +39,15 @@ namespace kit
 
 	void AppInternal::loop ()
 	{
+		// Make sure all of the windows have their sizes updated.
+		for(auto window : windows)
+		{
+			if(window->updateWidgetBoundsFunction)
+			{
+				window->updateWidgetBoundsFunction();
+			}
+		}
+
 		looping = true;
 		while(looping)
 		{
