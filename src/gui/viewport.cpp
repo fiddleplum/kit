@@ -1,7 +1,7 @@
 #include "viewport_internal.h"
 #include "../app_internal.h"
 #include "../open_gl.h"
-#include "../camera.h"
+#include "../scene/camera_internal.h"
 #include "../scene.h"
 
 namespace kit
@@ -35,28 +35,28 @@ namespace kit
 			}
 		}
 
-		Ptr<Camera> ViewportInternal::getCamera () const
+		Ptr<scene::Camera> ViewportInternal::getCamera () const
 		{
 			return camera;
 		}
 
-		void ViewportInternal::setCamera (Ptr<Camera> newCamera)
+		void ViewportInternal::setCamera (Ptr<scene::Camera> camera)
 		{
-			camera = newCamera;
+			this->camera = camera.as<scene::CameraInternal>();
 			if(bounds.getSize()[1] != 0)
 			{
-				camera->setAspectRatio((float)bounds.getSize()[0] / (float)bounds.getSize()[1]);
+				this->camera->setAspectRatio((float)bounds.getSize()[0] / (float)bounds.getSize()[1]);
 			}
 		}
 
-		Ptr<Scene> ViewportInternal::getScene () const
+		Ptr<scene::Scene> ViewportInternal::getScene () const
 		{
 			return scene;
 		}
 
-		void ViewportInternal::setScene (Ptr<Scene> newScene)
+		void ViewportInternal::setScene (Ptr<scene::Scene> scene)
 		{
-			scene = newScene;
+			this->scene = scene;
 		}
 
 		bool ViewportInternal::handleEvent (Event const & event, bool cursorIsValid)

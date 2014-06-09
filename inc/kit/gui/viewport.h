@@ -4,8 +4,11 @@
 
 namespace kit
 {
-	class Camera;
-	class Scene;
+	namespace scene
+	{
+		class Camera;
+		class Scene;
+	}
 
 	namespace gui
 	{
@@ -13,16 +16,16 @@ namespace kit
 		{
 		public:
 			// Get the attached camera.
-			virtual Ptr<Camera> getCamera () const = 0;
+			virtual Ptr<scene::Camera> getCamera () const = 0;
 
 			// Attach a camera.
-			virtual void setCamera (Ptr<Camera>) = 0;
+			virtual void setCamera (Ptr<scene::Camera>) = 0;
 
 			// Get the attached scene.
-			virtual Ptr<Scene> getScene () const = 0;
+			virtual Ptr<scene::Scene> getScene () const = 0;
 
 			// Attach a scene.
-			virtual void setScene (Ptr<Scene>) = 0;
+			virtual void setScene (Ptr<scene::Scene>) = 0;
 		};
 	}
 }

@@ -20,7 +20,7 @@ namespace kit
 
 	// The model serialized format is at the bottom.
 
-	class Model : public SceneEntity
+	class Model : public SceneEntity // THIS SHOULD NOT BE INHERITED
 	{
 	public:
 		Model();

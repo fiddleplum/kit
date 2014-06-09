@@ -5,6 +5,10 @@
 
 namespace kit
 {
+	namespace scene
+	{
+		class CameraInternal;
+	}
 	namespace gui
 	{
 		class ViewportInternal : virtual public Viewport, virtual public WidgetInternal
@@ -18,13 +22,13 @@ namespace kit
 
 			void setMaxSize (Vector2i maxSize) override;
 
-			Ptr<Camera> getCamera () const override;
+			Ptr<scene::Camera> getCamera () const override;
 
-			void setCamera (Ptr<Camera>) override;
+			void setCamera (Ptr<scene::Camera>) override;
 
-			Ptr<Scene> getScene () const override;
+			Ptr<scene::Scene> getScene () const override;
 
-			void setScene (Ptr<Scene>) override;
+			void setScene (Ptr<scene::Scene>) override;
 
 			bool handleEvent (Event const & event, bool cursorIsValid) override;
 
@@ -32,8 +36,8 @@ namespace kit
 
 		private:
 			Recti bounds;
-			Ptr<Camera> camera;
-			Ptr<Scene> scene;
+			Ptr<scene::CameraInternal> camera;
+			Ptr<scene::Scene> scene;
 		};
 	}
 }

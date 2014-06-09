@@ -6,15 +6,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\csv.cpp" />
     <ClCompile Include="src\event.cpp" />
-    <ClCompile Include="src\free_fly_camera_controller.cpp" />
-    <ClCompile Include="src\light.cpp" />
-    <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\open_gl.cpp" />
-    <ClCompile Include="src\scene.cpp" />
-    <ClCompile Include="src\scene_entity.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\string_util.cpp" />
     <ClCompile Include="src\texture.cpp" />
@@ -38,23 +32,17 @@
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
     <ClCompile Include="src\gui\viewport.cpp" />
+    <ClCompile Include="src\scene\camera.cpp" />
+    <ClCompile Include="src\scene\entity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\controller.h" />
     <ClInclude Include="src\csv.h" />
-    <ClInclude Include="src\free_fly_camera_controller.h" />
     <ClInclude Include="src\gl3.h" />
-    <ClInclude Include="src\light.h" />
     <ClInclude Include="src\math_util.h" />
-    <ClInclude Include="src\matrix.h" />
-    <ClInclude Include="src\model.h" />
     <ClInclude Include="src\open_gl.h" />
     <ClInclude Include="src\ptr.h" />
-    <ClInclude Include="src\quaternion.h" />
-    <ClInclude Include="src\ray.h" />
     <ClInclude Include="src\scene.h" />
-    <ClInclude Include="src\scene_entity.h" />
     <ClInclude Include="src\serialize.h" />
     <ClInclude Include="src\serialize_std_string.h" />
     <ClInclude Include="src\serialize_std_vector.h" />
@@ -99,5 +87,12 @@
     <ClInclude Include="src\gui\button_internal.h" />
     <ClInclude Include="inc\kit\gui\viewport.h" />
     <ClInclude Include="src\gui\viewport_internal.h" />
+    <ClInclude Include="inc\kit\matrix.h" />
+    <ClInclude Include="inc\kit\quaternion.h" />
+    <ClInclude Include="inc\kit\scene\entity.h" />
+    <ClInclude Include="inc\kit\scene\camera.h" />
+    <ClInclude Include="inc\kit\ray.h" />
+    <ClInclude Include="src\scene\camera_internal.h" />
+    <ClInclude Include="src\scene\entity_internal.h" />
   </ItemGroup>
 </Project>

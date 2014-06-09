@@ -1,5 +1,5 @@
 #include "free_fly_camera_controller.h"
-#include "camera.h"
+#include "scene/camera_internal.h"
 #include <kit/event.h>
 
 namespace kit
