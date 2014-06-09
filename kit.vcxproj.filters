@@ -34,6 +34,7 @@
     <ClCompile Include="src\gui\viewport.cpp" />
     <ClCompile Include="src\scene\camera.cpp" />
     <ClCompile Include="src\scene\entity.cpp" />
+    <ClCompile Include="src\scene\model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -94,5 +95,6 @@
     <ClInclude Include="inc\kit\ray.h" />
     <ClInclude Include="src\scene\camera_internal.h" />
     <ClInclude Include="src\scene\entity_internal.h" />
+    <ClInclude Include="src\scene\model.h" />
   </ItemGroup>
 </Project>

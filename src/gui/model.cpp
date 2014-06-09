@@ -2,6 +2,7 @@
 #include "../app_internal.h"
 #include "../texture.h"
 #include "../shader.h"
+#include "../vertex_buffer_object.h"
 
 namespace kit
 {

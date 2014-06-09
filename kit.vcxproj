@@ -32,6 +32,7 @@
     <ClCompile Include="src\open_gl.cpp" />
     <ClCompile Include="src\scene\camera.cpp" />
     <ClCompile Include="src\scene\entity.cpp" />
+    <ClCompile Include="src\scene\model.cpp" />
     <ClCompile Include="src\scene_2d.cpp" />
     <ClCompile Include="src\frame_2d.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="inc\kit\gui\widget_container.h" />
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\math_util.h" />
+    <ClInclude Include="src\scene\model.h" />
     <ClInclude Include="src\model_2d.h" />
     <ClInclude Include="src\open_gl.h" />
     <ClInclude Include="src\ptr.h" />
