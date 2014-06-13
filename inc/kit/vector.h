@@ -11,7 +11,7 @@ namespace kit
 	class Vector
 	{
 	public:
-		//! Default constructor.
+		//! Default constructor. Zeroes all elements.
 		Vector ();
 
 		//! Constructor for a one dimensional vector.
@@ -28,12 +28,6 @@ namespace kit
 
 		//! Copy constructor. Each element in v is converted from type Y to type T.
 		template <typename Y> Vector (Vector<dim, Y> v);
-
-		//! Returns a zero vector.
-		static Vector<dim, T> zero ();
-
-		//! Returns a one vector.
-		static Vector<dim, T> one ();
 
 		//! Returns a unit vector along the i axis.
 		static Vector<dim, T> axis (unsigned int i);
@@ -228,28 +222,6 @@ namespace kit
 		{
 			c[i] =(T)v[i];
 		}
-	}
-
-	template <unsigned int dim, typename T>
-	Vector<dim, T> Vector<dim, T>::zero ()
-	{
-		Vector<dim, T> r;
-		for(unsigned int j = 0; j < dim; ++j)
-		{
-			r.c[j] = 0;
-		}
-		return r;
-	}
-
-	template <unsigned int dim, typename T>
-	Vector<dim, T> Vector<dim, T>::one ()
-	{
-		Vector<dim, T> r;
-		for(unsigned int j = 0; j < dim; ++j)
-		{
-			r.c[j] = 1;
-		}
-		return r;
 	}
 
 	template <unsigned int dim, typename T>
