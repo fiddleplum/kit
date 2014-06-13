@@ -1,5 +1,6 @@
 #pragma once
 
+#include "noncopyable.h"
 #include <exception>
 
 namespace kit
@@ -13,6 +14,9 @@ namespace kit
 
 	template <class T>
 	class Ptr;
+	
+	template <class T>
+	class UniquePtr;
 
 	class _PtrCounter;
 
@@ -292,6 +296,58 @@ namespace kit
 		template <class Y> friend class OwnPtr;
 		template <class Y> friend class UsePtr;
 		template <class Y> friend class Ptr;
+	};
+
+	template <class T>
+	class UniquePtr : public Noncopyable
+	{
+	public:
+		// Initialize the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
+		UniquePtr ();
+
+		// Initialize the pointer to p, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. It can also take a function that destroys the object (default is the standard delete operator).
+		template <class Y> explicit UniquePtr (Y * p, void(* deleteFunction)(Y *) = nullptr);
+
+		// Destructor. If this is the last UniquePtr reference to the object, either delete is called or the destroy function is called if it is specified. There must be no UsePtrs pointing to the object. Note that it is not virtual, so don't subclass UniquePtr.
+		~UniquePtr ();
+
+		// Returns true if this points to zero.
+		bool isNull () const;
+
+		// Returns true if this points to something non-zero.
+		bool isValid () const;
+
+		// Change the object that this points to p, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
+		template <class Y> void set (Y * p, void (*deleteFunction) (Y *) = nullptr);
+
+		// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
+		void setNull ();
+
+		// Provides access to the object's members.
+		T * operator -> () const;
+
+		// Provides access to the element located at index. Warning: this provides no index out-of-bounds checking.
+		T & operator [] (int index) const;
+
+		// Provides reference access to the object.
+		T & operator * () const;
+
+		// Only to be used for functions that require a pointer. Be careful how you use this.
+		T * raw () const;
+
+		// Get the unsigned integer value of the address of the object.
+		operator unsigned int () const;
+
+		// Returns true if the address of this object is less than the address of ptr's object.
+		bool operator < (UniquePtr<T> const & ptr) const;
+
+		// Returns true if the address of this object is equal to the address of ptr's object.
+		bool operator == (UniquePtr<T> const & ptr) const;
+
+	private:
+		T * p;
+		void (* deleteFunction) (T *); // User-supplied destroy function.
+		template <class Y> friend class UniquePtr;
 	};
 
 	// Template Implementation.
@@ -1010,6 +1066,120 @@ namespace kit
 
 	template <class T> template <class Y>
 	bool Ptr<T>::operator == (Ptr<Y> const & ptr) const
+	{
+		return p == ptr.p;
+	}
+
+	// UniquePtr
+
+	template <class T>
+	UniquePtr<T>::UniquePtr ()
+	{
+		this->p = nullptr;
+		this->deleteFunction = nullptr;
+	}
+
+	template <class T> template <class Y>
+	UniquePtr<T>::UniquePtr (Y * p, void (*deleteFunction) (Y *))
+	{
+		this->p = p;
+		this->deleteFunction = deleteFunction;
+	}
+
+	template <class T>
+	UniquePtr<T>::~UniquePtr ()
+	{
+		setNull();
+	}
+
+	template <class T>
+	bool UniquePtr<T>::isNull () const
+	{
+		return p == nullptr;
+	}
+
+	template <class T>
+	bool UniquePtr<T>::isValid () const
+	{
+		return p != nullptr;
+	}
+
+	template <class T> template <class Y>
+	void UniquePtr<T>::set (Y * p, void (*deleteFunction) (Y *))
+	{
+		setNull();
+		this->p = p;
+		this->deleteFunction = deleteFunction;
+	}
+
+	template <class T>
+	void UniquePtr<T>::setNull ()
+	{
+		if(p != nullptr)
+		{
+			if (deleteFunction)
+			{
+				deleteFunction(p);
+				deleteFunction = nullptr;
+			}
+			else
+			{
+				delete p;
+			}
+			p = nullptr;
+		}
+	}
+
+	template <class T>
+	T * UniquePtr<T>::operator -> () const
+	{
+		if(p == nullptr)
+		{
+			throw nullptr_exception ();
+		}
+		return p;
+	}
+
+	template <class T>
+	T & UniquePtr<T>::operator [] (int index) const
+	{
+		if(p == nullptr)
+		{
+			throw nullptr_exception ();
+		}
+		return p[index];
+	}
+
+	template <class T>
+	T & UniquePtr<T>::operator * () const
+	{
+		if(p == nullptr)
+		{
+			throw nullptr_exception ();
+		}
+		return *p;
+	}
+
+	template <class T>
+	T * UniquePtr<T>::raw () const
+	{
+		return p;
+	}
+
+	template <class T>
+	UniquePtr<T>::operator unsigned int () const
+	{
+		return (unsigned int)p;
+	}
+
+	template <class T>
+	bool UniquePtr<T>::operator < (UniquePtr<T> const & ptr) const
+	{
+		return p < ptr.p;
+	}
+
+	template <class T>
+	bool UniquePtr<T>::operator == (UniquePtr<T> const & ptr) const
 	{
 		return p == ptr.p;
 	}
