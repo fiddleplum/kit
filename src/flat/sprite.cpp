@@ -1,6 +1,6 @@
 #include "sprite.h"
 #include "../model_2d.h"
-#include "../texture.h"
+#include "../texture_p.h"
 
 namespace kit
 {

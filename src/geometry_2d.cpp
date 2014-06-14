@@ -15,7 +15,7 @@ namespace kit
 		}
 		else
 		{
-			boundingRect.min = boundingRect.max = Vector2f::zero();
+			boundingRect.min = boundingRect.max = Vector2f(0, 0);
 		}
 		return boundingRect;
 	}

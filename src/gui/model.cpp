@@ -1,6 +1,7 @@
 #include "model.h"
-#include "../app_internal.h"
-#include "../texture.h"
+#include "../app_p.h"
+#include "../resources.h"
+#include "../texture_p.h"
 #include "../shader.h"
 #include "../vertex_buffer_object.h"
 
@@ -10,7 +11,7 @@ namespace kit
 	{
 		Model::Model()
 		{
-			position = Vector2i::zero();
+			position = Vector2i(0, 0);
 
 			std::string code [Shader::NumCodeTypes];
 			code[Shader::Vertex] +=
@@ -37,7 +38,7 @@ namespace kit
 				"{\n"
 				"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 				"}\n";
-			shader = app()->getShaderManager()->get("guiShader", code);
+			shader = app()->getResources()->shaders()->get("guiShader", code);
 
 			vbo.set(new VertexBufferObject);
 			vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
@@ -63,7 +64,7 @@ namespace kit
 
 		void Model::setTexture(std::string const & filename)
 		{
-			texture = app()->getTextureManager()->get(filename, filename);
+			texture = app()->getResources()->textures()->get(filename, filename);
 		}
 
 		void Model::setVertices(std::vector<Vertex> const & vertices)

@@ -8,10 +8,9 @@
 
 namespace kit
 {
-	class Texture;
+	class TextureP;
 	class Shader;
 	class VertexBufferObject;
-	class Window;
 
 	namespace gui
 	{
@@ -25,17 +24,17 @@ namespace kit
 				Vector2f uv;
 			};
 
-			Model();
-			Vector2i getPosition() const;
-			void setPosition(Vector2i position);
-			void setTexture(std::string const & filename);
-			void setVertices(std::vector<Vertex> const & vertices);
-			void setIndices(std::vector<unsigned int> const & indices);
-			void render(Vector2i windowSize);
+			Model ();
+			Vector2i getPosition () const;
+			void setPosition (Vector2i position);
+			void setTexture (std::string const & filename);
+			void setVertices (std::vector<Vertex> const & vertices);
+			void setIndices (std::vector<unsigned int> const & indices);
+			void render (Vector2i windowSize);
 
 		private:
 			Vector2i position;
-			Ptr<Texture> texture;
+			Ptr<TextureP> texture;
 			Ptr<Shader> shader;
 			OwnPtr<VertexBufferObject> vbo;
 			int windowSizeLocation;

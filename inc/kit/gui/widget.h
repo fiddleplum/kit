@@ -3,14 +3,12 @@
 #include <kit/vector.h>
 #include <kit/rect.h>
 #include <kit/noncopyable.h>
-#include <kit/event.h>
-#include <kit/ptr.h>
 
 namespace kit
 {
 	namespace gui
 	{
-		class Widget : public Noncopyable
+		class Widget : Noncopyable
 		{
 		public:
 			// Gets the bounds of the widget.

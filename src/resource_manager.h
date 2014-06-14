@@ -24,6 +24,9 @@ namespace kit
 		//template <typename... Args> Ptr<Resource> get (std::string const & name, Args... args);
 
 		// Returns a shared_ptr of the requested resource. O(log number of loaded resources). This can be removed when the variadic template works.
+		Ptr<Resource> get (std::string const & name);
+
+		// Returns a shared_ptr of the requested resource. O(log number of loaded resources). This can be removed when the variadic template works.
 		template <typename T1> Ptr<Resource> get (std::string const & name, T1 const & arg1);
 
 		// Returns a shared_ptr of the requested resource. O(log number of loaded resources). This can be removed when the variadic template works.
@@ -85,6 +88,30 @@ namespace kit
 	//		return resource;
 	//	}
 	//}
+
+	template <typename Resource>
+	Ptr<Resource> ResourceManager<Resource>::get (std::string const & name)
+	{
+		auto it = mResources.find(name);
+		if(it != mResources.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			OwnPtr<Resource> resource;
+			try
+			{
+				resource.set(new Resource);
+			}
+			catch(std::runtime_error const & e)
+			{
+				throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+			}
+			mResources[name] = resource;
+			return resource;
+		}
+	}
 
 	template <typename Resource>
 	template <typename T1>

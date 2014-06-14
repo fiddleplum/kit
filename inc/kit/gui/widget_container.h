@@ -2,6 +2,7 @@
 
 #include <kit/gui/widget.h>
 #include <kit/ptr.h>
+#include <kit/event.h>
 #include <functional>
 
 namespace kit

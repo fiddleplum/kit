@@ -4,7 +4,7 @@
 #include "sprite.h"
 #include "shape.h"
 #include "../frame_2d.h"
-#include "../ray.h"
+#include <kit/ray.h>
 #include <vector>
 #include <map>
 #include <memory>

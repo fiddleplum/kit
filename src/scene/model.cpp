@@ -1,9 +1,10 @@
 #include "model.h"
-#include "camera_internal.h"
+#include "camera.h"
+#include "frame.h"
 #include "../shader.h"
 #include "../texture.h"
 #include "../vertex_buffer_object.h"
-#include "../app_internal.h"
+#include "../app.h"
 #include "../serialize.h"
 #include "../serialize_std_string.h"
 #include "../serialize_std_vector.h"
@@ -17,21 +18,23 @@ namespace kit
 	{
 		Model::Model ()
 		{
-			vertexHasNormal = false;
-			vertexHasTangent = false;
-			vertexHasColor = false;
-			numVertexUVs = 0;
-			emitColor = Vector3f::zero();
-			diffuseColor = Vector4f(1, 1, 1, 1);
-			specularLevel = 1;
-			specularStrength = 0;
-			vertexBufferObject.set(new VertexBufferObject);
-			vertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
-			updateShader();
-			needsResorting = true;
+			p.set(new P);
+			p->vertexHasNormal = false;
+			p->vertexHasTangent = false;
+			p->vertexHasColor = false;
+			p->numVertexUVs = 0;
+			p->emitColor = Vector3f(0, 0, 0);
+			p->diffuseColor = Vector4f(1, 1, 1, 1);
+			p->specularLevel = 1;
+			p->specularStrength = 0;
+			p->scale = 1;
+			p->vertexBufferObject.set(new VertexBufferObject);
+			p->vertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
+			p->updateShader();
+			p->needsResorting = true;
 		}
 
-		void Model::load (std::string const & filename)
+		Model::Model (std::string const & filename)
 		{
 			std::fstream in (filename, std::fstream::in | std::fstream::binary);
 
@@ -80,9 +83,9 @@ namespace kit
 			unsigned int numVertices;
 			deserialize(in, numVertices);
 			std::vector<unsigned char> vertices;
-			vertices.resize(numVertices * numBytesPerVertex);
-			deserialize(in, (void *)&vertices[0], numVertices * numBytesPerVertex);
-			setVertices((void const *)&vertices[0], numVertices * numBytesPerVertex);
+			vertices.resize(numVertices * p->numBytesPerVertex);
+			deserialize(in, (void *)&vertices[0], numVertices * p->numBytesPerVertex);
+			setVertices((void const *)&vertices[0], numVertices * p->numBytesPerVertex);
 
 			// Index format
 			unsigned int numIndicesPerPrimitive;
@@ -97,48 +100,48 @@ namespace kit
 
 		void Model::setVertexFormat (bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs)
 		{
-			numBytesPerVertex = sizeof(Vector3f); // position
-			vertexHasNormal = hasNormal;
-			if(vertexHasNormal)
+			p->numBytesPerVertex = sizeof(Vector3f); // position
+			p->vertexHasNormal = hasNormal;
+			if(p->vertexHasNormal)
 			{
-				numBytesPerVertex += sizeof(Vector3f);
+				p->numBytesPerVertex += sizeof(Vector3f);
 			}
-			vertexHasTangent = hasTangent;
-			if(vertexHasTangent)
+			p->vertexHasTangent = hasTangent;
+			if(p->vertexHasTangent)
 			{
-				numBytesPerVertex += sizeof(Vector3f);
+				p->numBytesPerVertex += sizeof(Vector3f);
 			}
-			vertexHasColor = hasColor;
-			if(vertexHasColor)
+			p->vertexHasColor = hasColor;
+			if(p->vertexHasColor)
 			{
-				numBytesPerVertex += sizeof(Vector4f);
+				p->numBytesPerVertex += sizeof(Vector4f);
 			}
-			numVertexUVs = numVertexUVs;
-			numBytesPerVertex += numVertexUVs * 2 * sizeof(Vector2f);
-			vertexBufferObject->setBytesPerVertex(numBytesPerVertex);
-			updateShader();
+			p->numVertexUVs = numVertexUVs;
+			p->numBytesPerVertex += numVertexUVs * 2 * sizeof(Vector2f);
+			p->vertexBufferObject->setBytesPerVertex(p->numBytesPerVertex);
+			p->updateShader();
 		}
 
 		void Model::setVertices (void const * vertices, unsigned int numBytes)
 		{
-			vertexBufferObject->setVertices(vertices, numBytes, false);
+			p->vertexBufferObject->setVertices(vertices, numBytes, false);
 		}
 
 		void Model::setNumIndicesPerPrimitive (unsigned int num)
 		{
-			vertexBufferObject->setNumIndicesPerPrimitive(num);
+			p->vertexBufferObject->setNumIndicesPerPrimitive(num);
 		}
 
 		void Model::setIndices (unsigned int const * indices, unsigned int numIndices)
 		{
-			vertexBufferObject->setIndices(indices, numIndices);
+			p->vertexBufferObject->setIndices(indices, numIndices);
 		}
 
-		Ptr<Texture> Model::getTexture (unsigned int textureIndex) const
+		Ptr<kit::Texture> Model::getTexture (unsigned int textureIndex) const
 		{
-			if(textureIndex < textureInfos.size())
+			if(textureIndex < p->textureInfos.size())
 			{
-				return textureInfos[textureIndex].texture;
+				return p->textureInfos[textureIndex].texture;
 			}
 			else
 			{
@@ -148,13 +151,13 @@ namespace kit
 
 		void Model::addTexture (std::string const & filename, std::string const & type, unsigned int uvIndex)
 		{
-			TextureInfo textureInfo;
-			textureInfo.texture = app()->getTextureManager()->get(filename, filename);
+			P::TextureInfo textureInfo;
+			textureInfo.texture = app()->getResources()->getTextureFromFile(filename).as<Texture>();
 			textureInfo.type = type;
 			textureInfo.samplerLocation = -1;
 			textureInfo.uvIndex = uvIndex;
-			textureInfos.push_back(textureInfo);
-			updateShader();
+			p->textureInfos.push_back(textureInfo);
+			p->updateShader();
 		}
 
 		void Model::clearTextures ()
@@ -175,12 +178,18 @@ namespace kit
 			specularStrength = strength;
 		}
 
-		void Model::render (Ptr<CameraInternal> camera, Ptr<EntityInternal> entity, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
+		void Model::setScale (float scale)
+		{
+			this->scale = scale;
+		}		
+
+		void Model::render (Ptr<Camera> camera, Frame const & frame, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
 		{
 			// The render engine handles shader and texture activation.
 			shader->activate();
 			shader->setUniform(projectionLocation, camera->getProjection());
-			shader->setUniform(worldViewLocation, camera->getView() * entity->getMatrix());
+			shader->setUniform(worldViewLocation, camera->getView() * frame.getMatrix());
+			shader->setUniform(scaleLocation, scale);
 			unsigned int samplerIndex = 0;
 			for(unsigned int i = 0; i < textureInfos.size(); i++)
 			{
@@ -259,6 +268,7 @@ namespace kit
 			// Add the global variables.
 			code[Shader::Vertex] += "uniform mat4 uWorldView;\n";
 			code[Shader::Vertex] += "uniform mat4 uProjection;\n";
+			code[Shader::Vertex] += "uniform float scale;\n";
 			code[Shader::Vertex] += "in vec3 aPosition;\n";
 			code[Shader::Vertex] += "out vec3 vPosition;\n";
 			if(vertexHasNormal)
@@ -285,7 +295,7 @@ namespace kit
 			// Add the main function.
 			code[Shader::Vertex] += "void main()\n";
 			code[Shader::Vertex] += "{\n";
-			code[Shader::Vertex] += "	gl_Position = uProjection * uWorldView * vec4(aPosition, 1);\n";
+			code[Shader::Vertex] += "	gl_Position = uProjection * uWorldView * vec4(scale * aPosition, 1);\n";
 			code[Shader::Vertex] += "	vPosition = (uWorldView * vec4(aPosition, 1)).xyz;\n";
 			if(vertexHasNormal)
 			{
@@ -406,7 +416,7 @@ namespace kit
 				name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 			}
 
-			shader = app()->getShaderManager()->get(name, code);
+			shader = app()->getResources()->getShader(name, code);
 			needsResorting = true;
 
 			// Update attribute locations
@@ -441,6 +451,7 @@ namespace kit
 			diffuseColorLocation = shader->getUniformLocation("uDiffuseColor");
 			specularLevelLocation = shader->getUniformLocation("uSpecularLevel");
 			specularStrengthLocation = shader->getUniformLocation("uSpecularStrength");
+			scaleLocation = shader->getUniformLocation("uScale");
 			for(TextureInfo & textureInfo : textureInfos)
 			{
 				textureInfo.samplerLocation = shader->getUniformLocation("uSampler" + std::to_string(samplerIndex));

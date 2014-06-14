@@ -1,12 +1,11 @@
-#include "sprite_internal.h"
-#include "../texture.h"
-#include <vector>
+#include "sprite_p.h"
+#include "model.h"
 
 namespace kit
 {
 	namespace gui
 	{
-		SpriteInternal::SpriteInternal()
+		SpriteP::SpriteP ()
 		{
 			model.set(new Model);
 			std::vector<unsigned int> indices (6);
@@ -20,49 +19,60 @@ namespace kit
 			updateVertices();
 		}
 
-		Recti SpriteInternal::getBounds() const
+		Recti SpriteP::getBounds () const
 		{
 			return Recti::minSize(model->getPosition(), textureBounds.getSize());
 		}
 
-		void SpriteInternal::setPosition(Vector2i position)
+		void SpriteP::setPosition (Vector2i position)
 		{
 			model->setPosition(position);
 		}
 
-		void SpriteInternal::setMaxSize(Vector2i maxSize)
+		void SpriteP::setMaxSize (Vector2i maxSize)
 		{
 			this->maxSize = maxSize;
 			updateVertices();
 		}
 
-		bool SpriteInternal::handleEvent(Event const &, bool cursorIsValid)
+		Ptr<Texture> SpriteP::getTexture () const
 		{
-			return cursorIsValid;
+			// TODO
+			return Ptr<Texture> ();
 		}
 
-		void SpriteInternal::render(Vector2i windowSize)
+		void SpriteP::setNewTexture (Vector2i)
 		{
-			model->render(windowSize);
+			// TODO
 		}
 
-		void SpriteInternal::setTexture(std::string const & filename)
+		void SpriteP::setTexture (std::string const & filename)
 		{
 			model->setTexture(filename);
 		}
 
-		void SpriteInternal::setTextureBounds(Recti bounds)
+		Recti SpriteP::getTextureBounds () const
+		{
+			return textureBounds;
+		}
+
+		void SpriteP::setTextureBounds (Recti bounds)
 		{
 			textureBounds = bounds;
 			updateVertices();
 		}
 
-		Recti SpriteInternal::getTextureBounds() const
+		bool SpriteP::handleEvent (Event const &, bool cursorIsValid)
 		{
-			return textureBounds;
+			return cursorIsValid;
 		}
 
-		void SpriteInternal::updateVertices()
+		void SpriteP::render (Vector2i windowSize)
+		{
+			model->render(windowSize);
+		}
+
+		void SpriteP::updateVertices()
 		{
 			Vector2i size;
 			size[0] = std::min(textureBounds.getSize()[0], maxSize[0]);

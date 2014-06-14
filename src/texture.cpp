@@ -1,4 +1,4 @@
-#include "texture.h"
+#include "texture_p.h"
 #include "open_gl.h"
 #include "../external/SDL2_image-2.0.0/include/SDL_image.h"
 #include <stdexcept>
@@ -9,7 +9,12 @@ namespace kit
 {
 	std::vector<unsigned int> gCurrentTextures; // current textures in the open gl state
 
-	Texture::Texture (std::string const & filename)
+	TextureP::TextureP (Vector2i)
+	{
+		// TODO
+	}
+
+	TextureP::TextureP (std::string const & filename)
 	{
 		glGenTextures(1, &id);
 
@@ -38,17 +43,28 @@ namespace kit
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 
-	Texture::~Texture ()
+	TextureP::~TextureP ()
 	{
 		glDeleteTextures (1, &id);
 	}
 
-	Vector2i Texture::getSize () const
+	Vector2i TextureP::getSize () const
 	{
 		return size;
 	}
 
-	void Texture::activate (unsigned int slot) const
+	unsigned char * TextureP::lockPixels ()
+	{
+		// TODO
+		return nullptr;
+	}
+
+	void TextureP::unlockPixels ()
+	{
+		// TODO
+	}
+
+	void TextureP::activate (unsigned int slot) const
 	{
 		if(slot >= gCurrentTextures.size() || id != gCurrentTextures[slot])
 		{
@@ -62,7 +78,7 @@ namespace kit
 		}
 	}
 
-	void Texture::deactivateRest (unsigned int slot)
+	void TextureP::deactivateRest (unsigned int slot)
 	{
 		for(; slot < gCurrentTextures.size(); slot++)
 		{

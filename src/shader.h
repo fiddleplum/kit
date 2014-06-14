@@ -12,6 +12,7 @@ namespace kit
 	{
 	public:
 		enum CodeType { Vertex, Fragment, NumCodeTypes };
+
 		Shader (std::string const code [NumCodeTypes]);
 
 		~Shader ();

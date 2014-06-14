@@ -1,12 +1,13 @@
-#include "window_internal.h"
 #include "open_gl.h"
+#include "window_p.h"
 #include <string>
 #include <algorithm>
 #include <map>
+#include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
 {
-	WindowInternal::WindowInternal (char const * title)
+	WindowP::WindowP (char const * title)
 	{
 		Vector2i size (800, 600);
 
@@ -18,23 +19,23 @@ namespace kit
 		setMaxSize(size);
 	}
 
-	WindowInternal::~WindowInternal ()
+	WindowP::~WindowP ()
 	{
 		SDL_DestroyWindow(sdlWindow);
 	}
 
-	void WindowInternal::setTitle (char const * title)
+	void WindowP::setTitle (char const * title)
 	{
 		SDL_SetWindowTitle(sdlWindow, title);
 	}
 
-	void WindowInternal::setWindowed ()
+	void WindowP::setWindowed ()
 	{
 		SDL_SetWindowFullscreen(sdlWindow, 0);
 		SDL_EnableScreenSaver();
 	}
 
-	void WindowInternal::setFullscreen (int display, Vector2i size)
+	void WindowP::setFullscreen (int display, Vector2i size)
 	{
 		try
 		{
@@ -61,29 +62,24 @@ namespace kit
 		}
 	}
 
-	void WindowInternal::setFullscreen ()
+	void WindowP::setFullscreen ()
 	{
 		setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
 	}
 
-	Vector2i WindowInternal::getSize () const
+	Vector2i WindowP::getSize () const
 	{
 		Vector2i size;
 		SDL_GetWindowSize(sdlWindow, &size[0], &size[1]);
 		return size;
 	}
 
-	bool WindowInternal::contains (Vector2i point) const
-	{
-		return bounds.containsEx(point);
-	}
-
-	bool WindowInternal::isFullscreen () const
+	bool WindowP::isFullscreen () const
 	{
 		return (SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
-	int WindowInternal::getDisplay() const
+	int WindowP::getDisplay() const
 	{
 		int display = SDL_GetWindowDisplayIndex(sdlWindow);
 		if(display >= 0)
@@ -93,7 +89,7 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
-	void WindowInternal::render (SDL_GLContext sdlGlContext)
+	void WindowP::render (SDL_GLContext sdlGlContext)
 	{
 		SDL_GL_MakeCurrent(sdlWindow, sdlGlContext);
 
@@ -111,12 +107,12 @@ namespace kit
 		Vector2i windowSize = getSize();
 		glViewport(0, 0, windowSize[0], windowSize[1]);
 
-		WidgetContainerInternal::render(windowSize);
+		WidgetContainerP::render(windowSize);
 
 		SDL_GL_SwapWindow(sdlWindow);
 	}
 
-	SDL_Window * WindowInternal::getSDLWindow () const
+	SDL_Window * WindowP::getSDLWindow () const
 	{
 		return sdlWindow;
 	}

@@ -2,7 +2,7 @@
 #include "camera_2d.h"
 #include "app_internal.h"
 #include "shader.h"
-#include "texture.h"
+#include "texture_internal.h"
 #include "vertex_buffer_object.h"
 #include "serialize.h"
 #include "serialize_std_string.h"

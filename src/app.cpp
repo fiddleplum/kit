@@ -1,19 +1,14 @@
-#include "app_internal.h"
-#include "texture.h"
-#include "shader.h"
+#include "app_p.h"
 #include "open_gl.h"
+#include "window_p.h"
+#include "resources.h"
+#include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
 {
-	// The one global!
-	Ptr<AppInternal> appInternal;
+	OwnPtr<AppP> gApp;
 
-	Ptr<AppInternal> app ()
-	{
-		return appInternal;
-	}
-
-	AppInternal::AppInternal ()
+	AppP::AppP ()
 	{
 		looping = false;
 		cursorIsValid = false;
@@ -25,27 +20,73 @@ namespace kit
 		{
 			throw std::runtime_error(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
 		}
-
-		textureManager.set(new ResourceManager<Texture>);
-		shaderManager.set(new ResourceManager<Shader>);
+		resources.set(new Resources);
 	}
 
-	AppInternal::~AppInternal ()
+	AppP::~AppP ()
 	{
-		textureManager.setNull();
-		shaderManager.setNull();
+		resources.setNull();
 		SDL_Quit();
 	}
 
-	void AppInternal::loop ()
+	void AppP::quit ()
+	{
+		looping = false;
+	}
+
+	float AppP::getTime() const
+	{
+		return SDL_GetTicks() / 1000.0f;
+	}
+
+	Vector2i AppP::getCursorPosition() const
+	{
+		Vector2i position;
+		if(cursorIsValid)
+		{
+			SDL_GetMouseState(&position[0], &position[1]);
+		}
+		else
+		{
+			position.set(0, 0);
+		}
+		return position;
+	}
+
+	Ptr<kit::Window> AppP::addWindow (char const * title)
+	{
+		OwnPtr<WindowP> window (new WindowP (title));
+		if(windows.empty())
+		{
+			sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
+			glInitialize();
+		}
+		auto windowIterator = windows.insert(windows.end(), window);
+		windowMapping[window] = windowIterator;
+		return window;
+	}
+
+	void AppP::removeWindow (Ptr<kit::Window> window)
+	{
+		auto it = windowMapping.find(window);
+		if(it != windowMapping.end())
+		{
+			auto windowIt = it->second;
+			windowMapping.erase(it);
+			windows.erase(windowIt);
+			if(windows.empty())
+			{
+				SDL_GL_DeleteContext(sdlGlContext);
+			}
+		}
+	}
+
+	void AppP::loop ()
 	{
 		// Make sure all of the windows have their sizes updated.
 		for(auto window : windows)
 		{
-			if(window->updateWidgetBoundsFunction)
-			{
-				window->updateWidgetBoundsFunction();
-			}
+			window->callUpdateWidgetBoundsFunction();
 		}
 
 		looping = true;
@@ -78,74 +119,17 @@ namespace kit
 		}
 	}
 
-	void AppInternal::quit ()
-	{
-		looping = false;
-	}
-
-	float AppInternal::getTime() const
-	{
-		return SDL_GetTicks() / 1000.0f;
-	}
-
-	Vector2i AppInternal::getCursorPosition() const
-	{
-		Vector2i position;
-		if(cursorIsValid)
-		{
-			SDL_GetMouseState(&position[0], &position[1]);
-		}
-		else
-		{
-			position.set(0, 0);
-		}
-		return position;
-	}
-
-	Ptr<Window> AppInternal::addWindow (char const * title)
-	{
-		OwnPtr<WindowInternal> window (new WindowInternal (title));
-		if(windows.empty())
-		{
-			sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
-			glInitialize();
-		}
-		auto windowIterator = windows.insert(windows.end(), window);
-		windowMapping[window] = windowIterator;
-		return window;
-	}
-
-	void AppInternal::removeWindow (Ptr<Window> window)
-	{
-		auto it = windowMapping.find(window);
-		if(it != windowMapping.end())
-		{
-			auto windowIt = it->second;
-			windowMapping.erase(it);
-			windows.erase(windowIt);
-			if(windows.empty())
-			{
-				SDL_GL_DeleteContext(sdlGlContext);
-			}
-		}
-	}
-
-	void AppInternal::setCursorValid (bool valid)
+	void AppP::setCursorValid (bool valid)
 	{
 		cursorIsValid = valid;
 	}
 
-	Ptr<ResourceManager<Texture>> AppInternal::getTextureManager()
+	Ptr<Resources> AppP::getResources ()
 	{
-		return textureManager;
+		return resources;
 	}
 
-	Ptr<ResourceManager<Shader>> AppInternal::getShaderManager()
-	{
-		return shaderManager;
-	}
-
-	Ptr<WindowInternal> AppInternal::getWindowFromId (Uint32 id)
+	Ptr<WindowP> AppP::getWindowFromId (unsigned int id)
 	{
 		SDL_Window * sdlWindow = SDL_GetWindowFromID(id);
 		if(sdlWindow != NULL)
@@ -158,10 +142,10 @@ namespace kit
 				}
 			}
 		}
-		return Ptr<WindowInternal> ();
+		return Ptr<WindowP> ();
 	}
 
-	KeyboardEvent::Key AppInternal::sdlKeyToKey (int sdlKey)
+	KeyboardEvent::Key AppP::sdlKeyToKey (int sdlKey)
 	{
 		if(SDLK_a <= sdlKey && sdlKey <= SDLK_z)
 		{
@@ -265,9 +249,9 @@ namespace kit
 		return KeyboardEvent::Unknown;
 	}
 
-	void AppInternal::handleSDLEvent (SDL_Event const & sdlEvent)
+	void AppP::handleSDLEvent (SDL_Event const & sdlEvent)
 	{
-		Ptr<WindowInternal> window;
+		Ptr<WindowP> window;
 		switch(sdlEvent.type)
 		{
 		case SDL_QUIT:
@@ -452,6 +436,11 @@ namespace kit
 			}
 			break;
 		}
+	}
+
+	Ptr<AppP> app ()
+	{
+		return gApp;
 	}
 }
 

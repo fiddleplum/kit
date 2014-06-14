@@ -1,9 +1,10 @@
-#include "app_internal.h"
+#include "app_p.h"
 #include <kit/start_finish.h>
+#include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
 {
-	extern Ptr<AppInternal> appInternal;
+	extern OwnPtr<AppP> gApp;
 }
 
 // Called by SDL to run the entire application.
@@ -18,9 +19,9 @@ int main (int argc, char *argv[])
 			parameters.push_back(std::string(argv[i]));
 		}
 
-		kit::OwnPtr<kit::AppInternal> app (new kit::AppInternal);
+		kit::OwnPtr<kit::AppP> app (new kit::AppP);
 
-		kit::appInternal = app;
+		kit::gApp = app;
 
 		kit::start(app, parameters);
 

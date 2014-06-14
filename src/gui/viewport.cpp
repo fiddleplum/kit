@@ -1,5 +1,5 @@
-#include "viewport_internal.h"
-#include "../app_internal.h"
+#include "viewport_p.h"
+#include "../app_p.h"
 #include "../open_gl.h"
 #include "../scene/camera_internal.h"
 #include "../scene.h"
@@ -8,22 +8,22 @@ namespace kit
 {
 	namespace gui
 	{
-		ViewportInternal::ViewportInternal ()
+		ViewportP::ViewportP ()
 		{
 			bounds = Recti::zero();
 		}
 
-		Recti ViewportInternal::getBounds () const
+		Recti ViewportP::getBounds () const
 		{
 			return bounds;
 		}
 
-		void ViewportInternal::setPosition (Vector2i position)
+		void ViewportP::setPosition (Vector2i position)
 		{
 			bounds.setMinKeepSize(position);
 		}
 
-		void ViewportInternal::setMaxSize (Vector2i maxSize)
+		void ViewportP::setMaxSize (Vector2i maxSize)
 		{
 			bounds.setSize(maxSize);
 			if(camera.isValid())
@@ -35,31 +35,31 @@ namespace kit
 			}
 		}
 
-		Ptr<scene::Camera> ViewportInternal::getCamera () const
+		Ptr<scene::Camera> ViewportP::getCamera () const
 		{
 			return camera;
 		}
 
-		void ViewportInternal::setCamera (Ptr<scene::Camera> camera)
+		void ViewportP::setCamera (Ptr<scene::Camera> camera)
 		{
-			this->camera = camera.as<scene::CameraInternal>();
+			this->camera = camera.as<scene::CameraP>();
 			if(bounds.getSize()[1] != 0)
 			{
 				this->camera->setAspectRatio((float)bounds.getSize()[0] / (float)bounds.getSize()[1]);
 			}
 		}
 
-		Ptr<scene::Scene> ViewportInternal::getScene () const
+		Ptr<scene::Scene> ViewportP::getScene () const
 		{
 			return scene;
 		}
 
-		void ViewportInternal::setScene (Ptr<scene::Scene> scene)
+		void ViewportP::setScene (Ptr<scene::Scene> scene)
 		{
 			this->scene = scene;
 		}
 
-		bool ViewportInternal::handleEvent (Event const & event, bool cursorIsValid)
+		bool ViewportP::handleEvent (Event const & event, bool cursorIsValid)
 		{
 			if(cursorIsValid)
 			{
@@ -75,7 +75,7 @@ namespace kit
 			}
 		}
 
-		void ViewportInternal::render (Vector2i windowSize)
+		void ViewportP::render (Vector2i windowSize)
 		{
 			if(!camera.isValid() || !camera.isValid())
 			{

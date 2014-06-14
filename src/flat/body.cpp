@@ -6,12 +6,10 @@ namespace kit
 	{
 		Body::Body()
 		{
-			velocity = Vector2f::zero();
 			angularVelocity = 0;
 			bounciness = -1; // ghost by default
 			inverseMass = 0; // infinite mass
 			density = 0;
-			accumForce = Vector2f::zero();
 			accumTorque = 0;
 		}
 
@@ -28,7 +26,7 @@ namespace kit
 
 		void Body::clearForces()
 		{
-			accumForce = Vector2f::zero();
+			accumForce.set(0, 0);
 			accumTorque = 0.0f;
 		}
 	}
