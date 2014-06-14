@@ -13,6 +13,8 @@ namespace kit
 		class Sprite : virtual public Widget
 		{
 		public:
+			static OwnPtr<Sprite> create ();
+
 			virtual Ptr<Texture> getTexture () const = 0;
 
 			virtual void setNewTexture (Vector2i size) = 0;

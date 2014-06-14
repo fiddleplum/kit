@@ -12,7 +12,7 @@ union SDL_Event;
 
 namespace kit
 {
-	class Resources;
+	class ResourcesP;
 	class WindowP;
 
 	class AppP : virtual public App
@@ -36,7 +36,7 @@ namespace kit
 
 		void setCursorValid (bool valid);
 
-		Ptr<Resources> getResources ();
+		Ptr<ResourcesP> getResources ();
 
 	private:
 		Ptr<WindowP> getWindowFromId (unsigned int id);
@@ -50,7 +50,7 @@ namespace kit
 		bool cursorIsValid;
 		bool firstMouseMoveEvent;
 		std::vector<SDL_Joystick *> joysticks;
-		OwnPtr<Resources> resources;
+		OwnPtr<ResourcesP> resources;
 	};
 
 	Ptr<AppP> app ();

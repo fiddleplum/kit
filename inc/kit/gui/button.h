@@ -15,6 +15,8 @@ namespace kit
 				Hold, Toggle, Shot
 			};
 
+			static OwnPtr<Button> create ();
+
 			// Sets the texture to use.
 			virtual void setTexture (std::string const & filename) = 0;
 

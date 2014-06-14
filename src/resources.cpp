@@ -1,31 +1,40 @@
-#include "resources.h"
-#include "resource_manager.h"
+#include "resources_p.h"
 #include "texture_p.h"
 #include "shader.h"
-//#include "model_p.h"
+#include "scene/model_p.h"
 
 namespace kit
 {
-	Resources::Resources ()
+	ResourcesP::ResourcesP ()
 	{
 		textureManager.set(new ResourceManager<TextureP>);
 		shaderManager.set(new ResourceManager<Shader>);
-		modelManager.set(new ResourceManager<ModelP>);
+		modelManager.set(new ResourceManager<scene::ModelP>);
 	}
 
-	Ptr<ResourceManager<TextureP>> Resources::textures ()
+	Ptr<Texture> ResourcesP::getNewTexture (std::string const & name, Vector2i size)
 	{
-		return textureManager;
+		return textureManager->get(name, size);
 	}
 
-	Ptr<ResourceManager<Shader>> Resources::shaders ()
+	Ptr<Texture> ResourcesP::getTextureFromFile (std::string const & filename)
 	{
-		return shaderManager;
+		return textureManager->get(filename, filename);
 	}
 
-	Ptr<ResourceManager<ModelP>> Resources::models ()
+	Ptr<scene::Model> ResourcesP::getNewModel (std::string const & name)
 	{
-		return modelManager;
+		return modelManager->get(name);
+	}
+
+	Ptr<scene::Model> ResourcesP::getModelFromFile (std::string const & filename)
+	{
+		return modelManager->get(filename, filename);
+	}
+
+	Ptr<Shader> ResourcesP::getShader (std::string const & name, std::string code [])
+	{
+		return shaderManager->get(name, code);
 	}
 }
 

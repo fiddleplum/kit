@@ -5,6 +5,11 @@ namespace kit
 {
 	namespace gui
 	{
+		OwnPtr<Button> Button::create ()
+		{
+			return OwnPtr<ButtonP> (new ButtonP);
+		}
+
 		ButtonP::ButtonP ()
 		{
 			sprite.set(new SpriteP);

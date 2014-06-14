@@ -1,217 +1,204 @@
-#include "camera.h"
+#include "camera_p.h"
 
 namespace kit
 {
-	namespace internal
+	namespace scene
 	{
-		namespace scene
+		CameraP::CameraP ()
 		{
-			Camera::Camera ()
-			{
-				aspectRatio = 1.0f;
-				near = 0.1f;
-				far = 1000.0f;
-				fov = 3.14159f / 2.0f;
-				size = 1.0f;
-				perspective = true;
-				projection = projectionInverse = Matrix44f::zero();
-				view = viewInverse = Matrix44f::identity();
-				projectionNeedsUpdate = true;
-				viewNeedsUpdate = true;
-			}
+			aspectRatio = 1.0f;
+			near = 0.1f;
+			far = 1000.0f;
+			fov = 3.14159f / 2.0f;
+			size = 1.0f;
+			perspective = true;
+			cameraToNdc = ndcToCamera = Matrix44f::zero();
+			worldToCamera = cameraToWorld = Matrix44f::identity();
+			cameraToNdcNeedsUpdate = true;
+			worldToCameraNeedsUpdate = true;
+		}
 
-			Vector3f const & Camera::getPosition () const
-			{
-				return frame.getPosition();
-			}
+		void CameraP::setPosition (Vector3f position)
+		{
+			EntityP::setPosition(position);
+			worldToCameraNeedsUpdate = true;
+		}
 
-			void Camera::setPosition (Vector3f position)
-			{
-				frame.setPosition(position);
-				viewNeedsUpdate = true;
-			}
+		void CameraP::setOrientation (Quaternionf orientation)
+		{
+			EntityP::setOrientation(orientation);
+			worldToCameraNeedsUpdate = true;
+		}
 
-			Quaternionf const & Camera::getOrientation () const
-			{
-				return frame.getOrientation();
-			}
+		void CameraP::setAspectRatio (float newAspectRatio)
+		{
+			aspectRatio = newAspectRatio;
+			cameraToNdcNeedsUpdate = true;
+		}
 
-			void Camera::setOrientation (Quaternionf orientation)
-			{
-				frame.setOrientation(orientation);
-				viewNeedsUpdate = true;
-			}
+		void CameraP::setNear (float newNear)
+		{
+			near = newNear;
+			cameraToNdcNeedsUpdate = true;
+		}
 
-			void Camera::setAspectRatio (float newAspectRatio)
-			{
-				aspectRatio = newAspectRatio;
-				projectionNeedsUpdate = true;
-			}
+		void CameraP::setFar (float newFar)
+		{
+			far = newFar;
+			cameraToNdcNeedsUpdate = true;
+		}
 
-			void Camera::setNear (float newNear)
-			{
-				near = newNear;
-				projectionNeedsUpdate = true;
-			}
+		void CameraP::setPerspective (float newFov)
+		{
+			fov = newFov;
+			perspective = true;
+			cameraToNdcNeedsUpdate = true;
+		}
 
-			void Camera::setFar (float newFar)
-			{
-				far = newFar;
-				projectionNeedsUpdate = true;
-			}
+		void CameraP::setOrthogonal (float newSize)
+		{
+			size = newSize;
+			perspective = false;
+			cameraToNdcNeedsUpdate = true;
+		}
 
-			void Camera::setPerspective (float newFov)
+		Vector2f CameraP::getNdcPosition (Vector3f positionInWorld) const
+		{
+			if(worldToCameraNeedsUpdate)
 			{
-				fov = newFov;
-				perspective = true;
-				projectionNeedsUpdate = true;
+				const_cast<CameraP *>(this)->updateWorldToCamera();
 			}
+			if(cameraToNdcNeedsUpdate)
+			{
+				const_cast<CameraP *>(this)->updateCameraToNdc();
+			}
+			return (cameraToNdc * worldToCamera).transform(positionInWorld, 1).shrink<2>();
+		}
 
-			void Camera::setOrthogonal (float newSize)
+		Ray3f CameraP::getRay (Vector2f ndcPosition) const
+		{
+			if(worldToCameraNeedsUpdate)
 			{
-				size = newSize;
-				perspective = false;
-				projectionNeedsUpdate = true;
+				const_cast<CameraP *>(this)->updateWorldToCamera();
 			}
+			if(cameraToNdcNeedsUpdate)
+			{
+				const_cast<CameraP *>(this)->updateCameraToNdc();
+			}
+			Ray3f ray;
+			ray.start = getPosition();
+			Vector3f endPosition = (cameraToWorld * ndcToCamera).transform(ndcPosition.extend<3>(-1), 1);
+			ray.direction = endPosition - ray.start;
+			return ray;
+		}
 
-			Vector2f Camera::getNdcPosition (Vector3f positionInWorld) const
+		Matrix44f const & CameraP::getWorldToCamera () const
+		{
+			if(worldToCameraNeedsUpdate)
 			{
-				if(projectionNeedsUpdate)
-				{
-					const_cast<Camera *>(this)->updateProjection();
-				}
-				if(viewNeedsUpdate)
-				{
-					const_cast<Camera *>(this)->updateView();
-				}
-				return (projection * view).transform(positionInWorld, 1).shrink<2>();
+				const_cast<CameraP *>(this)->updateWorldToCamera();
 			}
+			return worldToCamera;
+		}
 
-			Ray3f Camera::getRay (Vector2f ndcPosition) const
+		Matrix44f const & CameraP::getCameraToNdc () const
+		{
+			if(cameraToNdcNeedsUpdate)
 			{
-				if(projectionNeedsUpdate)
-				{
-					const_cast<Camera *>(this)->updateProjection();
-				}
-				if(viewNeedsUpdate)
-				{
-					const_cast<Camera *>(this)->updateView();
-				}
-				Ray3f ray;
-				ray.start = getPosition();
-				Vector3f endPosition = (viewInverse * projectionInverse).transform(ndcPosition.extend<3>(-1), 1);
-				ray.direction = endPosition - ray.start;
-				return ray;
+				const_cast<CameraP *>(this)->updateCameraToNdc();
 			}
+			return cameraToNdc;
+		}
 
-			Matrix44f const & Camera::getProjection () const
-			{
-				if(projectionNeedsUpdate)
-				{
-					const_cast<Camera *>(this)->updateProjection();
-				}
-				return projection;
-			}
+		void CameraP::updateWorldToCamera ()
+		{
+			Vector3f position = getPosition();
+			Matrix33f rot = getOrientation().getMatrix();
+			worldToCamera(0, 0) = rot(0, 0);
+			worldToCamera(1, 0) = rot(0, 2);
+			worldToCamera(2, 0) = rot(0, 1);
+			worldToCamera(0, 1) = rot(1, 0);
+			worldToCamera(1, 1) = rot(1, 2);
+			worldToCamera(2, 1) = rot(1, 1);
+			worldToCamera(0, 2) = rot(2, 0);
+			worldToCamera(1, 2) = rot(2, 2);
+			worldToCamera(2, 2) = rot(2, 1);
+			worldToCamera(0, 3) = (-position[0] * rot(0, 0) - position[1] * rot(1, 0) - position[2] * rot(2, 0));
+			worldToCamera(1, 3) = (-position[0] * rot(0, 2) - position[1] * rot(1, 2) - position[2] * rot(2, 2));
+			worldToCamera(2, 3) = (-position[0] * rot(0, 1) - position[1] * rot(1, 1) - position[2] * rot(2, 1));
+			cameraToWorld(0, 0) = rot(0, 0);
+			cameraToWorld(1, 0) = rot(1, 0);
+			cameraToWorld(2, 0) = rot(2, 0);
+			cameraToWorld(0, 1) = rot(0, 2);
+			cameraToWorld(1, 1) = rot(1, 2);
+			cameraToWorld(2, 1) = rot(2, 2);
+			cameraToWorld(0, 2) = rot(0, 1);
+			cameraToWorld(1, 2) = rot(1, 1);
+			cameraToWorld(2, 2) = rot(2, 1);
+			cameraToWorld(0, 3) = position[0];
+			cameraToWorld(1, 3) = position[1];
+			cameraToWorld(2, 3) = position[2];
+			worldToCameraNeedsUpdate = false;
+		}
 
-			Matrix44f const & Camera::getView () const
+		void CameraP::updateCameraToNdc ()
+		{
+			float scale;
+			if(perspective)
 			{
-				if(viewNeedsUpdate)
-				{
-					const_cast<Camera *>(this)->updateView();
-				}
-				return view;
+				scale = std::tan(fov / 2.0f);
 			}
-
-			void Camera::updateProjection ()
+			else
 			{
-				float scale;
-				if(perspective)
-				{
-					scale = std::tan(fov / 2.0f);
-				}
-				else
-				{
-					scale = size;
-				}
-				if(scale == 0 || aspectRatio == 0 || far == near || near == 0 || far == 0)
-				{
-					throw std::exception();
-				}
-				float scaleInv = 1.0f / scale;
-				if(aspectRatio >= 1.0f)
-				{
-					projection(0, 0) = scaleInv;
-					projection(1, 1) = scaleInv * aspectRatio;
-					projectionInverse(0, 0) = scale;
-					projectionInverse(1, 1) = scale / aspectRatio;
-				}
-				else
-				{
-					projection(0, 0) = scaleInv / aspectRatio;
-					projection(1, 1) = scaleInv;
-					projectionInverse(0, 0) = scale * aspectRatio;
-					projectionInverse(1, 1) = scale;
-				}
-				if(perspective)
-				{
-					float nf2 = 2 * near * far;
-					float nmf = near - far;
-					float npf = near + far;
-					projection(2, 2) = npf / nmf;
-					projection(2, 3) = -nf2 / nmf;
-					projection(3, 2) = 1;
-					projection(3, 3) = 0;
-					projectionInverse(2, 2) = 0;
-					projectionInverse(2, 3) = -1;
-					projectionInverse(3, 2) = nmf / nf2;
-					projectionInverse(3, 3) = -npf / nf2;
-				}
-				else
-				{
-					float nmf = near - far;
-					float npf = near + far;
-					projection(2, 2) = 2 * nmf;
-					projection(2, 3) = npf / nmf;
-					projection(3, 2) = 0;
-					projection(3, 3) = 1;
-					projectionInverse(2, 2) = nmf / 2;
-					projectionInverse(2, 3) = npf / 2;
-					projectionInverse(3, 2) = 0;
-					projectionInverse(3, 3) = 1;
-				}
-				projectionNeedsUpdate = false;
+				scale = size;
 			}
-
-			void Camera::updateView ()
+			if(scale == 0 || aspectRatio == 0 || far == near || near == 0 || far == 0)
 			{
-				Vector3f position = getPosition();
-				Matrix33f rot = getOrientation().getMatrix();
-				view(0, 0) = rot(0, 0);
-				view(1, 0) = rot(0, 2);
-				view(2, 0) = rot(0, 1);
-				view(0, 1) = rot(1, 0);
-				view(1, 1) = rot(1, 2);
-				view(2, 1) = rot(1, 1);
-				view(0, 2) = rot(2, 0);
-				view(1, 2) = rot(2, 2);
-				view(2, 2) = rot(2, 1);
-				view(0, 3) = (-position[0] * rot(0, 0) - position[1] * rot(1, 0) - position[2] * rot(2, 0));
-				view(1, 3) = (-position[0] * rot(0, 2) - position[1] * rot(1, 2) - position[2] * rot(2, 2));
-				view(2, 3) = (-position[0] * rot(0, 1) - position[1] * rot(1, 1) - position[2] * rot(2, 1));
-				viewInverse(0, 0) = rot(0, 0);
-				viewInverse(1, 0) = rot(1, 0);
-				viewInverse(2, 0) = rot(2, 0);
-				viewInverse(0, 1) = rot(0, 2);
-				viewInverse(1, 1) = rot(1, 2);
-				viewInverse(2, 1) = rot(2, 2);
-				viewInverse(0, 2) = rot(0, 1);
-				viewInverse(1, 2) = rot(1, 1);
-				viewInverse(2, 2) = rot(2, 1);
-				viewInverse(0, 3) = position[0];
-				viewInverse(1, 3) = position[1];
-				viewInverse(2, 3) = position[2];
-				viewNeedsUpdate = false;
+				throw std::exception();
 			}
+			float scaleInv = 1.0f / scale;
+			if(aspectRatio >= 1.0f)
+			{
+				cameraToNdc(0, 0) = scaleInv;
+				cameraToNdc(1, 1) = scaleInv * aspectRatio;
+				ndcToCamera(0, 0) = scale;
+				ndcToCamera(1, 1) = scale / aspectRatio;
+			}
+			else
+			{
+				cameraToNdc(0, 0) = scaleInv / aspectRatio;
+				cameraToNdc(1, 1) = scaleInv;
+				ndcToCamera(0, 0) = scale * aspectRatio;
+				ndcToCamera(1, 1) = scale;
+			}
+			if(perspective)
+			{
+				float nf2 = 2 * near * far;
+				float nmf = near - far;
+				float npf = near + far;
+				cameraToNdc(2, 2) = npf / nmf;
+				cameraToNdc(2, 3) = -nf2 / nmf;
+				cameraToNdc(3, 2) = 1;
+				cameraToNdc(3, 3) = 0;
+				ndcToCamera(2, 2) = 0;
+				ndcToCamera(2, 3) = -1;
+				ndcToCamera(3, 2) = nmf / nf2;
+				ndcToCamera(3, 3) = -npf / nf2;
+			}
+			else
+			{
+				float nmf = near - far;
+				float npf = near + far;
+				cameraToNdc(2, 2) = 2 * nmf;
+				cameraToNdc(2, 3) = npf / nmf;
+				cameraToNdc(3, 2) = 0;
+				cameraToNdc(3, 3) = 1;
+				ndcToCamera(2, 2) = nmf / 2;
+				ndcToCamera(2, 3) = npf / 2;
+				ndcToCamera(3, 2) = 0;
+				ndcToCamera(3, 3) = 1;
+			}
+			cameraToNdcNeedsUpdate = false;
 		}
 	}
 }

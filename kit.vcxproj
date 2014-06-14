@@ -29,6 +29,9 @@
     <ClCompile Include="src\light_2d.cpp" />
     <ClCompile Include="src\open_gl.cpp" />
     <ClCompile Include="src\resources.cpp" />
+    <ClCompile Include="src\scene\camera.cpp" />
+    <ClCompile Include="src\scene\entity.cpp" />
+    <ClCompile Include="src\scene\model.cpp" />
     <ClCompile Include="src\scene_2d.cpp" />
     <ClCompile Include="src\frame_2d.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -80,12 +83,15 @@
     <ClInclude Include="src\gui\widget_p.h" />
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\math_util.h" />
-    <ClInclude Include="src\resources.h" />
+    <ClInclude Include="src\resources_p.h" />
     <ClInclude Include="src\open_gl.h" />
     <ClInclude Include="src\ptr.h" />
     <ClInclude Include="inc\kit\ray.h" />
     <ClInclude Include="src\resource_manager.h" />
     <ClInclude Include="src\scene.h" />
+    <ClInclude Include="src\scene\camera_p.h" />
+    <ClInclude Include="src\scene\entity_p.h" />
+    <ClInclude Include="src\scene\model_p.h" />
     <ClInclude Include="src\scene_2d.h" />
     <ClInclude Include="src\frame_2d.h" />
     <ClInclude Include="src\serialize.h" />

@@ -18,6 +18,8 @@ namespace kit
 			virtual void setPerspective (float fov) = 0;
 
 			virtual void setOrthogonal (float size) = 0;
+
+			virtual void setFor2D (float size) = 0;
 		};
 	}
 }

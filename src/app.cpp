@@ -1,7 +1,7 @@
 #include "app_p.h"
 #include "open_gl.h"
 #include "window_p.h"
-#include "resources.h"
+#include "resources_p.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
@@ -20,7 +20,7 @@ namespace kit
 		{
 			throw std::runtime_error(std::string("Could not initialize SDL:	") + SDL_GetError() + ". ");
 		}
-		resources.set(new Resources);
+		resources.set(new ResourcesP);
 	}
 
 	AppP::~AppP ()
@@ -124,7 +124,7 @@ namespace kit
 		cursorIsValid = valid;
 	}
 
-	Ptr<Resources> AppP::getResources ()
+	Ptr<ResourcesP> AppP::getResources ()
 	{
 		return resources;
 	}

@@ -31,6 +31,9 @@
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
     <ClCompile Include="src\resources.cpp" />
+    <ClCompile Include="src\scene\entity.cpp" />
+    <ClCompile Include="src\scene\camera.cpp" />
+    <ClCompile Include="src\scene\model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -82,10 +85,8 @@
     <ClInclude Include="inc\kit\ray.h" />
     <ClInclude Include="inc\kit\scene\object.h" />
     <ClInclude Include="inc\kit\texture.h" />
-    <ClInclude Include="inc\kit\resources.h" />
     <ClInclude Include="src\unique_id_factory.h" />
     <ClInclude Include="inc\kit\scene\model.h" />
-    <ClInclude Include="src\resources.h" />
     <ClInclude Include="src\gui\widget_p.h" />
     <ClInclude Include="src\gui\widget_container_p.h" />
     <ClInclude Include="src\gui\sprite_p.h" />
@@ -93,5 +94,10 @@
     <ClInclude Include="src\gui\button_p.h" />
     <ClInclude Include="src\app_p.h" />
     <ClInclude Include="src\window_p.h" />
+    <ClInclude Include="src\scene\entity_p.h" />
+    <ClInclude Include="src\scene\camera_p.h" />
+    <ClInclude Include="src\scene\model_p.h" />
+    <ClInclude Include="inc\kit\resources.h" />
+    <ClInclude Include="src\resources_p.h" />
   </ItemGroup>
 </Project>

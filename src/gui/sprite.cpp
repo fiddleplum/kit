@@ -5,6 +5,11 @@ namespace kit
 {
 	namespace gui
 	{
+		OwnPtr<Sprite> Sprite::create ()
+		{
+			return OwnPtr<SpriteP> (new SpriteP);
+		}
+
 		SpriteP::SpriteP ()
 		{
 			model.set(new Model);
