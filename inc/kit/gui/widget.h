@@ -4,6 +4,8 @@
 #include <kit/rect.h>
 #include <kit/noncopyable.h>
 
+// DO I NEED GETBOUNDS AND SETMAXSIZE? WHAT REALLY NEEDS THEM?
+
 namespace kit
 {
 	namespace gui

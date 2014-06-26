@@ -6,10 +6,14 @@
 
 namespace kit
 {
-	unsigned int gCurrentProgram = 0; // maintains current open gl state
+	unsigned int _currentProgram = 0; // maintains current open gl state
 
 	Shader::Shader (std::string const code [NumCodeTypes])
 	{
+		if(!glIsInitialized())
+		{
+			throw std::runtime_error("You must create a window first to initialize OpenGL.");
+		}
 		std::vector<unsigned int> shaderObjects;
 		try
 		{
@@ -60,16 +64,16 @@ namespace kit
 
 	void Shader::activate ()
 	{
-		if(gCurrentProgram != mProgram)
+		if(_currentProgram != mProgram)
 		{
-			gCurrentProgram = mProgram;
+			_currentProgram = mProgram;
 			glUseProgram(mProgram);
 		}
 	}
 
 	void Shader::deactivate ()
 	{
-		gCurrentProgram = 0;
+		_currentProgram = 0;
 		glUseProgram(0);
 	}
 

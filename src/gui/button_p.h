@@ -1,8 +1,8 @@
 #pragma once
 
 #include "sprite_p.h"
-#include "widget_p.h"
 #include <kit/gui/button.h>
+#include "widget_p.h"
 
 namespace kit
 {
@@ -19,11 +19,11 @@ namespace kit
 
 			void setMaxSize (Vector2i maxSize) override;
 
-			bool handleEvent (Event const & event, bool cursorIsValid) override;
+			void handleEvent (Event const & event) override;
 
 			void render (Vector2i windowSize) override;
 
-			void setTexture (std::string const & filename) override;
+			void setTexture (UsePtr<Texture> texture);
 
 			void setTextureBounds (Recti bounds) override;
 

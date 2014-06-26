@@ -29,12 +29,29 @@ namespace kit
 
 		int getDisplay () const override;
 
+		void handleEvent (Event const & event);
+
 		void render (SDL_GLContext sdlGlContext);
 
 		SDL_Window * getSDLWindow () const;
 
+		bool cursorIsValid () const override;
+
+		Vector2i getCursorPosition () const override;
+
+		void setCursorValidity (bool);
+
+		bool cursorIsConsumed () const;
+
+		void consumeCursor ();
+
+		void setCursorPosition (Vector2i);
+
 	private:
-		SDL_Window * sdlWindow;
+		SDL_Window * _sdlWindow;
+		bool _cursorIsConsumed;
+		bool _cursorIsValid;
+		Vector2i _cursorPosition;
 	};
 }
 

@@ -7,15 +7,24 @@
 
 namespace kit
 {
-	std::vector<unsigned int> gCurrentTextures; // current textures in the open gl state
+	std::vector<unsigned int> _currentTextures; // current textures in the open gl state
 
 	TextureP::TextureP (Vector2i)
 	{
+		if(!glIsInitialized())
+		{
+			throw std::runtime_error("You must create a window first to initialize OpenGL.");
+		}
 		// TODO
 	}
 
 	TextureP::TextureP (std::string const & filename)
 	{
+		if(!glIsInitialized())
+		{
+			throw std::runtime_error("You must create a window first to initialize OpenGL.");
+		}
+
 		glGenTextures(1, &id);
 
 		SDL_Surface * surface = IMG_Load(filename.c_str());
@@ -66,29 +75,29 @@ namespace kit
 
 	void TextureP::activate (unsigned int slot) const
 	{
-		if(slot >= gCurrentTextures.size() || id != gCurrentTextures[slot])
+		if(slot >= _currentTextures.size() || id != _currentTextures[slot])
 		{
 			glActiveTexture(GL_TEXTURE0 + slot);
 			glBindTexture(GL_TEXTURE_2D, id);
-			if(slot >= gCurrentTextures.size())
+			if(slot >= _currentTextures.size())
 			{
-				gCurrentTextures.resize(slot + 1);
+				_currentTextures.resize(slot + 1);
 			}
-			gCurrentTextures[slot] = id;
+			_currentTextures[slot] = id;
 		}
 	}
 
 	void TextureP::deactivateRest (unsigned int slot)
 	{
-		for(; slot < gCurrentTextures.size(); slot++)
+		for(; slot < _currentTextures.size(); slot++)
 		{
-			if(gCurrentTextures[slot] == 0)
+			if(_currentTextures[slot] == 0)
 			{
 				break; // If this one is zero, the rest are zero.
 			}
 			glActiveTexture(GL_TEXTURE0 + slot);
 			glBindTexture(GL_TEXTURE_2D, 0);
-			gCurrentTextures[slot] = 0;
+			_currentTextures[slot] = 0;
 		}
 	}
 }

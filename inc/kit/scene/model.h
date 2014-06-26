@@ -3,6 +3,7 @@
 #include <kit/ptr.h>
 #include <kit/noncopyable.h>
 #include <kit/vector.h>
+#include <kit/rect.h>
 #include <string>
 
 namespace kit
@@ -33,6 +34,8 @@ namespace kit
 			virtual void setColor (Vector3f const & emitColor, Vector4f const & diffuseColor) = 0;
 
 			virtual void setSpecular (unsigned int level, float strength) = 0;
+
+			virtual float getScale () const = 0;
 
 			virtual void setScale (float scale) = 0;
 		};

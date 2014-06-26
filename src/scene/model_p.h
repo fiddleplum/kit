@@ -19,8 +19,13 @@ namespace kit
 		class ModelP : virtual public Model
 		{
 		public:
+			// Create a blank model.
 			ModelP ();
 
+			// Create as a sprite.
+			ModelP (std::string const & textureFilename, Recti textureCoords);
+
+			// Load from a file.
 			ModelP (std::string const & filename);
 
 			void setVertexFormat (bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs) override;
@@ -42,6 +47,8 @@ namespace kit
 			void setColor (Vector3f const & emitColor, Vector4f const & diffuseColor) override;
 
 			void setSpecular (unsigned int level, float strength) override;
+
+			float getScale () const;
 
 			void setScale (float scale) override;
 

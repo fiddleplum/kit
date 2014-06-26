@@ -28,6 +28,12 @@ namespace kit
 
 		// Returns the display that the window is within, determined by its center.
 		virtual int getDisplay () const = 0;
+
+		// Returns true if the cursor position is valid.
+		virtual bool cursorIsValid () const = 0;
+
+		// Gets the cursor position relative to the window.
+		virtual Vector2i getCursorPosition () const = 0;
 	};
 
 	// Returns the number of displays in the system.

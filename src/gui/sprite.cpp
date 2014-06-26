@@ -1,5 +1,8 @@
 #include "sprite_p.h"
 #include "model.h"
+#include "../resources_p.h"
+#include "../window_p.h"
+#include <kit/texture.h>
 
 namespace kit
 {
@@ -12,7 +15,7 @@ namespace kit
 
 		SpriteP::SpriteP ()
 		{
-			model.set(new Model);
+			_model.set(new Model);
 			std::vector<unsigned int> indices (6);
 			indices[0] = 0;
 			indices[1] = 3;
@@ -20,78 +23,80 @@ namespace kit
 			indices[3] = 2;
 			indices[4] = 1;
 			indices[5] = 0;
-			model->setIndices(indices);
+			_model->setIndices(indices);
 			updateVertices();
 		}
 
 		Recti SpriteP::getBounds () const
 		{
-			return Recti::minSize(model->getPosition(), textureBounds.getSize());
+			return Recti::minSize(_model->getPosition(), _textureBounds.getSize());
 		}
 
 		void SpriteP::setPosition (Vector2i position)
 		{
-			model->setPosition(position);
+			_model->setPosition(position);
 		}
 
 		void SpriteP::setMaxSize (Vector2i maxSize)
 		{
-			this->maxSize = maxSize;
+			_maxSize = maxSize;
 			updateVertices();
 		}
 
-		Ptr<Texture> SpriteP::getTexture () const
+		UsePtr<Texture> SpriteP::getTexture () const
 		{
-			// TODO
-			return Ptr<Texture> ();
+			return _model->getTexture();
 		}
 
-		void SpriteP::setNewTexture (Vector2i)
+		void SpriteP::setTexture (UsePtr<Texture> texture)
 		{
-			// TODO
+			_model->setTexture(texture);
 		}
 
 		void SpriteP::setTexture (std::string const & filename)
 		{
-			model->setTexture(filename);
+			_model->setTexture(resources::getTextureFromFile(filename));
 		}
 
 		Recti SpriteP::getTextureBounds () const
 		{
-			return textureBounds;
+			return _textureBounds;
 		}
 
 		void SpriteP::setTextureBounds (Recti bounds)
 		{
-			textureBounds = bounds;
+			_textureBounds = bounds;
 			updateVertices();
 		}
 
-		bool SpriteP::handleEvent (Event const &, bool cursorIsValid)
+		void SpriteP::handleEvent (Event const & event)
 		{
-			return cursorIsValid;
+			if(getBounds().containsEx(event.window.as<WindowP>()->getCursorPosition()))
+			{
+				event.window.as<WindowP>()->consumeCursor();
+			}
 		}
 
 		void SpriteP::render (Vector2i windowSize)
 		{
-			model->render(windowSize);
+			_model->render(windowSize);
 		}
 
 		void SpriteP::updateVertices()
 		{
 			Vector2i size;
-			size[0] = std::min(textureBounds.getSize()[0], maxSize[0]);
-			size[1] = std::min(textureBounds.getSize()[1], maxSize[1]);
+			size[0] = std::min(_textureBounds.getSize()[0], _maxSize[0]);
+			size[1] = std::min(_textureBounds.getSize()[1], _maxSize[1]);
 			std::vector<Model::Vertex> vertices (4);
 			vertices[0].pos.set(0, 0);
-			vertices[0].uv.set((float)textureBounds.min[0], (float)textureBounds.min[1]);
+			vertices[0].uv.set((float)_textureBounds.min[0], (float)_textureBounds.min[1]);
 			vertices[1].pos.set((float)size[0], 0);
-			vertices[1].uv.set((float)textureBounds.min[0] + (float)size[0], (float)textureBounds.min[1]);
+			vertices[1].uv.set((float)_textureBounds.min[0] + (float)size[0], (float)_textureBounds.min[1]);
 			vertices[2].pos.set((float)size[0], (float)size[1]);
-			vertices[2].uv.set((float)textureBounds.min[0] + (float)size[0], (float)textureBounds.min[1] + (float)size[1]);
+			vertices[2].uv.set((float)_textureBounds.min[0] + (float)size[0], (float)_textureBounds.min[1] + (float)size[1]);
 			vertices[3].pos.set(0, (float)size[1]);
-			vertices[3].uv.set((float)textureBounds.min[0], (float)textureBounds.min[1] + (float)size[1]);
-			model->setVertices(vertices);
+			vertices[3].uv.set((float)_textureBounds.min[0], (float)_textureBounds.min[1] + (float)size[1]);
+			_model->setVertices(vertices);
 		}
 	}
 }

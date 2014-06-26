@@ -1,8 +1,5 @@
 #include "model.h"
-#include "../app_p.h"
 #include "../resources_p.h"
-#include "../texture_p.h"
-#include "../shader.h"
 #include "../vertex_buffer_object.h"
 
 namespace kit
@@ -11,8 +8,6 @@ namespace kit
 	{
 		Model::Model()
 		{
-			position = Vector2i(0, 0);
-
 			std::string code [Shader::NumCodeTypes];
 			code[Shader::Vertex] +=
 				"#version 150\n"
@@ -38,57 +33,62 @@ namespace kit
 				"{\n"
 				"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 				"}\n";
-			shader = app()->getResources()->getShader("guiShader", code);
+			_shader = resources::getShader("guiShader", code);
 
-			vbo.set(new VertexBufferObject);
-			vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
-			vbo->addVertexComponent(shader->getAttributeLocation("aUv"), sizeof(Vector2f), 2);
-			vbo->setBytesPerVertex(sizeof(Vertex));
-			vbo->setNumIndicesPerPrimitive(3);
+			_vbo.set(new VertexBufferObject);
+			_vbo->addVertexComponent(_shader->getAttributeLocation("aPos"), 0, 2);
+			_vbo->addVertexComponent(_shader->getAttributeLocation("aUv"), sizeof(Vector2f), 2);
+			_vbo->setBytesPerVertex(sizeof(Vertex));
+			_vbo->setNumIndicesPerPrimitive(3);
 
-			windowSizeLocation = shader->getUniformLocation("uWindowSize");
-			positionLocation = shader->getUniformLocation("uPosition");
-			textureSizeLocation = shader->getUniformLocation("uTextureSize");
-			samplerLocation = shader->getUniformLocation("uSampler");
+			_windowSizeLocation = _shader->getUniformLocation("uWindowSize");
+			_positionLocation = _shader->getUniformLocation("uPosition");
+			_textureSizeLocation = _shader->getUniformLocation("uTextureSize");
+			_samplerLocation = _shader->getUniformLocation("uSampler");
 		}
 
 		Vector2i Model::getPosition() const
 		{
-			return position;
+			return _position;
 		}
 
 		void Model::setPosition(Vector2i position)
 		{
-			this->position = position;
+			_position = position;
 		}
 
-		void Model::setTexture(std::string const & filename)
+		UsePtr<Texture> Model::getTexture () const
 		{
-			texture = app()->getResources()->getTextureFromFile(filename).as<TextureP>();
+			return _texture;
+		}
+
+		void Model::setTexture(UsePtr<Texture> texture)
+		{
+			_texture = texture.as<TextureP>();
 		}
 
 		void Model::setVertices(std::vector<Vertex> const & vertices)
 		{
-			vbo->setVertices((void const *)&vertices[0], sizeof(Vertex) * vertices.size(), false);
+			_vbo->setVertices((void const *)&vertices[0], sizeof(Vertex) * vertices.size(), false);
 		}
 
 		void Model::setIndices(std::vector<unsigned int> const & indices)
 		{
-			vbo->setIndices(&indices[0], indices.size());
+			_vbo->setIndices(&indices[0], indices.size());
 		}
 
 		void Model::render(Vector2i windowSize)
 		{
-			shader->activate();
-			shader->setUniform(windowSizeLocation, windowSize);
-			shader->setUniform(positionLocation, position);
-			if(texture.isValid())
+			_shader->activate();
+			_shader->setUniform(_windowSizeLocation, windowSize);
+			_shader->setUniform(_positionLocation, _position);
+			if(_texture.isValid())
 			{
-				texture->activate(0);
-				shader->setUniform(textureSizeLocation, texture->getSize());
+				_texture->activate(0);
+				_shader->setUniform(_textureSizeLocation, _texture->getSize());
 			}
-			shader->setUniform(samplerLocation, 0);
-			vbo->render();
+			_shader->setUniform(_samplerLocation, 0);
+			_vbo->render();
 		}
 	}
 }

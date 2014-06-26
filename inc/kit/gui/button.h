@@ -5,6 +5,8 @@
 
 namespace kit
 {
+	class Texture;
+
 	namespace gui
 	{
 		class Button : virtual public Widget
@@ -18,7 +20,7 @@ namespace kit
 			static OwnPtr<Button> create ();
 
 			// Sets the texture to use.
-			virtual void setTexture (std::string const & filename) = 0;
+			virtual void setTexture (UsePtr<Texture> texture) = 0;
 
 			// Frames are stacked horizontally: default, hovered, pressed, pressed-hovered.
 			virtual void setTextureBounds (Recti bounds) = 0;

@@ -12,7 +12,7 @@
 
 namespace kit
 {
-	void start (Ptr<App> app, std::vector<std::string> const & parameters);
+	void start (std::vector<std::string> const & parameters);
 
 	void finish ();
 }

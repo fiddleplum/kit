@@ -34,6 +34,7 @@
     <ClCompile Include="src\scene\entity.cpp" />
     <ClCompile Include="src\scene\camera.cpp" />
     <ClCompile Include="src\scene\model.cpp" />
+    <ClCompile Include="src\scene\object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -71,7 +72,6 @@
     <ClInclude Include="inc\kit\rect.h" />
     <ClInclude Include="inc\kit\gui\widget_container.h" />
     <ClInclude Include="inc\kit\gui\widget.h" />
-    <ClInclude Include="src\resource_manager.h" />
     <ClInclude Include="inc\kit\gui\sprite.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\app.h" />
@@ -97,7 +97,9 @@
     <ClInclude Include="src\scene\entity_p.h" />
     <ClInclude Include="src\scene\camera_p.h" />
     <ClInclude Include="src\scene\model_p.h" />
+    <ClInclude Include="src\scene\object_h.h" />
     <ClInclude Include="inc\kit\resources.h" />
     <ClInclude Include="src\resources_p.h" />
+    <ClInclude Include="src\object_cache.h" />
   </ItemGroup>
 </Project>

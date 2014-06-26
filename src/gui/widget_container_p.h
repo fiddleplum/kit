@@ -12,7 +12,7 @@ namespace kit
 		class WidgetContainerP : virtual public WidgetContainer, virtual public WidgetP
 		{
 		public:
-			void setHandleContainerEventFunction (std::function<bool (Event const &, bool)>) override;
+			void setHandleContainerEventFunction (std::function<void (Event const &)>) override;
 
 			void setUpdateWidgetBoundsFunction (std::function<void ()>) override;
 
@@ -24,25 +24,25 @@ namespace kit
 
 			void setMaxSize (Vector2i maxSize) override;
 
-			Ptr<Widget> insertWidgetBefore (WidgetType type, Ptr<Widget> beforeWidget) override;
+			void insertWidgetBefore (UsePtr<Widget> widget, UsePtr<Widget> beforeWidget) override;
 
-			Ptr<Widget> addWidget (WidgetType type) override;
+			void addWidget (UsePtr<Widget> widget) override;
 
-			void removeWidget (Ptr<Widget> widget) override;
+			void removeWidget (UsePtr<Widget> widget) override;
 
-			void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) override;
+			void setWidgetPlacement (UsePtr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) override;
 
-			void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) override;
+			void setWidgetPlacementSize (UsePtr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) override;
 
-			bool isWidgetActive (Ptr<Widget> widget) const override;
+			bool isWidgetActive (UsePtr<Widget> widget) const override;
 
-			void setWidgetActive (Ptr<Widget> widget, bool active) override;
+			void setWidgetActive (UsePtr<Widget> widget, bool active) override;
 
-			bool isWidgetVisible (Ptr<Widget> widget) const override;
+			bool isWidgetVisible (UsePtr<Widget> widget) const override;
 
-			void setWidgetVisible (Ptr<Widget> widget, bool visible) override;
+			void setWidgetVisible (UsePtr<Widget> widget, bool visible) override;
 
-			bool handleEvent (Event const & event, bool cursorIsValid) override;
+			void handleEvent (Event const & event) override;
 
 			void render (Vector2i windowSize) override;
 
@@ -50,20 +50,18 @@ namespace kit
 			class WidgetInfo
 			{
 			public:
-				WidgetInfo (OwnPtr<WidgetP>);
+				WidgetInfo (UsePtr<Widget>);
 
-				OwnPtr<WidgetP> widget;
+				UsePtr<WidgetP> widget;
 				bool active;
 				bool visible;
 			};
 
-			OwnPtr<WidgetP> createWidget (WidgetType type);
-
-			std::function<bool (Event const &, bool)> handleContainerEventFunction;
+			std::function<void (Event const &)> handleContainerEventFunction;
 			std::function<void ()> updateWidgetBoundsFunction;
 			Recti bounds;
 			std::list<WidgetInfo> widgetInfos;
-			std::map<Ptr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
+			std::map<UsePtr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
 		};
 	}
 }

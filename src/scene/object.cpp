@@ -1,47 +1,33 @@
-#include "object.h"
+#include "object_h.h"
+#include "../resources_p.h"
 
 namespace kit
 {
 	namespace scene
 	{
-		namespace internal
+		float ObjectP::getScale () const
 		{
-			Vector3f const & Object::getPosition () const
-			{
-				return frame.getPosition();
-			}
+			model->getScale();
+		}
 
-			void Object::setPosition (Vector3f position)
-			{
-				frame.setPosition(position);
-			}
+		void ObjectP::setScale (float scale)
+		{
+			model->setScale(scale);
+		}
 
-			Quaternionf const & Object::getOrientation () const
-			{
-				return frame.getOrientation();
-			}
+		UsePtr<Model> ObjectP::getModel () const
+		{
+			return model;
+		}
 
-			void Object::setOrientation (Quaternionf orientation)
-			{
-				frame.setOrientation(orientation);
-			}
+		void ObjectP::setModel (UsePtr<Model> model) 
+		{
+			this->model = model.as<ModelP>();
+		}
 
-			Vector3f Object::getScale () const
-			{
-
-			}
-
-			void Object::setScale (Vector3f scale)
-			{
-			}
-
-			void Object::setModel (std::string const & filename)
-			{
-			}
-
-			void Object::setModelAsSprite (std::string const & texture, Recti const & textureCoords)
-			{
-			}
+		void ObjectP::setModel (std::string const & filename)
+		{
+			this->model = resources::getModelFromFile(filename).as<ModelP>();
 		}
 	}
 }

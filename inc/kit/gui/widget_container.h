@@ -9,13 +9,11 @@ namespace kit
 {
 	namespace gui
 	{
-		enum WidgetType { SPRITE, BUTTON };
-
 		class WidgetContainer : virtual public Widget
 		{
 		public:
 			// Handles container-wide events.
-			virtual void setHandleContainerEventFunction (std::function<bool (Event const &, bool)>) = 0;
+			virtual void setHandleContainerEventFunction (std::function<void (Event const &)>) = 0;
 
 			// Updates the widget bounds after the container has moved or otherwise changed.
 			virtual void setUpdateWidgetBoundsFunction (std::function<void ()>) = 0;
@@ -30,31 +28,31 @@ namespace kit
 			virtual void setMaxSize (Vector2i maxSize) = 0;
 
 			// Inserts a widget before another widget.
-			virtual Ptr<Widget> insertWidgetBefore (WidgetType type, Ptr<Widget> beforeWidget) = 0;
+			virtual void insertWidgetBefore (UsePtr<Widget> widget, UsePtr<Widget> beforeWidget) = 0;
 
 			// Append a widget to the end of the list of widgets.
-			virtual Ptr<Widget> addWidget (WidgetType type) = 0;
+			virtual void addWidget (UsePtr<Widget> widget) = 0;
 
 			// Remove a widget from the container.
-			virtual void removeWidget (Ptr<Widget> widget) = 0;
+			virtual void removeWidget (UsePtr<Widget> widget) = 0;
 
 			// Sets the position of the widget relative to this.
-			virtual void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) = 0;
+			virtual void setWidgetPlacement (UsePtr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) = 0;
 
 			// Sets the size of the widget relative to this.
-			virtual void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) = 0;
+			virtual void setWidgetPlacementSize (UsePtr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) = 0;
 
 			// Does the widget handle events and rendered?
-			virtual bool isWidgetActive (Ptr<Widget> widget) const = 0;
+			virtual bool isWidgetActive (UsePtr<Widget> widget) const = 0;
 
 			// Sets whether the widget handles events and rendered.
-			virtual void setWidgetActive (Ptr<Widget> widget, bool active) = 0;
+			virtual void setWidgetActive (UsePtr<Widget> widget, bool active) = 0;
 
 			// Is the widget rendered?
-			virtual bool isWidgetVisible (Ptr<Widget> widget) const = 0;
+			virtual bool isWidgetVisible (UsePtr<Widget> widget) const = 0;
 
 			// Sets whether the widget is rendered.
-			virtual void setWidgetVisible (Ptr<Widget> widget, bool visible) = 0;
+			virtual void setWidgetVisible (UsePtr<Widget> widget, bool visible) = 0;
 		};
 	}
 }

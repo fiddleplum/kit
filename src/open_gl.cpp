@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+bool initialized = false;
+
 PFNGLENABLEPROC glEnable;
 PFNGLDISABLEPROC glDisable;
 PFNGLBLENDFUNCPROC glBlendFunc;
@@ -60,7 +62,7 @@ PFNGLBINDTEXTUREPROC glBindTexture;
 PFNGLTEXIMAGE2DPROC glTexImage2D;
 PFNGLTEXPARAMETERIPROC glTexParameteri;
 
-void glInitialize()
+void glInitialize ()
 {
 	// Replace RegEx: ([^ ]+) ([^ ]+);   ->   \t\2 = (\1)SDL_GL_GetProcAddress("\2");
 	glEnable = (PFNGLENABLEPROC)SDL_GL_GetProcAddress("glEnable");
@@ -119,5 +121,12 @@ void glInitialize()
 	glBindTexture = (PFNGLBINDTEXTUREPROC)SDL_GL_GetProcAddress("glBindTexture");
 	glTexImage2D = (PFNGLTEXIMAGE2DPROC)SDL_GL_GetProcAddress("glTexImage2D");
 	glTexParameteri = (PFNGLTEXPARAMETERIPROC)SDL_GL_GetProcAddress("glTexParameteri");
+
+	initialized = true;
+}
+
+bool glIsInitialized ()
+{
+	return initialized;
 }
 

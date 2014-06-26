@@ -2,6 +2,7 @@
 
 #include <kit/vector.h>
 #include <kit/matrix.h>
+#include <kit/ptr.h>
 #include <string>
 #include <map>
 #include <vector>

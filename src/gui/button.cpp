@@ -35,23 +35,17 @@ namespace kit
 			sprite->setMaxSize(maxSize);
 		}
 
-		bool ButtonP::handleEvent (Event const & event, bool cursorIsValid)
+		void ButtonP::handleEvent (Event const & event)
 		{
-			bool oldPressedOrToggled = pressed || toggled;
+			sprite->handleEvent(event);
 
-			if(cursorIsValid)
-			{
-				if(getBounds().containsEx(app()->getCursorPosition()))
-				{
-					cursorIsValid = false;
-				}
-			}
+			bool oldPressedOrToggled = pressed || toggled;
 
 			switch(event.type)
 			{
 				case Event::Update:
 				{
-					if(type == Shot && pressed && app()->getTime() - timePressed > shotInterval)
+					if(type == Shot && pressed && app::getTime() - timePressed > shotInterval)
 					{
 						pressed = false;
 					}
@@ -101,7 +95,7 @@ namespace kit
 								}
 								if(type == Shot)
 								{
-									timePressed = app()->getTime();
+									timePressed = app::getTime();
 								}
 							}
 						}
@@ -130,7 +124,6 @@ namespace kit
 				}
 			}
 			setSpriteTextureBoundsFromState();
-			return cursorIsValid;
 		}
 
 		void ButtonP::render (Vector2i windowSize)
@@ -138,9 +131,9 @@ namespace kit
 			sprite->render(windowSize);
 		}
 
-		void ButtonP::setTexture (std::string const & filename)
+		void ButtonP::setTexture (UsePtr<Texture> texture)
 		{
-			sprite->setTexture(filename);
+			sprite->setTexture(texture);
 		}
 
 		void ButtonP::setTextureBounds (Recti bounds)

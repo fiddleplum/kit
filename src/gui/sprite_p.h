@@ -9,6 +9,8 @@ namespace kit
 	{
 		class Model;
 
+		// TODO: Add ability to have a texture mask for determining the shape of the sprite when it comes to cursor clicks, etc.
+
 		class SpriteP : virtual public Sprite, virtual public WidgetP
 		{
 		public:
@@ -20,9 +22,9 @@ namespace kit
 
 			void setMaxSize (Vector2i maxSize) override;
 
-			Ptr<Texture> getTexture () const override;
+			UsePtr<Texture> getTexture () const override;
 
-			void setNewTexture (Vector2i size) override;
+			void setTexture (UsePtr<Texture> texture) override;
 
 			void setTexture (std::string const & filename) override;
 
@@ -30,16 +32,16 @@ namespace kit
 
 			void setTextureBounds (Recti bounds) override;
 
-			bool handleEvent (Event const & event, bool cursorIsValid) override;
+			void handleEvent (Event const & event) override;
 
 			void render (Vector2i windowSize) override;
 
 		private:
 			void updateVertices ();
 
-			OwnPtr<Model> model;
-			Recti textureBounds;
-			Vector2i maxSize;
+			OwnPtr<Model> _model;
+			Recti _textureBounds;
+			Vector2i _maxSize;
 		};
 	}
 }

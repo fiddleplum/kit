@@ -11,8 +11,8 @@ namespace kit
 	{
 		Vector2i size (800, 600);
 
-		sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size[0], size[1], SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-		if(sdlWindow == nullptr)
+		_sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size[0], size[1], SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		if(_sdlWindow == nullptr)
 		{
 			throw std::runtime_error("Failed to create the window. ");
 		}
@@ -21,17 +21,17 @@ namespace kit
 
 	WindowP::~WindowP ()
 	{
-		SDL_DestroyWindow(sdlWindow);
+		SDL_DestroyWindow(_sdlWindow);
 	}
 
 	void WindowP::setTitle (char const * title)
 	{
-		SDL_SetWindowTitle(sdlWindow, title);
+		SDL_SetWindowTitle(_sdlWindow, title);
 	}
 
 	void WindowP::setWindowed ()
 	{
-		SDL_SetWindowFullscreen(sdlWindow, 0);
+		SDL_SetWindowFullscreen(_sdlWindow, 0);
 		SDL_EnableScreenSaver();
 	}
 
@@ -47,11 +47,11 @@ namespace kit
 			mode.w = size[0];
 			mode.h = size[1];
 			SDL_DisableScreenSaver();
-			if(SDL_SetWindowDisplayMode(sdlWindow, &mode) < 0)
+			if(SDL_SetWindowDisplayMode(_sdlWindow, &mode) < 0)
 			{
 				throw std::exception();
 			}
-			if(SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
+			if(SDL_SetWindowFullscreen(_sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
 			{
 				throw std::exception();
 			}
@@ -70,18 +70,18 @@ namespace kit
 	Vector2i WindowP::getSize () const
 	{
 		Vector2i size;
-		SDL_GetWindowSize(sdlWindow, &size[0], &size[1]);
+		SDL_GetWindowSize(_sdlWindow, &size[0], &size[1]);
 		return size;
 	}
 
 	bool WindowP::isFullscreen () const
 	{
-		return (SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
+		return (SDL_GetWindowFlags(_sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
 	int WindowP::getDisplay() const
 	{
-		int display = SDL_GetWindowDisplayIndex(sdlWindow);
+		int display = SDL_GetWindowDisplayIndex(_sdlWindow);
 		if(display >= 0)
 		{
 			return display;
@@ -89,9 +89,15 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
+	void WindowP::handleEvent (Event const & event)
+	{
+		_cursorIsConsumed = _cursorIsValid;
+		WidgetContainerP::handleEvent(event);
+	}
+
 	void WindowP::render (SDL_GLContext sdlGlContext)
 	{
-		SDL_GL_MakeCurrent(sdlWindow, sdlGlContext);
+		SDL_GL_MakeCurrent(_sdlWindow, sdlGlContext);
 
 		glDisable(GL_DEPTH_TEST);
 		glDepthFunc(GL_GREATER);
@@ -109,12 +115,42 @@ namespace kit
 
 		WidgetContainerP::render(windowSize);
 
-		SDL_GL_SwapWindow(sdlWindow);
+		SDL_GL_SwapWindow(_sdlWindow);
 	}
 
 	SDL_Window * WindowP::getSDLWindow () const
 	{
-		return sdlWindow;
+		return _sdlWindow;
+	}
+
+	bool WindowP::cursorIsValid () const
+	{
+		return _cursorIsValid;
+	}
+
+	Vector2i WindowP::getCursorPosition () const
+	{
+		return _cursorPosition;
+	}
+
+	void WindowP::setCursorValidity (bool is)
+	{
+		_cursorIsValid = is;
+	}
+
+	bool WindowP::cursorIsConsumed () const
+	{
+		return _cursorIsConsumed;
+	}
+
+	void WindowP::consumeCursor ()
+	{
+		_cursorIsConsumed = true;
+	}
+
+	void WindowP::setCursorPosition (Vector2i position)
+	{
+		_cursorPosition = position;
 	}
 
 	int getNumDisplays ()

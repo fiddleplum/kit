@@ -1,10 +1,13 @@
 #pragma once
 
 #include <kit/vector.h>
+#include <kit/ptr.h>
 #include <string>
 
 namespace kit
 {
+	class Window;
+
 	class Event
 	{
 	public:
@@ -23,20 +26,21 @@ namespace kit
 			ControllerBall,
 		};
 
-		Event(Type type);
+		Event(Ptr<Window> window, Type type);
 
 		virtual std::string toString() const = 0;
 
 		template <typename EventType>
 		EventType as() const;
 
+		Ptr<Window> window;
 		Type type;
 	};
 
 	class ShutdownEvent : public Event
 	{
 	public:
-		ShutdownEvent();
+		ShutdownEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 	};
@@ -44,7 +48,7 @@ namespace kit
 	class ResizeEvent : public Event
 	{
 	public:
-		ResizeEvent();
+		ResizeEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -54,7 +58,7 @@ namespace kit
 	class UpdateEvent : public Event
 	{
 	public:
-		UpdateEvent();
+		UpdateEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 	};
@@ -79,7 +83,7 @@ namespace kit
 			Pause
 		};
 
-		KeyboardEvent();
+		KeyboardEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -90,7 +94,7 @@ namespace kit
 	class TextEvent : public Event
 	{
 	public:
-		TextEvent();
+		TextEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -107,7 +111,7 @@ namespace kit
 			Right
 		};
 
-		MouseButtonEvent();
+		MouseButtonEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -118,7 +122,7 @@ namespace kit
 	class MouseMoveEvent : public Event
 	{
 	public:
-		MouseMoveEvent();
+		MouseMoveEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -129,7 +133,7 @@ namespace kit
 	class MouseWheelEvent : public Event
 	{
 	public:
-		MouseWheelEvent();
+		MouseWheelEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -139,7 +143,7 @@ namespace kit
 	class ControllerButtonEvent : public Event
 	{
 	public:
-		ControllerButtonEvent();
+		ControllerButtonEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -151,7 +155,7 @@ namespace kit
 	class ControllerAxisEvent : public Event
 	{
 	public:
-		ControllerAxisEvent();
+		ControllerAxisEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 
@@ -163,7 +167,7 @@ namespace kit
 	class ControllerBallEvent : public Event
 	{
 	public:
-		ControllerBallEvent();
+		ControllerBallEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 

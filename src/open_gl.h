@@ -2,7 +2,8 @@
 
 #include "gl3.h"
 
-void glInitialize();
+void glInitialize ();
+bool glIsInitialized ();
 
 extern PFNGLENABLEPROC glEnable;
 extern PFNGLDISABLEPROC glDisable;

@@ -52,6 +52,11 @@ namespace kit
 
 	void Scene2D::render(std::shared_ptr<Camera2D> camera)
 	{
+		if(!glIsInitialized())
+		{
+			throw std::runtime_error("You must create a window first to initialize OpenGL.");
+		}
+
 		// Set the OpenGL settings.
 		glDisable(GL_DEPTH_TEST);
 

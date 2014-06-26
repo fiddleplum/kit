@@ -2,12 +2,11 @@
 
 #include <kit/ptr.h>
 #include <kit/gui/widget.h>
+#include <kit/texture.h>
 #include <string>
 
 namespace kit
 {
-	class Texture;
-
 	namespace gui
 	{
 		class Sprite : virtual public Widget
@@ -15,9 +14,9 @@ namespace kit
 		public:
 			static OwnPtr<Sprite> create ();
 
-			virtual Ptr<Texture> getTexture () const = 0;
+			virtual UsePtr<Texture> getTexture () const = 0;
 
-			virtual void setNewTexture (Vector2i size) = 0;
+			virtual void setTexture (UsePtr<Texture> texture) = 0;
 
 			virtual void setTexture (std::string const & filename) = 0;
 

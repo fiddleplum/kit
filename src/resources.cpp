@@ -1,40 +1,59 @@
-#include "resources_p.h"
 #include "texture_p.h"
 #include "shader.h"
+#include "object_cache.h"
 #include "scene/model_p.h"
 
 namespace kit
 {
-	ResourcesP::ResourcesP ()
+	namespace resources
 	{
-		textureManager.set(new ResourceManager<TextureP>);
-		shaderManager.set(new ResourceManager<Shader>);
-		modelManager.set(new ResourceManager<scene::ModelP>);
-	}
+		OwnPtr<ObjectCache<TextureP>> _textureCache;
+		OwnPtr<ObjectCache<Shader>> _shaderCache;
+		OwnPtr<ObjectCache<scene::ModelP>> _modelCache;
 
-	Ptr<Texture> ResourcesP::getNewTexture (std::string const & name, Vector2i size)
-	{
-		return textureManager->get(name, size);
-	}
+		UsePtr<Texture> getBlankTexture (std::string const & name, Vector2i size)
+		{
+			return _textureCache->get(name, size);
+		}
 
-	Ptr<Texture> ResourcesP::getTextureFromFile (std::string const & filename)
-	{
-		return textureManager->get(filename, filename);
-	}
+		UsePtr<Texture> getTextureFromFile (std::string const & filename)
+		{
+			return _textureCache->get(filename, filename);
+		}
 
-	Ptr<scene::Model> ResourcesP::getNewModel (std::string const & name)
-	{
-		return modelManager->get(name);
-	}
+		UsePtr<scene::Model> getBlankModel (std::string const & name)
+		{
+			return _modelCache->get(name);
+		}
 
-	Ptr<scene::Model> ResourcesP::getModelFromFile (std::string const & filename)
-	{
-		return modelManager->get(filename, filename);
-	}
+		UsePtr<scene::Model> getModelAsSprite (std::string const & name, std::string const & textureFilename, Recti textureCoords)
+		{
+			return _modelCache->get(name, textureFilename, textureCoords);
+		}
 
-	Ptr<Shader> ResourcesP::getShader (std::string const & name, std::string code [])
-	{
-		return shaderManager->get(name, code);
+		UsePtr<scene::Model> getModelFromFile (std::string const & filename)
+		{
+			return _modelCache->get(filename, filename);
+		}
+
+		UsePtr<Shader> getShader (std::string const & name, std::string code [])
+		{
+			return _shaderCache->get(name, code);
+		}
+
+		void initialize ()
+		{
+			_shaderCache.set(new ObjectCache<Shader>);
+			_textureCache.set(new ObjectCache<TextureP>);
+			_modelCache.set(new ObjectCache<scene::ModelP>);
+		}
+
+		void finalize ()
+		{
+			_modelCache.setNull();
+			_textureCache.setNull();
+			_shaderCache.setNull();
+		}
 	}
 }
 

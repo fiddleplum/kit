@@ -2,47 +2,51 @@
 
 namespace kit
 {
-	Event::Event(Event::Type type)
+	bool _cursorIsValid;
+	Vector2i _cursorPosition;
+
+	Event::Event (Ptr<Window> window, Event::Type type)
 	{
+		this->window = window;
 		this->type = type;
 	}
 
-	ShutdownEvent::ShutdownEvent()
-		: Event(Shutdown)
+	ShutdownEvent::ShutdownEvent (Ptr<Window> window)
+		: Event (window, Shutdown)
 	{
 	}
 
-	std::string ShutdownEvent::toString() const
+	std::string ShutdownEvent::toString () const
 	{
 		return "Shutdown";
 	}
 
-	ResizeEvent::ResizeEvent()
-		: Event(Resize)
+	ResizeEvent::ResizeEvent (Ptr<Window> window)
+		: Event (window, Resize)
 	{
 	}
 
-	std::string ResizeEvent::toString() const
+	std::string ResizeEvent::toString () const
 	{
 		return "Resize: " + std::to_string(size[0]) + ", " + std::to_string(size[1]);
 	}
 
-	UpdateEvent::UpdateEvent()
-		: Event(Update)
+	UpdateEvent::UpdateEvent (Ptr<Window> window)
+		: Event (window, Update)
 	{
 	}
 
-	std::string UpdateEvent::toString() const
+	std::string UpdateEvent::toString () const
 	{
 		return "Update";
 	}
 
-	KeyboardEvent::KeyboardEvent()
-		: Event(Keyboard)
+	KeyboardEvent::KeyboardEvent (Ptr<Window> window)
+		: Event (window, Keyboard)
 	{
 	}
 
-	std::string KeyboardEvent::toString() const
+	std::string KeyboardEvent::toString () const
 	{
 		std::string r = "Keyboard ";
 		switch(key)
@@ -153,22 +157,22 @@ namespace kit
 		return r;
 	}
 
-	TextEvent::TextEvent()
-		: Event(Text)
+	TextEvent::TextEvent (Ptr<Window> window)
+		: Event (window, Text)
 	{
 	}
 
-	std::string TextEvent::toString() const
+	std::string TextEvent::toString () const
 	{
 		return "Text: " + text;
 	}
 
-	MouseButtonEvent::MouseButtonEvent()
-		: Event(MouseButton)
+	MouseButtonEvent::MouseButtonEvent (Ptr<Window> window)
+		: Event (window, MouseButton)
 	{
 	}
 
-	std::string MouseButtonEvent::toString() const
+	std::string MouseButtonEvent::toString () const
 	{
 		std::string r = "Mouse Button ";
 		switch(button)
@@ -182,52 +186,52 @@ namespace kit
 		return r;
 	}
 
-	MouseMoveEvent::MouseMoveEvent()
-		: Event(MouseMove)
+	MouseMoveEvent::MouseMoveEvent (Ptr<Window> window)
+		: Event (window, MouseMove)
 	{
 	}
 
-	std::string MouseMoveEvent::toString() const
+	std::string MouseMoveEvent::toString () const
 	{
 		return "Mouse Move: " + std::to_string(relative[0]) + ", " + std::to_string(relative[1]);
 	}
 
-	MouseWheelEvent::MouseWheelEvent()
-		: Event(MouseWheel)
+	MouseWheelEvent::MouseWheelEvent (Ptr<Window> window)
+		: Event (window, MouseWheel)
 	{
 	}
 
-	std::string MouseWheelEvent::toString() const
+	std::string MouseWheelEvent::toString () const
 	{
 		return std::string("Mouse Wheel: ") + (up ? "Up" : "Down");
 	}
 
-	ControllerButtonEvent::ControllerButtonEvent()
-		: Event(ControllerButton)
+	ControllerButtonEvent::ControllerButtonEvent (Ptr<Window> window)
+		: Event (window, ControllerButton)
 	{
 	}
 
-	std::string ControllerButtonEvent::toString() const
+	std::string ControllerButtonEvent::toString () const
 	{
 		return "Controller " + std::to_string(controller) + " Button " + std::to_string(button) + ": " + (pressed ? "Pressed" : "Unpressed");
 	}
 
-	ControllerAxisEvent::ControllerAxisEvent()
-		: Event(ControllerAxis)
+	ControllerAxisEvent::ControllerAxisEvent (Ptr<Window> window)
+		: Event (window, ControllerAxis)
 	{
 	}
 
-	std::string ControllerAxisEvent::toString() const
+	std::string ControllerAxisEvent::toString () const
 	{
 		return "Controller " + std::to_string(controller) + " Axis " + std::to_string(axis) + ": " + std::to_string(value);
 	}
 
-	ControllerBallEvent::ControllerBallEvent()
-		: Event(ControllerBall)
+	ControllerBallEvent::ControllerBallEvent (Ptr<Window> window)
+		: Event (window, ControllerBall)
 	{
 	}
 
-	std::string ControllerBallEvent::toString() const
+	std::string ControllerBallEvent::toString () const
 	{
 		return "Controller " + std::to_string(controller) + " Ball " + std::to_string(ball) + ": " + std::to_string(offset[0]) + ", " + std::to_string(offset[1]);
 	}

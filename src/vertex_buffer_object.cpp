@@ -6,6 +6,11 @@ namespace kit
 {
 	VertexBufferObject::VertexBufferObject()
 	{
+		if(!glIsInitialized())
+		{
+			throw std::runtime_error("You must create a window first to initialize OpenGL.");
+		}
+
 		GLuint arrayBuffer;
 		GLuint elementArrayBuffer;
 		glGenBuffers(1, &arrayBuffer);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <kit/texture.h>
-#include <string>
 
 namespace kit
 {

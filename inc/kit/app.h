@@ -7,23 +7,22 @@ namespace kit
 {
 	class Window;
 
-	class App
+	namespace app
 	{
-	public:
 		// Quits the application.
-		virtual void quit () = 0;
+		void quit ();
 
 		// Adds a new window.
-		virtual Ptr<Window> addWindow (char const * title) = 0;
+		Ptr<Window> addWindow (char const * title);
 
 		// Removes a window.
-		virtual void removeWindow (Ptr<Window> window) = 0;
+		void removeWindow (Ptr<Window> window);
 
 		// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
-		virtual float getTime () const = 0;
+		float getTime ();
 
-		// Returns the cursor position. If the cursor does not have a valid position, it fails an assertion.
-		virtual Vector2i getCursorPosition () const = 0;
-	};
+		// Makes the cursor active or inactive. When it is inactive, the edges of the screen do not influence mouse movements.
+		void setCursorActive (bool active);
+	}
 }
 

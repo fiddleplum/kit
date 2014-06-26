@@ -1,10 +1,7 @@
 #include "model_p.h"
 #include "camera_p.h"
 #include "../resources_p.h"
-#include "../shader.h"
-#include "../texture_p.h"
 #include "../vertex_buffer_object.h"
-#include "../app_p.h"
 #include "../serialize.h"
 #include "../serialize_std_string.h"
 #include "../serialize_std_vector.h"
@@ -29,6 +26,46 @@ namespace kit
 			scale = 1;
 			vertexBufferObject.set(new VertexBufferObject);
 			vertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
+			updateShader();
+			needsResorting = true;
+		}
+
+		ModelP::ModelP (std::string const & textureFilename, Recti textureCoords)
+		{
+			vertexHasNormal = false;
+			vertexHasTangent = false;
+			vertexHasColor = false;
+			numVertexUVs = 1;
+			emitColor = Vector3f(0, 0, 0);
+			diffuseColor = Vector4f(1, 1, 1, 1);
+			specularLevel = 1;
+			specularStrength = 0;
+			scale = 1;
+			vertexBufferObject.set(new VertexBufferObject);
+			vertexBufferObject->setBytesPerVertex(sizeof(Vector3f) + sizeof(Vector2f));
+
+			addTexture(textureFilename, "diffuse", 0);
+
+			Vector2i textureSize = getTexture(0)->getSize();
+			std::vector<float> vertices (20);
+			vertices[0] = 0; vertices[1] = 0; vertices[2] = 0;
+			vertices[3] = (float)textureCoords.min[0] / textureSize[0]; vertices[4] = (float)textureCoords.min[1] / textureSize[1];
+			vertices[5] = (float)textureCoords.getSize()[0]; vertices[6] = 0;vertices[7] = 0;
+			vertices[8] = (float)textureCoords.max[0] / textureSize[0]; vertices[9] = (float)textureCoords.min[1] / textureSize[1];
+			vertices[10] = (float)textureCoords.getSize()[0]; vertices[11] = (float)textureCoords.getSize()[1]; vertices[12] = 0;
+			vertices[13] = (float)textureCoords.max[0] / textureSize[0]; vertices[14] = (float)textureCoords.max[1] / textureSize[1];
+			vertices[15] = 0; vertices[16] = (float)textureCoords.getSize()[1]; vertices[17] = 0;
+			vertices[18] = (float)textureCoords.min[0] / textureSize[0]; vertices[19] = (float)textureCoords.max[1] / textureSize[1];
+			setVertices(&vertices[0], sizeof(float) * vertices.size());
+			std::vector<unsigned int> indices (6);
+			indices[0] = 0;
+			indices[1] = 1;
+			indices[2] = 2;
+			indices[3] = 3;
+			indices[4] = 2;
+			indices[5] = 0;
+			setIndices(&indices[0], indices.size());
+
 			updateShader();
 			needsResorting = true;
 		}
@@ -158,7 +195,7 @@ namespace kit
 		void ModelP::addTexture (std::string const & filename, std::string const & type, unsigned int uvIndex)
 		{
 			TextureInfo textureInfo;
-			textureInfo.texture = app()->getResources()->getTextureFromFile(filename).as<TextureP>();
+			textureInfo.texture = resources::getTextureFromFile(filename).as<TextureP>();
 			textureInfo.type = type;
 			textureInfo.samplerLocation = -1;
 			textureInfo.uvIndex = uvIndex;
@@ -182,6 +219,11 @@ namespace kit
 		{
 			specularLevel = level;
 			specularStrength = strength;
+		}
+
+		float ModelP::getScale () const
+		{
+			return this->scale;
 		}
 
 		void ModelP::setScale (float scale)
@@ -422,7 +464,7 @@ namespace kit
 				name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 			}
 
-			shader = app()->getResources()->getShader(name, code);
+			shader = resources::getShader(name, code);
 			needsResorting = true;
 
 			// Update attribute locations

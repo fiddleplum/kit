@@ -2,11 +2,6 @@
 #include <kit/start_finish.h>
 #include "../external/SDL2-2.0.0/include/SDL.h"
 
-namespace kit
-{
-	extern OwnPtr<AppP> gApp;
-}
-
 // Called by SDL to run the entire application.
 int main (int argc, char *argv[])
 {
@@ -19,16 +14,15 @@ int main (int argc, char *argv[])
 			parameters.push_back(std::string(argv[i]));
 		}
 
-		kit::OwnPtr<kit::AppP> app (new kit::AppP);
+		kit::app::initialize();
 
-		kit::gApp = app;
+		kit::start(parameters);
 
-		kit::start(app, parameters);
-
-		app->loop();
+		kit::app::loop();
 
 		kit::finish();
 
+		kit::app::finalize();
 	}
 	catch(std::runtime_error const & e)
 	{
