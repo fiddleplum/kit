@@ -109,6 +109,5 @@
     <ClInclude Include="src\gui\viewport_p.h" />
     <ClInclude Include="src\cursor_p.h" />
     <ClInclude Include="inc\kit\cursor.h" />
-    <ClInclude Include="inc\kit\platform.h" />
   </ItemGroup>
 </Project>

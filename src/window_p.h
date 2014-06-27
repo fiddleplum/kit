@@ -3,10 +3,13 @@
 #include "gui/widget_container_p.h"
 #include "cursor_p.h"
 #include <kit/window.h>
-#include <kit/platform.h>
+
+typedef struct SDL_Window SDL_Window;
+typedef void * SDL_GLContext;
 
 namespace kit
 {
+
 	class WindowP : public Window, public gui::WidgetContainerP
 	{
 	public:
@@ -28,7 +31,7 @@ namespace kit
 
 		int getDisplay () const override;
 
-		Ptr<Cursor> getCursor () const;
+		Ptr<Cursor> getCursor () const override;
 
 		void handleEvent (Event const & event);
 

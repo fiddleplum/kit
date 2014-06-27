@@ -53,7 +53,6 @@
     <ClInclude Include="inc\kit\log.h" />
     <ClInclude Include="inc\kit\matrix.h" />
     <ClInclude Include="inc\kit\noncopyable.h" />
-    <ClInclude Include="inc\kit\platform.h" />
     <ClInclude Include="inc\kit\quaternion.h" />
     <ClInclude Include="inc\kit\resources.h" />
     <ClInclude Include="inc\kit\scene\camera.h" />
