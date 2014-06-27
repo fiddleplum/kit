@@ -2,17 +2,13 @@
 #include "model.h"
 #include "../resources_p.h"
 #include "../window_p.h"
+#include "../cursor_p.h"
 #include <kit/texture.h>
 
 namespace kit
 {
 	namespace gui
 	{
-		OwnPtr<Sprite> Sprite::create ()
-		{
-			return OwnPtr<SpriteP> (new SpriteP);
-		}
-
 		SpriteP::SpriteP ()
 		{
 			_model.set(new Model);
@@ -43,12 +39,12 @@ namespace kit
 			updateVertices();
 		}
 
-		UsePtr<Texture> SpriteP::getTexture () const
+		Ptr<Texture> SpriteP::getTexture () const
 		{
 			return _model->getTexture();
 		}
 
-		void SpriteP::setTexture (UsePtr<Texture> texture)
+		void SpriteP::setTexture (Ptr<Texture> texture)
 		{
 			_model->setTexture(texture);
 		}
@@ -71,9 +67,10 @@ namespace kit
 
 		void SpriteP::handleEvent (Event const & event)
 		{
-			if(getBounds().containsEx(event.window.as<WindowP>()->getCursorPosition()))
+			Ptr<CursorP> cursor = event.window->getCursor().as<CursorP>();
+			if(getBounds().containsEx(cursor->getPosition()))
 			{
-				event.window.as<WindowP>()->consumeCursor();
+				cursor->consume();
 			}
 		}
 

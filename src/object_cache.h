@@ -9,7 +9,7 @@ namespace kit
 {
 	// Generic object cache.
 	// TODO: Uncomment the variadic templated version of get when MSVC++ supports them (and get rid of the existing ones).
-	template <typename Resource>
+	template <typename Object>
 	class ObjectCache
 	{
 	public:
@@ -19,176 +19,170 @@ namespace kit
 		// Destructor. Cleans. Throws an exception if it still has any objects. O(number of loaded objects)
 		~ObjectCache ();
 
-		// Returns a UsePtr of the requested object. O(log number of loaded objects)
-		//template <typename... Args> UsePtr<Resource> get (std::string const & name, Args... args);
+		// Returns a Ptr of the requested object. O(log number of loaded objects)
+		//template <typename... Args> Ptr<Object> get (std::string const & key, Args... args);
 
-		// Returns a UsePtr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		UsePtr<Resource> get (std::string const & name);
+		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
+		Ptr<Object> get (std::string const & key);
 
-		// Returns a UsePtr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		template <typename T1> UsePtr<Resource> get (std::string const & name, T1 const & arg1);
+		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
+		template <typename T1> Ptr<Object> get (std::string const & key, T1 const & arg1);
 
-		// Returns a UsePtr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		template <typename T1, typename T2> UsePtr<Resource> get (std::string const & name, T1 const & arg1, T2 const & arg2);
+		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
+		template <typename T1, typename T2> Ptr<Object> get (std::string const & key, T1 const & arg1, T2 const & arg2);
 
-		// Returns a UsePtr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		template <typename T1, typename T2, typename T3> UsePtr<Resource> get (std::string const & name, T1 const & arg1, T2 const & arg2, T3 const & arg3);
+		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
+		template <typename T1, typename T2, typename T3> Ptr<Object> get (std::string const & key, T1 const & arg1, T2 const & arg2, T3 const & arg3);
 
-		// Removes and destroys the objects that aren't referenced anywhere else. O(number of loaded objects)
+		// Removes and destroys the objects that aren't referenced anywhere else. O(number of loaded objects).
 		void clean ();
 
+		// Gets list of objects in cache by key.
+		std::vector<std::string> getObjectKeys ();
+
 	private:
-		std::map<std::string, OwnPtr<Resource>> _objects;
+		std::map<std::string, OwnPtr<Object>> _objects;
 	};
 
 	// Template Implementations
 
-	template <typename Resource>
-	ObjectCache<Resource>::ObjectCache ()
+	template <typename Object>
+	ObjectCache<Object>::ObjectCache ()
 	{
 	}
 
-	template <typename Resource>
-	ObjectCache<Resource>::~ObjectCache ()
+	template <typename Object>
+	ObjectCache<Object>::~ObjectCache ()
 	{
 		clean();
-		if(!_objects.empty())
-		{
-			std::string message (std::string() + "At least one " + typeid(Resource).name() + " not released:\n");
-			for(auto const & pair : _objects)
-			{
-				message += "\t" + pair.first + "\n";
-			}
-			throw std::runtime_error(message);
-		}
 	}
 
-	//template <typename Resource>
+	//template <typename Object>
 	//template <typename... Args>
-	//UsePtr<Resource> ObjectCache<Resource>::get (std::string const & name, Args... args)
+	//Ptr<Object> ObjectCache<Object>::get (std::string const & key, Args... args)
 	//{
-	//	auto it = _objects.find(name);
+	//	auto it = _objects.find(key);
 	//	if(it != _objects.end())
 	//	{
 	//		return it->second;
 	//	}
 	//	else
 	//	{
-	//		OwnPtr<Resource> object;
+	//		OwnPtr<Object> object;
 	//		try
 	//		{
-	//			object.set(new Resource (args...));
+	//			object.set(new Object (args...));
 	//		}
 	//		catch(std::runtime_error const & e)
 	//		{
-	//			throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+	//			throw std::runtime_error("Error while constructing '" + key + "': " + e.what());
 	//		}
-	//		_objects[name] = object;
+	//		_objects[key] = object;
 	//		return object;
 	//	}
 	//}
 
-	template <typename Resource>
-	UsePtr<Resource> ObjectCache<Resource>::get (std::string const & name)
+	template <typename Object>
+	Ptr<Object> ObjectCache<Object>::get (std::string const & key)
 	{
-		auto it = _objects.find(name);
+		auto it = _objects.find(key);
 		if(it != _objects.end())
 		{
 			return it->second;
 		}
 		else
 		{
-			OwnPtr<Resource> object;
+			OwnPtr<Object> object;
 			try
 			{
-				object.set(new Resource);
+				object.set(new Object);
 			}
 			catch(std::runtime_error const & e)
 			{
-				throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+				throw std::runtime_error("Error while constructing '" + key + "': " + e.what());
 			}
-			_objects[name] = object;
+			_objects[key] = object;
 			return object;
 		}
 	}
 
-	template <typename Resource>
+	template <typename Object>
 	template <typename T1>
-	UsePtr<Resource> ObjectCache<Resource>::get (std::string const & name, T1 const & arg1)
+	Ptr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1)
 	{
-		auto it = _objects.find(name);
+		auto it = _objects.find(key);
 		if(it != _objects.end())
 		{
 			return it->second;
 		}
 		else
 		{
-			OwnPtr<Resource> object;
+			OwnPtr<Object> object;
 			try
 			{
-				object.set(new Resource (arg1));
+				object.set(new Object (arg1));
 			}
 			catch(std::runtime_error const & e)
 			{
-				throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+				throw std::runtime_error("Error while constructing '" + key + "': " + e.what());
 			}
-			_objects[name] = object;
+			_objects[key] = object;
 			return object;
 		}
 	}
 
-	template <typename Resource>
+	template <typename Object>
 	template <typename T1, typename T2>
-	UsePtr<Resource> ObjectCache<Resource>::get (std::string const & name, T1 const & arg1, T2 const & arg2)
+	Ptr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1, T2 const & arg2)
 	{
-		auto it = _objects.find(name);
+		auto it = _objects.find(key);
 		if(it != _objects.end())
 		{
 			return it->second;
 		}
 		else
 		{
-			OwnPtr<Resource> object;
+			OwnPtr<Object> object;
 			try
 			{
-				object.set(new Resource (arg1, arg2));
+				object.set(new Object (arg1, arg2));
 			}
 			catch(std::runtime_error const & e)
 			{
-				throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+				throw std::runtime_error("Error while constructing '" + key + "': " + e.what());
 			}
-			_objects[name] = object;
+			_objects[key] = object;
 			return object;
 		}
 	}
 
-	template <typename Resource>
+	template <typename Object>
 	template <typename T1, typename T2, typename T3>
-	UsePtr<Resource> ObjectCache<Resource>::get (std::string const & name, T1 const & arg1, T2 const & arg2, T3 const & arg3)
+	Ptr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1, T2 const & arg2, T3 const & arg3)
 	{
-		auto it = _objects.find(name);
+		auto it = _objects.find(key);
 		if(it != _objects.end())
 		{
 			return it->second;
 		}
 		else
 		{
-			OwnPtr<Resource> object;
+			OwnPtr<Object> object;
 			try
 			{
-				object.set<Resource>(new Resource (arg1, arg2, arg3));
+				object.set<Object>(new Object (arg1, arg2, arg3));
 			}
 			catch(std::runtime_error const & e)
 			{
-				throw std::runtime_error("Error while constructing '" + name + "': " + e.what());
+				throw std::runtime_error("Error while constructing '" + key + "': " + e.what());
 			}
-			_objects[name] = object;
+			_objects[key] = object;
 			return object;
 		}
 	}
 
-	template <typename Resource>
-	void ObjectCache<Resource>::clean ()
+	template <typename Object>
+	void ObjectCache<Object>::clean ()
 	{
 		for(auto it = _objects.begin(); it != _objects.end(); )
 		{
@@ -201,6 +195,17 @@ namespace kit
 				it++;
 			}
 		}
+	}
+
+	template <typename Object>
+	std::vector<std::string> ObjectCache<Object>::getObjectKeys ()
+	{
+		std::vector<std::string> keys;
+		for(auto const & pair : _objects)
+		{
+			keys.push_back(pair.first);
+		}
+		return keys;
 	}
 }
 

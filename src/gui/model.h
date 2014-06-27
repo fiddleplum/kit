@@ -30,8 +30,8 @@ namespace kit
 			Vector2i getPosition () const;
 			void setPosition (Vector2i position);
 
-			UsePtr<Texture> getTexture () const;
-			void setTexture (UsePtr<Texture> texture);
+			Ptr<Texture> getTexture () const;
+			void setTexture (Ptr<Texture> texture);
 
 			void setVertices (std::vector<Vertex> const & vertices);
 			void setIndices (std::vector<unsigned int> const & indices);
@@ -39,8 +39,8 @@ namespace kit
 
 		private:
 			Vector2i _position;
-			UsePtr<TextureP> _texture;
-			UsePtr<Shader> _shader;
+			Ptr<TextureP> _texture;
+			Ptr<Shader> _shader;
 			OwnPtr<VertexBufferObject> _vbo;
 			int _windowSizeLocation;
 			int _positionLocation;

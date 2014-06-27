@@ -57,12 +57,12 @@ namespace kit
 			_position = position;
 		}
 
-		UsePtr<Texture> Model::getTexture () const
+		Ptr<Texture> Model::getTexture () const
 		{
 			return _texture;
 		}
 
-		void Model::setTexture(UsePtr<Texture> texture)
+		void Model::setTexture(Ptr<Texture> texture)
 		{
 			_texture = texture.as<TextureP>();
 		}

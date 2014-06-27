@@ -18,9 +18,9 @@ namespace kit
 
 			virtual void setScale (float scale) = 0;
 
-			virtual UsePtr<Model> getModel () const = 0;
+			virtual Ptr<Model> getModel () const = 0;
 
-			virtual void setModel (UsePtr<Model> model) = 0;
+			virtual void setModel (Ptr<Model> model) = 0;
 
 			virtual void setModel (std::string const & filename) = 0;
 		};

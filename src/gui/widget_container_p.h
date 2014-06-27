@@ -1,6 +1,8 @@
 #pragma once
 
-#include "widget_p.h"
+#include "sprite_p.h"
+#include "button_p.h"
+#include "viewport_p.h"
 #include <kit/gui/widget_container.h>
 #include <map>
 #include <list>
@@ -24,23 +26,27 @@ namespace kit
 
 			void setMaxSize (Vector2i maxSize) override;
 
-			void insertWidgetBefore (UsePtr<Widget> widget, UsePtr<Widget> beforeWidget) override;
+			Ptr<Sprite> addSprite () override;
 
-			void addWidget (UsePtr<Widget> widget) override;
+			Ptr<Button> addButton () override;
 
-			void removeWidget (UsePtr<Widget> widget) override;
+			Ptr<Viewport> addViewport () override;
 
-			void setWidgetPlacement (UsePtr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) override;
+			void removeWidget (Ptr<Widget> widget) override;
 
-			void setWidgetPlacementSize (UsePtr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) override;
+			void reinsertWidget (Ptr<Widget> widget, Ptr<Widget> beforeWidget) override;
 
-			bool isWidgetActive (UsePtr<Widget> widget) const override;
+			void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) override;
 
-			void setWidgetActive (UsePtr<Widget> widget, bool active) override;
+			void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) override;
 
-			bool isWidgetVisible (UsePtr<Widget> widget) const override;
+			bool isWidgetActive (Ptr<Widget> widget) const override;
 
-			void setWidgetVisible (UsePtr<Widget> widget, bool visible) override;
+			void setWidgetActive (Ptr<Widget> widget, bool active) override;
+
+			bool isWidgetVisible (Ptr<Widget> widget) const override;
+
+			void setWidgetVisible (Ptr<Widget> widget, bool visible) override;
 
 			void handleEvent (Event const & event) override;
 
@@ -50,18 +56,20 @@ namespace kit
 			class WidgetInfo
 			{
 			public:
-				WidgetInfo (UsePtr<Widget>);
+				WidgetInfo (OwnPtr<WidgetP>);
 
-				UsePtr<WidgetP> widget;
+				OwnPtr<WidgetP> widget;
 				bool active;
 				bool visible;
 			};
+
+			void addWidget (OwnPtr<WidgetP> widget);
 
 			std::function<void (Event const &)> handleContainerEventFunction;
 			std::function<void ()> updateWidgetBoundsFunction;
 			Recti bounds;
 			std::list<WidgetInfo> widgetInfos;
-			std::map<UsePtr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
+			std::map<Ptr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
 		};
 	}
 }

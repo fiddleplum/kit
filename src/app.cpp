@@ -2,6 +2,7 @@
 #include "open_gl.h"
 #include "window_p.h"
 #include "resources_p.h"
+#include "log_p.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
@@ -21,6 +22,8 @@ namespace kit
 
 		void initialize ()
 		{
+			log::initialize();
+
 			_looping = false;
 			_firstMouseMoveEvent = true;
 			_sdlGlContext = nullptr;
@@ -38,6 +41,7 @@ namespace kit
 		{
 			resources::finalize();
 			SDL_Quit();
+			log::finalize();
 		}
 
 		void quit ()
@@ -264,10 +268,10 @@ namespace kit
 					window->setMaxSize(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
 					break;
 				case SDL_WINDOWEVENT_LEAVE:
-					window->setCursorValidity(false);
+					window->getCursor().as<CursorP>()->setValidity(false);
 					break;
 				case SDL_WINDOWEVENT_ENTER:
-					window->setCursorValidity(true);
+					window->getCursor().as<CursorP>()->setValidity(true);
 					break;
 				}
 				break;

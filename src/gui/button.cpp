@@ -5,11 +5,6 @@ namespace kit
 {
 	namespace gui
 	{
-		OwnPtr<Button> Button::create ()
-		{
-			return OwnPtr<ButtonP> (new ButtonP);
-		}
-
 		ButtonP::ButtonP ()
 		{
 			sprite.set(new SpriteP);
@@ -131,7 +126,7 @@ namespace kit
 			sprite->render(windowSize);
 		}
 
-		void ButtonP::setTexture (UsePtr<Texture> texture)
+		void ButtonP::setTexture (Ptr<Texture> texture)
 		{
 			sprite->setTexture(texture);
 		}

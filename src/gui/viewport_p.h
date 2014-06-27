@@ -1,7 +1,7 @@
 #pragma once
 
 #include "widget_p.h"
-#include "../scene/camera.h"
+//#include "../scene/camera.h"
 #include <kit/gui/viewport.h>
 
 namespace kit
@@ -27,7 +27,7 @@ namespace kit
 
 			void setScene (Ptr<scene::Scene>) override;
 
-			bool handleEvent (Event const & event, bool cursorIsValid) override;
+			void handleEvent (Event const & event) override;
 
 			void render (Vector2i windowSize) override;
 

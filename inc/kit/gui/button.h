@@ -17,10 +17,8 @@ namespace kit
 				Hold, Toggle, Shot
 			};
 
-			static OwnPtr<Button> create ();
-
 			// Sets the texture to use.
-			virtual void setTexture (UsePtr<Texture> texture) = 0;
+			virtual void setTexture (Ptr<Texture> texture) = 0;
 
 			// Frames are stacked horizontally: default, hovered, pressed, pressed-hovered.
 			virtual void setTextureBounds (Recti bounds) = 0;

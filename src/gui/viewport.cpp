@@ -1,8 +1,11 @@
 #include "viewport_p.h"
 #include "../app_p.h"
 #include "../open_gl.h"
-#include "../scene/camera_internal.h"
+#include "../scene/camera_p.h"
 #include "../scene.h"
+#include "../cursor_p.h"
+#include "../window_p.h"
+#include <kit/window.h>
 
 namespace kit
 {
@@ -10,7 +13,6 @@ namespace kit
 	{
 		ViewportP::ViewportP ()
 		{
-			bounds = Recti::zero();
 		}
 
 		Recti ViewportP::getBounds () const
@@ -59,19 +61,17 @@ namespace kit
 			this->scene = scene;
 		}
 
-		bool ViewportP::handleEvent (Event const & event, bool cursorIsValid)
+		void ViewportP::handleEvent (Event const & event)
 		{
-			if(cursorIsValid)
+			Ptr<CursorP> cursor = event.window->getCursor().as<CursorP>();
+			if(getBounds().containsEx(cursor->getPosition()))
 			{
-				if(getBounds().containsEx(app()->getCursorPosition()))
-				{
-					cursorIsValid = false;
-				}
+				cursor->consume();
 			}
 
 			if(scene.isValid())
 			{
-				scene->handleEvent(event);
+//				scene->handleEvent(event);
 			}
 		}
 

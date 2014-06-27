@@ -22,9 +22,9 @@ namespace kit
 
 			void setMaxSize (Vector2i maxSize) override;
 
-			UsePtr<Texture> getTexture () const override;
+			Ptr<Texture> getTexture () const override;
 
-			void setTexture (UsePtr<Texture> texture) override;
+			void setTexture (Ptr<Texture> texture) override;
 
 			void setTexture (std::string const & filename) override;
 

@@ -2,6 +2,7 @@
 #include "shader.h"
 #include "object_cache.h"
 #include "scene/model_p.h"
+#include "resources_p.h"
 
 namespace kit
 {
@@ -11,32 +12,32 @@ namespace kit
 		OwnPtr<ObjectCache<Shader>> _shaderCache;
 		OwnPtr<ObjectCache<scene::ModelP>> _modelCache;
 
-		UsePtr<Texture> getBlankTexture (std::string const & name, Vector2i size)
+		Ptr<Texture> getBlankTexture (std::string const & name, Vector2i size)
 		{
 			return _textureCache->get(name, size);
 		}
 
-		UsePtr<Texture> getTextureFromFile (std::string const & filename)
+		Ptr<Texture> getTextureFromFile (std::string const & filename)
 		{
 			return _textureCache->get(filename, filename);
 		}
 
-		UsePtr<scene::Model> getBlankModel (std::string const & name)
+		Ptr<scene::Model> getBlankModel (std::string const & name)
 		{
 			return _modelCache->get(name);
 		}
 
-		UsePtr<scene::Model> getModelAsSprite (std::string const & name, std::string const & textureFilename, Recti textureCoords)
+		Ptr<scene::Model> getModelAsSprite (std::string const & name, std::string const & textureFilename, Recti textureCoords)
 		{
 			return _modelCache->get(name, textureFilename, textureCoords);
 		}
 
-		UsePtr<scene::Model> getModelFromFile (std::string const & filename)
+		Ptr<scene::Model> getModelFromFile (std::string const & filename)
 		{
 			return _modelCache->get(filename, filename);
 		}
 
-		UsePtr<Shader> getShader (std::string const & name, std::string code [])
+		Ptr<Shader> getShader (std::string const & name, std::string code [])
 		{
 			return _shaderCache->get(name, code);
 		}

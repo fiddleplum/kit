@@ -8,7 +8,7 @@ namespace kit
 {
 	namespace resources
 	{
-		UsePtr<Shader> getShader (std::string const & name, std::string code []);
+		Ptr<Shader> getShader (std::string const & name, std::string code []);
 
 		void initialize ();
 

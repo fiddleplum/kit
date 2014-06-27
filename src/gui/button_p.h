@@ -23,7 +23,7 @@ namespace kit
 
 			void render (Vector2i windowSize) override;
 
-			void setTexture (UsePtr<Texture> texture);
+			void setTexture (Ptr<Texture> texture);
 
 			void setTextureBounds (Recti bounds) override;
 

@@ -35,6 +35,9 @@
     <ClCompile Include="src\scene\camera.cpp" />
     <ClCompile Include="src\scene\model.cpp" />
     <ClCompile Include="src\scene\object.cpp" />
+    <ClCompile Include="src\log.cpp" />
+    <ClCompile Include="src\gui\viewport.cpp" />
+    <ClCompile Include="src\cursor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -97,9 +100,15 @@
     <ClInclude Include="src\scene\entity_p.h" />
     <ClInclude Include="src\scene\camera_p.h" />
     <ClInclude Include="src\scene\model_p.h" />
-    <ClInclude Include="src\scene\object_h.h" />
     <ClInclude Include="inc\kit\resources.h" />
     <ClInclude Include="src\resources_p.h" />
     <ClInclude Include="src\object_cache.h" />
+    <ClInclude Include="inc\kit\log.h" />
+    <ClInclude Include="src\log_p.h" />
+    <ClInclude Include="src\scene\object_p.h" />
+    <ClInclude Include="src\gui\viewport_p.h" />
+    <ClInclude Include="src\cursor_p.h" />
+    <ClInclude Include="inc\kit\cursor.h" />
+    <ClInclude Include="inc\kit\platform.h" />
   </ItemGroup>
 </Project>

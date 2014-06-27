@@ -12,11 +12,9 @@ namespace kit
 		class Sprite : virtual public Widget
 		{
 		public:
-			static OwnPtr<Sprite> create ();
+			virtual Ptr<Texture> getTexture () const = 0;
 
-			virtual UsePtr<Texture> getTexture () const = 0;
-
-			virtual void setTexture (UsePtr<Texture> texture) = 0;
+			virtual void setTexture (Ptr<Texture> texture) = 0;
 
 			virtual void setTexture (std::string const & filename) = 0;
 

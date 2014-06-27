@@ -17,6 +17,8 @@ namespace kit
 			throw std::runtime_error("Failed to create the window. ");
 		}
 		setMaxSize(size);
+
+		_cursor.set(new CursorP);
 	}
 
 	WindowP::~WindowP ()
@@ -89,9 +91,14 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
+	Ptr<Cursor> WindowP::getCursor () const
+	{
+		return _cursor;
+	}
+
 	void WindowP::handleEvent (Event const & event)
 	{
-		_cursorIsConsumed = _cursorIsValid;
+		_cursor->resetConsumed();
 		WidgetContainerP::handleEvent(event);
 	}
 
@@ -121,36 +128,6 @@ namespace kit
 	SDL_Window * WindowP::getSDLWindow () const
 	{
 		return _sdlWindow;
-	}
-
-	bool WindowP::cursorIsValid () const
-	{
-		return _cursorIsValid;
-	}
-
-	Vector2i WindowP::getCursorPosition () const
-	{
-		return _cursorPosition;
-	}
-
-	void WindowP::setCursorValidity (bool is)
-	{
-		_cursorIsValid = is;
-	}
-
-	bool WindowP::cursorIsConsumed () const
-	{
-		return _cursorIsConsumed;
-	}
-
-	void WindowP::consumeCursor ()
-	{
-		_cursorIsConsumed = true;
-	}
-
-	void WindowP::setCursorPosition (Vector2i position)
-	{
-		_cursorPosition = position;
 	}
 
 	int getNumDisplays ()

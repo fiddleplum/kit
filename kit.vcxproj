@@ -14,7 +14,10 @@
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\camera_2d.cpp" />
     <ClCompile Include="src\csv.cpp" />
+    <ClCompile Include="src\cursor.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
+    <ClCompile Include="src\gui\viewport.cpp" />
+    <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\flat\body.cpp" />
@@ -44,10 +47,13 @@
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
     <ClInclude Include="inc\kit\app.h" />
+    <ClInclude Include="inc\kit\cursor.h" />
     <ClInclude Include="inc\kit\gui\button.h" />
     <ClInclude Include="inc\kit\gui\viewport.h" />
+    <ClInclude Include="inc\kit\log.h" />
     <ClInclude Include="inc\kit\matrix.h" />
     <ClInclude Include="inc\kit\noncopyable.h" />
+    <ClInclude Include="inc\kit\platform.h" />
     <ClInclude Include="inc\kit\quaternion.h" />
     <ClInclude Include="inc\kit\resources.h" />
     <ClInclude Include="inc\kit\scene\camera.h" />
@@ -59,6 +65,7 @@
     <ClInclude Include="inc\kit\interval.h" />
     <ClInclude Include="inc\kit\texture.h" />
     <ClInclude Include="src\app_p.h" />
+    <ClInclude Include="src\cursor_p.h" />
     <ClInclude Include="src\gui\button_p.h" />
     <ClInclude Include="src\gui\sprite_p.h" />
     <ClInclude Include="inc\kit\ptr.h" />
@@ -80,9 +87,11 @@
     <ClInclude Include="src\gui\model.h" />
     <ClInclude Include="inc\kit\gui\sprite.h" />
     <ClInclude Include="inc\kit\gui\widget_container.h" />
+    <ClInclude Include="src\gui\viewport_p.h" />
     <ClInclude Include="src\gui\widget_container_p.h" />
     <ClInclude Include="src\gui\widget_p.h" />
     <ClInclude Include="src\light_2d.h" />
+    <ClInclude Include="src\log_p.h" />
     <ClInclude Include="src\math_util.h" />
     <ClInclude Include="src\resources_p.h" />
     <ClInclude Include="src\open_gl.h" />
@@ -93,7 +102,7 @@
     <ClInclude Include="src\scene\camera_p.h" />
     <ClInclude Include="src\scene\entity_p.h" />
     <ClInclude Include="src\scene\model_p.h" />
-    <ClInclude Include="src\scene\object_h.h" />
+    <ClInclude Include="src\scene\object_p.h" />
     <ClInclude Include="src\scene_2d.h" />
     <ClInclude Include="src\frame_2d.h" />
     <ClInclude Include="src\serialize.h" />

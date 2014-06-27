@@ -1,4 +1,4 @@
-#include "object_h.h"
+#include "object_p.h"
 #include "../resources_p.h"
 
 namespace kit
@@ -15,12 +15,12 @@ namespace kit
 			model->setScale(scale);
 		}
 
-		UsePtr<Model> ObjectP::getModel () const
+		Ptr<Model> ObjectP::getModel () const
 		{
 			return model;
 		}
 
-		void ObjectP::setModel (UsePtr<Model> model) 
+		void ObjectP::setModel (Ptr<Model> model) 
 		{
 			this->model = model.as<ModelP>();
 		}

@@ -12,9 +12,6 @@ namespace kit
 		//! Default constructor.
 		Interval();
 
-		//! Returns a box with all values at zero.
-		static Interval<dim, T> zero();
-
 		//! Returns a box given a \b min and \b max.
 		static Interval<dim, T> minMax(Vector<dim, T> min, Vector<dim, T> max);
 
@@ -67,15 +64,6 @@ namespace kit
 	template <int dim, typename T>
 	Interval<dim, T>::Interval()
 	{
-	}
-
-	template <int dim, typename T>
-	Interval<dim, T> Interval<dim, T>::zero()
-	{
-		Interval<dim, T> box;
-		box.min = Vector<dim, T>::zero();
-		box.max = Vector<dim, T>::zero();
-		return box;
 	}
 
 	template <int dim, typename T>
