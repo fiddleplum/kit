@@ -9,18 +9,41 @@ namespace kit
 {
 	namespace gui
 	{
-		class Sprite : virtual public Widget
+		class Model;
+
+		class Sprite : public Widget
 		{
 		public:
-			virtual Ptr<Texture> getTexture () const = 0;
+			Sprite ();
 
-			virtual void setTexture (Ptr<Texture> texture) = 0;
+			Recti getBounds () const;
 
-			virtual void setTexture (std::string const & filename) = 0;
+			void setPosition (Vector2i position);
 
-			virtual void setTextureBounds (Recti bounds) = 0;
+			void setMaxSize (Vector2i maxSize);
 
-			virtual Recti getTextureBounds () const = 0;
+			Ptr<Texture> getTexture () const;
+
+			void setTexture (Ptr<Texture> texture);
+
+			void setTexture (std::string const & filename);
+
+			void setTextureBounds (Recti bounds);
+
+			Recti getTextureBounds () const;
+
+			void handleEvent (Event const & event);
+
+			void render (Vector2i windowSize);
+
+		private:
+			void updateVertices ();
+
+			OwnPtr<Model> _model;
+			Recti _textureBounds;
+			Vector2i _maxSize;
+
+			friend class WidgetContainer;
 		};
 	}
 }

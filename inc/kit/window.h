@@ -2,36 +2,52 @@
 
 #include <kit/gui/widget_container.h>
 #include <kit/cursor.h>
+#include <kit/platform.h>
 #include <vector>
 
 namespace kit
 {
-	class Window : virtual public gui::WidgetContainer
+	class Window : public gui::WidgetContainer
 	{
 	public:
 		// Sets the title of the window.
-		virtual void setTitle (char const * title) = 0;
+		void setTitle (char const * title);
 
 		// Sets the window to windowed mode.
-		virtual void setWindowed () = 0;
+		void setWindowed ();
 
 		// Sets the window to fullscreen on a given display and resolution.
-		virtual void setFullscreen (int display, Vector2i size) = 0;
+		void setFullscreen (int display, Vector2i size);
 
 		// Sets the window to fullscreen on the display the window is within at its desktop resolution.
-		virtual void setFullscreen () = 0;
+		void setFullscreen ();
 
 		// Returns the size of the window, exluding the borders and title bar.
-		virtual Vector2i getSize () const = 0;
+		Vector2i getSize () const;
 
 		// Returns true if the window is fullscreen.
-		virtual bool isFullscreen () const = 0;
+		bool isFullscreen () const;
 
 		// Returns the display that the window is within, determined by its center.
-		virtual int getDisplay () const = 0;
+		int getDisplay () const;
 
 		// Returns the cursor information associated with this window.
-		virtual Ptr<Cursor> getCursor () const = 0;
+		Ptr<Cursor> cursor () const;
+
+	private:
+		Window (char const * title);
+
+		~Window ();
+
+		void handleEvent (Event const & event);
+
+		void render (SDL_GLContext sdlGlContext);
+
+		SDL_Window * getSDLWindow () const;
+
+		SDL_Window * _sdlWindow;
+		OwnPtr<Cursor> _cursor;
+
 	};
 
 	// Returns the number of displays in the system.

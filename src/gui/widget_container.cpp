@@ -1,4 +1,7 @@
-#include "widget_container_p.h"
+#include <kit/gui/widget_container.h>
+#include "sprite_p.h"
+#include "button_p.h"
+#include "viewport_p.h"
 #include <algorithm>
 #include <list>
 #include <map>
@@ -7,17 +10,17 @@ namespace kit
 {
 	namespace gui
 	{
-		void WidgetContainerP::setHandleContainerEventFunction (std::function<void (Event const &)> newHandleContainerEventFunction)
+		void WidgetContainer::setHandleContainerEventFunction (std::function<void (Event const &)> newHandleContainerEventFunction)
 		{
 			handleContainerEventFunction = newHandleContainerEventFunction;
 		}
 
-		void WidgetContainerP::setUpdateWidgetBoundsFunction (std::function<void ()> newUpdateWidgetBoundsFunction)
+		void WidgetContainer::setUpdateWidgetBoundsFunction (std::function<void ()> newUpdateWidgetBoundsFunction)
 		{
 			updateWidgetBoundsFunction = newUpdateWidgetBoundsFunction;
 		}
 
-		void WidgetContainerP::callUpdateWidgetBoundsFunction ()
+		void WidgetContainer::callUpdateWidgetBoundsFunction ()
 		{
 			if(updateWidgetBoundsFunction)
 			{
@@ -25,12 +28,12 @@ namespace kit
 			}
 		}
 
-		Recti WidgetContainerP::getBounds () const
+		Recti WidgetContainer::getBounds () const
 		{
 			return bounds;
 		}
 
-		void WidgetContainerP::setPosition (Vector2i position)
+		void WidgetContainer::setPosition (Vector2i position)
 		{
 			bounds.setMinKeepSize(position);
 			if(updateWidgetBoundsFunction)
@@ -39,7 +42,7 @@ namespace kit
 			}
 		}
 
-		void WidgetContainerP::setMaxSize (Vector2i maxSize)
+		void WidgetContainer::setMaxSize (Vector2i maxSize)
 		{
 			bounds.setSize(maxSize);
 			if(updateWidgetBoundsFunction)
@@ -48,47 +51,47 @@ namespace kit
 			}
 		}
 
-		Ptr<Sprite> WidgetContainerP::addSprite ()
+		Ptr<Sprite> WidgetContainer::addSprite ()
 		{
 			OwnPtr<SpriteP> sprite (new SpriteP);
 			addWidget(sprite);
 			return sprite;
 		}
 
-		Ptr<Button> WidgetContainerP::addButton ()
+		Ptr<Button> WidgetContainer::addButton ()
 		{
 			OwnPtr<ButtonP> button (new ButtonP);
 			addWidget(button);
 			return button;
 		}
 
-		Ptr<Viewport> WidgetContainerP::addViewport ()
+		Ptr<Viewport> WidgetContainer::addViewport ()
 		{
 			OwnPtr<ViewportP> viewport (new ViewportP);
 			addWidget(viewport);
 			return viewport;
 		}
 
-		void WidgetContainerP::removeWidget (Ptr<Widget> widget)
+		void WidgetContainer::removeWidget (Ptr<Widget> widget)
 		{
 			if(widget.isValid())
 			{
 				auto lookupIterator = widgetLookup.find(widget);
 				if(lookupIterator == widgetLookup.end())
 				{
-					throw std::runtime_error ("WidgetContainerP::removeWidget, widget not found");
+					throw std::runtime_error ("WidgetContainer::removeWidget, widget not found");
 				}
 				widgetInfos.erase(lookupIterator->second);
 				widgetLookup.erase(lookupIterator);
 			}
 		}
 
-		void WidgetContainerP::reinsertWidget (Ptr<Widget> widget, Ptr<Widget> beforeWidget)
+		void WidgetContainer::reinsertWidget (Ptr<Widget> widget, Ptr<Widget> beforeWidget)
 		{
 			auto oldWidgetIterator = widgetLookup.find(widget);
 			if(oldWidgetIterator == widgetLookup.end())
 			{
-				throw std::runtime_error ("WidgetContainerP::reinsertWidget, widget not found");
+				throw std::runtime_error ("WidgetContainer::reinsertWidget, widget not found");
 			}
 			if(widget == beforeWidget)
 			{
@@ -101,7 +104,7 @@ namespace kit
 				beforeWidgetIterator = widgetLookup.find(beforeWidget);
 				if(beforeWidgetIterator == widgetLookup.end())
 				{
-					throw std::runtime_error ("WidgetContainerP::reinsertWidget, beforeWidget not found");
+					throw std::runtime_error ("WidgetContainer::reinsertWidget, beforeWidget not found");
 				}
 			}
 			else
@@ -113,14 +116,14 @@ namespace kit
 			widgetLookup[widget] = newWidgetIterator;
 		}
 
-		void WidgetContainerP::setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset)
+		void WidgetContainer::setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset)
 		{
 			Vector2i position = bounds.min;
 			position = Vector2i(externalFractionalOffset.scale(bounds.getSize())) - Vector2i(internalFractionalOffset.scale(widget->getBounds().getSize())) + pixelOffset;
 			widget->setPosition(position);
 		}
 
-		void WidgetContainerP::setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize)
+		void WidgetContainer::setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize)
 		{
 			Vector2i position = widget->getBounds().min;
 			Vector2i maxSize = Vector2i(fractionalSize.scale(bounds.getSize())) + pixelSize;
@@ -129,47 +132,47 @@ namespace kit
 			widget->setMaxSize(maxSize);
 		}
 
-		bool WidgetContainerP::isWidgetActive (Ptr<Widget> widget) const
+		bool WidgetContainer::isWidgetActive (Ptr<Widget> widget) const
 		{
 			auto lookupIterator = widgetLookup.find(widget);
 			if(lookupIterator == widgetLookup.end())
 			{
-				throw std::runtime_error ("WidgetContainerP::setWidgetVisible, widget not found");
+				throw std::runtime_error ("WidgetContainer::setWidgetVisible, widget not found");
 			}
 			return lookupIterator->second->active;
 		}
 
-		void WidgetContainerP::setWidgetActive (Ptr<Widget> widget, bool active)
+		void WidgetContainer::setWidgetActive (Ptr<Widget> widget, bool active)
 		{
 			auto lookupIterator = widgetLookup.find(widget);
 			if(lookupIterator == widgetLookup.end())
 			{
-				throw std::runtime_error ("WidgetContainerP::setWidgetActive, widget not found");
+				throw std::runtime_error ("WidgetContainer::setWidgetActive, widget not found");
 			}
 			lookupIterator->second->active = active;
 		}
 
-		bool WidgetContainerP::isWidgetVisible (Ptr<Widget> widget) const
+		bool WidgetContainer::isWidgetVisible (Ptr<Widget> widget) const
 		{
 			auto lookupIterator = widgetLookup.find(widget);
 			if(lookupIterator == widgetLookup.end())
 			{
-				throw std::runtime_error ("WidgetContainerP::setWidgetVisible, widget not found");
+				throw std::runtime_error ("WidgetContainer::setWidgetVisible, widget not found");
 			}
 			return lookupIterator->second->visible;
 		}
 
-		void WidgetContainerP::setWidgetVisible (Ptr<Widget> widget, bool visible)
+		void WidgetContainer::setWidgetVisible (Ptr<Widget> widget, bool visible)
 		{
 			auto lookupIterator = widgetLookup.find(widget);
 			if(lookupIterator == widgetLookup.end())
 			{
-				throw std::runtime_error ("WidgetContainerP::setWidgetVisible, widget not found");
+				throw std::runtime_error ("WidgetContainer::setWidgetVisible, widget not found");
 			}
 			lookupIterator->second->visible = visible;
 		}
 
-		void WidgetContainerP::handleEvent (Event const & event)
+		void WidgetContainer::handleEvent (Event const & event)
 		{
 			if(handleContainerEventFunction)
 			{
@@ -184,7 +187,7 @@ namespace kit
 			}
 		}
 
-		void WidgetContainerP::render (Vector2i windowSize)
+		void WidgetContainer::render (Vector2i windowSize)
 		{
 			for(auto const & widgetInfo : widgetInfos)
 			{
@@ -195,14 +198,14 @@ namespace kit
 			}
 		}
 
-		WidgetContainerP::WidgetInfo::WidgetInfo (OwnPtr<WidgetP> newWidget)
+		WidgetContainer::WidgetInfo::WidgetInfo (OwnPtr<WidgetP> newWidget)
 		{
 			widget = newWidget;
 			active = true;
 			visible = true;
 		}
 
-		void WidgetContainerP::addWidget (OwnPtr<WidgetP> widget)
+		void WidgetContainer::addWidget (OwnPtr<WidgetP> widget)
 		{
 			auto widgetIterator = widgetInfos.insert(widgetInfos.end(), WidgetInfo(widget));
 			widgetLookup[widget] = widgetIterator;

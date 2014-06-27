@@ -1,6 +1,7 @@
 #pragma once
 
 #include <kit/gui/widget.h>
+#include <kit/gui/sprite.h>
 #include <functional>
 
 namespace kit
@@ -9,7 +10,7 @@ namespace kit
 
 	namespace gui
 	{
-		class Button : virtual public Widget
+		class Button : public Widget
 		{
 		public:
 			enum Type
@@ -17,29 +18,57 @@ namespace kit
 				Hold, Toggle, Shot
 			};
 
+			Recti getBounds () const override;
+
+			void setPosition (Vector2i position) override;
+
+			void setMaxSize (Vector2i maxSize) override;
+
 			// Sets the texture to use.
-			virtual void setTexture (Ptr<Texture> texture) = 0;
+			void setTexture (Ptr<Texture> texture);
 
 			// Frames are stacked horizontally: default, hovered, pressed, pressed-hovered.
-			virtual void setTextureBounds (Recti bounds) = 0;
+			void setTextureBounds (Recti bounds);
 
 			// Set the type of button.
-			virtual void setType (Type type) = 0;
+			void setType (Type type);
 
 			// Set how long the button will stay pressed, if the shot type.
-			virtual void setShotInterval (float interval) = 0;
+			void setShotInterval (float interval);
 
 			// Set a function to be called when the cursor moves over the button.
-			virtual void setHoverFunction (std::function<void ()> hoverFunction) = 0;
+			void setHoverFunction (std::function<void ()> hoverFunction);
 
 			// Set a function to be called when the cursor moves away from the button.
-			virtual void setUnhoverFunction (std::function<void ()> unhoverFunction) = 0;
+			void setUnhoverFunction (std::function<void ()> unhoverFunction);
 
 			// Sets a function to be called when the button becomes pressed.
-			virtual void setPressFunction (std::function<void ()> pressFunction) = 0;
+			void setPressFunction (std::function<void ()> pressFunction);
 
 			// Sets a function to be called when the button comes back up (from either mouse up or a second press on a toggle button).
-			virtual void setUnpressFunction (std::function<void ()> unpressFunction) = 0;
+			void setUnpressFunction (std::function<void ()> unpressFunction);
+
+		private:
+			Button ();
+
+			void handleEvent (Event const & event) override;
+
+			void render (Vector2i windowSize) override;
+
+			void setSpriteTextureBoundsFromState ();
+
+			std::function<void ()> hoverFunction;
+			std::function<void ()> unhoverFunction;
+			std::function<void ()> pressFunction;
+			std::function<void ()> unpressFunction;
+			Type type;
+			float shotInterval;
+			bool hovered;
+			bool pressed;
+			bool toggled;
+			float timePressed;
+			OwnPtr<Sprite> sprite;
+			Recti defaultTextureBounds;
 		};
 	}
 }

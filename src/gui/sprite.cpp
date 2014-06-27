@@ -1,15 +1,15 @@
-#include "sprite_p.h"
+#include <kit/gui/sprite.h>
+#include <kit/window.h>
+#include <kit/cursor.h>
+#include <kit/texture.h>
 #include "model.h"
 #include "../resources_p.h"
-#include "../window_p.h"
-#include "../cursor_p.h"
-#include <kit/texture.h>
 
 namespace kit
 {
 	namespace gui
 	{
-		SpriteP::SpriteP ()
+		Sprite::Sprite ()
 		{
 			_model.set(new Model);
 			std::vector<unsigned int> indices (6);
@@ -23,63 +23,62 @@ namespace kit
 			updateVertices();
 		}
 
-		Recti SpriteP::getBounds () const
+		Recti Sprite::getBounds () const
 		{
 			return Recti::minSize(_model->getPosition(), _textureBounds.getSize());
 		}
 
-		void SpriteP::setPosition (Vector2i position)
+		void Sprite::setPosition (Vector2i position)
 		{
 			_model->setPosition(position);
 		}
 
-		void SpriteP::setMaxSize (Vector2i maxSize)
+		void Sprite::setMaxSize (Vector2i maxSize)
 		{
 			_maxSize = maxSize;
 			updateVertices();
 		}
 
-		Ptr<Texture> SpriteP::getTexture () const
+		Ptr<Texture> Sprite::getTexture () const
 		{
 			return _model->getTexture();
 		}
 
-		void SpriteP::setTexture (Ptr<Texture> texture)
+		void Sprite::setTexture (Ptr<Texture> texture)
 		{
 			_model->setTexture(texture);
 		}
 
-		void SpriteP::setTexture (std::string const & filename)
+		void Sprite::setTexture (std::string const & filename)
 		{
 			_model->setTexture(resources::getTextureFromFile(filename));
 		}
 
-		Recti SpriteP::getTextureBounds () const
+		Recti Sprite::getTextureBounds () const
 		{
 			return _textureBounds;
 		}
 
-		void SpriteP::setTextureBounds (Recti bounds)
+		void Sprite::setTextureBounds (Recti bounds)
 		{
 			_textureBounds = bounds;
 			updateVertices();
 		}
 
-		void SpriteP::handleEvent (Event const & event)
+		void Sprite::handleEvent (Event const & event)
 		{
-			Ptr<CursorP> cursor = event.window->getCursor().as<CursorP>();
-			if(getBounds().containsEx(cursor->getPosition()))
+			if(getBounds().containsEx(event.window->cursor()->position()))
 			{
-				cursor->consume();
+				event.window->cursor()->consume();
 			}
 		}
 
-		void SpriteP::render (Vector2i windowSize)
+		void Sprite::render (Vector2i windowSize)
 		{
 			_model->render(windowSize);
 		}
 
-		void SpriteP::updateVertices()
+		void Sprite::updateVertices()
 		{
 			Vector2i size;
 			size[0] = std::min(_textureBounds.getSize()[0], _maxSize[0]);

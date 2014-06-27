@@ -17,6 +17,7 @@
     <ClCompile Include="src\cursor.cpp" />
     <ClCompile Include="src\gui\button.cpp" />
     <ClCompile Include="src\gui\viewport.cpp" />
+    <ClCompile Include="src\gui\widget.cpp" />
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\event.cpp" />
@@ -89,7 +90,6 @@
     <ClInclude Include="inc\kit\gui\widget_container.h" />
     <ClInclude Include="src\gui\viewport_p.h" />
     <ClInclude Include="src\gui\widget_container_p.h" />
-    <ClInclude Include="src\gui\widget_p.h" />
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\log_p.h" />
     <ClInclude Include="src\math_util.h" />

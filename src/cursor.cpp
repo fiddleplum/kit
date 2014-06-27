@@ -1,40 +1,40 @@
-#include "cursor_p.h"
+#include <kit/cursor.h>
 
 namespace kit
 {
-	bool CursorP::isValid () const
+	bool Cursor::validity () const
 	{
-		return _isValid;
+		return _validity;
 	}
 
-	Vector2i CursorP::getPosition () const
+	Vector2i Cursor::position () const
 	{
 		return _position;
 	}
 
-	void CursorP::setValidity (bool is)
+	void Cursor::consume ()
 	{
-		_isValid = is;
+		_consumed = true;
 	}
 
-	bool CursorP::isConsumed () const
-	{
-		return _isConsumed;
-	}
+	//void Cursor::setValidity (bool is)
+	//{
+	//	_isValid = is;
+	//}
 
-	void CursorP::resetConsumed ()
-	{
-		_isConsumed = _isValid;
-	}
+	//bool Cursor::isConsumed () const
+	//{
+	//	return _isConsumed;
+	//}
 
-	void CursorP::consume ()
-	{
-		_isConsumed = true;
-	}
+	//void Cursor::resetConsumed ()
+	//{
+	//	_isConsumed = _isValid;
+	//}
 
-	void CursorP::setPosition (Vector2i position)
-	{
-		_position = position;
-	}
+	//void Cursor::setPosition (Vector2i position)
+	//{
+	//	_position = position;
+	//}
 }
 

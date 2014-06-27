@@ -38,6 +38,7 @@
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\gui\viewport.cpp" />
     <ClCompile Include="src\cursor.cpp" />
+    <ClCompile Include="src\gui\widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -90,7 +91,6 @@
     <ClInclude Include="inc\kit\texture.h" />
     <ClInclude Include="src\unique_id_factory.h" />
     <ClInclude Include="inc\kit\scene\model.h" />
-    <ClInclude Include="src\gui\widget_p.h" />
     <ClInclude Include="src\gui\widget_container_p.h" />
     <ClInclude Include="src\gui\sprite_p.h" />
     <ClInclude Include="src\texture_p.h" />

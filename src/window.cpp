@@ -1,5 +1,5 @@
 #include "open_gl.h"
-#include "window_p.h"
+#include <kit/window.h>
 #include <string>
 #include <algorithm>
 #include <map>
@@ -7,37 +7,18 @@
 
 namespace kit
 {
-	WindowP::WindowP (char const * title)
-	{
-		Vector2i size (800, 600);
-
-		_sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size[0], size[1], SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-		if(_sdlWindow == nullptr)
-		{
-			throw std::runtime_error("Failed to create the window. ");
-		}
-		setMaxSize(size);
-
-		_cursor.set(new CursorP);
-	}
-
-	WindowP::~WindowP ()
-	{
-		SDL_DestroyWindow(_sdlWindow);
-	}
-
-	void WindowP::setTitle (char const * title)
+	void Window::setTitle (char const * title)
 	{
 		SDL_SetWindowTitle(_sdlWindow, title);
 	}
 
-	void WindowP::setWindowed ()
+	void Window::setWindowed ()
 	{
 		SDL_SetWindowFullscreen(_sdlWindow, 0);
 		SDL_EnableScreenSaver();
 	}
 
-	void WindowP::setFullscreen (int display, Vector2i size)
+	void Window::setFullscreen (int display, Vector2i size)
 	{
 		try
 		{
@@ -64,24 +45,24 @@ namespace kit
 		}
 	}
 
-	void WindowP::setFullscreen ()
+	void Window::setFullscreen ()
 	{
 		setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
 	}
 
-	Vector2i WindowP::getSize () const
+	Vector2i Window::getSize () const
 	{
 		Vector2i size;
 		SDL_GetWindowSize(_sdlWindow, &size[0], &size[1]);
 		return size;
 	}
 
-	bool WindowP::isFullscreen () const
+	bool Window::isFullscreen () const
 	{
 		return (SDL_GetWindowFlags(_sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
-	int WindowP::getDisplay() const
+	int Window::getDisplay() const
 	{
 		int display = SDL_GetWindowDisplayIndex(_sdlWindow);
 		if(display >= 0)
@@ -91,18 +72,37 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
-	Ptr<Cursor> WindowP::getCursor () const
+	Ptr<Cursor> Window::cursor () const
 	{
 		return _cursor;
 	}
 
-	void WindowP::handleEvent (Event const & event)
+	Window::Window (char const * title)
+	{
+		Vector2i size (800, 600);
+
+		_sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size[0], size[1], SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		if(_sdlWindow == nullptr)
+		{
+			throw std::runtime_error("Failed to create the window. ");
+		}
+		setMaxSize(size);
+
+		_cursor.set(new Cursor);
+	}
+
+	Window::~Window ()
+	{
+		SDL_DestroyWindow(_sdlWindow);
+	}
+
+	void Window::handleEvent (Event const & event)
 	{
 		_cursor->resetConsumed();
 		WidgetContainerP::handleEvent(event);
 	}
 
-	void WindowP::render (SDL_GLContext sdlGlContext)
+	void Window::render (SDL_GLContext sdlGlContext)
 	{
 		SDL_GL_MakeCurrent(_sdlWindow, sdlGlContext);
 
@@ -125,7 +125,7 @@ namespace kit
 		SDL_GL_SwapWindow(_sdlWindow);
 	}
 
-	SDL_Window * WindowP::getSDLWindow () const
+	SDL_Window * Window::getSDLWindow () const
 	{
 		return _sdlWindow;
 	}

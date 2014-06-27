@@ -6,6 +6,8 @@
 #include <kit/ptr.h>
 #include <kit/event.h>
 #include <functional>
+#include <list>
+#include <map>
 
 namespace kit
 {
@@ -15,56 +17,76 @@ namespace kit
 		class Button;
 		class Viewport;
 
-		class WidgetContainer : virtual public Widget
+		class WidgetContainer : public Widget
 		{
 		public:
 			// Handles container-wide events.
-			virtual void setHandleContainerEventFunction (std::function<void (Event const &)>) = 0;
+			void setHandleContainerEventFunction (std::function<void (Event const &)>);
 
 			// Updates the widget bounds after the container has moved or otherwise changed.
-			virtual void setUpdateWidgetBoundsFunction (std::function<void ()>) = 0;
+			void setUpdateWidgetBoundsFunction (std::function<void ()>);
 
 			// Gets the bounds of the container.
-			virtual Recti getBounds () const = 0;
+			Recti getBounds () const;
 
 			// Sets the position of the container.
-			virtual void setPosition (Vector2i position) = 0;
+			void setPosition (Vector2i position);
 
 			// Sets the maximum size this container can be.
-			virtual void setMaxSize (Vector2i maxSize) = 0;
+			void setMaxSize (Vector2i maxSize);
 
 			// Add a sprite into the container.
-			virtual Ptr<Sprite> addSprite () = 0;
+			Ptr<Sprite> addSprite ();
 
 			// Add a button into the container.
-			virtual Ptr<Button> addButton () = 0;
+			Ptr<Button> addButton ();
 
 			// Add a viewport into the container.
-			virtual Ptr<Viewport> addViewport () = 0;
+			Ptr<Viewport> addViewport ();
 
 			// Remove a widget from the container.
-			virtual void removeWidget (Ptr<Widget> widget) = 0;
+			void removeWidget (Ptr<Widget> widget);
 
 			// Reinsert the widget before another widget. If beforeWidget is null, the widget is reinserted at the end.
-			virtual void reinsertWidget (Ptr<Widget> widget, Ptr<Widget> beforeWidget) = 0;
+			void reinsertWidget (Ptr<Widget> widget, Ptr<Widget> beforeWidget);
 
 			// Sets the position of the widget relative to this.
-			virtual void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset) = 0;
+			void setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset);
 
 			// Sets the size of the widget relative to this.
-			virtual void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize) = 0;
+			void setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize);
 
 			// Does the widget handle events and rendered?
-			virtual bool isWidgetActive (Ptr<Widget> widget) const = 0;
+			bool isWidgetActive (Ptr<Widget> widget) const;
 
 			// Sets whether the widget handles events and rendered.
-			virtual void setWidgetActive (Ptr<Widget> widget, bool active) = 0;
+			void setWidgetActive (Ptr<Widget> widget, bool active);
 
 			// Is the widget rendered?
-			virtual bool isWidgetVisible (Ptr<Widget> widget) const = 0;
+			bool isWidgetVisible (Ptr<Widget> widget) const;
 
 			// Sets whether the widget is rendered.
-			virtual void setWidgetVisible (Ptr<Widget> widget, bool visible) = 0;
+			void setWidgetVisible (Ptr<Widget> widget, bool visible);
+
+		private:
+			class WidgetInfo
+			{
+			public:
+				WidgetInfo (OwnPtr<Widget>);
+
+				OwnPtr<Widget> widget;
+				bool active;
+				bool visible;
+			};
+
+			void callUpdateWidgetBoundsFunction ();
+			void addWidget (OwnPtr<Widget> widget);
+
+			std::function<void (Event const &)> handleContainerEventFunction;
+			std::function<void ()> updateWidgetBoundsFunction;
+			Recti bounds;
+			std::list<WidgetInfo> widgetInfos;
+			std::map<Ptr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
 		};
 	}
 }
