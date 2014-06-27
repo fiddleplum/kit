@@ -55,9 +55,9 @@ namespace kit
 		static unsigned int linkShaderProgram (std::vector<unsigned int> const & shaderObjects);
 		void populateVariableLocations ();
 
-		unsigned int mProgram;
-		std::map<std::string, int> mUniforms;
-		std::map<std::string, int> mAttributes;
+		unsigned int _program;
+		std::map<std::string, int> _uniforms;
+		std::map<std::string, int> _attributes;
 	};
 }
 

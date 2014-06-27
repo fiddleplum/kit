@@ -14,6 +14,7 @@ namespace kit
 		{
 			throw std::runtime_error("You must create a window first to initialize OpenGL.");
 		}
+
 		std::vector<unsigned int> shaderObjects;
 		try
 		{
@@ -33,19 +34,19 @@ namespace kit
 			}
 			throw;
 		}
-		mProgram = linkShaderProgram(shaderObjects); // delete shader objects as well
+		_program = linkShaderProgram(shaderObjects); // delete shader objects as well
 		populateVariableLocations();
 	}
 
 	Shader::~Shader ()
 	{
-		glDeleteProgram(mProgram);
+		glDeleteProgram(_program);
 	}
 
 	int Shader::getUniformLocation (std::string const & name) const
 	{
-		auto it = mUniforms.find(name);
-		if(it == mUniforms.end())
+		auto it = _uniforms.find(name);
+		if(it == _uniforms.end())
 		{
 			return -1;
 		}
@@ -54,8 +55,8 @@ namespace kit
 
 	int Shader::getAttributeLocation (std::string const & name) const
 	{
-		auto it = mAttributes.find(name);
-		if(it == mAttributes.end())
+		auto it = _attributes.find(name);
+		if(it == _attributes.end())
 		{
 			return -1;
 		}
@@ -64,10 +65,10 @@ namespace kit
 
 	void Shader::activate ()
 	{
-		if(_currentProgram != mProgram)
+		if(_currentProgram != _program)
 		{
-			_currentProgram = mProgram;
-			glUseProgram(mProgram);
+			_currentProgram = _program;
+			glUseProgram(_program);
 		}
 	}
 
@@ -208,36 +209,36 @@ namespace kit
 		GLint numVariables;
 		GLint maxNameSize;
 		std::string name;
-		glGetProgramiv(mProgram, GL_ACTIVE_UNIFORMS, &numVariables);
-		glGetProgramiv(mProgram, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxNameSize);
+		glGetProgramiv(_program, GL_ACTIVE_UNIFORMS, &numVariables);
+		glGetProgramiv(_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxNameSize);
 		for(int i = 0; i < numVariables; i++)
 		{
 			GLsizei nameSize;
 			GLint size;
 			GLenum type;
 			name.resize(maxNameSize);
-			glGetActiveUniform(mProgram, i, maxNameSize, &nameSize, &size, &type, &name[0]);
+			glGetActiveUniform(_program, i, maxNameSize, &nameSize, &size, &type, &name[0]);
 			name.resize(nameSize);
-			GLint location = glGetUniformLocation(mProgram, name.c_str());
+			GLint location = glGetUniformLocation(_program, name.c_str());
 			if(location != -1)
 			{
-				mUniforms[name] = location;
+				_uniforms[name] = location;
 			}
 		}
-		glGetProgramiv(mProgram, GL_ACTIVE_ATTRIBUTES, &numVariables);
-		glGetProgramiv(mProgram, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxNameSize);
+		glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTES, &numVariables);
+		glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxNameSize);
 		for(int i = 0; i < numVariables; i++)
 		{
 			GLsizei nameSize;
 			GLint size;
 			GLenum type;
 			name.resize(maxNameSize);
-			glGetActiveAttrib(mProgram, i, maxNameSize, &nameSize, &size, &type, &name[0]);
+			glGetActiveAttrib(_program, i, maxNameSize, &nameSize, &size, &type, &name[0]);
 			name.resize(nameSize);
-			GLint location = glGetAttribLocation(mProgram, name.c_str());
+			GLint location = glGetAttribLocation(_program, name.c_str());
 			if(location != -1)
 			{
-				mAttributes[name] = location;
+				_attributes[name] = location;
 			}
 		}
 	}

@@ -23,16 +23,16 @@ namespace kit
 		//template <typename... Args> Ptr<Object> get (std::string const & key, Args... args);
 
 		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		Ptr<Object> get (std::string const & key);
+		OwnPtr<Object> get (std::string const & key);
 
 		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		template <typename T1> Ptr<Object> get (std::string const & key, T1 const & arg1);
+		template <typename T1> OwnPtr<Object> get (std::string const & key, T1 const & arg1);
 
 		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		template <typename T1, typename T2> Ptr<Object> get (std::string const & key, T1 const & arg1, T2 const & arg2);
+		template <typename T1, typename T2> OwnPtr<Object> get (std::string const & key, T1 const & arg1, T2 const & arg2);
 
 		// Returns a Ptr of the requested object. O(log number of loaded objects). This can be removed when the variadic template works.
-		template <typename T1, typename T2, typename T3> Ptr<Object> get (std::string const & key, T1 const & arg1, T2 const & arg2, T3 const & arg3);
+		template <typename T1, typename T2, typename T3> OwnPtr<Object> get (std::string const & key, T1 const & arg1, T2 const & arg2, T3 const & arg3);
 
 		// Removes and destroys the objects that aren't referenced anywhere else. O(number of loaded objects).
 		void clean ();
@@ -83,7 +83,7 @@ namespace kit
 	//}
 
 	template <typename Object>
-	Ptr<Object> ObjectCache<Object>::get (std::string const & key)
+	OwnPtr<Object> ObjectCache<Object>::get (std::string const & key)
 	{
 		auto it = _objects.find(key);
 		if(it != _objects.end())
@@ -108,7 +108,7 @@ namespace kit
 
 	template <typename Object>
 	template <typename T1>
-	Ptr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1)
+	OwnPtr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1)
 	{
 		auto it = _objects.find(key);
 		if(it != _objects.end())
@@ -133,7 +133,7 @@ namespace kit
 
 	template <typename Object>
 	template <typename T1, typename T2>
-	Ptr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1, T2 const & arg2)
+	OwnPtr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1, T2 const & arg2)
 	{
 		auto it = _objects.find(key);
 		if(it != _objects.end())
@@ -158,7 +158,7 @@ namespace kit
 
 	template <typename Object>
 	template <typename T1, typename T2, typename T3>
-	Ptr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1, T2 const & arg2, T3 const & arg3)
+	OwnPtr<Object> ObjectCache<Object>::get (std::string const & key, T1 const & arg1, T2 const & arg2, T3 const & arg3)
 	{
 		auto it = _objects.find(key);
 		if(it != _objects.end())

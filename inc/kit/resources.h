@@ -19,6 +19,8 @@ namespace kit
 		Ptr<scene::Model> getModelAsSprite (std::string const & name, std::string const & textureFilename, Recti textureCoords);
 
 		Ptr<scene::Model> getModelFromFile (std::string const & filename);
+
+		Ptr<Shader> getShader (std::string const & name, std::string code []);
 	}
 }
 

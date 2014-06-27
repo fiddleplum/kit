@@ -93,7 +93,6 @@
     <ClInclude Include="inc\kit\scene\model.h" />
     <ClInclude Include="src\gui\widget_container_p.h" />
     <ClInclude Include="src\gui\sprite_p.h" />
-    <ClInclude Include="src\texture_p.h" />
     <ClInclude Include="src\gui\button_p.h" />
     <ClInclude Include="src\app_p.h" />
     <ClInclude Include="src\window_p.h" />

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <kit/resources.h>
-#include "texture_p.h"
+#include <"texture.h"
 #include "shader.h"
 
 namespace kit

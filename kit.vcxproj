@@ -111,7 +111,6 @@
     <ClInclude Include="src\serialize_vector.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\storage.h" />
-    <ClInclude Include="src\texture_p.h" />
     <ClInclude Include="src\unique_id_factory.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
     <ClInclude Include="src\window_p.h" />
