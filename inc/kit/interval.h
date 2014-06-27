@@ -47,7 +47,7 @@ namespace kit
 
 		//! Returns true if every element v[i] in \b v is within [min, max).
 		bool containsEx(Vector<dim, T> v) const;
-	
+
 		//! Returns true if any part of b is within(not just touching) the box.
 		bool intersects(Interval<dim, T> b) const;
 
@@ -200,7 +200,7 @@ namespace kit
 		Vector<dim, T> r;
 		for(int i = 0; i < dim; ++i)
 		{
-			r[i] = min[i] + offset[i] +(T)((max[i] - min[i]) * fractionOfIntervalSize[i]);
+			r[i] = min[i] + offset[i] + (T)((max[i] - min[i]) * fractionOfIntervalSize[i]);
 		}
 		return r;
 	}
@@ -211,7 +211,7 @@ namespace kit
 		Vector<dim, T> r;
 		for(int i = 0; i < dim; ++i)
 		{
-			r[i] = min[i] + offset[i] +(T)((max[i] - min[i]) * fractionOfIntervalSize[i]) -(T)(objectSize[i] * fractionOfObjectSize[i]);
+			r[i] = min[i] + offset[i] + (T)((max[i] - min[i]) * fractionOfIntervalSize[i]) - (T)(objectSize[i] * fractionOfObjectSize[i]);
 		}
 		return r;
 	}

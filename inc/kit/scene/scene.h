@@ -1,57 +1,35 @@
 #pragma once
 
-#include <set>
-#include <memory>
+#include <kit/ptr.h>
 
 namespace kit
 {
-	class Event;
-	class Light;
-	class Camera;
-	class Model;
-	class Controller;
-
-	class Scene
+	namespace scene
 	{
-	public:
-		Scene();
+		class Light;
+		class Camera;
+		class Object;
+		class Controller;
 
-		void addLight(std::shared_ptr<Light>);
-
-		void removeLight(std::shared_ptr<Light>);
-
-		void addCamera(std::shared_ptr<Camera> camera);
-
-		void removeCamera(std::shared_ptr<Camera> camera);
-
-		void addModel(std::shared_ptr<Model> model);
-
-		void removeModel(std::shared_ptr<Model> model);
-
-		void addController(std::shared_ptr<Controller> controller);
-
-		void removeController(std::shared_ptr<Controller> controller);
-		
-		// Called by Camera.
-		void handleEvent(Event const & event);
-
-		// Called by Camera.
-		void render(std::shared_ptr<Camera> camera);
-
-	private:
-		Scene(Scene const &);
-		Scene & operator =(Scene const &);
-
-		class ModelCompare
+		class Scene
 		{
 		public:
-			bool operator ()(std::shared_ptr<Model> model0, std::shared_ptr<Model> model1);
-		};
+			//virtual Ptr<Light> addLight() = 0;
 
-		std::set<std::shared_ptr<Light>> lights;
-		std::set<std::shared_ptr<Camera>> cameras;
-		std::set<std::shared_ptr<Model>, ModelCompare> mModels;
-		std::set<std::shared_ptr<Controller>> controllers;
-	};
+			//virtual void removeLight(Ptr<Light>) = 0;
+
+			virtual Ptr<Camera> addCamera() = 0;
+
+			virtual void removeCamera(Ptr<Camera> camera) = 0;
+
+			virtual Ptr<Object> addObject() = 0;
+
+			virtual void removeObject(Ptr<Object> object) = 0;
+
+			virtual Ptr<Controller> addController() = 0;
+
+			virtual void removeController(Ptr<Controller> controller) = 0;
+		};
+	}
 }
 

@@ -102,24 +102,6 @@ namespace kit
 		// Returns a use pointer dynamically casted to Y.
 		template <class Y> OwnPtr<Y> as () const;
 
-		// Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (OwnPtr<T> const & ptr) const;
-
-		// Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (UsePtr<T> const & ptr) const;
-
-		// Returns true if the address of this object is less than the address of ptr's object.
-		bool operator < (Ptr<T> const & ptr) const;
-
-		// Returns true if the address of this object is equal to the address of ptr's object.
-		bool operator == (OwnPtr<T> const & ptr) const;
-
-		// Returns true if the address of this object is equal to the address of ptr's object.
-		bool operator == (UsePtr<T> const & ptr) const;
-
-		// Returns true if the address of this object is equal to the address of ptr's object.
-		bool operator == (Ptr<T> const & ptr) const;
-
 	private:
 		T * p;
 		_PtrCounter * c;
@@ -127,6 +109,30 @@ namespace kit
 		template <class Y> friend class UsePtr;
 		template <class Y> friend class Ptr;
 	};
+
+	// Returns true if the address of this object is less than the address of ptr's object.
+	template <class T>
+	bool operator < (OwnPtr<T> const & ptr0, OwnPtr<T> const & ptr1);
+
+	// Returns true if the address of this object is less than the address of ptr's object.
+	template <class T>
+	bool operator < (OwnPtr<T> const & ptr0, UsePtr<T> const & ptr1);
+
+	// Returns true if the address of this object is less than the address of ptr's object.
+	template <class T>
+	bool operator < (OwnPtr<T> const & ptr0, Ptr<T> const & ptr1);
+
+	// Returns true if the address of this object is equal to the address of ptr's object.
+	template <class T>
+	bool operator == (OwnPtr<T> const & ptr0, OwnPtr<T> const & ptr1);
+
+	// Returns true if the address of this object is equal to the address of ptr's object.
+	template <class T>
+	bool operator == (OwnPtr<T> const & ptr0, UsePtr<T> const & ptr1);
+
+	// Returns true if the address of this object is equal to the address of ptr's object.
+	template <class T>
+	bool operator == (OwnPtr<T> const & ptr0, Ptr<T> const & ptr1);
 
 	// UsePtr is a smart pointer that has no ownership and so never deletes the pointer that it references. The object it points to is guaranteed to exist while the UsePtr points to it.
 	template <class T>
@@ -592,39 +598,39 @@ namespace kit
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator < (OwnPtr<T> const & ptr) const
+	bool operator < (OwnPtr<T> const & ptr0, OwnPtr<T> const & ptr1)
 	{
-		return p < ptr.p;
+		return ptr0.p < ptr1.p;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator < (UsePtr<T> const & ptr) const
+	bool operator < (OwnPtr<T> const & ptr0, UsePtr<T> const & ptr1)
 	{
-		return p < ptr.p;
+		return ptr0.p < ptr1.p;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator < (Ptr<T> const & ptr) const
+	bool operator < (OwnPtr<T> const & ptr0, Ptr<T> const & ptr1)
 	{
-		return p < ptr.p;
+		return ptr0.p < ptr1.p;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator == (OwnPtr<T> const & ptr) const
+	bool operator == (OwnPtr<T> const & ptr0, OwnPtr<T> const & ptr1)
 	{
-		return p == ptr.p;
+		return ptr0.p == ptr1.p;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator == (UsePtr<T> const & ptr) const
+	bool operator == (OwnPtr<T> const & ptr0, UsePtr<T> const & ptr1)
 	{
-		return p == ptr.p;
+		return ptr0.p == ptr1.p;
 	}
 
 	template <class T>
-	bool OwnPtr<T>::operator == (Ptr<T> const & ptr) const
+	bool operator == (OwnPtr<T> const & ptr0, Ptr<T> const & ptr1)
 	{
-		return p == ptr.p;
+		return ptr0.p == ptr1.p;
 	}
 
 	// UsePtr

@@ -25,8 +25,6 @@ namespace kit
 			throw std::runtime_error("You must create a window first to initialize OpenGL.");
 		}
 
-		glGenTextures(1, &id);
-
 		SDL_Surface * surface = IMG_Load(filename.c_str());
 		if(surface == 0)
 		{
@@ -46,6 +44,7 @@ namespace kit
 				throw std::runtime_error("Only 24 and 32 bits per pixel supported: " + filename);
 		}
 
+		glGenTextures(1, &id);
 		glBindTexture(GL_TEXTURE_2D, id);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size[0], size[1], 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

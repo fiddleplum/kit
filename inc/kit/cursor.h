@@ -8,10 +8,10 @@ namespace kit
 	{
 	public:
 		// Returns true if the cursor position is valid.
-		virtual bool isValid () const = 0;
+		virtual bool isValid() const = 0;
 
 		// Gets the cursor position relative to the window.
-		virtual Vector2i getPosition () const = 0;
+		virtual Vector2i getPosition() const = 0;
 	};
 }
 

@@ -2,7 +2,7 @@
 #include "../app_p.h"
 #include "../open_gl.h"
 #include "../scene/camera_p.h"
-#include "../scene.h"
+#include "../scene/scene_p.h"
 #include "../cursor_p.h"
 #include "../window_p.h"
 #include <kit/window.h>

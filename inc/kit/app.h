@@ -6,6 +6,7 @@
 namespace kit
 {
 	class Window;
+	class Scene;
 
 	namespace app
 	{
@@ -17,6 +18,12 @@ namespace kit
 
 		// Removes a window.
 		void removeWindow (Ptr<Window> window);
+
+		// Adds a scene.
+		Ptr<Scene> addScene ();
+
+		// Removes a scene.
+		void removeScene (Ptr<Scene> scene);
 
 		// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
 		float getTime ();

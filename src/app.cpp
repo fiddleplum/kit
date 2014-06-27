@@ -54,7 +54,7 @@ namespace kit
 			return SDL_GetTicks() / 1000.0f;
 		}
 
-		Ptr<kit::Window> addWindow (char const * title)
+		Ptr<Window> addWindow (char const * title)
 		{
 			OwnPtr<WindowP> window (new WindowP (title));
 			if(_windows.empty())
@@ -67,7 +67,7 @@ namespace kit
 			return window;
 		}
 
-		void removeWindow (Ptr<kit::Window> window)
+		void removeWindow (Ptr<Window> window)
 		{
 			auto it = _windowMapping.find(window);
 			if(it != _windowMapping.end())
@@ -80,6 +80,14 @@ namespace kit
 					SDL_GL_DeleteContext(_sdlGlContext);
 				}
 			}
+		}
+
+		Ptr<Scene> addScene (Ptr<Scene> scene)
+		{
+		}
+
+		void removeScene (Ptr<Scene> scene)
+		{
 		}
 
 		void loop ()

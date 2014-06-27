@@ -14,15 +14,15 @@ namespace kit
 		class Object : virtual public Entity
 		{
 		public:
-			virtual float getScale () const = 0;
+			virtual float getScale() const = 0;
 
-			virtual void setScale (float scale) = 0;
+			virtual void setScale(float scale) = 0;
 
-			virtual Ptr<Model> getModel () const = 0;
+			virtual Ptr<Model> getModel() const = 0;
 
-			virtual void setModel (Ptr<Model> model) = 0;
+			virtual void setModel(Ptr<Model> model) = 0;
 
-			virtual void setModel (std::string const & filename) = 0;
+			virtual void setModel(std::string const & filename) = 0;
 		};
 	}
 }

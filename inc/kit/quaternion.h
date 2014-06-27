@@ -9,35 +9,35 @@ namespace kit
 	class Quaternion
 	{
 	public:
-		Quaternion ();
+		Quaternion();
 
-		Quaternion (T r, T i, T j, T k);
+		Quaternion(T r, T i, T j, T k);
 
-		Quaternion (T r, Vector<3, T> ijk);
+		Quaternion(T r, Vector<3, T> ijk);
 
-		Quaternion (T angle, Vector<3, T> const & axis, bool axisIsNormalized);
+		Quaternion(T angle, Vector<3, T> const & axis, bool axisIsNormalized);
 
-		Quaternion (Vector<3, T> const & startVector, Vector<3, T> const & endVector, bool vectorsAreNormalized);
+		Quaternion(Vector<3, T> const & startVector, Vector<3, T> const & endVector, bool vectorsAreNormalized);
 
-		Quaternion (T yaw, T pitch, T roll);
+		Quaternion(T yaw, T pitch, T roll);
 
-		Quaternion<T> conjugate () const;
+		Quaternion<T> conjugate() const;
 
-		Quaternion<T> inverse () const; // alias for conjugate
+		Quaternion<T> inverse() const;  // alias for conjugate
 
-		Quaternion<T> reciprocal () const;
+		Quaternion<T> reciprocal() const;
 
-		T norm () const;
+		T norm() const;
 
-		T normSq () const;
+		T normSq() const;
 
-		void normalize ();
+		void normalize();
 
-		Vector<3, T> rotate (Vector<3, T> const & v) const; // assumes this is normalized
+		Vector<3, T> rotate(Vector<3, T> const & v) const;  // assumes this is normalized
 
-		Vector<3, T> getAxis (unsigned int i) const; // assumes this is normalized
+		Vector<3, T> getAxis(unsigned int i) const;  // assumes this is normalized
 
-		Matrix<3, 3, T> getMatrix () const; // for pre multiplying, assumes this is normalized
+		Matrix<3, 3, T> getMatrix() const;  // for pre multiplying, assumes this is normalized
 
 		T r;
 
@@ -65,25 +65,25 @@ namespace kit
 	// Template implementation
 
 	template <typename T>
-	Quaternion<T>::Quaternion ()
-	: r(1), ijk(0, 0, 0)
+	Quaternion<T>::Quaternion()
+		: r(1), ijk(0, 0, 0)
 	{
 	}
 
 	template <typename T>
-	Quaternion<T>::Quaternion (T r, T i, T j, T k)
-	: r(r), ijk(i, j, k)
+	Quaternion<T>::Quaternion(T r, T i, T j, T k)
+		: r(r), ijk(i, j, k)
 	{
 	}
 
 	template <typename T>
-	Quaternion<T>::Quaternion (T r, Vector<3, T> ijk)
-	: r(r), ijk(ijk)
+	Quaternion<T>::Quaternion(T r, Vector<3, T> ijk)
+		: r(r), ijk(ijk)
 	{
 	}
 
 	template <typename T>
-	Quaternion<T>::Quaternion (Vector<3, T> const & startVector, Vector<3, T> const & endVector, bool vectorsAreNormalized)
+	Quaternion<T>::Quaternion(Vector<3, T> const & startVector, Vector<3, T> const & endVector, bool vectorsAreNormalized)
 	{
 		r = startVector.dot(endVector);
 		Vector<3, T> axis;
@@ -107,7 +107,7 @@ namespace kit
 	}
 
 	template <typename T>
-	Quaternion<T>::Quaternion (T angle, Vector<3, T> const & axis, bool axisIsNormalized)
+	Quaternion<T>::Quaternion(T angle, Vector<3, T> const & axis, bool axisIsNormalized)
 	{
 		r = std::cos(angle / (T)2);
 		if(axisIsNormalized)
@@ -122,7 +122,7 @@ namespace kit
 	}
 
 	template <typename T>
-	Quaternion<T>::Quaternion (T yaw, T pitch, T roll)
+	Quaternion<T>::Quaternion(T yaw, T pitch, T roll)
 	{
 		// remember yaw goes positive to the right (if you're looking down +y)
 		T cosYaw2 = cos(yaw / 2);
@@ -138,65 +138,65 @@ namespace kit
 	}
 
 	template <typename T>
-	Quaternion<T> Quaternion<T>::conjugate () const
+	Quaternion<T> Quaternion<T>::conjugate() const
 	{
 		return Quaternion<T>(r, -ijk);
 	}
 
 	template <typename T>
-	Quaternion<T> Quaternion<T>::inverse () const
+	Quaternion<T> Quaternion<T>::inverse() const
 	{
 		return conjugate();
 	}
 
 	template <typename T>
-	Quaternion<T> Quaternion<T>::reciprocal () const
+	Quaternion<T> Quaternion<T>::reciprocal() const
 	{
 		T nSq = normSq();
 		if(nSq == 0)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		return conjugate() / nSq;
 	}
 
 	template <typename T>
-	T Quaternion<T>::norm () const
+	T Quaternion<T>::norm() const
 	{
 		return std::sqrt((r * r) + ijk.normSq());
 	}
 
 	template <typename T>
-	T Quaternion<T>::normSq () const
+	T Quaternion<T>::normSq() const
 	{
 		return (r * r) + ijk.normSq();
 	}
 
 	template <typename T>
-	void Quaternion<T>::normalize ()
+	void Quaternion<T>::normalize()
 	{
 		T n = norm();
 		if(n == 0)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		r /= n;
 		ijk /= n;
 	}
 
 	template <typename T>
-	Vector<3, T> Quaternion<T>::rotate (Vector<3, T> const & v) const
+	Vector<3, T> Quaternion<T>::rotate(Vector<3, T> const & v) const
 	{
 		Vector<3, T> t = (T)2 * ijk.cross(v);
 		return v + r * t + ijk.cross(t);
 	}
 
 	template <typename T>
-	Vector<3, T> Quaternion<T>::getAxis (unsigned int i) const
+	Vector<3, T> Quaternion<T>::getAxis(unsigned int i) const
 	{
 		if(i >= 3)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		Vector3f axis;
 		unsigned int j = (i + 1) % 3;
@@ -208,7 +208,7 @@ namespace kit
 	}
 
 	template <typename T>
-	Matrix<3, 3, T> Quaternion<T>::getMatrix () const
+	Matrix<3, 3, T> Quaternion<T>::getMatrix() const
 	{
 		Matrix<3, 3, T> m;
 		float ii = ijk[0] * ijk[0];

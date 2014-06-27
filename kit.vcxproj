@@ -36,6 +36,7 @@
     <ClCompile Include="src\scene\entity.cpp" />
     <ClCompile Include="src\scene\model.cpp" />
     <ClCompile Include="src\scene\object.cpp" />
+    <ClCompile Include="src\scene\scene.cpp" />
     <ClCompile Include="src\scene_2d.cpp" />
     <ClCompile Include="src\frame_2d.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -47,6 +48,7 @@
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
     <ClInclude Include="inc\kit\app.h" />
+    <ClInclude Include="inc\kit\box.h" />
     <ClInclude Include="inc\kit\cursor.h" />
     <ClInclude Include="inc\kit\gui\button.h" />
     <ClInclude Include="inc\kit\gui\viewport.h" />
@@ -54,7 +56,9 @@
     <ClInclude Include="inc\kit\matrix.h" />
     <ClInclude Include="inc\kit\noncopyable.h" />
     <ClInclude Include="inc\kit\quaternion.h" />
+    <ClInclude Include="inc\kit\range.h" />
     <ClInclude Include="inc\kit\resources.h" />
+    <ClInclude Include="inc\kit\scene\scene.h" />
     <ClInclude Include="inc\kit\scene\camera.h" />
     <ClInclude Include="inc\kit\scene\entity.h" />
     <ClInclude Include="inc\kit\scene\model.h" />
@@ -97,7 +101,7 @@
     <ClInclude Include="src\ptr.h" />
     <ClInclude Include="inc\kit\ray.h" />
     <ClInclude Include="src\object_cache.h" />
-    <ClInclude Include="src\scene.h" />
+    <ClInclude Include="src\scene\scene_p.h" />
     <ClInclude Include="src\scene\camera_p.h" />
     <ClInclude Include="src\scene\entity_p.h" />
     <ClInclude Include="src\scene\model_p.h" />

@@ -5,59 +5,59 @@
 namespace kit
 {
 	/*
-	This is a standard mathematical matrix class. Rows and cols are the dimensions of the matrix and T is the type of its elements.
-	The matrix is in column-major order. The rationale for this is that traditional mathematics uses m * v operator order, which means that,
-	for a translation matrix, the elements m(0, 3), m(1, 3), and m(2, 3) should contain the translation components. In addition, video cards
-	expect the translation components to be in elements 12, 13, and 14, which would then indicate a column-major order.
+	    This is a standard mathematical matrix class. Rows and cols are the dimensions of the matrix and T is the type of its elements.
+	    The matrix is in column-major order. The rationale for this is that traditional mathematics uses m * v operator order, which means that,
+	    for a translation matrix, the elements m(0, 3), m(1, 3), and m(2, 3) should contain the translation components. In addition, video cards
+	    expect the translation components to be in elements 12, 13, and 14, which would then indicate a column-major order.
 	*/
 	template <unsigned int rows, unsigned int cols, typename T>
 	class Matrix
 	{
 	public:
 		// Default constructor.
-		Matrix ();
+		Matrix();
 
 		// Copy constructor.
-		Matrix (Matrix<rows, cols, T> const & m);
+		Matrix(Matrix<rows, cols, T> const & m);
 
 		// Returns a matrix where each element is zero.
-		static Matrix<rows, cols, T> zero ();
+		static Matrix<rows, cols, T> zero();
 
 		// Returns the identity matrix. Rows must equal cols.
-		static Matrix<rows, cols, T> identity ();
+		static Matrix<rows, cols, T> identity();
 
 		// Returns a matrix equivalent to the cross product with the first operand as v.
-		static Matrix<rows, cols, T> crossProduct (Vector<rows, T> v);
+		static Matrix<rows, cols, T> crossProduct(Vector<rows, T> v);
 
 		// Access the element at row row and column col.
-		T & operator () (unsigned int row, unsigned int col);
+		T & operator()(unsigned int row, unsigned int col);
 
 		// Access the element at row row and column col.
-		T const & operator () (unsigned int row, unsigned int col) const;
+		T const & operator()(unsigned int row, unsigned int col) const;
 
 		// Access the element at index i. Remember the matrix is column-major.
-		T & operator [] (unsigned int i);
+		T & operator [](unsigned int i);
 
 		// Access the element at index i. Remember the matrix is column-major.
-		T const & operator [] (unsigned int i) const;
+		T const & operator [](unsigned int i) const;
 
 		// Assignment operator.
 		Matrix<rows, cols, T> & operator = (Matrix<rows, cols, T> const & m);
 
 		// Get a pointer to the elements.
-		T * ptr ();
-	
+		T * ptr();
+
 		// Get a pointer to the elements.
-		T const * ptr () const;
+		T const * ptr() const;
 
 		// Returns the transpose.
-		Matrix<cols, rows, T> transpose () const;
+		Matrix<cols, rows, T> transpose() const;
 
 		// Returns this v, extending v either as a point(v3 = 1) or direction(v3 = 0). Rows must equal cols.
-		Vector<rows - 1, T> transform (Vector<cols - 1, T> v, T v3) const;
+		Vector < rows - 1, T > transform(Vector < cols - 1, T > v, T v3) const;
 
 		// Returns v this. Used for dealing with row-major systems.
-		Vector<cols, T> preMultiply (Vector<rows, T> v) const;
+		Vector<cols, T> preMultiply(Vector<rows, T> v) const;
 
 	private:
 		T c[rows * cols];
@@ -92,20 +92,20 @@ namespace kit
 	// Template Implementations
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Matrix<rows, cols, T>::Matrix ()
+	Matrix<rows, cols, T>::Matrix()
 	{
 		assert(rows > 0 && cols > 0);
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Matrix<rows, cols, T>::Matrix (Matrix<rows, cols, T> const & m)
+	Matrix<rows, cols, T>::Matrix(Matrix<rows, cols, T> const & m)
 	{
 		assert(rows > 0 && cols > 0);
 		*this = m;
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Matrix<rows, cols, T> Matrix<rows, cols, T>::zero ()
+	Matrix<rows, cols, T> Matrix<rows, cols, T>::zero()
 	{
 		Matrix<rows, cols, T> r;
 		unsigned int size = rows * cols;
@@ -117,7 +117,7 @@ namespace kit
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Matrix<rows, cols, T> Matrix<rows, cols, T>::identity ()
+	Matrix<rows, cols, T> Matrix<rows, cols, T>::identity()
 	{
 		assert(rows == cols);
 		Matrix<rows, cols, T> r = zero();
@@ -130,52 +130,58 @@ namespace kit
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Matrix<rows, cols, T> Matrix<rows, cols, T>::crossProduct (Vector<rows, T> v)
+	Matrix<rows, cols, T> Matrix<rows, cols, T>::crossProduct(Vector<rows, T> v)
 	{
 		assert(rows == 3 && cols == 3);
 		Matrix<rows, cols, T> r;
-		r.c[0 * rows + 0] = 0;		r.c[1 * rows + 0] = -v[2];	r.c[2 * rows + 0] = +v[1];
-		r.c[0 * rows + 1] = +v[2];	r.c[1 * rows + 1] = 0;		r.c[2 * rows + 1] = -v[0];
-		r.c[0 * rows + 2] = -v[1];	r.c[1 * rows + 2] = +v[0];	r.c[2 * rows + 2] = 0;
+		r.c[0 * rows + 0] = 0;
+		r.c[1 * rows + 0] = -v[2];
+		r.c[2 * rows + 0] = +v[1];
+		r.c[0 * rows + 1] = +v[2];
+		r.c[1 * rows + 1] = 0;
+		r.c[2 * rows + 1] = -v[0];
+		r.c[0 * rows + 2] = -v[1];
+		r.c[1 * rows + 2] = +v[0];
+		r.c[2 * rows + 2] = 0;
 		return r;
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	T & Matrix<rows, cols, T>::operator () (unsigned int row, unsigned int col)
+	T & Matrix<rows, cols, T>::operator()(unsigned int row, unsigned int col)
 	{
 		if(row >= rows || col >= cols)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		return c[col * rows + row];
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	T const & Matrix<rows, cols, T>::operator () (unsigned int row, unsigned int col) const
+	T const & Matrix<rows, cols, T>::operator()(unsigned int row, unsigned int col) const
 	{
 		if(row >= rows || col >= cols)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		return c[col * rows + row];
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	T & Matrix<rows, cols, T>::operator [] (unsigned int i)
+	T & Matrix<rows, cols, T>::operator [](unsigned int i)
 	{
 		if(i >= rows * cols)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		return c[i];
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	T const & Matrix<rows, cols, T>::operator [] (unsigned int i) const
+	T const & Matrix<rows, cols, T>::operator [](unsigned int i) const
 	{
 		if(i >= rows * cols)
 		{
-			throw std::exception ();
+			throw std::exception();
 		}
 		return c[i];
 	}
@@ -192,19 +198,19 @@ namespace kit
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	T * Matrix<rows, cols, T>::ptr ()
+	T * Matrix<rows, cols, T>::ptr()
 	{
 		return c;
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	T const * Matrix<rows, cols, T>::ptr () const
+	T const * Matrix<rows, cols, T>::ptr() const
 	{
 		return c;
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Matrix<cols, rows, T> Matrix<rows, cols, T>::transpose () const
+	Matrix<cols, rows, T> Matrix<rows, cols, T>::transpose() const
 	{
 		Matrix<cols, rows, T> r;
 		for(unsigned int i = 0; i < rows; ++i)
@@ -219,10 +225,10 @@ namespace kit
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Vector<rows - 1, T> Matrix<rows, cols, T>::transform (Vector<cols - 1, T> v, T v3) const
+	Vector < rows - 1, T > Matrix<rows, cols, T>::transform(Vector < cols - 1, T > v, T v3) const
 	{
 		assert(rows == cols && rows > 1);
-		Vector<rows - 1, T> r;
+		Vector < rows - 1, T > r;
 		for(unsigned int i = 0; i < rows - 1; ++i)
 		{
 			r[i] = (T)0;
@@ -245,7 +251,7 @@ namespace kit
 	}
 
 	template <unsigned int rows, unsigned int cols, typename T>
-	Vector<cols, T> Matrix<rows, cols, T>::preMultiply (Vector<rows, T> v) const
+	Vector<cols, T> Matrix<rows, cols, T>::preMultiply(Vector<rows, T> v) const
 	{
 		Vector<cols, T> r;
 		for(int i = 0; i < cols; ++i)

@@ -12,15 +12,15 @@ namespace kit
 		class Sprite : virtual public Widget
 		{
 		public:
-			virtual Ptr<Texture> getTexture () const = 0;
+			virtual Ptr<Texture> getTexture() const = 0;
 
-			virtual void setTexture (Ptr<Texture> texture) = 0;
+			virtual void setTexture(Ptr<Texture> texture) = 0;
 
-			virtual void setTexture (std::string const & filename) = 0;
+			virtual void setTexture(std::string const & filename) = 0;
 
-			virtual void setTextureBounds (Recti bounds) = 0;
+			virtual void setTextureBounds(Recti bounds) = 0;
 
-			virtual Recti getTextureBounds () const = 0;
+			virtual Recti getTextureBounds() const = 0;
 		};
 	}
 }

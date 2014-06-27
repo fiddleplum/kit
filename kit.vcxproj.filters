@@ -38,6 +38,7 @@
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\gui\viewport.cpp" />
     <ClCompile Include="src\cursor.cpp" />
+    <ClCompile Include="src\scene\scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -46,7 +47,6 @@
     <ClInclude Include="src\math_util.h" />
     <ClInclude Include="src\open_gl.h" />
     <ClInclude Include="src\ptr.h" />
-    <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\serialize.h" />
     <ClInclude Include="src\serialize_std_string.h" />
     <ClInclude Include="src\serialize_std_vector.h" />
@@ -109,5 +109,9 @@
     <ClInclude Include="src\gui\viewport_p.h" />
     <ClInclude Include="src\cursor_p.h" />
     <ClInclude Include="inc\kit\cursor.h" />
+    <ClInclude Include="inc\kit\range.h" />
+    <ClInclude Include="inc\kit\box.h" />
+    <ClInclude Include="inc\kit\scene\scene.h" />
+    <ClInclude Include="src\scene\scene_p.h" />
   </ItemGroup>
 </Project>

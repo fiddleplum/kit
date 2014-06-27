@@ -10,13 +10,13 @@ namespace kit
 		class Entity
 		{
 		public:
-			virtual Vector3f const & getPosition () const = 0;
+			virtual Vector3f const & getPosition() const = 0;
 
-			virtual void setPosition (Vector3f position) = 0;
+			virtual void setPosition(Vector3f position) = 0;
 
-			virtual Quaternionf const & getOrientation () const = 0;
+			virtual Quaternionf const & getOrientation() const = 0;
 
-			virtual void setOrientation (Quaternionf orientation) = 0;
+			virtual void setOrientation(Quaternionf orientation) = 0;
 		};
 	}
 }
