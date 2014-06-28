@@ -29,9 +29,7 @@ namespace kit
 
 		Ptr<Camera> SceneP::addCamera()
 		{
-			OwnPtr<CameraP> camera (new CameraP);
-			_cameras.insert(camera);
-			return camera;
+			return *_cameras.insert(OwnPtr<CameraP>(new CameraP));
 		}
 
 		void SceneP::removeCamera(Ptr<Camera> camera)
@@ -41,9 +39,7 @@ namespace kit
 
 		Ptr<Object> SceneP::addObject()
 		{
-			OwnPtr<ObjectP> object (new ObjectP);
-			_objects.insert(object);
-			return object;
+			return *_objects.insert(OwnPtr<ObjectP>(new ObjectP));
 		}
 
 		void SceneP::removeObject(Ptr<Object> object)
@@ -53,17 +49,18 @@ namespace kit
 
 		Ptr<Controller> SceneP::addController()
 		{
-			controllers.insert(controller);
+			return Ptr<ControllerP>();
+//			return *_controllers.insert(OwnPtr<ControllerP>(new ControllerP));
 		}
 
 		void SceneP::removeController(Ptr<Controller> controller)
 		{
-			controllers.erase(controller);
+			_controllers.erase(controller);
 		}
 
 		void SceneP::handleEvent(Event const & event)
 		{
-			for(auto controller : controllers)
+			for(auto controller : _controllers)
 			{
 				controller->handleEvent(event);
 			}

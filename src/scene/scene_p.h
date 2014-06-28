@@ -1,7 +1,7 @@
 #pragma once
 
 #include <kit/scene/scene.h>
-#include <set>
+#include <kit/ptr_set.h>
 
 namespace kit
 {
@@ -48,9 +48,9 @@ namespace kit
 			};
 
 			//std::set<OwnPtr<Light>> lights;
-			std::set<OwnPtr<CameraP>> _cameras;
-			std::set<OwnPtr<ObjectP>, ObjectCompare> _objects;
-			std::set<OwnPtr<ControllerP>> _controllers;
+			PtrSet<CameraP> _cameras;
+			PtrSet<ObjectP, ObjectCompare> _objects;
+			PtrSet<ControllerP> _controllers;
 		};
 	}
 }

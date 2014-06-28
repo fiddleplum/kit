@@ -113,5 +113,6 @@
     <ClInclude Include="inc\kit\box.h" />
     <ClInclude Include="inc\kit\scene\scene.h" />
     <ClInclude Include="src\scene\scene_p.h" />
+    <ClInclude Include="inc\kit\ptr_set.h" />
   </ItemGroup>
 </Project>
