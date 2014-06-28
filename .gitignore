@@ -1,6 +1,7 @@
 external/
 build/
 lib/
+*.sdf
 *.opensdf
 *.suo
 *.vcxproj.user
