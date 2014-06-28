@@ -1,9 +1,10 @@
 #pragma once
 
-#include <kit/texture.h>
 #include <kit/ptr.h>
 #include <kit/vector.h>
+#include <kit/texture.h>
 #include <kit/scene/model.h>
+#include <kit/shader.h>
 #include <string>
 
 namespace kit
@@ -21,6 +22,10 @@ namespace kit
 		Ptr<scene::Model> getModelFromFile (std::string const & filename);
 
 		Ptr<Shader> getShader (std::string const & name, std::string code []);
+
+		void initialize ();
+
+		void finalize ();
 	}
 }
 

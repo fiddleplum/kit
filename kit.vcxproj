@@ -61,6 +61,7 @@
     <ClInclude Include="inc\kit\scene\entity.h" />
     <ClInclude Include="inc\kit\scene\model.h" />
     <ClInclude Include="inc\kit\scene\object.h" />
+    <ClInclude Include="inc\kit\shader.h" />
     <ClInclude Include="inc\kit\start_finish.h" />
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
@@ -93,7 +94,6 @@
     <ClInclude Include="src\light_2d.h" />
     <ClInclude Include="src\log_p.h" />
     <ClInclude Include="src\math_util.h" />
-    <ClInclude Include="src\resources_p.h" />
     <ClInclude Include="src\open_gl.h" />
     <ClInclude Include="src\ptr.h" />
     <ClInclude Include="inc\kit\ray.h" />
@@ -109,7 +109,6 @@
     <ClInclude Include="src\serialize_std_string.h" />
     <ClInclude Include="src\serialize_std_vector.h" />
     <ClInclude Include="src\serialize_vector.h" />
-    <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\storage.h" />
     <ClInclude Include="src\unique_id_factory.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />

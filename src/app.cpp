@@ -1,7 +1,7 @@
 #include "app_p.h"
 #include "open_gl.h"
 #include "window_p.h"
-#include "resources_p.h"
+#include <kit/resources.h>
 #include "log_p.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 

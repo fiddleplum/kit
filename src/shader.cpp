@@ -1,5 +1,5 @@
-#include "shader.h"
 #include "open_gl.h"
+#include <kit/shader.h>
 #include <kit/string_util.h>
 #include <vector>
 #include <stdexcept>
