@@ -1,19 +1,18 @@
-#include "model_p.h"
-#include "camera_p.h"
-#include "../resources_p.h"
+#include "model.h"
+#include "camera.h"
+#include "../resources.h"
 #include "../vertex_buffer_object.h"
 #include "../serialize.h"
 #include "../serialize_std_string.h"
 #include "../serialize_std_vector.h"
-#include <kit/string_util.h>
+//#include <kit/string_util.h>
 #include <fstream>
-#include <stdexcept>
 
 namespace kit
 {
 	namespace scene
 	{
-		ModelP::ModelP ()
+		Model::Model ()
 		{
 			vertexHasNormal = false;
 			vertexHasTangent = false;
@@ -27,10 +26,10 @@ namespace kit
 			vertexBufferObject.set(new VertexBufferObject);
 			vertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
 			updateShader();
-			needsResorting = true;
+			sorted = false;
 		}
 
-		ModelP::ModelP (std::string const & textureFilename, Recti textureCoords)
+		Model::Model (std::string const & textureFilename, Recti textureCoords)
 		{
 			vertexHasNormal = false;
 			vertexHasTangent = false;
@@ -67,10 +66,10 @@ namespace kit
 			setIndices(&indices[0], indices.size());
 
 			updateShader();
-			needsResorting = true;
+			sorted = false;
 		}
 
-		ModelP::ModelP (std::string const & filename)
+		Model::Model (std::string const & filename)
 		{
 			std::fstream in (filename, std::fstream::in | std::fstream::binary);
 
@@ -134,7 +133,7 @@ namespace kit
 			setIndices(&indices[0], indices.size());
 		}
 
-		void ModelP::setVertexFormat (bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs)
+		void Model::setVertexFormat (bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs)
 		{
 			numBytesPerVertex = sizeof(Vector3f); // position
 			vertexHasNormal = hasNormal;
@@ -158,22 +157,22 @@ namespace kit
 			updateShader();
 		}
 
-		void ModelP::setVertices (void const * vertices, unsigned int numBytes)
+		void Model::setVertices (void const * vertices, unsigned int numBytes)
 		{
 			vertexBufferObject->setVertices(vertices, numBytes, false);
 		}
 
-		void ModelP::setNumIndicesPerPrimitive (unsigned int num)
+		void Model::setNumIndicesPerPrimitive (unsigned int num)
 		{
 			vertexBufferObject->setNumIndicesPerPrimitive(num);
 		}
 
-		void ModelP::setIndices (unsigned int const * indices, unsigned int numIndices)
+		void Model::setIndices (unsigned int const * indices, unsigned int numIndices)
 		{
 			vertexBufferObject->setIndices(indices, numIndices);
 		}
 
-		Ptr<kit::Texture> ModelP::getTexture (unsigned int textureIndex) const
+		Ptr<kit::Texture> Model::getTexture (unsigned int textureIndex) const
 		{
 			if(textureIndex < textureInfos.size())
 			{
@@ -185,17 +184,17 @@ namespace kit
 			}
 		}
 
-		void ModelP::addTexture (Ptr<Texture> texture, std::string const & type, unsigned int uvIndex)
+		void Model::addTexture (Ptr<Texture> texture, std::string const & type, unsigned int uvIndex)
 		{
 			type;
 			uvIndex;
 			// TODO
 		}
 
-		void ModelP::addTexture (std::string const & filename, std::string const & type, unsigned int uvIndex)
+		void Model::addTexture (std::string const & filename, std::string const & type, unsigned int uvIndex)
 		{
 			TextureInfo textureInfo;
-			textureInfo.texture = resources::getTextureFromFile(filename).as<TextureP>();
+			textureInfo.texture = resources::getTextureFromFile(filename);
 			textureInfo.type = type;
 			textureInfo.samplerLocation = -1;
 			textureInfo.uvIndex = uvIndex;
@@ -203,40 +202,40 @@ namespace kit
 			updateShader();
 		}
 
-		void ModelP::clearTextures ()
+		void Model::clearTextures ()
 		{
 			textureInfos.clear();
 			updateShader();
 		}
 
-		void ModelP::setColor (Vector3f const & emitColor, Vector4f const & diffuseColor)
+		void Model::setColor (Vector3f const & emitColor, Vector4f const & diffuseColor)
 		{
 			this->emitColor = emitColor;
 			this->diffuseColor = diffuseColor;
 		}
 
-		void ModelP::setSpecular (unsigned int level, float strength)
+		void Model::setSpecular (unsigned int level, float strength)
 		{
 			specularLevel = level;
 			specularStrength = strength;
 		}
 
-		float ModelP::getScale () const
+		float Model::getScale () const
 		{
 			return this->scale;
 		}
 
-		void ModelP::setScale (float scale)
+		void Model::setScale (float scale)
 		{
 			this->scale = scale;
 		}		
 
-		void ModelP::render (Ptr<CameraP> camera, Ptr<EntityP> entity, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
+		void Model::render (Ptr<Camera> camera, Ptr<Entity> entity, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
 		{
 			// The render engine handles shader and texture activation.
 			shader->activate();
-			shader->setUniform(projectionLocation, camera->getCameraToNdc());
-			shader->setUniform(worldViewLocation, camera->getWorldToCamera() * entity->getLocalToWorldMatrix());
+			shader->setUniform(projectionLocation, camera->getCameraToNdcTransform());
+			shader->setUniform(worldViewLocation, camera->getWorldToCameraTransform() * entity->getLocalToWorldTransform());
 			shader->setUniform(scaleLocation, scale);
 			unsigned int samplerIndex = 0;
 			for(unsigned int i = 0; i < textureInfos.size(); i++)
@@ -245,8 +244,8 @@ namespace kit
 				shader->setUniform(textureInfos[i].samplerLocation, (int)samplerIndex);
 				samplerIndex++;
 			}
-			TextureP::deactivateRest(textureInfos.size());
-			if(lightPositions.size() > 0)
+			Texture::deactivateRest(textureInfos.size());
+			if(!lightPositions.empty())
 			{
 				shader->setUniform(lightPositionsLocation, &lightPositions[0], lightPositions.size());
 				shader->setUniform(lightColorsLocation, &lightColors[0], lightColors.size());
@@ -258,17 +257,17 @@ namespace kit
 			vertexBufferObject->render();
 		}
 
-		bool ModelP::setNeedsResorting () const
+		bool Model::needsResorting () const
 		{
-			return needsResorting;
+			return !sorted;
 		}
 
-		void ModelP::resortingDone ()
+		void Model::resortingDone ()
 		{
-			needsResorting = false;
+			sorted = true;
 		}
 
-		bool ModelP::operator < (ModelP const & model) const
+		bool Model::operator < (Model const & model) const
 		{
 			if(shader < model.shader)
 			{
@@ -300,7 +299,7 @@ namespace kit
 			return vertexBufferObject < model.vertexBufferObject;
 		}
 
-		void ModelP::updateShader ()
+		void Model::updateShader ()
 		{
 			std::string code [Shader::NumCodeTypes];
 
@@ -465,7 +464,7 @@ namespace kit
 			}
 
 			shader = resources::getShader(name, code);
-			needsResorting = true;
+			sorted = false;
 
 			// Update attribute locations
 			vertexBufferObject->clearVertexComponents();

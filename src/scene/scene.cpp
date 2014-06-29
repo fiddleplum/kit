@@ -1,64 +1,52 @@
-#include "scene_p.h"
-#include "object_p.h"
-//#include "light_p.h"
-#include "camera_p.h"
-//#include "controller_p.h"
+#include "scene.h"
 #include "../open_gl.h"
-
-#include <memory>
 
 namespace kit
 {
 	namespace scene
 	{
-		SceneP::SceneP()
+		Ptr<Light> Scene::addLight()
 		{
+			return *_lights.insert(OwnPtr<Light>(new Light));
 		}
 
-		//Ptr<Light> SceneP::addLight()
-		//{
-		//	Ptr<Light> light (new Light);
-		//	lights.insert(light);
-		//	return light;
-		//}
-
-		//void SceneP::removeLight(Ptr<Light> light)
-		//{
-		//	lights.erase(light);
-		//}
-
-		Ptr<Camera> SceneP::addCamera()
+		void Scene::removeLight(Ptr<Light> light)
 		{
-			return *_cameras.insert(OwnPtr<CameraP>(new CameraP));
+			_lights.erase(light);
 		}
 
-		void SceneP::removeCamera(Ptr<Camera> camera)
+		Ptr<Camera> Scene::addCamera()
 		{
-			_cameras.erase(camera.as<CameraP>());
+			return *_cameras.insert(OwnPtr<Camera>(new Camera));
 		}
 
-		Ptr<Object> SceneP::addObject()
+		void Scene::removeCamera(Ptr<Camera> camera)
 		{
-			return *_objects.insert(OwnPtr<ObjectP>(new ObjectP));
+			_cameras.erase(camera.as<Camera>());
 		}
 
-		void SceneP::removeObject(Ptr<Object> object)
+		Ptr<Object> Scene::addObject()
+		{
+			return *_objects.insert(OwnPtr<Object>(new Object));
+		}
+
+		void Scene::removeObject(Ptr<Object> object)
 		{
 			_objects.erase(object);
 		}
 
-		Ptr<Controller> SceneP::addController()
+		Ptr<Controller> Scene::addController()
 		{
-			return Ptr<ControllerP>();
-//			return *_controllers.insert(OwnPtr<ControllerP>(new ControllerP));
+			return Ptr<Controller>(); // TODO
+			//return *_controllers.insert(OwnPtr<Controller>(new Controller));
 		}
 
-		void SceneP::removeController(Ptr<Controller> controller)
+		void Scene::removeController(Ptr<Controller> controller)
 		{
 			_controllers.erase(controller);
 		}
 
-		void SceneP::handleEvent(Event const & event)
+		void Scene::handleEvent(Event const & event)
 		{
 			for(auto controller : _controllers)
 			{
@@ -66,56 +54,56 @@ namespace kit
 			}
 		}
 
-		void SceneP::render(Ptr<Camera> camera)
+		void Scene::render(Ptr<Camera> camera)
 		{
 			// Set the OpenGL settings.
 			glEnable(GL_DEPTH_TEST);
 
 			// Check for sorting. Pull out the ones that need to be resorted, and put them back in the proper place.
-			std::vector<Ptr<Model>> modelsToInsert;
-			for(auto it = mModels.begin(); it != mModels.end();)
+			std::vector<OwnPtr<Object>> objectsToInsert;
+			for(auto it = _objects.begin(); it != _objects.end();)
 			{
-				Ptr<Model> model = *it;
-				if(model->needsResorting())
+				OwnPtr<Object> object = *it;
+				if(object->getModel()->needsResorting())
 				{
-					it = mModels.erase(it);
-					modelsToInsert.push_back(model);
+					objectsToInsert.push_back(object);
+					it = _objects.erase(object);
 				}
 				else
 				{
 					it++;
 				}
 			}
-			for(Ptr<Model> model : modelsToInsert)
+			for(OwnPtr<Object> object : objectsToInsert)
 			{
-				mModels.insert(model);
-				model->resortingDone();
+				_objects.insert(object);
+				object->getModel()->resortingDone();
 			}
 
 			// Prepare the lights.
 			std::vector<Vector3f> lightPositions;
 			std::vector<Vector3f> lightColors;
-			for(Ptr<Light> light : lights)
+			for(Ptr<Light> light : _lights)
 			{
-				lightPositions.push_back(camera->getView().transform(light->getPosition(), 1));
+				lightPositions.push_back(camera->getWorldToCameraTransform().transform(light->getPosition(), 1));
 				lightColors.push_back(light->getColor());
 			}
 			while(lightPositions.size() < Model::maxLights)
 			{
-				lightPositions.push_back(Vector3f::zero());
-				lightColors.push_back(Vector3f::zero());
+				lightPositions.push_back(Vector3f(0, 0, 0));
+				lightColors.push_back(Vector3f(0, 0, 0));
 			}
 
 			// Do the render.
-			for(Ptr<Model> model : mModels)
+			for(Ptr<Object> object : _objects)
 			{
-				model->render(camera, lightPositions, lightColors);
+				object->getModel()->render(camera, object, lightPositions, lightColors);
 			}
 		}
 
-		bool SceneP::ModelCompare::operator ()(Ptr<Model> model0, Ptr<Model> model1)
+		bool Scene::ObjectCompare::operator () (OwnPtr<Object> object0, OwnPtr<Object> object1)
 		{
-			return *model0 < *model1;
+			return *object0->getModel() < *object1->getModel();
 		}
 	}
 }

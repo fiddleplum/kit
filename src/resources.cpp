@@ -1,16 +1,13 @@
-#include "texture_p.h"
-#include "shader.h"
+#include "resources.h"
 #include "object_cache.h"
-#include "scene/model_p.h"
-#include "resources_p.h"
 
 namespace kit
 {
 	namespace resources
 	{
-		OwnPtr<ObjectCache<TextureP>> _textureCache;
+		OwnPtr<ObjectCache<Texture>> _textureCache;
 		OwnPtr<ObjectCache<Shader>> _shaderCache;
-		OwnPtr<ObjectCache<scene::ModelP>> _modelCache;
+		OwnPtr<ObjectCache<scene::Model>> _modelCache;
 
 		Ptr<Texture> getBlankTexture (std::string const & name, Vector2i size)
 		{
@@ -45,8 +42,8 @@ namespace kit
 		void initialize ()
 		{
 			_shaderCache.set(new ObjectCache<Shader>);
-			_textureCache.set(new ObjectCache<TextureP>);
-			_modelCache.set(new ObjectCache<scene::ModelP>);
+			_textureCache.set(new ObjectCache<Texture>);
+			_modelCache.set(new ObjectCache<scene::Model>);
 		}
 
 		void finalize ()

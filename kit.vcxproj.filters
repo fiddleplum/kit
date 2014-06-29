@@ -39,6 +39,7 @@
     <ClCompile Include="src\gui\viewport.cpp" />
     <ClCompile Include="src\cursor.cpp" />
     <ClCompile Include="src\scene\scene.cpp" />
+    <ClCompile Include="src\scene\light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\controller.h" />
@@ -93,26 +94,34 @@
     <ClInclude Include="src\gui\widget_p.h" />
     <ClInclude Include="src\gui\widget_container_p.h" />
     <ClInclude Include="src\gui\sprite_p.h" />
-    <ClInclude Include="src\texture_p.h" />
     <ClInclude Include="src\gui\button_p.h" />
     <ClInclude Include="src\app_p.h" />
     <ClInclude Include="src\window_p.h" />
-    <ClInclude Include="src\scene\entity_p.h" />
-    <ClInclude Include="src\scene\camera_p.h" />
-    <ClInclude Include="src\scene\model_p.h" />
     <ClInclude Include="inc\kit\resources.h" />
-    <ClInclude Include="src\resources_p.h" />
     <ClInclude Include="src\object_cache.h" />
     <ClInclude Include="inc\kit\log.h" />
     <ClInclude Include="src\log_p.h" />
-    <ClInclude Include="src\scene\object_p.h" />
     <ClInclude Include="src\gui\viewport_p.h" />
     <ClInclude Include="src\cursor_p.h" />
     <ClInclude Include="inc\kit\cursor.h" />
     <ClInclude Include="inc\kit\range.h" />
     <ClInclude Include="inc\kit\box.h" />
     <ClInclude Include="inc\kit\scene\scene.h" />
-    <ClInclude Include="src\scene\scene_p.h" />
     <ClInclude Include="inc\kit\ptr_set.h" />
+    <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\scene\model.h" />
+    <ClInclude Include="src\scene\entity.h" />
+    <ClInclude Include="src\scene\camera.h" />
+    <ClInclude Include="src\scene\object.h" />
+    <ClInclude Include="src\scene\controller.h" />
+    <ClInclude Include="src\scene\light.h" />
+    <ClInclude Include="src\scene\scene.h" />
+    <ClInclude Include="src\ptr_set.h" />
+    <ClInclude Include="src\quaternion.h" />
+    <ClInclude Include="src\range.h" />
+    <ClInclude Include="src\ray.h" />
+    <ClInclude Include="src\rect.h" />
+    <ClInclude Include="src\vector.h" />
+    <ClInclude Include="src\resources.h" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/matrix.h>
+#include "matrix.h"
 
 namespace kit
 {

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/matrix.h>
-#include <kit/ptr.h>
+#include "vector.h"
+#include "matrix.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -55,9 +54,9 @@ namespace kit
 		static unsigned int linkShaderProgram (std::vector<unsigned int> const & shaderObjects);
 		void populateVariableLocations ();
 
-		unsigned int mProgram;
-		std::map<std::string, int> mUniforms;
-		std::map<std::string, int> mAttributes;
+		unsigned int _program;
+		std::map<std::string, int> _uniforms;
+		std::map<std::string, int> _attributes;
 	};
 }
 

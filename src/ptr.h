@@ -38,11 +38,7 @@ namespace kit
 	};
 
 	// OwnPtr is a smart pointer that controls ownership. It is copyable and maintains an OwnPtr reference count, that when the last OwnPtr reference of a particular object is deconstructed, the pointer is destroyed. When the last OwnPtr of a pointer is being destroyed, there must be no UsePtrs pointing to it. If there are, it will fail an assertion. This ensures that the OwnPtr and object always exist at least as long as the UsePtrs. OwnPtr can take a destroy function that must dispose of the pointer appropriately.
-	/*
-		In reference to cycles: The solution is to unlink all objects first, and then delete them. For doubly-linked trees, unlink the upward links first. For doubly linked lists, unlink all connections, etc.
-	*/
-	template <class T>
-	class OwnPtr
+	template <class T> class OwnPtr
 	{
 	public:
 		// Initialize the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
@@ -129,8 +125,7 @@ namespace kit
 	};
 
 	// UsePtr is a smart pointer that has no ownership and so never deletes the pointer that it references. The object it points to is guaranteed to exist while the UsePtr points to it.
-	template <class T>
-	class UsePtr
+	template <class T> class UsePtr
 	{
 	public:
 		// Default constructor. Initializes the pointer to null.
@@ -211,8 +206,7 @@ namespace kit
 	};
 
 	// Ptr is a somewhat smart pointer that has no ownership and so never deletes the pointer that it references. If the object it points to is accessed but there are no OwnPtrs, it throws an std::exception.
-	template <class T>
-	class Ptr
+	template <class T> class Ptr
 	{
 	public:
 		// Default constructor. Initializes the pointer to null.

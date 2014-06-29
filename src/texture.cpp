@@ -1,15 +1,13 @@
-#include "texture_p.h"
+#include "texture.h"
 #include "open_gl.h"
-#include "../external/SDL2_image-2.0.0/include/SDL_image.h"
-#include <stdexcept>
-#include <fstream>
 #include <vector>
+#include "../external/SDL2_image-2.0.0/include/SDL_image.h"
 
 namespace kit
 {
 	std::vector<unsigned int> _currentTextures; // current textures in the open gl state
 
-	TextureP::TextureP (Vector2i)
+	Texture::Texture (Vector2i)
 	{
 		if(!glIsInitialized())
 		{
@@ -18,7 +16,7 @@ namespace kit
 		// TODO
 	}
 
-	TextureP::TextureP (std::string const & filename)
+	Texture::Texture (std::string const & filename)
 	{
 		if(!glIsInitialized())
 		{
@@ -51,28 +49,28 @@ namespace kit
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 
-	TextureP::~TextureP ()
+	Texture::~Texture ()
 	{
 		glDeleteTextures (1, &id);
 	}
 
-	Vector2i TextureP::getSize () const
+	Vector2i Texture::getSize () const
 	{
 		return size;
 	}
 
-	unsigned char * TextureP::lockPixels ()
+	unsigned char * Texture::lockPixels ()
 	{
 		// TODO
 		return nullptr;
 	}
 
-	void TextureP::unlockPixels ()
+	void Texture::unlockPixels ()
 	{
 		// TODO
 	}
 
-	void TextureP::activate (unsigned int slot) const
+	void Texture::activate (unsigned int slot) const
 	{
 		if(slot >= _currentTextures.size() || id != _currentTextures[slot])
 		{
@@ -86,7 +84,7 @@ namespace kit
 		}
 	}
 
-	void TextureP::deactivateRest (unsigned int slot)
+	void Texture::deactivateRest (unsigned int slot)
 	{
 		for(; slot < _currentTextures.size(); slot++)
 		{

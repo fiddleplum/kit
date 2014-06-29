@@ -7,13 +7,12 @@
 namespace kit
 {
 	// Generic container for handling OwnPtr and Ptr objects. It's needed because std::map/set<OwnPtr>::find can't accept Ptrs, even though a less operator is called.
-	template <class T, class Compare = std::less<T>>
-	class PtrSet
+	template <class T, class Compare = std::less<OwnPtr<T>>> class PtrSet
 	{
 	public:
 		typename std::set<OwnPtr<T>, Compare>::iterator insert (OwnPtr<T> object);
 		
-		void erase (Ptr<T> object);
+		typename std::set<OwnPtr<T>, Compare>::iterator erase (Ptr<T> object);
 		
 		bool empty () const;
 		
@@ -33,7 +32,7 @@ namespace kit
 
 	private:
 		std::set<OwnPtr<T>, Compare> _objects;
-		std::map<Ptr<T>, OwnPtr<T>> _objectLookup;
+		std::map<Ptr<T>, typename std::set<OwnPtr<T>, Compare>::iterator> _objectLookup;
 	};
 
 	// Template Implementation
@@ -42,18 +41,24 @@ namespace kit
 	{
 		auto iterator = _objects.insert(object);
 		_objectLookup[object] = iterator.first;
-		return iterator.first
+		return iterator.first;
 	}
 	
 	template <class T, class Compare>
-	void PtrSet<T, Compare>::erase (Ptr<T> object)
+	typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::erase (Ptr<T> object)
 	{
 		auto iterator = _objectLookup.find(object);
+		typename std::set<OwnPtr<T>, Compare>::iterator returnIterator;
 		if(iterator != _objectLookup.end())
 		{
-			_objects.erase(iterator->second);
+			returnIterator = _objects.erase(iterator->second);
 			_objectLookup.erase(iterator);
 		}
+		else
+		{
+			returnIterator = _objects.end();
+		}
+		return returnIterator;
 	}
 	
 	template <class T, class Compare>

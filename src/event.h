@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/ptr.h>
+#include "vector.h"
+#include "ptr.h"
 #include <string>
 
 namespace kit

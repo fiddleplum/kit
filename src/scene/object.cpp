@@ -1,33 +1,33 @@
-#include "object_p.h"
-#include "../resources_p.h"
+#include "object.h"
+#include "../resources.h"
 
 namespace kit
 {
 	namespace scene
 	{
-		float ObjectP::getScale () const
+		float Object::getScale () const
 		{
 			model->getScale();
 		}
 
-		void ObjectP::setScale (float scale)
+		void Object::setScale (float scale)
 		{
 			model->setScale(scale);
 		}
 
-		Ptr<Model> ObjectP::getModel () const
+		Ptr<Model> Object::getModel () const
 		{
 			return model;
 		}
 
-		void ObjectP::setModel (Ptr<Model> model) 
+		void Object::setModel (Ptr<Model> model) 
 		{
-			this->model = model.as<ModelP>();
+			this->model = model;
 		}
 
-		void ObjectP::setModel (std::string const & filename)
+		void Object::setModel (std::string const & filename)
 		{
-			this->model = resources::getModelFromFile(filename).as<ModelP>();
+			this->model = resources::getModelFromFile(filename);
 		}
 	}
 }

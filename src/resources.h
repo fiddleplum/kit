@@ -1,10 +1,8 @@
 #pragma once
 
-#include <kit/texture.h>
-#include <kit/ptr.h>
-#include <kit/vector.h>
-#include <kit/scene/model.h>
-#include <string>
+#include "texture.h"
+#include "scene/model.h"
+#include "shader.h"
 
 namespace kit
 {
@@ -19,6 +17,12 @@ namespace kit
 		Ptr<scene::Model> getModelAsSprite (std::string const & name, std::string const & textureFilename, Recti textureCoords);
 
 		Ptr<scene::Model> getModelFromFile (std::string const & filename);
+
+		Ptr<Shader> getShader (std::string const & name, std::string code []);
+
+		void initialize ();
+
+		void finalize ();
 	}
 }
 
