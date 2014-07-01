@@ -1,26 +1,50 @@
 #pragma once
 
-#include <kit/ptr.h>
-#include <kit/gui/widget.h>
-#include <kit/texture.h>
+#include "../ptr.h"
+#include "../texture.h"
+#include "../event.h"
+#include "widget.h"
 #include <string>
 
 namespace kit
 {
 	namespace gui
 	{
-		class Sprite : virtual public Widget
+		// TODO: Add ability to have a texture mask for determining the shape of the sprite when it comes to cursor clicks, etc.
+
+		class Model;
+
+		class Sprite : public Widget
 		{
 		public:
-			virtual Ptr<Texture> getTexture() const = 0;
+			Sprite ();
 
-			virtual void setTexture(Ptr<Texture> texture) = 0;
+			Recti getBounds () const override;
 
-			virtual void setTexture(std::string const & filename) = 0;
+			void setPosition (Vector2i position) override;
 
-			virtual void setTextureBounds(Recti bounds) = 0;
+			void setMaxSize (Vector2i maxSize) override;
 
-			virtual Recti getTextureBounds() const = 0;
+			Ptr<Texture> getTexture () const;
+
+			void setTexture (Ptr<Texture> texture);
+
+			void setTexture (std::string const & filename);
+
+			Recti getTextureBounds () const;
+
+			void setTextureBounds (Recti bounds);
+
+			void handleEvent (Event const & event);
+
+			void render (Vector2i windowSize);
+
+		private:
+			void updateVertices ();
+
+			OwnPtr<Model> _model;
+			Recti _textureBounds;
+			Vector2i _maxSize;
 		};
 	}
 }

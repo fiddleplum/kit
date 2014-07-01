@@ -1,13 +1,14 @@
-#include "button_p.h"
-#include "../app_p.h"
+#include "../app.h"
+#include "button.h"
+#include "sprite.h"
 
 namespace kit
 {
 	namespace gui
 	{
-		ButtonP::ButtonP ()
+		Button::Button ()
 		{
-			sprite.set(new SpriteP);
+			sprite.set(new Sprite);
 			type = Hold;
 			hovered = false;
 			pressed = false;
@@ -15,22 +16,22 @@ namespace kit
 			shotInterval = .5f;
 		}
 
-		Recti ButtonP::getBounds () const
+		Recti Button::getBounds () const
 		{
 			return sprite->getBounds();
 		}
 
-		void ButtonP::setPosition (Vector2i position)
+		void Button::setPosition (Vector2i position)
 		{
 			sprite->setPosition(position);
 		}
 
-		void ButtonP::setMaxSize (Vector2i maxSize)
+		void Button::setMaxSize (Vector2i maxSize)
 		{
 			sprite->setMaxSize(maxSize);
 		}
 
-		void ButtonP::handleEvent (Event const & event)
+		void Button::handleEvent (Event const & event)
 		{
 			sprite->handleEvent(event);
 
@@ -121,53 +122,53 @@ namespace kit
 			setSpriteTextureBoundsFromState();
 		}
 
-		void ButtonP::render (Vector2i windowSize)
+		void Button::render (Vector2i windowSize)
 		{
 			sprite->render(windowSize);
 		}
 
-		void ButtonP::setTexture (Ptr<Texture> texture)
+		void Button::setTexture (Ptr<Texture> texture)
 		{
 			sprite->setTexture(texture);
 		}
 
-		void ButtonP::setTextureBounds (Recti bounds)
+		void Button::setTextureBounds (Recti bounds)
 		{
 			defaultTextureBounds = bounds;
 			sprite->setTextureBounds(bounds);
 		}
 
-		void ButtonP::setType (Type type)
+		void Button::setType (Type type)
 		{
 			this->type = type;
 		}
 
-		void ButtonP::setShotInterval (float interval)
+		void Button::setShotInterval (float interval)
 		{
 			shotInterval = interval;
 		}
 
-		void ButtonP::setHoverFunction (std::function<void ()> hoverFunction)
+		void Button::setHoverFunction (std::function<void ()> hoverFunction)
 		{
 			this->hoverFunction = hoverFunction;
 		}
 
-		void ButtonP::setUnhoverFunction (std::function<void ()> unhoverFunction)
+		void Button::setUnhoverFunction (std::function<void ()> unhoverFunction)
 		{
 			this->unhoverFunction = unhoverFunction;
 		}
 
-		void ButtonP::setPressFunction (std::function<void ()> pressFunction)
+		void Button::setPressFunction (std::function<void ()> pressFunction)
 		{
 			this->pressFunction = pressFunction;
 		}
 
-		void ButtonP::setUnpressFunction (std::function<void ()> unpressFunction)
+		void Button::setUnpressFunction (std::function<void ()> unpressFunction)
 		{
 			this->unpressFunction = unpressFunction;
 		}
 
-		void ButtonP::setSpriteTextureBoundsFromState ()
+		void Button::setSpriteTextureBoundsFromState ()
 		{
 			int index = 0;
 			if(hovered)

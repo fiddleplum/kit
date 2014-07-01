@@ -1,5 +1,5 @@
 #include "model.h"
-#include "../resources_p.h"
+#include "../resources.h"
 #include "../vertex_buffer_object.h"
 
 namespace kit
@@ -64,7 +64,7 @@ namespace kit
 
 		void Model::setTexture(Ptr<Texture> texture)
 		{
-			_texture = texture.as<TextureP>();
+			_texture = texture;
 		}
 
 		void Model::setVertices(std::vector<Vertex> const & vertices)

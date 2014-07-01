@@ -1,11 +1,11 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/matrix.h>
+#include "vector.h"
+#include "matrix.h"
+#include "ptr.h"
 #include <vector>
 #include <istream>
 #include <string>
-#include <kit/ptr.h>
 #include <memory>
 #include <set>
 

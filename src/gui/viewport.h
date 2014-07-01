@@ -1,27 +1,46 @@
 #pragma once
 
-#include <kit/gui/widget.h>
-#include <kit/scene/camera.h>
-#include <kit/scene/scene.h>
+#include "../scene/camera.h"
+#include "../scene/scene.h"
+#include "widget.h"
 
 namespace kit
 {
 	namespace gui
 	{
-		class Viewport : virtual public Widget
+		class Viewport : public Widget
 		{
 		public:
+			Viewport ();
+
+			Recti getBounds () const override;
+
+			void setPosition (Vector2i position) override;
+
+			void setMaxSize (Vector2i maxSize) override;
+
 			// Get the attached camera.
-			virtual Ptr<scene::Camera> getCamera() const = 0;
+			Ptr<scene::Camera> getCamera () const;
 
 			// Attach a camera.
-			virtual void setCamera(Ptr<scene::Camera>) = 0;
+			void setCamera (Ptr<scene::Camera>);
 
 			// Get the attached scene.
-			virtual Ptr<scene::Scene> getScene() const = 0;
+			Ptr<scene::Scene> getScene () const;
 
 			// Attach a scene.
-			virtual void setScene(Ptr<scene::Scene>) = 0;
+			void setScene (Ptr<scene::Scene>);
+
+			// Handles an event.
+			void handleEvent (Event const & event) override;
+
+			// Renders the viewport.
+			void render (Vector2i windowSize) override;
+
+		private:
+			Recti _bounds;
+			Ptr<scene::Camera> _camera;
+			Ptr<scene::Scene> _scene;
 		};
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "geometry_1d.h"
-#include <kit/rect.h>
+#include "rect.h"
 #include <vector>
 
 namespace kit

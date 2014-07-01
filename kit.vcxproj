@@ -69,10 +69,12 @@
     <ClInclude Include="inc\kit\event.h" />
     <ClInclude Include="inc\kit\interval.h" />
     <ClInclude Include="inc\kit\texture.h" />
-    <ClInclude Include="src\app_p.h" />
-    <ClInclude Include="src\cursor_p.h" />
-    <ClInclude Include="src\gui\button_p.h" />
-    <ClInclude Include="src\gui\sprite_p.h" />
+    <ClInclude Include="src\app.h" />
+    <ClInclude Include="src\box.h" />
+    <ClInclude Include="src\cursor.h" />
+    <ClInclude Include="src\event.h" />
+    <ClInclude Include="src\gui\button.h" />
+    <ClInclude Include="src\gui\sprite.h" />
     <ClInclude Include="inc\kit\ptr.h" />
     <ClInclude Include="inc\kit\rect.h" />
     <ClInclude Include="inc\kit\string_util.h" />
@@ -92,12 +94,15 @@
     <ClInclude Include="src\gui\model.h" />
     <ClInclude Include="inc\kit\gui\sprite.h" />
     <ClInclude Include="inc\kit\gui\widget_container.h" />
-    <ClInclude Include="src\gui\viewport_p.h" />
-    <ClInclude Include="src\gui\widget_container_p.h" />
-    <ClInclude Include="src\gui\widget_p.h" />
+    <ClInclude Include="src\gui\viewport.h" />
+    <ClInclude Include="src\gui\widget.h" />
+    <ClInclude Include="src\gui\widget_container.h" />
+    <ClInclude Include="src\interval.h" />
     <ClInclude Include="src\light_2d.h" />
-    <ClInclude Include="src\log_p.h" />
+    <ClInclude Include="src\log.h" />
     <ClInclude Include="src\math_util.h" />
+    <ClInclude Include="src\matrix.h" />
+    <ClInclude Include="src\noncopyable.h" />
     <ClInclude Include="src\open_gl.h" />
     <ClInclude Include="src\ptr.h" />
     <ClInclude Include="inc\kit\ray.h" />
@@ -122,12 +127,14 @@
     <ClInclude Include="src\serialize_std_vector.h" />
     <ClInclude Include="src\serialize_vector.h" />
     <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\start_finish.h" />
     <ClInclude Include="src\storage.h" />
+    <ClInclude Include="src\string_util.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\unique_id_factory.h" />
     <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\vertex_buffer_object.h" />
-    <ClInclude Include="src\window_p.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DBB65554-520D-48D7-850C-525D88740CF7}</ProjectGuid>

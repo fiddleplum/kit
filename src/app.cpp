@@ -1,20 +1,20 @@
-#include "app_p.h"
+#include "app.h"
 #include "open_gl.h"
-#include "window_p.h"
-#include "resources_p.h"
-#include "log_p.h"
+#include "resources.h"
+#include "log.h"
+#include "ptr_set.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 
 namespace kit
 {
 	namespace app
 	{
-		Ptr<WindowP> getWindowFromId (unsigned int id);
+		Ptr<Window> getWindowFromId (unsigned int id);
 		KeyboardEvent::Key sdlKeyToKey (int sdlKey);
 		void handleSDLEvent (SDL_Event const & sdlEvent);
 
-		std::list<OwnPtr<WindowP>> _windows;
-		std::map<Ptr<kit::Window>, std::list<OwnPtr<WindowP>>::iterator> _windowMapping;
+		PtrSet<Window> _windows;
+		PtrSet<scene::Scene> _scenes;
 		SDL_GLContext _sdlGlContext;
 		bool _looping;
 		bool _firstMouseMoveEvent;
@@ -56,38 +56,34 @@ namespace kit
 
 		Ptr<Window> addWindow (char const * title)
 		{
-			OwnPtr<WindowP> window (new WindowP (title));
+			OwnPtr<Window> window (new Window (title));
 			if(_windows.empty())
 			{
 				_sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
 				glInitialize();
 			}
-			auto windowIterator = _windows.insert(_windows.end(), window);
-			_windowMapping[window] = windowIterator;
+			_windows.insert(window);
 			return window;
 		}
 
 		void removeWindow (Ptr<Window> window)
 		{
-			auto it = _windowMapping.find(window);
-			if(it != _windowMapping.end())
+			_windows.erase(window);
+			if(_windows.empty())
 			{
-				auto windowIt = it->second;
-				_windowMapping.erase(it);
-				_windows.erase(windowIt);
-				if(_windows.empty())
-				{
-					SDL_GL_DeleteContext(_sdlGlContext);
-				}
+				SDL_GL_DeleteContext(_sdlGlContext);
 			}
 		}
 
-		Ptr<Scene> addScene (Ptr<Scene> scene)
+		Ptr<scene::Scene> addScene ()
 		{
+			OwnPtr<scene::Scene> scene (new scene::Scene);
+			_scenes.insert(scene);
 		}
 
-		void removeScene (Ptr<Scene> scene)
+		void removeScene (Ptr<scene::Scene> scene)
 		{
+			_scenes.erase(scene);
 		}
 
 		void loop ()
@@ -133,7 +129,7 @@ namespace kit
 			// TODO
 		}
 
-		Ptr<WindowP> getWindowFromId (unsigned int id)
+		Ptr<Window> getWindowFromId (unsigned int id)
 		{
 			SDL_Window * sdlWindow = SDL_GetWindowFromID(id);
 			if(sdlWindow != NULL)
@@ -146,7 +142,7 @@ namespace kit
 					}
 				}
 			}
-			return Ptr<WindowP> ();
+			return Ptr<Window> ();
 		}
 
 		KeyboardEvent::Key sdlKeyToKey (int sdlKey)
@@ -255,7 +251,7 @@ namespace kit
 
 		void handleSDLEvent (SDL_Event const & sdlEvent)
 		{
-			Ptr<WindowP> window;
+			Ptr<Window> window;
 			switch(sdlEvent.type)
 			{
 			case SDL_QUIT:
@@ -276,10 +272,10 @@ namespace kit
 					window->setMaxSize(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
 					break;
 				case SDL_WINDOWEVENT_LEAVE:
-					window->getCursor().as<CursorP>()->setValidity(false);
+					window->getCursor()->setValidity(false);
 					break;
 				case SDL_WINDOWEVENT_ENTER:
-					window->getCursor().as<CursorP>()->setValidity(true);
+					window->getCursor()->setValidity(true);
 					break;
 				}
 				break;

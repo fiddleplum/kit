@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kit/vector.h>
+#include "../vector.h"
 #include <vector>
 
 namespace kit

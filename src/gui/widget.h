@@ -1,8 +1,8 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/rect.h>
-#include <kit/noncopyable.h>
+#include "../rect.h"
+#include "../noncopyable.h"
+#include "../event.h"
 
 // DO I NEED GETBOUNDS AND SETMAXSIZE? WHAT REALLY NEEDS THEM?
 
@@ -21,6 +21,12 @@ namespace kit
 
 			// Sets the maximum size this widget can be. The widget can max out to this size (text box), or not change its size at all (check box).
 			virtual void setMaxSize(Vector2i maxSize) = 0;
+
+			// Handles an event.
+			virtual void handleEvent (Event const & event) = 0;
+
+			// Renders the widget.
+			virtual void render (Vector2i windowSize) = 0;
 		};
 	}
 }

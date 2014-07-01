@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/range.h>
+#include "vector.h"
+#include "range.h"
 
 namespace kit
 {

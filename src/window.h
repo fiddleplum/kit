@@ -1,37 +1,59 @@
 #pragma once
 
-#include <kit/gui/widget_container.h>
-#include <kit/cursor.h>
+#include "cursor.h"
+#include "gui/widget_container.h"
 #include <vector>
+
+typedef struct SDL_Window SDL_Window;
+typedef void * SDL_GLContext;
 
 namespace kit
 {
-	class Window : virtual public gui::WidgetContainer
+	class Window : public gui::WidgetContainer
 	{
 	public:
+		// Constructor.
+		Window (char const * title);
+
+		// Destructor.
+		~Window ();
+
 		// Sets the title of the window.
-		virtual void setTitle(char const * title) = 0;
+		void setTitle(char const * title);
 
 		// Sets the window to windowed mode.
-		virtual void setWindowed() = 0;
+		void setWindowed();
 
 		// Sets the window to fullscreen on a given display and resolution.
-		virtual void setFullscreen(int display, Vector2i size) = 0;
+		void setFullscreen(int display, Vector2i size);
 
 		// Sets the window to fullscreen on the display the window is within at its desktop resolution.
-		virtual void setFullscreen() = 0;
+		void setFullscreen();
 
 		// Returns the size of the window, exluding the borders and title bar.
-		virtual Vector2i getSize() const = 0;
+		Vector2i getSize() const;
 
 		// Returns true if the window is fullscreen.
-		virtual bool isFullscreen() const = 0;
+		bool isFullscreen() const;
 
 		// Returns the display that the window is within, determined by its center.
-		virtual int getDisplay() const = 0;
+		int getDisplay() const;
 
 		// Returns the cursor information associated with this window.
-		virtual Ptr<Cursor> getCursor() const = 0;
+		Ptr<Cursor> getCursor() const;
+
+		// Handles an event. Called by app.
+		void handleEvent (Event const & event);
+
+		// Renders the window. Called by app.
+		void render (SDL_GLContext sdlGlContext);
+
+		// Gets the SDL context of a window. Used by app.
+		SDL_Window * getSDLWindow () const;
+
+	private:
+		SDL_Window * _sdlWindow;
+		OwnPtr<Cursor> _cursor;
 	};
 
 	// Returns the number of displays in the system.

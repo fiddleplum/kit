@@ -1,13 +1,10 @@
 #pragma once
 
-#include <kit/ptr.h>
-#include <kit/vector.h>
+#include "window.h"
+#include "scene/scene.h"
 
 namespace kit
 {
-	class Window;
-	class Scene;
-
 	namespace app
 	{
 		// Quits the application.
@@ -20,16 +17,25 @@ namespace kit
 		void removeWindow (Ptr<Window> window);
 
 		// Adds a scene.
-		Ptr<Scene> addScene ();
+		Ptr<scene::Scene> addScene ();
 
 		// Removes a scene.
-		void removeScene (Ptr<Scene> scene);
+		void removeScene (Ptr<scene::Scene> scene);
 
 		// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
 		float getTime ();
 
 		// Makes the cursor active or inactive. When it is inactive, the edges of the screen do not influence mouse movements.
 		void setCursorActive (bool active);
+
+		// Initializes the application. Called by main.
+		void initialize ();
+		
+		// Finalizes the application. Called by main.
+		void finalize ();
+
+		// Initiates and continues the application loop. Called by main.
+		void loop ();
 	}
 }
 

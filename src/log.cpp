@@ -1,4 +1,4 @@
-#include "log_p.h"
+#include "log.h"
 #include <fstream>
 
 namespace kit

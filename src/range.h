@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kit/interval.h>
+#include "interval.h"
 
 namespace kit
 {

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <kit/rect.h>
+#include "sprite.h"
+#include "../rect.h"
 #include <memory>
 #include <string>
 

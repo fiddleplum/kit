@@ -1,15 +1,13 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/ptr.h>
-#include <memory>
+#include "../vector.h"
+#include "../ptr.h"
+#include "../texture.h"
 #include <string>
 #include <vector>
 
 namespace kit
 {
-	class Texture;
-	class TextureP;
 	class Shader;
 	class VertexBufferObject;
 
@@ -39,7 +37,7 @@ namespace kit
 
 		private:
 			Vector2i _position;
-			Ptr<TextureP> _texture;
+			Ptr<Texture> _texture;
 			Ptr<Shader> _shader;
 			OwnPtr<VertexBufferObject> _vbo;
 			int _windowSizeLocation;

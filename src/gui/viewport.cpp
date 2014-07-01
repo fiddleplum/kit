@@ -1,90 +1,86 @@
-#include "viewport_p.h"
-#include "../app_p.h"
 #include "../open_gl.h"
-#include "../scene/camera_p.h"
-#include "../scene/scene_p.h"
-#include "../cursor_p.h"
-#include "../window_p.h"
-#include <kit/window.h>
+#include "../cursor.h"
+#include "../window.h"
+#include "viewport.h"
 
 namespace kit
 {
 	namespace gui
 	{
-		ViewportP::ViewportP ()
+		Viewport::Viewport ()
 		{
 		}
 
-		Recti ViewportP::getBounds () const
+		Recti Viewport::getBounds () const
 		{
-			return bounds;
+			return _bounds;
 		}
 
-		void ViewportP::setPosition (Vector2i position)
+		void Viewport::setPosition (Vector2i position)
 		{
-			bounds.setMinKeepSize(position);
+			_bounds.setMinKeepSize(position);
 		}
 
-		void ViewportP::setMaxSize (Vector2i maxSize)
+		void Viewport::setMaxSize (Vector2i maxSize)
 		{
-			bounds.setSize(maxSize);
-			if(camera.isValid())
+			_bounds.setSize(maxSize);
+			if(_camera.isValid())
 			{
 				if(maxSize[1] != 0)
 				{
-					camera->setAspectRatio((float)maxSize[0] / (float)maxSize[1]);
+					_camera->setAspectRatio((float)maxSize[0] / (float)maxSize[1]);
 				}
 			}
 		}
 
-		Ptr<scene::Camera> ViewportP::getCamera () const
+		Ptr<scene::Camera> Viewport::getCamera () const
 		{
-			return camera;
+			return _camera;
 		}
 
-		void ViewportP::setCamera (Ptr<scene::Camera> camera)
+		void Viewport::setCamera (Ptr<scene::Camera> camera)
 		{
-			this->camera = camera.as<scene::CameraP>();
-			if(bounds.getSize()[1] != 0)
+			_camera = camera;
+			if(_bounds.getSize()[1] != 0)
 			{
-				this->camera->setAspectRatio((float)bounds.getSize()[0] / (float)bounds.getSize()[1]);
+				_camera->setAspectRatio((float)_bounds.getSize()[0] / (float)_bounds.getSize()[1]);
 			}
 		}
 
-		Ptr<scene::Scene> ViewportP::getScene () const
+		Ptr<scene::Scene> Viewport::getScene () const
 		{
-			return scene;
+			return _scene;
 		}
 
-		void ViewportP::setScene (Ptr<scene::Scene> scene)
+		void Viewport::setScene (Ptr<scene::Scene> scene)
 		{
-			this->scene = scene;
+			_scene = scene;
 		}
 
-		void ViewportP::handleEvent (Event const & event)
+		void Viewport::handleEvent (Event const & event)
 		{
-			Ptr<CursorP> cursor = event.window->getCursor().as<CursorP>();
+			Ptr<Cursor> cursor = event.window->getCursor();
 			if(getBounds().containsEx(cursor->getPosition()))
 			{
 				cursor->consume();
 			}
 
-			if(scene.isValid())
+			if(_scene.isValid())
 			{
-//				scene->handleEvent(event);
+				_scene->handleEvent(event);
 			}
 		}
 
-		void ViewportP::render (Vector2i windowSize)
+		void Viewport::render (Vector2i windowSize)
 		{
-			if(!camera.isValid() || !camera.isValid())
+			if(!_camera.isValid() || !_scene.isValid())
 			{
 				return;
 			}
 
-			glViewport(bounds.min[0], windowSize[1] - bounds.max[1], bounds.max[0] - bounds.min[0], bounds.max[1] - bounds.min[1]);
+			glViewport(_bounds.min[0], windowSize[1] - _bounds.max[1], _bounds.max[0] - _bounds.min[0], _bounds.max[1] - _bounds.min[1]);
 
-			//scene->render(camera);
+			_scene->render(_camera);
 
 			glViewport(0, 0, windowSize[0], windowSize[1]);
 		}

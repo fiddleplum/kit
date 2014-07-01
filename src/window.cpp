@@ -1,5 +1,5 @@
 #include "open_gl.h"
-#include "window_p.h"
+#include "window.h"
 #include <string>
 #include <algorithm>
 #include <map>
@@ -7,7 +7,7 @@
 
 namespace kit
 {
-	WindowP::WindowP (char const * title)
+	Window::Window (char const * title)
 	{
 		Vector2i size (800, 600);
 
@@ -18,26 +18,26 @@ namespace kit
 		}
 		setMaxSize(size);
 
-		_cursor.set(new CursorP);
+		_cursor.set(new Cursor);
 	}
 
-	WindowP::~WindowP ()
+	Window::~Window ()
 	{
 		SDL_DestroyWindow(_sdlWindow);
 	}
 
-	void WindowP::setTitle (char const * title)
+	void Window::setTitle (char const * title)
 	{
 		SDL_SetWindowTitle(_sdlWindow, title);
 	}
 
-	void WindowP::setWindowed ()
+	void Window::setWindowed ()
 	{
 		SDL_SetWindowFullscreen(_sdlWindow, 0);
 		SDL_EnableScreenSaver();
 	}
 
-	void WindowP::setFullscreen (int display, Vector2i size)
+	void Window::setFullscreen (int display, Vector2i size)
 	{
 		try
 		{
@@ -64,24 +64,24 @@ namespace kit
 		}
 	}
 
-	void WindowP::setFullscreen ()
+	void Window::setFullscreen ()
 	{
 		setFullscreen(getDisplay(), getStartingResolution(getDisplay()));
 	}
 
-	Vector2i WindowP::getSize () const
+	Vector2i Window::getSize () const
 	{
 		Vector2i size;
 		SDL_GetWindowSize(_sdlWindow, &size[0], &size[1]);
 		return size;
 	}
 
-	bool WindowP::isFullscreen () const
+	bool Window::isFullscreen () const
 	{
 		return (SDL_GetWindowFlags(_sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 	}
 
-	int WindowP::getDisplay() const
+	int Window::getDisplay() const
 	{
 		int display = SDL_GetWindowDisplayIndex(_sdlWindow);
 		if(display >= 0)
@@ -91,18 +91,18 @@ namespace kit
 		throw std::runtime_error("Could not get the display the window is within. ");
 	}
 
-	Ptr<Cursor> WindowP::getCursor () const
+	Ptr<Cursor> Window::getCursor () const
 	{
 		return _cursor;
 	}
 
-	void WindowP::handleEvent (Event const & event)
+	void Window::handleEvent (Event const & event)
 	{
 		_cursor->resetConsumed();
-		WidgetContainerP::handleEvent(event);
+		WidgetContainer::handleEvent(event);
 	}
 
-	void WindowP::render (SDL_GLContext sdlGlContext)
+	void Window::render (SDL_GLContext sdlGlContext)
 	{
 		SDL_GL_MakeCurrent(_sdlWindow, sdlGlContext);
 
@@ -120,12 +120,12 @@ namespace kit
 		Vector2i windowSize = getSize();
 		glViewport(0, 0, windowSize[0], windowSize[1]);
 
-		WidgetContainerP::render(windowSize);
+		WidgetContainer::render(windowSize);
 
 		SDL_GL_SwapWindow(_sdlWindow);
 	}
 
-	SDL_Window * WindowP::getSDLWindow () const
+	SDL_Window * Window::getSDLWindow () const
 	{
 		return _sdlWindow;
 	}

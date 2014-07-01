@@ -1,5 +1,5 @@
-#include "app_p.h"
-#include <kit/start_finish.h>
+#include "app.h"
+#include "start_finish.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 
 // Called by SDL to run the entire application.

@@ -91,18 +91,9 @@
     <ClInclude Include="inc\kit\texture.h" />
     <ClInclude Include="src\unique_id_factory.h" />
     <ClInclude Include="inc\kit\scene\model.h" />
-    <ClInclude Include="src\gui\widget_p.h" />
-    <ClInclude Include="src\gui\widget_container_p.h" />
-    <ClInclude Include="src\gui\sprite_p.h" />
-    <ClInclude Include="src\gui\button_p.h" />
-    <ClInclude Include="src\app_p.h" />
-    <ClInclude Include="src\window_p.h" />
     <ClInclude Include="inc\kit\resources.h" />
     <ClInclude Include="src\object_cache.h" />
     <ClInclude Include="inc\kit\log.h" />
-    <ClInclude Include="src\log_p.h" />
-    <ClInclude Include="src\gui\viewport_p.h" />
-    <ClInclude Include="src\cursor_p.h" />
     <ClInclude Include="inc\kit\cursor.h" />
     <ClInclude Include="inc\kit\range.h" />
     <ClInclude Include="inc\kit\box.h" />
@@ -123,5 +114,21 @@
     <ClInclude Include="src\rect.h" />
     <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\resources.h" />
+    <ClInclude Include="src\gui\widget.h" />
+    <ClInclude Include="src\gui\viewport.h" />
+    <ClInclude Include="src\gui\sprite.h" />
+    <ClInclude Include="src\cursor.h" />
+    <ClInclude Include="src\event.h" />
+    <ClInclude Include="src\gui\widget_container.h" />
+    <ClInclude Include="src\gui\button.h" />
+    <ClInclude Include="src\app.h" />
+    <ClInclude Include="src\log.h" />
+    <ClInclude Include="src\window.h" />
+    <ClInclude Include="src\box.h" />
+    <ClInclude Include="src\interval.h" />
+    <ClInclude Include="src\matrix.h" />
+    <ClInclude Include="src\noncopyable.h" />
+    <ClInclude Include="src\start_finish.h" />
+    <ClInclude Include="src\string_util.h" />
   </ItemGroup>
 </Project>
