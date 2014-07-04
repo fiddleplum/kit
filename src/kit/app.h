@@ -1,7 +1,7 @@
 #pragma once
 
 #include "window.h"
-#include "scene/scene.h"
+#include "scene.h"
 
 namespace kit
 {
@@ -17,10 +17,10 @@ namespace kit
 		void removeWindow (Ptr<Window> window);
 
 		// Adds a scene.
-		Ptr<scene::Scene> addScene ();
+		Ptr<Scene> addScene ();
 
 		// Removes a scene.
-		void removeScene (Ptr<scene::Scene> scene);
+		void removeScene (Ptr<Scene> scene);
 
 		// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
 		float getTime ();

@@ -2,49 +2,46 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\kit\app.cpp" />
-    <ClCompile Include="src\kit\camera_2d.cpp" />
     <ClCompile Include="src\kit\csv.cpp" />
     <ClCompile Include="src\kit\cursor.cpp" />
     <ClCompile Include="src\kit\event.cpp" />
-    <ClCompile Include="src\kit\frame_2d.cpp" />
     <ClCompile Include="src\kit\geometry_1d.cpp" />
     <ClCompile Include="src\kit\geometry_2d.cpp" />
-    <ClCompile Include="src\kit\light_2d.cpp" />
     <ClCompile Include="src\kit\log.cpp" />
     <ClCompile Include="src\kit\main.cpp" />
     <ClCompile Include="src\kit\open_gl.cpp" />
     <ClCompile Include="src\kit\resources.cpp" />
-    <ClCompile Include="src\kit\scene_2d.cpp" />
     <ClCompile Include="src\kit\shader.cpp" />
     <ClCompile Include="src\kit\string_util.cpp" />
     <ClCompile Include="src\kit\texture.cpp" />
     <ClCompile Include="src\kit\vertex_buffer_object.cpp" />
     <ClCompile Include="src\kit\window.cpp" />
-    <ClCompile Include="src\kit\scene\camera.cpp" />
-    <ClCompile Include="src\kit\scene\entity.cpp" />
-    <ClCompile Include="src\kit\scene\light.cpp" />
-    <ClCompile Include="src\kit\scene\model.cpp" />
-    <ClCompile Include="src\kit\scene\object.cpp" />
-    <ClCompile Include="src\kit\scene\scene.cpp" />
     <ClCompile Include="src\kit\gui\button.cpp" />
     <ClCompile Include="src\kit\gui\model.cpp" />
     <ClCompile Include="src\kit\gui\sprite.cpp" />
     <ClCompile Include="src\kit\gui\viewport.cpp" />
     <ClCompile Include="src\kit\gui\widget_container.cpp" />
+    <ClCompile Include="src\kit\camera.cpp" />
+    <ClCompile Include="src\kit\entity.cpp" />
+    <ClCompile Include="src\kit\light.cpp" />
+    <ClCompile Include="src\kit\model.cpp" />
+    <ClCompile Include="src\kit\object.cpp" />
+    <ClCompile Include="src\kit\scene.cpp" />
+    <ClCompile Include="src\kit\flat\entity.cpp" />
+    <ClCompile Include="src\kit\flat\world.cpp" />
+    <ClCompile Include="src\kit\flat\object.cpp" />
+    <ClCompile Include="src\kit\flat\camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\kit\app.h" />
     <ClInclude Include="src\kit\box.h" />
-    <ClInclude Include="src\kit\camera_2d.h" />
     <ClInclude Include="src\kit\csv.h" />
     <ClInclude Include="src\kit\cursor.h" />
     <ClInclude Include="src\kit\event.h" />
-    <ClInclude Include="src\kit\frame_2d.h" />
     <ClInclude Include="src\kit\geometry_1d.h" />
     <ClInclude Include="src\kit\geometry_2d.h" />
     <ClInclude Include="src\kit\gl3.h" />
     <ClInclude Include="src\kit\interval.h" />
-    <ClInclude Include="src\kit\light_2d.h" />
     <ClInclude Include="src\kit\log.h" />
     <ClInclude Include="src\kit\math_util.h" />
     <ClInclude Include="src\kit\matrix.h" />
@@ -58,7 +55,6 @@
     <ClInclude Include="src\kit\ray.h" />
     <ClInclude Include="src\kit\rect.h" />
     <ClInclude Include="src\kit\resources.h" />
-    <ClInclude Include="src\kit\scene_2d.h" />
     <ClInclude Include="src\kit\serialize.h" />
     <ClInclude Include="src\kit\serialize_std_string.h" />
     <ClInclude Include="src\kit\serialize_std_vector.h" />
@@ -72,18 +68,22 @@
     <ClInclude Include="src\kit\vector.h" />
     <ClInclude Include="src\kit\vertex_buffer_object.h" />
     <ClInclude Include="src\kit\window.h" />
-    <ClInclude Include="src\kit\scene\camera.h" />
-    <ClInclude Include="src\kit\scene\controller.h" />
-    <ClInclude Include="src\kit\scene\entity.h" />
-    <ClInclude Include="src\kit\scene\light.h" />
-    <ClInclude Include="src\kit\scene\model.h" />
-    <ClInclude Include="src\kit\scene\object.h" />
-    <ClInclude Include="src\kit\scene\scene.h" />
     <ClInclude Include="src\kit\gui\button.h" />
     <ClInclude Include="src\kit\gui\model.h" />
     <ClInclude Include="src\kit\gui\sprite.h" />
     <ClInclude Include="src\kit\gui\viewport.h" />
     <ClInclude Include="src\kit\gui\widget.h" />
     <ClInclude Include="src\kit\gui\widget_container.h" />
+    <ClInclude Include="src\kit\camera.h" />
+    <ClInclude Include="src\kit\controller.h" />
+    <ClInclude Include="src\kit\entity.h" />
+    <ClInclude Include="src\kit\light.h" />
+    <ClInclude Include="src\kit\model.h" />
+    <ClInclude Include="src\kit\object.h" />
+    <ClInclude Include="src\kit\scene.h" />
+    <ClInclude Include="src\kit\flat\world.h" />
+    <ClInclude Include="src\kit\flat\entity.h" />
+    <ClInclude Include="src\kit\flat\object.h" />
+    <ClInclude Include="src\kit\flat\camera.h" />
   </ItemGroup>
 </Project>

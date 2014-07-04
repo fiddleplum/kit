@@ -9,11 +9,7 @@ namespace kit
 	class Camera2D;
 	class Frame2D;
 	class Model2D;
-
-	namespace scene
-	{
-		class Controller;
-	}
+	class Controller;
 
 	class Entity2D
 	{
@@ -36,9 +32,9 @@ namespace kit
 
 		void removeEntity(std::shared_ptr<Entity2D> entity);
 
-		void addController(std::shared_ptr<scene::Controller> controller);
+		void addController(std::shared_ptr<Controller> controller);
 
-		void removeController(std::shared_ptr<scene::Controller> controller);
+		void removeController(std::shared_ptr<Controller> controller);
 		
 		// Called by Camera.
 		void handleEvent(Event const & event);
@@ -58,7 +54,7 @@ namespace kit
 
 		std::set<std::shared_ptr<Camera2D>> cameras;
 		std::set<std::shared_ptr<Entity2D>, Compare> entities;
-		std::set<std::shared_ptr<scene::Controller>> controllers;
+		std::set<std::shared_ptr<Controller>> controllers;
 	};
 }
 

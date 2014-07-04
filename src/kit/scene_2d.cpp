@@ -1,7 +1,7 @@
 #include "scene_2d.h"
 #include "model_2d.h"
 #include "camera_2d.h"
-#include "scene/controller.h"
+#include "controller.h"
 #include "open_gl.h"
 #include "frame_2d.h"
 
@@ -32,12 +32,12 @@ namespace kit
 		entities.erase(entity);
 	}
 
-	void Scene2D::addController(std::shared_ptr<scene::Controller> controller)
+	void Scene2D::addController(std::shared_ptr<Controller> controller)
 	{
 		controllers.insert(controller);
 	}
 
-	void Scene2D::removeController(std::shared_ptr<scene::Controller> controller)
+	void Scene2D::removeController(std::shared_ptr<Controller> controller)
 	{
 		controllers.erase(controller);
 	}

@@ -29,6 +29,11 @@ int main (int argc, char *argv[])
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
 		return -1;
 	}
+	catch(std::exception)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Fatal Error!", "The application encountered something so horrendous that it died instantly!", nullptr);
+		return -1;
+	}
 
 	return 0;
 }

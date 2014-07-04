@@ -89,6 +89,7 @@ namespace kit
 			Recti bounds;
 			std::list<WidgetInfo> widgetInfos;
 			std::map<Ptr<Widget>, std::list<WidgetInfo>::iterator> widgetLookup;
+			std::set<Ptr<Widget>> widgetsToRemove;
 		};
 	}
 }

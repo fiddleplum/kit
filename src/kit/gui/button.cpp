@@ -50,7 +50,7 @@ namespace kit
 				case Event::MouseMove:
 				{
 					MouseMoveEvent const & mmEvent = event.as<MouseMoveEvent>();
-					if(getBounds().containsInc(mmEvent.absolute))
+					if(getBounds().containsInc(mmEvent.absolute) && !event.window->getCursor()->isConsumed())
 					{
 						if(hovered == false)
 						{

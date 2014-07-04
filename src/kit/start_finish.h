@@ -1,6 +1,10 @@
 #pragma once
 
-#pragma comment (lib, "kit.lib")
+#ifdef _DEBUG
+	#pragma comment (lib, "kit-d.lib")
+#else
+	#pragma comment (lib, "kit.lib")
+#endif
 #pragma comment (lib, "SDL2.lib")
 #pragma comment (lib, "SDL2main.lib")
 #pragma comment (lib, "SDL2_image.lib")

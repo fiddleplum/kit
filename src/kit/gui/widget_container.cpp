@@ -71,13 +71,7 @@ namespace kit
 		{
 			if(widget.isValid())
 			{
-				auto lookupIterator = widgetLookup.find(widget);
-				if(lookupIterator == widgetLookup.end())
-				{
-					throw std::runtime_error ("WidgetContainer::removeWidget, widget not found");
-				}
-				widgetInfos.erase(lookupIterator->second);
-				widgetLookup.erase(lookupIterator);
+				widgetsToRemove.insert(widget);
 			}
 		}
 
@@ -114,6 +108,7 @@ namespace kit
 		void WidgetContainer::setWidgetPlacement (Ptr<Widget> widget, Vector2f externalFractionalOffset, Vector2f internalFractionalOffset, Vector2i pixelOffset)
 		{
 			Vector2i position = bounds.min;
+
 			position = Vector2i(externalFractionalOffset.scale(bounds.getSize())) - Vector2i(internalFractionalOffset.scale(widget->getBounds().getSize())) + pixelOffset;
 			widget->setPosition(position);
 		}
@@ -169,6 +164,19 @@ namespace kit
 
 		void WidgetContainer::handleEvent (Event const & event)
 		{
+			if(event.type == Event::Update)
+			{
+				for(Ptr<Widget> widget : widgetsToRemove)
+				{
+					auto lookupIterator = widgetLookup.find(widget);
+					if(lookupIterator != widgetLookup.end())
+					{
+						widgetInfos.erase(lookupIterator->second);
+						widgetLookup.erase(lookupIterator);
+					}
+				}
+				widgetsToRemove.clear();
+			}
 			if(handleContainerEventFunction)
 			{
 				handleContainerEventFunction(event);

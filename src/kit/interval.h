@@ -80,7 +80,7 @@ namespace kit
 	{
 		Interval<2, T> box;
 		box.min.set(minX, minY);
-		box.max.set(maxX, maxX);
+		box.max.set(maxX, maxY);
 		return box;
 	}
 

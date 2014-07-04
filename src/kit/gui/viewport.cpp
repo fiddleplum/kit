@@ -33,12 +33,12 @@ namespace kit
 			}
 		}
 
-		Ptr<scene::Camera> Viewport::getCamera () const
+		Ptr<Camera> Viewport::getCamera () const
 		{
 			return _camera;
 		}
 
-		void Viewport::setCamera (Ptr<scene::Camera> camera)
+		void Viewport::setCamera (Ptr<Camera> camera)
 		{
 			_camera = camera;
 			if(_bounds.getSize()[1] != 0)
@@ -47,12 +47,12 @@ namespace kit
 			}
 		}
 
-		Ptr<scene::Scene> Viewport::getScene () const
+		Ptr<Scene> Viewport::getScene () const
 		{
 			return _scene;
 		}
 
-		void Viewport::setScene (Ptr<scene::Scene> scene)
+		void Viewport::setScene (Ptr<Scene> scene)
 		{
 			_scene = scene;
 		}

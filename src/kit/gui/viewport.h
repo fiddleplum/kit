@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../scene/camera.h"
-#include "../scene/scene.h"
+#include "../camera.h"
+#include "../scene.h"
 #include "widget.h"
 
 namespace kit
@@ -20,16 +20,16 @@ namespace kit
 			void setMaxSize (Vector2i maxSize) override;
 
 			// Get the attached camera.
-			Ptr<scene::Camera> getCamera () const;
+			Ptr<Camera> getCamera () const;
 
 			// Attach a camera.
-			void setCamera (Ptr<scene::Camera>);
+			void setCamera (Ptr<Camera>);
 
 			// Get the attached scene.
-			Ptr<scene::Scene> getScene () const;
+			Ptr<Scene> getScene () const;
 
 			// Attach a scene.
-			void setScene (Ptr<scene::Scene>);
+			void setScene (Ptr<Scene>);
 
 			// Handles an event.
 			void handleEvent (Event const & event) override;
@@ -39,8 +39,8 @@ namespace kit
 
 		private:
 			Recti _bounds;
-			Ptr<scene::Camera> _camera;
-			Ptr<scene::Scene> _scene;
+			Ptr<Camera> _camera;
+			Ptr<Scene> _scene;
 		};
 	}
 }

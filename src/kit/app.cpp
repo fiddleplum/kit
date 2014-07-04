@@ -14,7 +14,7 @@ namespace kit
 		void handleSDLEvent (SDL_Event const & sdlEvent);
 
 		PtrSet<Window> _windows;
-		PtrSet<scene::Scene> _scenes;
+		PtrSet<Scene> _scenes;
 		SDL_GLContext _sdlGlContext;
 		bool _looping;
 		bool _firstMouseMoveEvent;
@@ -75,13 +75,14 @@ namespace kit
 			}
 		}
 
-		Ptr<scene::Scene> addScene ()
+		Ptr<Scene> addScene ()
 		{
-			OwnPtr<scene::Scene> scene (new scene::Scene);
+			OwnPtr<Scene> scene (new Scene);
 			_scenes.insert(scene);
+			return scene;
 		}
 
-		void removeScene (Ptr<scene::Scene> scene)
+		void removeScene (Ptr<Scene> scene)
 		{
 			_scenes.erase(scene);
 		}
