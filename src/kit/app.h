@@ -36,6 +36,9 @@ namespace kit
 
 		// Initiates and continues the application loop. Called by main.
 		void loop ();
+
+		// Shows a message dialog box.
+		void showMessage (std::string const & message);
 	}
 }
 

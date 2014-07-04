@@ -99,6 +99,10 @@ namespace kit
 	void Window::handleEvent (Event const & event)
 	{
 		_cursor->resetConsumed();
+		if(event.type == Event::MouseMove)
+		{
+			_cursor->setPosition(event.as<MouseMoveEvent>().absolute);
+		}
 		WidgetContainer::handleEvent(event);
 	}
 

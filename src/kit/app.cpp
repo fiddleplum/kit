@@ -22,8 +22,6 @@ namespace kit
 
 		void initialize ()
 		{
-			log::initialize();
-
 			_looping = false;
 			_firstMouseMoveEvent = true;
 			_sdlGlContext = nullptr;
@@ -41,7 +39,6 @@ namespace kit
 		{
 			resources::finalize();
 			SDL_Quit();
-			log::finalize();
 		}
 
 		void quit ()
@@ -123,6 +120,11 @@ namespace kit
 					}
 				}
 			}
+		}
+
+		void showMessage (std::string const & message)
+		{
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Information", message.c_str(), nullptr);
 		}
 
 		void setCursorActive (bool)
@@ -273,10 +275,10 @@ namespace kit
 					window->setMaxSize(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
 					break;
 				case SDL_WINDOWEVENT_LEAVE:
-					window->getCursor()->setValidity(false);
+					window->getCursor()->setWithinWindow(false);
 					break;
 				case SDL_WINDOWEVENT_ENTER:
-					window->getCursor()->setValidity(true);
+					window->getCursor()->setWithinWindow(true);
 					break;
 				}
 				break;

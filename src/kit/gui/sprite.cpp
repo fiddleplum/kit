@@ -67,7 +67,7 @@ namespace kit
 		void Sprite::handleEvent (Event const & event)
 		{
 			Ptr<Cursor> cursor = event.window->getCursor();
-			if(getBounds().containsEx(cursor->getPosition()))
+			if(cursor->isPositionValid() && getBounds().containsEx(cursor->getPosition()))
 			{
 				cursor->consume();
 			}

@@ -2,6 +2,8 @@
 #include "button.h"
 #include "sprite.h"
 
+#include "../log.h"
+
 namespace kit
 {
 	namespace gui
@@ -33,8 +35,6 @@ namespace kit
 
 		void Button::handleEvent (Event const & event)
 		{
-			sprite->handleEvent(event);
-
 			bool oldPressedOrToggled = pressed || toggled;
 
 			switch(event.type)
@@ -45,12 +45,8 @@ namespace kit
 					{
 						pressed = false;
 					}
-					break;
-				}
-				case Event::MouseMove:
-				{
-					MouseMoveEvent const & mmEvent = event.as<MouseMoveEvent>();
-					if(getBounds().containsInc(mmEvent.absolute) && !event.window->getCursor()->isConsumed())
+					Ptr<Cursor> cursor = event.window->getCursor();
+					if(event.window->getCursor()->isPositionValid() && getBounds().containsEx(cursor->getPosition()))
 					{
 						if(hovered == false)
 						{
@@ -120,6 +116,7 @@ namespace kit
 				}
 			}
 			setSpriteTextureBoundsFromState();
+			sprite->handleEvent(event);
 		}
 
 		void Button::render (Vector2i windowSize)

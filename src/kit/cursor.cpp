@@ -2,9 +2,12 @@
 
 namespace kit
 {
-	bool Cursor::isValid () const
+	Cursor::Cursor ()
 	{
-		return _isValid;
+		_isConsumed = false;
+		_isWithinWindow = true;
+		_isVisible = true;
+		_position.set(0, 0);
 	}
 
 	Vector2i Cursor::getPosition () const
@@ -12,19 +15,14 @@ namespace kit
 		return _position;
 	}
 
-	void Cursor::setValidity (bool is)
+	bool Cursor::isPositionValid () const
 	{
-		_isValid = is;
-	}
-
-	bool Cursor::isConsumed () const
-	{
-		return _isConsumed;
+		return !_isConsumed;
 	}
 
 	void Cursor::resetConsumed ()
 	{
-		_isConsumed = _isValid;
+		_isConsumed = !(_isWithinWindow && _isVisible);
 	}
 
 	void Cursor::consume ()
@@ -35,6 +33,11 @@ namespace kit
 	void Cursor::setPosition (Vector2i position)
 	{
 		_position = position;
+	}
+
+	void Cursor::setWithinWindow (bool is)
+	{
+		_isWithinWindow = is;
 	}
 }
 
