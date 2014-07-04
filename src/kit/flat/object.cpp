@@ -23,7 +23,10 @@ namespace kit
 
 		Object::~Object()
 		{
-			_scene->removeObject(_object);
+			if(_scene.isValid())
+			{
+				_scene->removeObject(_object);
+			}
 			_model.setNull();
 		}
 

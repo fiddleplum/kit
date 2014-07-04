@@ -9,6 +9,7 @@ namespace kit
 			_position.set(0.0f, 0.0f);
 			_orientation = 0.0f;
 			_transformsDirty = true;
+			_z = 0;
 			_transform = _transformInv = Matrix33f::identity();
 		}
 

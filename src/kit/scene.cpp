@@ -114,7 +114,16 @@ namespace kit
 
 	bool Scene::ObjectCompare::operator () (OwnPtr<Object> object0, OwnPtr<Object> object1)
 	{
-		return *object0->getModel() < *object1->getModel();
+		Ptr<Model> model0 = object0->getModel();
+		Ptr<Model> model1 = object1->getModel();
+		if(model0.isValid() && model1.isValid())
+		{
+			return *object0->getModel() < *object1->getModel();
+		}
+		else
+		{
+			return object0 < object1;
+		}
 	}
 }
 
