@@ -6,6 +6,10 @@ namespace kit
 	{
 		Object::Object(Ptr<Scene> scene)
 		{
+			if(!scene.isValid())
+			{
+				throw nullptr_exception();
+			}
 			_scene = scene;
 			_object = scene->addObject();
 			_model.set(new Model);
@@ -32,20 +36,29 @@ namespace kit
 
 		void Object::setPosition(Vector2f position)
 		{
-			Entity::setPosition(position);
-			_object->setPosition(getPosition().extend<3>((float)getZ()));
+			if(_object.isValid())
+			{
+				Entity::setPosition(position);
+				_object->setPosition(getPosition().extend<3>((float)getZ()));
+			}
 		}
 
 		void Object::setOrientation(float orientation)
 		{
-			Entity::setOrientation(orientation);
-			_object->setOrientation(Quaternionf(std::acos(2.0f * getOrientation()), 0, 0, std::asin(2.0f * getOrientation())));
+			if(_object.isValid())
+			{
+				Entity::setOrientation(orientation);
+				_object->setOrientation(Quaternionf(std::acos(2.0f * getOrientation()), 0, 0, std::asin(2.0f * getOrientation())));
+			}
 		}
 
 		void Object::setZ(int z)
 		{
-			Entity::setZ(z);
-			_object->setPosition(getPosition().extend<3>((float)getZ()));
+			if(_object.isValid())
+			{
+				Entity::setZ(z);
+				_object->setPosition(getPosition().extend<3>((float)getZ()));
+			}
 		}
 
 		void Object::setTexture(std::string const & filename)

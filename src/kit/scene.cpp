@@ -25,7 +25,7 @@ namespace kit
 
 	void Scene::removeCamera(Ptr<Camera> camera)
 	{
-		_cameras.erase(camera.as<Camera>());
+		_cameras.erase(camera);
 	}
 
 	Ptr<Object> Scene::addObject()

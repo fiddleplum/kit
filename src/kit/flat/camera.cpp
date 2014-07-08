@@ -6,6 +6,10 @@ namespace kit
 	{
 		Camera::Camera(Ptr<Scene> scene)
 		{
+			if(!scene.isValid())
+			{
+				throw nullptr_exception();
+			}
 			_scene = scene;
 			_aspectRatio = 1.0f;
 			_maxViewSize = 1.0f;
@@ -20,21 +24,30 @@ namespace kit
 
 		Camera::~Camera()
 		{
-			_scene->removeCamera(_camera);
+			if(_scene.isValid())
+			{
+				_scene->removeCamera(_camera);
+			}
 		}
 
 		void Camera::setAspectRatio(float aspectRatio)
 		{
-			_aspectRatio = aspectRatio;
-			_camera->setAspectRatio(_aspectRatio);
-			updateViewSize();
+			if(_camera.isValid())
+			{
+				_aspectRatio = aspectRatio;
+				_camera->setAspectRatio(_aspectRatio);
+				updateViewSize();
+			}
 		}
 
 		void Camera::setMaxViewSize(float maxViewSize)
 		{
-			_maxViewSize = maxViewSize;
-			_camera->setOrthogonal(maxViewSize);
-			updateViewSize();
+			if(_camera.isValid())
+			{
+				_maxViewSize = maxViewSize;
+				_camera->setOrthogonal(maxViewSize);
+				updateViewSize();
+			}
 		}
 
 		Vector2f Camera::getNdcPosition(Vector2f worldPosition) const
