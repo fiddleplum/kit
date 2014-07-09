@@ -4,7 +4,7 @@ namespace kit
 {
 	namespace flat
 	{
-		Camera::Camera(Ptr<Scene> scene)
+		Camera::Camera(Ptr<scene::Scene> scene)
 		{
 			if(!scene.isValid())
 			{
@@ -30,24 +30,42 @@ namespace kit
 			}
 		}
 
-		void Camera::setAspectRatio(float aspectRatio)
+		void Camera::setPosition(Vector2f position)
 		{
+			Entity::setPosition(position);
 			if(_camera.isValid())
 			{
-				_aspectRatio = aspectRatio;
-				_camera->setAspectRatio(_aspectRatio);
-				updateViewSize();
+				_camera->setPosition(position.extend<3>(999.0f));
 			}
+		}
+
+		void Camera::setOrientation(float orientation)
+		{
+			Entity::setOrientation(orientation);
+			if(_camera.isValid())
+			{
+				_camera->setOrientation(Quaternionf(std::acos(2.0f * getOrientation()), 0, 0, std::asin(2.0f * getOrientation())));
+			}
+		}
+
+		void Camera::setAspectRatio(float aspectRatio)
+		{
+			_aspectRatio = aspectRatio;
+			if(_camera.isValid())
+			{
+				_camera->setAspectRatio(_aspectRatio);
+			}
+			updateViewSize();
 		}
 
 		void Camera::setMaxViewSize(float maxViewSize)
 		{
+			_maxViewSize = maxViewSize;
 			if(_camera.isValid())
 			{
-				_maxViewSize = maxViewSize;
 				_camera->setOrthogonal(maxViewSize);
-				updateViewSize();
 			}
+			updateViewSize();
 		}
 
 		Vector2f Camera::getNdcPosition(Vector2f worldPosition) const

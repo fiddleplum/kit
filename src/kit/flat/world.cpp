@@ -4,7 +4,7 @@ namespace kit
 {
 	namespace flat
 	{
-		World::World(Ptr<Scene> scene)
+		World::World(Ptr<scene::Scene> scene)
 		{
 			_scene = scene;
 		}

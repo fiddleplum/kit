@@ -1,8 +1,8 @@
 #pragma once
 
 #include "texture.h"
-#include "model.h"
 #include "shader.h"
+#include "scene/model.h"
 
 namespace kit
 {
@@ -12,11 +12,11 @@ namespace kit
 
 		Ptr<Texture> getTextureFromFile (std::string const & filename);
 
-		Ptr<Model> getBlankModel (std::string const & name);
-
-		Ptr<Model> getModelFromFile (std::string const & filename);
-
 		Ptr<Shader> getShader (std::string const & name, std::string code []);
+
+		Ptr<scene::Model> getBlankModel (std::string const & name);
+
+		Ptr<scene::Model> getModelFromFile (std::string const & filename);
 
 		void initialize ();
 

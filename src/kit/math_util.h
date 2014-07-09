@@ -9,7 +9,7 @@
 
 namespace kit
 {
-	namespace Math
+	namespace math
 	{
 		//! Returns the constant pi.
 		template <class T> T getPi ();

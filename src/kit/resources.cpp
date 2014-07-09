@@ -7,7 +7,7 @@ namespace kit
 	{
 		OwnPtr<ObjectCache<Texture>> _textureCache;
 		OwnPtr<ObjectCache<Shader>> _shaderCache;
-		OwnPtr<ObjectCache<Model>> _modelCache;
+		OwnPtr<ObjectCache<scene::Model>> _modelCache;
 
 		Ptr<Texture> getBlankTexture (std::string const & name, Vector2i size)
 		{
@@ -19,26 +19,26 @@ namespace kit
 			return _textureCache->get(filename, filename);
 		}
 
-		Ptr<Model> getBlankModel (std::string const & name)
+		Ptr<Shader> getShader (std::string const & name, std::string code [])
+		{
+			return _shaderCache->get(name, code);
+		}
+
+		Ptr<scene::Model> getBlankModel (std::string const & name)
 		{
 			return _modelCache->get(name);
 		}
 
-		Ptr<Model> getModelFromFile (std::string const & filename)
+		Ptr<scene::Model> getModelFromFile (std::string const & filename)
 		{
 			return _modelCache->get(filename, filename);
-		}
-
-		Ptr<Shader> getShader (std::string const & name, std::string code [])
-		{
-			return _shaderCache->get(name, code);
 		}
 
 		void initialize ()
 		{
 			_shaderCache.set(new ObjectCache<Shader>);
 			_textureCache.set(new ObjectCache<Texture>);
-			_modelCache.set(new ObjectCache<Model>);
+			_modelCache.set(new ObjectCache<scene::Model>);
 		}
 
 		void finalize ()

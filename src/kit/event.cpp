@@ -41,6 +41,16 @@ namespace kit
 		return "Update";
 	}
 
+	PreRenderUpdateEvent::PreRenderUpdateEvent (Ptr<Window> window)
+		: Event (window, PreRenderUpdate)
+	{
+	}
+
+	std::string PreRenderUpdateEvent::toString () const
+	{
+		return "PreRenderUpdate";
+	}
+
 	KeyboardEvent::KeyboardEvent (Ptr<Window> window)
 		: Event (window, Keyboard)
 	{

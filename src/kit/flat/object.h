@@ -1,22 +1,25 @@
 #pragma once
 
 #include "entity.h"
-#include "../scene.h"
+#include "../scene/scene.h"
 
 namespace kit
 {
-	class Model;
+	namespace scene
+	{
+		class Model;
+	}
 
 	namespace flat
 	{
 		class Object : public Entity
 		{
 		public:
-			Object(Ptr<Scene> scene);
+			Object(Ptr<scene::Scene> scene);
 
 			~Object();
 
-			Ptr<kit::Object> getSceneObject() const { return _object; }
+			Ptr<scene::Object> getSceneObject() const { return _object; }
 
 			void setPosition(Vector2f position) override;
 
@@ -31,9 +34,9 @@ namespace kit
 		private:
 			void updateVertices();
 
-			Ptr<Scene> _scene;
-			Ptr<kit::Object> _object;
-			OwnPtr<Model> _model;
+			Ptr<scene::Scene> _scene;
+			Ptr<scene::Object> _object;
+			OwnPtr<scene::Model> _model;
 			Recti _textureCoords;
 		};
 	}

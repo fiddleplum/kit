@@ -16,6 +16,7 @@ namespace kit
 			Shutdown,
 			Resize,
 			Update,
+			PreRenderUpdate,
 			Keyboard,
 			Text,
 			MouseButton,
@@ -59,6 +60,14 @@ namespace kit
 	{
 	public:
 		UpdateEvent(Ptr<Window> window);
+
+		virtual std::string toString() const override;
+	};
+
+	class PreRenderUpdateEvent : public Event
+	{
+	public:
+		PreRenderUpdateEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
 	};

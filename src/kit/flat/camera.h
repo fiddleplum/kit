@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity.h"
-#include "../scene.h"
+#include "../scene/scene.h"
 
 namespace kit
 {
@@ -10,11 +10,15 @@ namespace kit
 		class Camera : public Entity
 		{
 		public:
-			Camera(Ptr<Scene> scene);
+			Camera(Ptr<scene::Scene> scene);
 
 			~Camera();
 
-			Ptr<kit::Camera> getSceneCamera() const { return _camera; }
+			Ptr<scene::Camera> getSceneCamera() const { return _camera; }
+
+			void setPosition(Vector2f position) override;
+
+			void setOrientation(float orientation) override;
 
 			float getAspectRatio() const { return _aspectRatio; }
 
@@ -33,8 +37,8 @@ namespace kit
 		private:
 			void updateViewSize();
 
-			Ptr<Scene> _scene;
-			Ptr<kit::Camera> _camera;
+			Ptr<scene::Scene> _scene;
+			Ptr<scene::Camera> _camera;
 			float _aspectRatio;
 			float _maxViewSize;
 			Vector2f _viewSize;

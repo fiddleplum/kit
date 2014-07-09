@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../scene.h"
+#include "../scene/scene.h"
 #include "camera.h"
 #include "object.h"
 
@@ -11,14 +11,14 @@ namespace kit
 		class World
 		{
 		public:
-			World(Ptr<Scene> scene);
+			World(Ptr<scene::Scene> scene);
 
 			Ptr<Camera> addCamera();
 
 			Ptr<Object> addObject();
 
 		private:
-			Ptr<Scene> _scene;
+			Ptr<scene::Scene> _scene;
 		};
 	}
 }

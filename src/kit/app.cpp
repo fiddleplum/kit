@@ -15,7 +15,7 @@ namespace kit
 		void handleSDLEvent (SDL_Event const & sdlEvent);
 
 		PtrSet<Window> _windows;
-		PtrSet<Scene> _scenes;
+		PtrSet<scene::Scene> _scenes;
 		SDL_GLContext _sdlGlContext;
 		bool _looping;
 		bool _firstMouseMoveEvent;
@@ -76,14 +76,14 @@ namespace kit
 			}
 		}
 
-		Ptr<Scene> addScene ()
+		Ptr<scene::Scene> addScene ()
 		{
-			OwnPtr<Scene> scene (new Scene);
+			OwnPtr<scene::Scene> scene (new scene::Scene);
 			_scenes.insert(scene);
 			return scene;
 		}
 
-		void removeScene (Ptr<Scene> scene)
+		void removeScene (Ptr<scene::Scene> scene)
 		{
 			_scenes.erase(scene);
 		}
@@ -113,6 +113,16 @@ namespace kit
 					{
 						window->handleEvent(UpdateEvent(window));
 					}
+				}
+				for(auto scene : _scenes)
+				{
+					scene->handleEvent(UpdateEvent(Ptr<Window>()));
+				}
+
+				// PreRender Update
+				for(auto scene : _scenes)
+				{
+					scene->handleEvent(PreRenderUpdateEvent(Ptr<Window>()));
 				}
 
 				// Render
@@ -256,6 +266,25 @@ namespace kit
 			return KeyboardEvent::Unknown;
 		}
 
+		void handleEvent(Event const& event)
+		{
+			if(event.window.isValid())
+			{
+				event.window->handleEvent(event);
+			}
+			else
+			{
+				for(auto window : _windows)
+				{
+					window->handleEvent(event);
+				}
+			}
+			for(auto scene : _scenes)
+			{
+				scene->handleEvent(event);
+			}
+		}
+
 		void handleSDLEvent (SDL_Event const & sdlEvent)
 		{
 			Ptr<Window> window;
@@ -289,12 +318,12 @@ namespace kit
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
 				window = getWindowFromId(sdlEvent.key.windowID);
-				if(window.isValid() || sdlEvent.key.repeat > 0) // only record actual press and releases
+				if(window.isValid() && sdlEvent.key.repeat == 0) // only record actual press and releases
 				{
 					KeyboardEvent event (window);
 					event.key = sdlKeyToKey(sdlEvent.key.keysym.sym);
 					event.pressed = (sdlEvent.type == SDL_KEYDOWN ? true : false);
-					window->handleEvent(event);
+					handleEvent(event);
 				}
 				break;
 			case SDL_TEXTINPUT:
@@ -303,7 +332,7 @@ namespace kit
 				{
 					TextEvent event (window);
 					event.text = sdlEvent.text.text;
-					window->handleEvent(event);
+					handleEvent(event);
 				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
@@ -326,7 +355,7 @@ namespace kit
 							event.button = 4; break;
 					}
 					event.pressed = (sdlEvent.type == SDL_MOUSEBUTTONDOWN);
-					window->handleEvent(event);
+					handleEvent(event);
 				}
 				break;
 			case SDL_MOUSEMOTION: // generates value changes for both moving and stopping
@@ -340,7 +369,7 @@ namespace kit
 						event.relative[1] = sdlEvent.motion.yrel;
 						event.absolute[0] = sdlEvent.motion.x;
 						event.absolute[1] = sdlEvent.motion.y;
-						window->handleEvent(event);
+						handleEvent(event);
 					}
 					else
 					{
@@ -354,7 +383,7 @@ namespace kit
 				{
 					MouseWheelEvent event (window);
 					event.up = (sdlEvent.wheel.y > 0);
-					window->handleEvent(event);
+					handleEvent(event);
 				}
 				break;
 			case SDL_JOYBUTTONDOWN:
@@ -364,11 +393,7 @@ namespace kit
 					event.controller = sdlEvent.jbutton.which;
 					event.button = sdlEvent.jbutton.button;
 					event.pressed = (sdlEvent.type == SDL_JOYBUTTONDOWN);
-					for(auto window : _windows)
-					{
-						event.window = window;
-						window->handleEvent(event);
-					}
+					handleEvent(event);
 				}
 				break;
 			case SDL_JOYAXISMOTION:
@@ -384,11 +409,7 @@ namespace kit
 					{
 						event.value = (float)sdlEvent.jaxis.value / 32768.0f;
 					}
-					for(auto window : _windows)
-					{
-						event.window = window;
-						window->handleEvent(event);
-					}
+					handleEvent(event);
 				}
 				break;
 			case SDL_JOYHATMOTION:
@@ -408,11 +429,7 @@ namespace kit
 					{
 						event.value = 0;
 					}
-					for(auto window : _windows)
-					{
-						event.window = window;
-						window->handleEvent(event);
-					}
+					handleEvent(event);
 					event.axis++;
 					if((sdlEvent.jhat.value & SDL_HAT_DOWN) != 0)
 					{
@@ -426,11 +443,7 @@ namespace kit
 					{
 						event.value = 0;
 					}
-					for(auto window : _windows)
-					{
-						event.window = window;
-						window->handleEvent(event);
-					}
+					handleEvent(event);
 				}
 				break;
 			case SDL_JOYBALLMOTION:
@@ -440,11 +453,7 @@ namespace kit
 					event.ball = sdlEvent.jball.ball;
 					event.offset[0] = sdlEvent.jball.xrel;
 					event.offset[1] = sdlEvent.jball.yrel;
-					for(auto window : _windows)
-					{
-						event.window = window;
-						window->handleEvent(event);
-					}
+					handleEvent(event);
 				}
 				break;
 			}

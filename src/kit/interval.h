@@ -51,6 +51,9 @@ namespace kit
 		//! Returns true if any part of b is within(not just touching) the box.
 		bool intersects(Interval<dim, T> b) const;
 
+		//! Returns the point closest to p within the interval.
+		Vector<dim, T> closest(Vector<dim, T> p) const;
+
 		//! Returns a position or size aligned to the interval.
 		Vector<dim, T> getAligned(Vector<dim, float> fractionOfIntervalSize, Vector<dim, T> offset);
 
@@ -192,6 +195,28 @@ namespace kit
 			}
 		}
 		return true;
+	}
+
+	template <int dim, typename T>
+	Vector<dim, T> Interval<dim, T>::closest(Vector<dim, T> p) const
+	{
+		Vector<dim, T> r;
+		for(int i = 0; i < dim; ++i)
+		{
+			if(p[i] < min[i])
+			{
+				r[i] = min[i];
+			}
+			else if(p[i] > max[i])
+			{
+				r[i] = max[i];
+			}
+			else
+			{
+				r[i] = p[i];
+			}
+		}
+		return r;
 	}
 
 	template <int dim, typename T>

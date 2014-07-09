@@ -4,7 +4,7 @@ namespace kit
 {
 	namespace flat
 	{
-		Object::Object(Ptr<Scene> scene)
+		Object::Object(Ptr<scene::Scene> scene)
 		{
 			if(!scene.isValid())
 			{
@@ -12,7 +12,7 @@ namespace kit
 			}
 			_scene = scene;
 			_object = scene->addObject();
-			_model.set(new Model);
+			_model.set(new scene::Model);
 			_model->setVertexFormat(false, false, false, 1);
 			std::vector<unsigned int> indices (6);
 			indices[0] = 0;
