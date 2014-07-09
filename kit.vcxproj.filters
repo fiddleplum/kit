@@ -31,6 +31,7 @@
     <ClCompile Include="src\kit\flat\world.cpp" />
     <ClCompile Include="src\kit\flat\object.cpp" />
     <ClCompile Include="src\kit\flat\camera.cpp" />
+    <ClCompile Include="src\kit\audio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\kit\app.h" />
@@ -85,5 +86,6 @@
     <ClInclude Include="src\kit\flat\entity.h" />
     <ClInclude Include="src\kit\flat\object.h" />
     <ClInclude Include="src\kit\flat\camera.h" />
+    <ClInclude Include="src\kit\audio.h" />
   </ItemGroup>
 </Project>

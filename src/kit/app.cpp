@@ -2,6 +2,7 @@
 #include "open_gl.h"
 #include "resources.h"
 #include "log.h"
+#include "audio.h"
 #include "ptr_set.h"
 #include "../external/SDL2-2.0.0/include/SDL.h"
 
@@ -33,10 +34,13 @@ namespace kit
 			}
 
 			resources::initialize();
+
+			audio::initialize();
 		}
 
 		void finalize ()
 		{
+			audio::finalize();
 			resources::finalize();
 			SDL_Quit();
 		}

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\kit\app.cpp" />
+    <ClCompile Include="src\kit\audio.cpp" />
     <ClCompile Include="src\kit\camera.cpp" />
     <ClCompile Include="src\kit\csv.cpp" />
     <ClCompile Include="src\kit\cursor.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="src\kit\gui\viewport.h" />
     <ClInclude Include="src\kit\gui\widget.h" />
     <ClInclude Include="src\kit\gui\widget_container.h" />
+    <ClInclude Include="src\kit\audio.h" />
     <ClInclude Include="src\kit\interval.h" />
     <ClInclude Include="src\kit\light.h" />
     <ClInclude Include="src\kit\log.h" />
