@@ -1,5 +1,5 @@
 #include "open_gl.h"
-#include "../external/SDL2-2.0.0/include/SDL.h"
+#include "../../external/SDL2/include/SDL.h"
 
 #include <iostream>
 
@@ -15,6 +15,8 @@ PFNGLCLEARCOLORPROC glClearColor;
 PFNGLCLEARDEPTHPROC glClearDepth;
 PFNGLDEPTHFUNCPROC glDepthFunc;
 PFNGLCULLFACEPROC glCullFace;
+PFNGLGETINTEGERVPROC glGetIntegerv;
+PFNGLGETSTRINGPROC glGetString;
 
 PFNGLCREATESHADERPROC glCreateShader;
 PFNGLSHADERSOURCEPROC glShaderSource;
@@ -75,6 +77,8 @@ void glInitialize ()
 	glClearDepth = (PFNGLCLEARDEPTHPROC)SDL_GL_GetProcAddress("glClearDepth");
 	glDepthFunc = (PFNGLDEPTHFUNCPROC)SDL_GL_GetProcAddress("glDepthFunc");
 	glCullFace = (PFNGLCULLFACEPROC)SDL_GL_GetProcAddress("glCullFace");
+	glGetIntegerv = (PFNGLGETINTEGERVPROC)SDL_GL_GetProcAddress("glGetIntegerv");
+	glGetString = (PFNGLGETSTRINGPROC)SDL_GL_GetProcAddress("glGetString");
 
 	glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");
@@ -128,5 +132,43 @@ void glInitialize ()
 bool glIsInitialized ()
 {
 	return initialized;
+}
+
+float glGetGLSLVersion()
+{
+	std::string versionString = (char *)glGetString(GL_VERSION);
+	if (versionString.size() < 3)
+	{
+		return 0.0f;
+	}
+	int major = versionString[0] - '0';
+	int minor = versionString[2] - '0';
+	if (major == 2)
+	{
+		if (minor == 0)
+		{
+			return 1.10f;
+		}
+		else if (minor == 1)
+		{
+			return 1.20f;
+		}
+	}
+	else if (major == 3)
+	{
+		if (minor == 0)
+		{
+			return 1.30f;
+		}
+		else if (minor == 1)
+		{
+			return 1.40f;
+		}
+		else if (minor == 2)
+		{
+			return 1.50f;
+		}
+	}
+	return major + minor / 10.f; // for later versions, opengl version is the same as glsl version
 }
 

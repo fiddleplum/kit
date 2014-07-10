@@ -71,6 +71,8 @@ namespace kit
 			};
 
 			void updateShader();
+			void updateShader120();
+			void updateShader150();
 
 			Vector3f _emitColor;
 			int _emitColorLocation;

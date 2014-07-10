@@ -4,6 +4,7 @@
 
 void glInitialize ();
 bool glIsInitialized ();
+float glGetGLSLVersion();
 
 extern PFNGLENABLEPROC glEnable;
 extern PFNGLDISABLEPROC glDisable;
@@ -15,6 +16,8 @@ extern PFNGLCLEARCOLORPROC glClearColor;
 extern PFNGLCLEARDEPTHPROC glClearDepth;
 extern PFNGLDEPTHFUNCPROC glDepthFunc;
 extern PFNGLCULLFACEPROC glCullFace;
+extern PFNGLGETINTEGERVPROC glGetIntegerv;
+extern PFNGLGETSTRINGPROC glGetString;
 
 // Shaders
 extern PFNGLCREATESHADERPROC glCreateShader;

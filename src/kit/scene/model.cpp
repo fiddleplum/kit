@@ -5,7 +5,9 @@
 #include "../serialize.h"
 #include "../serialize_std_string.h"
 #include "../serialize_std_vector.h"
+#include "../open_gl.h"
 #include <fstream>
+#include <algorithm>
 
 namespace kit
 {
@@ -251,8 +253,20 @@ namespace kit
 			return _vertexBufferObject < model._vertexBufferObject;
 		}
 
-		void Model::updateShader ()
+		void Model::updateShader()
 		{
+			std::string version = "120";
+			std::string attribute = "attribute";
+			std::string varyingIn = "varying";
+			std::string varyingOut = "varying";
+			float glslVersion = glGetGLSLVersion();
+			if (glslVersion >= 1.5f)
+			{
+				version = "150";
+				attribute = "in";
+				varyingIn = "in";
+				varyingOut = "out";
+			}
 			std::string code [Shader::NumCodeTypes];
 
 			std::vector<std::string> uvIndexStrings;
@@ -262,33 +276,33 @@ namespace kit
 			}
 
 			/** VERTEX **/
-			code[Shader::Vertex] += "#version 150\n";
+			code[Shader::Vertex] += "#version " + version + "\n";
 
 			// Add the global variables.
 			code[Shader::Vertex] += "uniform mat4 uWorldView;\n";
 			code[Shader::Vertex] += "uniform mat4 uProjection;\n";
 			code[Shader::Vertex] += "uniform float uScale;\n";
-			code[Shader::Vertex] += "in vec3 aPosition;\n";
-			code[Shader::Vertex] += "out vec3 vPosition;\n";
+			code[Shader::Vertex] += attribute + " vec3 aPosition;\n";
+			code[Shader::Vertex] += varyingOut + " vec3 vPosition;\n";
 			if(_vertexHasNormal)
 			{
-				code[Shader::Vertex] += "in vec3 aNormal;\n";
-				code[Shader::Vertex] += "out vec3 vNormal;\n";
+				code[Shader::Vertex] += attribute + " vec3 aNormal;\n";
+				code[Shader::Vertex] += varyingOut + " vec3 vNormal;\n";
 			}
 			if(_vertexHasTangent)
 			{
-				code[Shader::Vertex] += "in vec3 aTangent;\n";
-				code[Shader::Vertex] += "out vec3 vTangent;\n";
+				code[Shader::Vertex] += attribute + " vec3 aTangent;\n";
+				code[Shader::Vertex] += varyingOut + " vec3 vTangent;\n";
 			}
 			if(_vertexHasColor)
 			{
-				code[Shader::Vertex] += "in vec4 aColor;\n";
-				code[Shader::Vertex] += "out vec4 vColor;\n";
+				code[Shader::Vertex] += attribute + " vec4 aColor;\n";
+				code[Shader::Vertex] += varyingOut + " vec4 vColor;\n";
 			}
 			for(unsigned int uvIndex = 0; uvIndex < _numVertexUVs; uvIndex++)
 			{
-				code[Shader::Vertex] += "in vec2 aUV" + uvIndexStrings[uvIndex] + ";\n";
-				code[Shader::Vertex] += "out vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
+				code[Shader::Vertex] += attribute + " vec2 aUV" + uvIndexStrings[uvIndex] + ";\n";
+				code[Shader::Vertex] += varyingOut + " vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
 			}
 
 			// Add the main function.
@@ -315,24 +329,24 @@ namespace kit
 			code[Shader::Vertex] += "}\n";
 
 			/** FRAGMENT **/
-			code[Shader::Fragment] += "#version 150\n";
+			code[Shader::Fragment] += "#version " + version + "\n";
 
 			// Add the global variables.
-			code[Shader::Fragment] += "in vec3 vPosition;\n";
+			code[Shader::Fragment] += varyingIn + " vec3 vPosition;\n";
 			code[Shader::Fragment] += "uniform vec3 uEmitColor;\n";
 			if(_vertexHasNormal)
 			{
 				code[Shader::Fragment] += "uniform vec3 uLightPositions [" + std::to_string(maxLights) + "];\n";
 				code[Shader::Fragment] += "uniform vec3 uLightColors [" + std::to_string(maxLights) + "];\n";
-				code[Shader::Fragment] += "in vec3 vNormal;\n";
+				code[Shader::Fragment] += varyingIn + " vec3 vNormal;\n";
 				if(_vertexHasTangent)
 				{
-					code[Shader::Fragment] += "in vec3 vTangent;\n";
+					code[Shader::Fragment] += varyingIn + " vec3 vTangent;\n";
 				}
 			}
 			if(_vertexHasColor)
 			{
-				code[Shader::Fragment] += "in vec4 vColor;\n";
+				code[Shader::Fragment] += varyingIn + " vec4 vColor;\n";
 			}
 			else
 			{
@@ -340,7 +354,7 @@ namespace kit
 			}
 			for(unsigned int uvIndex = 0; uvIndex < _numVertexUVs; uvIndex++)
 			{
-				code[Shader::Fragment] += "in vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
+				code[Shader::Fragment] += varyingIn + " vec2 vUV" + uvIndexStrings[uvIndex] + ";\n";
 			}
 			for(unsigned int samplerIndex = 0; samplerIndex < _textureInfos.size(); samplerIndex++)
 			{

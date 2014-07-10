@@ -70,6 +70,8 @@ extern "C" {
 #if (defined(_WIN32) || defined(__CYGWIN__)) && !defined(APIENTRY) && !defined(__SCITECH_SNAP__)
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
+#undef min
+#undef max
 #undef near
 #undef far
 #endif

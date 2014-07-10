@@ -1,6 +1,6 @@
 #include "audio.h"
 #include "object_cache.h"
-#include "../../external/SDL2_mixer-2.0.0/include/SDL_mixer.h"
+#include "../../external/SDL2_mixer/include/SDL_mixer.h"
 
 namespace kit
 {

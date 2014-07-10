@@ -36,6 +36,8 @@ namespace kit
 			void render (Vector2i windowSize);
 
 		private:
+			void updateShader();
+
 			Vector2i _position;
 			Ptr<Texture> _texture;
 			Ptr<Shader> _shader;

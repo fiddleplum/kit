@@ -1,7 +1,7 @@
 #include "texture.h"
 #include "open_gl.h"
 #include <vector>
-#include "../external/SDL2_image-2.0.0/include/SDL_image.h"
+#include "../../external/SDL2_image/include/SDL_image.h"
 
 namespace kit
 {

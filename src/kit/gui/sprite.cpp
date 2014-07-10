@@ -3,6 +3,7 @@
 #include "../window.h"
 #include "sprite.h"
 #include "model.h"
+#include <algorithm>
 
 namespace kit
 {
