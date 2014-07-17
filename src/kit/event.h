@@ -62,6 +62,8 @@ namespace kit
 		UpdateEvent(Ptr<Window> window);
 
 		virtual std::string toString() const override;
+
+		float dt;
 	};
 
 	class PreRenderUpdateEvent : public Event

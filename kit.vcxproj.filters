@@ -32,6 +32,7 @@
     <ClCompile Include="src\kit\scene\object.cpp" />
     <ClCompile Include="src\kit\scene\scene.cpp" />
     <ClCompile Include="src\kit\scene\model.cpp" />
+    <ClCompile Include="src\kit\file_system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\kit\app.h" />
@@ -86,5 +87,7 @@
     <ClInclude Include="src\kit\scene\object.h" />
     <ClInclude Include="src\kit\scene\scene.h" />
     <ClInclude Include="src\kit\scene\model.h" />
+    <ClInclude Include="src\kit\platform.h" />
+    <ClInclude Include="src\kit\file_system.h" />
   </ItemGroup>
 </Project>

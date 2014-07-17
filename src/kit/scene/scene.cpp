@@ -100,6 +100,8 @@ namespace kit
 			{
 				object->getModel()->render(camera, object, lightPositions, lightColors);
 			}
+			
+			glDisable(GL_DEPTH_TEST);
 		}
 
 		bool Scene::ObjectCompare::operator () (OwnPtr<Object> object0, OwnPtr<Object> object1)

@@ -38,7 +38,7 @@ namespace kit
 
 	std::string UpdateEvent::toString () const
 	{
-		return "Update";
+		return "Update: " + std::to_string(dt) + " secs";
 	}
 
 	PreRenderUpdateEvent::PreRenderUpdateEvent (Ptr<Window> window)

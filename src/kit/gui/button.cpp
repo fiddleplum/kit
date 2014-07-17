@@ -123,7 +123,12 @@ namespace kit
 			sprite->render(windowSize);
 		}
 
-		void Button::setTexture (Ptr<Texture> texture)
+		Ptr<Texture> Button::getTexture() const
+		{
+			return sprite->getTexture();
+		}
+
+		void Button::setTexture(Ptr<Texture> texture)
 		{
 			sprite->setTexture(texture);
 		}

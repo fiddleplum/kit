@@ -31,6 +31,8 @@ namespace kit
 
 			void render (Vector2i windowSize) override;
 
+			Ptr<Texture> getTexture() const;
+
 			// Sets the texture to use.
 			void setTexture(Ptr<Texture> texture);
 

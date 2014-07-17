@@ -9,10 +9,10 @@ namespace kit
 {
 	namespace gui
 	{
-		Sprite::Sprite ()
+		Sprite::Sprite()
 		{
 			_model.setNew();
-			std::vector<unsigned int> indices (6);
+			std::vector<unsigned int> indices(6);
 			indices[0] = 0;
 			indices[1] = 3;
 			indices[2] = 2;
@@ -23,58 +23,58 @@ namespace kit
 			updateVertices();
 		}
 
-		Recti Sprite::getBounds () const
+		Recti Sprite::getBounds() const
 		{
 			return Recti::minSize(_model->getPosition(), _textureBounds.getSize());
 		}
 
-		void Sprite::setPosition (Vector2i position)
+		void Sprite::setPosition(Vector2i position)
 		{
 			_model->setPosition(position);
 		}
 
-		void Sprite::setMaxSize (Vector2i maxSize)
+		void Sprite::setMaxSize(Vector2i maxSize)
 		{
 			_maxSize = maxSize;
 			updateVertices();
 		}
 
-		Ptr<Texture> Sprite::getTexture () const
+		Ptr<Texture> Sprite::getTexture() const
 		{
 			return _model->getTexture();
 		}
 
-		void Sprite::setTexture (Ptr<Texture> texture)
+		void Sprite::setTexture(Ptr<Texture> texture)
 		{
 			_model->setTexture(texture);
 		}
 
-		void Sprite::setTexture (std::string const & filename)
+		void Sprite::setTexture(std::string const & filename)
 		{
-			_model->setTexture(resources::getTextureFromFile(filename));
+			setTexture(resources::getTextureFromFile(filename));
 		}
 
-		Recti Sprite::getTextureBounds () const
+		Recti Sprite::getTextureBounds() const
 		{
 			return _textureBounds;
 		}
 
-		void Sprite::setTextureBounds (Recti bounds)
+		void Sprite::setTextureBounds(Recti bounds)
 		{
 			_textureBounds = bounds;
 			updateVertices();
 		}
 
-		void Sprite::handleEvent (Event const & event)
+		void Sprite::handleEvent(Event const & event)
 		{
 			Ptr<Cursor> cursor = event.window->getCursor();
-			if(cursor->isPositionValid() && getBounds().containsEx(cursor->getPosition()))
+			if (cursor->isPositionValid() && getBounds().containsEx(cursor->getPosition()))
 			{
 				cursor->consume();
 			}
 		}
 
-		void Sprite::render (Vector2i windowSize)
+		void Sprite::render(Vector2i windowSize)
 		{
 			_model->render(windowSize);
 		}
@@ -84,7 +84,7 @@ namespace kit
 			Vector2i size;
 			size[0] = std::min(_textureBounds.getSize()[0], _maxSize[0]);
 			size[1] = std::min(_textureBounds.getSize()[1], _maxSize[1]);
-			std::vector<Model::Vertex> vertices (4);
+			std::vector<Model::Vertex> vertices(4);
 			vertices[0].pos.set(0, 0);
 			vertices[0].uv.set((float)_textureBounds.min[0], (float)_textureBounds.min[1]);
 			vertices[1].pos.set((float)size[0], 0);
