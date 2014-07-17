@@ -12,7 +12,7 @@ namespace kit
 			}
 			_scene = scene;
 			_object = scene->addObject();
-			_model.set(new scene::Model);
+			_model.setNew();
 			_model->setVertexFormat(false, false, false, 1);
 			std::vector<unsigned int> indices (6);
 			indices[0] = 0;

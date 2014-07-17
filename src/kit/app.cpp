@@ -57,7 +57,8 @@ namespace kit
 
 		Ptr<Window> addWindow (char const * title)
 		{
-			OwnPtr<Window> window (new Window (title));
+			OwnPtr<Window> window;
+			window.setNew(title);
 			if(_windows.empty())
 			{
 				_sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
@@ -78,7 +79,8 @@ namespace kit
 
 		Ptr<scene::Scene> addScene ()
 		{
-			OwnPtr<scene::Scene> scene (new scene::Scene);
+			OwnPtr<scene::Scene> scene;
+			scene.setNew();
 			_scenes.insert(scene);
 			return scene;
 		}

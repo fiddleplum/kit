@@ -34,6 +34,9 @@ namespace kit
 			// Sets the texture to use.
 			void setTexture(Ptr<Texture> texture);
 
+			// Sets the texture to use from a filename.
+			void setTexture(std::string const & filename);
+
 			// Frames are stacked horizontally: default, hovered, pressed, pressed-hovered.
 			void setTextureBounds(Recti bounds);
 

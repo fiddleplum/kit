@@ -41,11 +41,8 @@ namespace kit
 	template <class T> class OwnPtr
 	{
 	public:
-		// Initialize the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
+		// Default constructor. Initializes the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
 		OwnPtr ();
-
-		// Initialize the pointer to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. It can also take a function that destroys the object (default is the standard delete operator).
-		template <class Y> explicit OwnPtr (Y * newP, void(* deleteFunction)(Y *) = nullptr);
 
 		// Default copy constructor. Needed otherwise C++ will create its own.
 		OwnPtr (OwnPtr<T> const & ptr);
@@ -55,6 +52,9 @@ namespace kit
 
 		// Destructor. If this is the last OwnPtr reference to the object, either delete is called or the destroy function is called if it is specified. There must be no UsePtrs pointing to the object. Note that it is not virtual, so don't subclass OwnPtr.
 		~OwnPtr ();
+
+		// Returns a newly created OwnPtr. Same as if this were used: OwnPtr<T> ptr; ptr.setNew(args...); return ptr;
+		template <typename ...Args> static OwnPtr<T> createNew(Args... args);
 
 		// Default assignment operator. Needed otherwise C++ will create its own.
 		OwnPtr<T> & operator = (OwnPtr<T> const & ptr);
@@ -74,8 +74,11 @@ namespace kit
 		// Returns true if there is at least one UsePtr or Ptr that points to the object this points to.
 		bool isReferenced () const;
 
-		// Change the object that this points to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
-		template <class Y> void set (Y * newP, void (*deleteFunction) (Y *) = nullptr);
+		// Point the pointer to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
+		template <class Y> void setRaw (Y * newP, void (*deleteFunction) (Y *) = nullptr);
+
+		// Change the object to a new pointer to an object of type T with arguments. Uses the new operator for allocation. For special allocation, use the function OwnPtr(Y * newP, ...).
+		template <typename... Args> void setNew (Args... args);
 
 		// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
 		void setNull ();
@@ -391,22 +394,6 @@ namespace kit
 	{
 	}
 
-	template <class T> template <class Y>
-	OwnPtr<T>::OwnPtr (Y * newP, void (*deleteFunction) (Y *)) : p(newP)
-	{
-		if(p != nullptr)
-		{
-			c = new _PtrCounterTyped<Y> (newP, deleteFunction);
-			c->oc = 1;
-			c->uc = 0;
-			c->pc = 0;
-		}
-		else
-		{
-			c = nullptr;
-		}
-	}
-
 	template <class T>
 	OwnPtr<T>::OwnPtr (OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c)
 	{
@@ -429,6 +416,14 @@ namespace kit
 	OwnPtr<T>::~OwnPtr ()
 	{
 		setNull();
+	}
+
+	template <class T> template <typename ...Args>
+	OwnPtr<T> OwnPtr<T>::createNew(Args... args)
+	{
+		OwnPtr<T> ptr;
+		ptr.setNew(args...);
+		return ptr;
 	}
 
 	template <class T>
@@ -490,7 +485,7 @@ namespace kit
 	}
 
 	template <class T> template <class Y>
-	void OwnPtr<T>::set (Y * newP, void (*deleteFunction) (Y *))
+	void OwnPtr<T>::setRaw (Y * newP, void (*deleteFunction) (Y *))
 	{
 		setNull();
 		p = newP;
@@ -505,6 +500,12 @@ namespace kit
 		{
 			c = nullptr;
 		}
+	}
+
+	template <class T> template <typename... Args>
+	void OwnPtr<T>::setNew (Args... args)
+	{
+		setRaw(new T(args...));
 	}
 
 	template <class T>

@@ -24,7 +24,7 @@ namespace kit
 			_specularLevel = 1;
 			_specularStrength = 0;
 			_scale = 1;
-			_vertexBufferObject.set(new VertexBufferObject);
+			_vertexBufferObject.setNew();
 			_vertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
 			updateShader();
 			_sorted = false;

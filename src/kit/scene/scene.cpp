@@ -11,7 +11,7 @@ namespace kit
 
 		Ptr<Light> Scene::addLight()
 		{
-			return *_lights.insert(OwnPtr<Light>(new Light));
+			return *_lights.insert(OwnPtr<Light>::createNew());
 		}
 
 		void Scene::removeLight(Ptr<Light> light)
@@ -21,7 +21,7 @@ namespace kit
 
 		Ptr<Camera> Scene::addCamera()
 		{
-			return *_cameras.insert(OwnPtr<Camera>(new Camera));
+			return *_cameras.insert(OwnPtr<Camera>::createNew());
 		}
 
 		void Scene::removeCamera(Ptr<Camera> camera)
@@ -31,7 +31,7 @@ namespace kit
 
 		Ptr<Object> Scene::addObject()
 		{
-			return *_objects.insert(OwnPtr<Object>(new Object));
+			return *_objects.insert(OwnPtr<Object>::createNew());
 		}
 
 		void Scene::removeObject(Ptr<Object> object)

@@ -36,9 +36,9 @@ namespace kit
 
 		void initialize ()
 		{
-			_shaderCache.set(new ObjectCache<Shader>);
-			_textureCache.set(new ObjectCache<Texture>);
-			_modelCache.set(new ObjectCache<scene::Model>);
+			_shaderCache.setNew();
+			_textureCache.setNew();
+			_modelCache.setNew();
 		}
 
 		void finalize ()

@@ -48,21 +48,24 @@ namespace kit
 
 		Ptr<Sprite> WidgetContainer::addSprite ()
 		{
-			OwnPtr<Sprite> sprite (new Sprite);
+			OwnPtr<Sprite> sprite;
+			sprite.setNew();
 			addWidget(sprite);
 			return sprite;
 		}
 
 		Ptr<Button> WidgetContainer::addButton ()
 		{
-			OwnPtr<Button> button (new Button);
+			OwnPtr<Button> button;
+			button.setNew();
 			addWidget(button);
 			return button;
 		}
 
 		Ptr<Viewport> WidgetContainer::addViewport ()
 		{
-			OwnPtr<Viewport> viewport (new Viewport);
+			OwnPtr<Viewport> viewport;
+			viewport.setNew();
 			addWidget(viewport);
 			return viewport;
 		}

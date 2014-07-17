@@ -1,8 +1,7 @@
 #include "../app.h"
+#include "../resources.h"
 #include "button.h"
 #include "sprite.h"
-
-#include "../log.h"
 
 namespace kit
 {
@@ -10,7 +9,7 @@ namespace kit
 	{
 		Button::Button ()
 		{
-			sprite.set(new Sprite);
+			sprite.setNew();
 			type = Hold;
 			hovered = false;
 			pressed = false;
@@ -129,7 +128,12 @@ namespace kit
 			sprite->setTexture(texture);
 		}
 
-		void Button::setTextureBounds (Recti bounds)
+		void Button::setTexture(std::string const & filename)
+		{
+			setTexture(resources::getTextureFromFile(filename));
+		}
+
+		void Button::setTextureBounds(Recti bounds)
 		{
 			defaultTextureBounds = bounds;
 			sprite->setTextureBounds(bounds);
