@@ -48,6 +48,7 @@
     <ClInclude Include="src\kit\app.h" />
     <ClInclude Include="src\kit\box.h" />
     <ClInclude Include="src\kit\file_system.h" />
+    <ClInclude Include="src\kit\list.h" />
     <ClInclude Include="src\kit\platform.h" />
     <ClInclude Include="src\kit\scene\camera.h" />
     <ClInclude Include="src\kit\csv.h" />

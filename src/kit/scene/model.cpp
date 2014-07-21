@@ -20,13 +20,13 @@ namespace kit
 			_vertexHasColor = false;
 			_numVertexUVs = 0;
 			_emitColor = Vector3f(0, 0, 0);
-			_diffuseColor = Vector4f(1, 1, 1, 1);
+			_diffuseColor = Vector4f(1, 1, 1, 0);
 			_specularLevel = 1;
 			_specularStrength = 0;
 			_scale = 1;
 			_vertexBufferObject.setNew();
 			_vertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
-			updateShader();
+			_shaderDirty = true;
 			_sorted = false;
 		}
 
@@ -109,7 +109,8 @@ namespace kit
 			_numVertexUVs = numVertexUVs;
 			_numBytesPerVertex += _numVertexUVs * sizeof(Vector2f);
 			_vertexBufferObject->setBytesPerVertex(_numBytesPerVertex);
-			updateShader();
+			_shaderDirty = true;
+			_sorted = false;
 		}
 
 		void Model::setVertices (void const * vertices, unsigned int numBytes)
@@ -147,7 +148,8 @@ namespace kit
 			textureInfo.samplerLocation = -1;
 			textureInfo.uvIndex = uvIndex;
 			_textureInfos.push_back(textureInfo);
-			updateShader();
+			_shaderDirty = true;
+			_sorted = false;
 		}
 
 		void Model::addTexture (std::string const & filename, std::string const & type, unsigned int uvIndex)
@@ -159,7 +161,8 @@ namespace kit
 		void Model::clearTextures ()
 		{
 			_textureInfos.clear();
-			updateShader();
+			_shaderDirty = true;
+			_sorted = false;
 		}
 
 		void Model::setColor (Vector3f const & emitColor, Vector4f const & diffuseColor)
@@ -187,6 +190,10 @@ namespace kit
 		void Model::render (Ptr<Camera> camera, Ptr<Entity> entity, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
 		{
 			// The render engine handles shader and texture activation.
+			if(_shaderDirty)
+			{
+				const_cast<Model *>(this)->updateShader();
+			}
 			_shader->activate();
 			_shader->setUniform(_projectionLocation, camera->getCameraToNdcTransform());
 			_shader->setUniform(_worldViewLocation, camera->getWorldToCameraTransform() * entity->getLocalToWorldTransform());
@@ -472,6 +479,8 @@ namespace kit
 			}
 			_projectionLocation = _shader->getUniformLocation("uProjection");
 			_worldViewLocation = _shader->getUniformLocation("uWorldView");
+
+			_shaderDirty = false;
 		}
 	}
 }

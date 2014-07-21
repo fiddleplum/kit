@@ -19,11 +19,11 @@ namespace kit
 		public:
 			Sprite ();
 
-			Recti getBounds () const override;
+			Recti getBounds() const override;
 
-			void setPosition (Vector2i position) override;
+			void setPosition(Vector2i position) override;
 
-			void setMaxSize (Vector2i maxSize) override;
+			void setMaxSize(Vector2i maxSize) override;
 
 			Ptr<Texture> getTexture () const;
 
@@ -31,13 +31,13 @@ namespace kit
 
 			void setTexture (std::string const & filename);
 
-			Recti getTextureBounds () const;
+			Recti getTextureBounds() const;
 
-			void setTextureBounds (Recti bounds);
+			void setTextureBounds(Recti bounds);
 
 			void handleEvent (Event const & event);
 
-			void render (Vector2i windowSize);
+			void render(Vector2i windowSize);
 
 		private:
 			void updateVertices ();

@@ -8,13 +8,13 @@ namespace kit
 	class Texture
 	{
 	public:
-		Texture (Vector2i size);
+		Texture(Vector2i size);
 
 		Texture (std::string const & filename);
 
 		~Texture ();
 
-		Vector2i getSize () const;
+		Vector2i getSize() const;
 
 		unsigned char * lockPixels ();
 

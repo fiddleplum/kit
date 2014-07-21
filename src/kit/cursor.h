@@ -20,7 +20,7 @@ namespace kit
 		void consume ();
 
 		// Sets the position of the cursor. Called by window on mouse move events.
-		void setPosition (Vector2i);
+		void setPosition(Vector2i);
 
 		// Sets whether the position of the cursor is within the window. Called by app.
 		void setWithinWindow (bool);

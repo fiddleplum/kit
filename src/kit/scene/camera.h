@@ -12,9 +12,9 @@ namespace kit
 		public:
 			Camera ();
 
-			void setPosition (Vector3f position) override;
+			void setPosition(Vector3f position) override;
 
-			void setOrientation (Quaternionf orientation) override;
+			void setOrientation(Quaternionf orientation) override;
 
 			void setAspectRatio(float aspectRatio);
 
@@ -26,13 +26,13 @@ namespace kit
 
 			void setOrthogonal(float size);
 
-			Vector2f getNdcPosition (Vector3f worldPosition) const;
+			Vector2f getNdcPosition(Vector3f worldPosition) const;
 
-			Ray3f getRay (Vector2f ndcPosition) const;
+			Ray3f getRay(Vector2f ndcPosition) const;
 
-			Matrix44f const & getWorldToCameraTransform () const;
+			Matrix44f const & getWorldToCameraTransform() const;
 
-			Matrix44f const & getCameraToNdcTransform () const;
+			Matrix44f const & getCameraToNdcTransform() const;
 
 		private:
 			void updateWorldToCamera ();

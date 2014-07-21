@@ -21,15 +21,15 @@ namespace kit
 
 			Button ();
 
-			Recti getBounds () const override;
+			Recti getBounds() const override;
 
-			void setPosition (Vector2i position) override;
+			void setPosition(Vector2i position) override;
 
-			void setMaxSize (Vector2i maxSize) override;
+			void setMaxSize(Vector2i maxSize) override;
 
 			void handleEvent (Event const & event) override;
 
-			void render (Vector2i windowSize) override;
+			void render(Vector2i windowSize) override;
 
 			Ptr<Texture> getTexture() const;
 

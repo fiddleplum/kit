@@ -14,14 +14,6 @@ namespace kit
 			_object = scene->addObject();
 			_model.setNew();
 			_model->setVertexFormat(false, false, false, 1);
-			std::vector<unsigned int> indices (6);
-			indices[0] = 0;
-			indices[1] = 1;
-			indices[2] = 2;
-			indices[3] = 2;
-			indices[4] = 3;
-			indices[5] = 0;
-			_model->setIndices(&indices[0], indices.size());
 			_object->setModel(_model);
 		}
 
@@ -48,7 +40,15 @@ namespace kit
 			if(_object.isValid())
 			{
 				Entity::setOrientation(orientation);
-				_object->setOrientation(Quaternionf(std::acos(2.0f * getOrientation()), 0, 0, std::asin(2.0f * getOrientation())));
+				_object->setOrientation(Quaternionf(std::cos(getOrientation() / 2.f), 0, 0, std::sin(getOrientation() / 2.f)));
+			}
+		}
+
+		void Object::setScale(float scale)
+		{
+			if(_object.isValid())
+			{
+				_object->setScale(scale);
 			}
 		}
 
@@ -65,32 +65,44 @@ namespace kit
 		{
 			_model->clearTextures();
 			_model->addTexture(filename, "diffuse", 0);
-			updateVertices();
 		}
 
-		void Object::setTextureCoords(Recti coords)
+		void Object::setAsSprite(Vector2f offsetFromPosition, Recti textureCoords)
 		{
-			_textureCoords = coords;
-			updateVertices();
-		}
+			std::vector<unsigned int> indices(6);
+			indices[0] = 0;
+			indices[1] = 1;
+			indices[2] = 2;
+			indices[3] = 2;
+			indices[4] = 3;
+			indices[5] = 0;
+			setIndices(indices);
 
-		void Object::updateVertices()
-		{
 			Ptr<Texture> texture = _model->getTexture(0);
 			if(texture.isValid())
 			{
 				Vector2i textureSize = _model->getTexture(0)->getSize();
-				std::vector<float> vertices (20);
-				vertices[0] = 0; vertices[1] = 0; vertices[2] = 0;
-				vertices[3] = (float)_textureCoords.min[0] / textureSize[0]; vertices[4] = (float)_textureCoords.max[1] / textureSize[1];
-				vertices[5] = (float)_textureCoords.getSize()[0]; vertices[6] = 0; vertices[7] = 0;
-				vertices[8] = (float)_textureCoords.max[0] / textureSize[0]; vertices[9] = (float)_textureCoords.max[1] / textureSize[1];
-				vertices[10] = (float)_textureCoords.getSize()[0]; vertices[11] = (float)_textureCoords.getSize()[1]; vertices[12] = 0;
-				vertices[13] = (float)_textureCoords.max[0] / textureSize[0]; vertices[14] = (float)_textureCoords.min[1] / textureSize[1];
-				vertices[15] = 0; vertices[16] = (float)_textureCoords.getSize()[1]; vertices[17] = 0;
-				vertices[18] = (float)_textureCoords.min[0] / textureSize[0]; vertices[19] = (float)_textureCoords.min[1] / textureSize[1];
-				_model->setVertices(&vertices[0], sizeof(float) * vertices.size());
+				std::vector<Vertex> vertices(4);
+				vertices[0].position.set(offsetFromPosition[0], offsetFromPosition[1]);
+				vertices[0].textureCoord.set((float)textureCoords.min[0] / textureSize[0], (float)textureCoords.max[1] / textureSize[1]);
+				vertices[1].position.set(offsetFromPosition[0] + (float)textureCoords.getSize()[0], offsetFromPosition[1]);
+				vertices[1].textureCoord.set((float)textureCoords.max[0] / textureSize[0], (float)textureCoords.max[1] / textureSize[1]);
+				vertices[2].position.set(offsetFromPosition[0] + (float)textureCoords.getSize()[0], offsetFromPosition[1] + (float)textureCoords.getSize()[1]);
+				vertices[2].textureCoord.set((float)textureCoords.max[0] / textureSize[0], (float)textureCoords.min[1] / textureSize[1]);
+				vertices[3].position.set(offsetFromPosition[0], offsetFromPosition[1] + (float)textureCoords.getSize()[1]);
+				vertices[3].textureCoord.set((float)textureCoords.min[0] / textureSize[0], (float)textureCoords.min[1] / textureSize[1]);
+				setVertices(vertices);
 			}
+		}
+
+		void Object::setVertices(std::vector<Vertex> const & vertices)
+		{
+			_model->setVertices(&vertices[0], sizeof(Vertex)* vertices.size());
+		}
+
+		void Object::setIndices(std::vector<unsigned int> const & indices)
+		{
+			_model->setIndices(&indices[0], indices.size());
 		}
 	}
 }

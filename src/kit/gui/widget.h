@@ -26,7 +26,7 @@ namespace kit
 			virtual void handleEvent (Event const & event) = 0;
 
 			// Renders the widget.
-			virtual void render (Vector2i windowSize) = 0;
+			virtual void render(Vector2i windowSize) = 0;
 		};
 	}
 }

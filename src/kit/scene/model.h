@@ -50,7 +50,7 @@ namespace kit
 
 			void setScale(float scale);
 
-			void render (Ptr<Camera> camera, Ptr<Entity> entity, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const;
+			void render(Ptr<Camera> camera, Ptr<Entity> entity, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const;
 
 			static const unsigned int maxLights = 4;
 
@@ -96,6 +96,8 @@ namespace kit
 			OwnPtr<VertexBufferObject> _vertexBufferObject;
 
 			Ptr<Shader> _shader;
+			bool _shaderDirty;
+
 			bool _sorted;
 
 			int _projectionLocation;

@@ -21,7 +21,7 @@ namespace kit
 			transformsNeedUpdate = true;
 		}
 
-		Quaternionf const & Entity::getOrientation () const
+		Quaternionf const & Entity::getOrientation() const
 		{
 			return orientation;
 		}

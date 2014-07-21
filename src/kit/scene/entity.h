@@ -19,9 +19,9 @@ namespace kit
 
 			virtual void setOrientation(Quaternionf orientation);
 
-			Matrix44f const & getLocalToWorldTransform () const;
+			Matrix44f const & getLocalToWorldTransform() const;
 
-			Matrix44f const & getWorldToLocalTransform () const;
+			Matrix44f const & getWorldToLocalTransform() const;
 
 		private:
 			void updateTransforms ();
