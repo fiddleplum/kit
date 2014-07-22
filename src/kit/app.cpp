@@ -101,6 +101,8 @@ namespace kit
 			_looping = true;
 			while (_looping)
 			{
+				float frameStartTime = getTime();
+
 				// Get SDL Events
 				SDL_Event sdlEvent;
 				while (_looping && SDL_PollEvent(&sdlEvent))
@@ -138,6 +140,13 @@ namespace kit
 					{
 						window->render(_sdlGlContext);
 					}
+				}
+
+				// FIX THIS: Introduce better loop timing
+				float delayTime = .0333f - (getTime() - frameStartTime);
+				if(delayTime > 0)
+				{
+					SDL_Delay((unsigned int)(delayTime * 1000));
 				}
 			}
 		}

@@ -11,8 +11,13 @@ namespace kit
 {
 	namespace math
 	{
-		//! Returns the constant pi.
-		template <class T> T getPi ();
+		const double PI = 3.1415926535897932384626433832795; // 180 degrees
+		const double TWO_PI = 6.283185307179586476925286766559; // 360 degrees
+		const double PI_OVER_2 = 1.5707963267948966192313216916398; // 90 degrees
+		const double PI_OVER_3 = 1.0471975511965977461542144610932; // 60 degrees
+		const double PI_OVER_4 = 0.78539816339744830961566084581988; // 45 degrees
+		const double PI_OVER_6 = 0.52359877559829887307710723054658; // 30 degrees
+		const double PI_OVER_12 = 0.26179938779914943653855361527329; // 15 degrees
 
 		//! Returns v clamped to between min and max.
 		template <class T> T clamp (T v, T min, T max);
@@ -42,11 +47,6 @@ namespace kit
 		template <class T> bool isInf (T v);
 
 		// Template Implementations.
-
-		template <class T> T getPi ()
-		{
-			return (T)3.141592653589793238462643383;
-		}
 
 		template <class T> T clamp (T v, T min, T max)
 		{
