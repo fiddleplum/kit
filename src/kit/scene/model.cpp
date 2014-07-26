@@ -412,6 +412,10 @@ namespace kit
 			{
 				code[Shader::Fragment] += "	gl_FragColor = color;\n";
 			}
+			code[Shader::Fragment] += "	if(gl_FragColor.a == 0)\n";
+			code[Shader::Fragment] += "	{\n";
+			code[Shader::Fragment] += "		discard;\n";
+			code[Shader::Fragment] += "	}\n";
 			code[Shader::Fragment] += "	gl_FragColor.rgb += uEmitColor;\n";
 			code[Shader::Fragment] += "}\n";
 
