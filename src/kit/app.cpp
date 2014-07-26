@@ -20,6 +20,7 @@ namespace kit
 		bool _looping;
 		bool _firstMouseMoveEvent;
 		std::vector<SDL_Joystick *> _joysticks;
+		float targetFrameRate = 60.f;
 
 		void initialize()
 		{
@@ -116,14 +117,14 @@ namespace kit
 					if (_looping)
 					{
 						UpdateEvent event = UpdateEvent(window);
-						event.dt = 1.f / 30.f;
+						event.dt = 1.f / targetFrameRate;
 						window->handleEvent(event);
 					}
 				}
 				for (auto scene : _scenes)
 				{
 					UpdateEvent event = UpdateEvent(Ptr<Window>());
-					event.dt = 1.f / 30.f;
+					event.dt = 1.f / targetFrameRate;
 					scene->handleEvent(event);
 				}
 
@@ -143,7 +144,7 @@ namespace kit
 				}
 
 				// FIX THIS: Introduce better loop timing
-				float delayTime = .0333f - (getTime() - frameStartTime);
+				float delayTime = (1.f / targetFrameRate) - (getTime() - frameStartTime);
 				if(delayTime > 0)
 				{
 					SDL_Delay((unsigned int)(delayTime * 1000));
