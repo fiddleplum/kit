@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <unordered_set>
 
 namespace kit
 {
@@ -34,11 +35,13 @@ namespace kit
 		void processErases();
 
 	private:
+		class IteratorHash;
+
 		std::list<T> l;
-		std::list<typename std::list<T>::const_iterator> erases;
+		std::unordered_set<typename std::list<T>::const_iterator, IteratorHash> erases;
 	};
 
-	// Template Implementation
+	// Internal Implementation
 
 	template <typename T>
 	List<T>::List()
@@ -137,7 +140,7 @@ namespace kit
 	{
 		for(auto it = l.begin(); it != l.end(); it++)
 		{
-			erases.push_back(it);
+			erases.insert(it);
 		}
 	}
 
@@ -168,5 +171,15 @@ namespace kit
 		}
 		erases.clear();
 	}
+
+	template <typename T>
+	class List<T>::IteratorHash
+	{
+	public:
+		size_t operator () (T const & t)
+		{
+			return (unsigned int)t;
+		}
+	};
 }
 
