@@ -90,5 +90,6 @@
     <ClInclude Include="src\kit\platform.h" />
     <ClInclude Include="src\kit\file_system.h" />
     <ClInclude Include="src\kit\list.h" />
+    <ClInclude Include="src\kit\set.h" />
   </ItemGroup>
 </Project>

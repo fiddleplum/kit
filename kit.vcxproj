@@ -91,6 +91,7 @@
     <ClInclude Include="src\kit\serialize_std_string.h" />
     <ClInclude Include="src\kit\serialize_std_vector.h" />
     <ClInclude Include="src\kit\serialize_vector.h" />
+    <ClInclude Include="src\kit\set.h" />
     <ClInclude Include="src\kit\shader.h" />
     <ClInclude Include="src\kit\start_finish.h" />
     <ClInclude Include="src\kit\storage.h" />
