@@ -20,12 +20,12 @@ namespace kit
 
 		typename std::set<T>::iterator begin();
 		typename std::set<T>::iterator end();
-		typename std::set<T>::const_iterator cbegin() const;
-		typename std::set<T>::const_iterator cend() const;
+		typename std::set<T>::const_iterator begin() const;
+		typename std::set<T>::const_iterator end() const;
 		typename std::set<T>::reverse_iterator rbegin();
 		typename std::set<T>::reverse_iterator rend();
-		typename std::set<T>::const_reverse_iterator crbegin() const;
-		typename std::set<T>::const_reverse_iterator crend() const;
+		typename std::set<T>::const_reverse_iterator rbegin() const;
+		typename std::set<T>::const_reverse_iterator rend() const;
 
 		void erase(typename std::set<T>::const_iterator it);
 		template <typename Y> void erase(Y const & y);
@@ -63,13 +63,23 @@ namespace kit
 	template <typename T> template <typename Y>
 	typename std::set<T>::iterator Set<T>::find(Y const & y)
 	{
-		return m.find((unsigned int)y).second;
+		auto it = m.find((unsigned int)y);
+		if(it != m.end())
+		{
+			return it->second;
+		}
+		return s.end();
 	}
 
 	template <typename T> template <typename Y>
 	typename std::set<T>::const_iterator Set<T>::find(Y const & y) const
 	{
-		return m.find((unsigned int)y).second;
+		auto it = m.find((unsigned int)y);
+		if(it != m.end())
+		{
+			return it->second;
+		}
+		return s.end();
 	}
 
 	template <typename T>
@@ -91,15 +101,15 @@ namespace kit
 	}
 
 	template <typename T>
-	typename std::set<T>::const_iterator Set<T>::cbegin() const
+	typename std::set<T>::const_iterator Set<T>::begin() const
 	{
-		return s.cbegin();
+		return s.begin();
 	}
 
 	template <typename T>
-	typename std::set<T>::const_iterator Set<T>::cend() const
+	typename std::set<T>::const_iterator Set<T>::end() const
 	{
-		return s.cend();
+		return s.end();
 	}
 
 	template <typename T>
@@ -115,15 +125,15 @@ namespace kit
 	}
 
 	template <typename T>
-	typename std::set<T>::const_reverse_iterator Set<T>::crbegin() const
+	typename std::set<T>::const_reverse_iterator Set<T>::rbegin() const
 	{
-		return s.crbegin();
+		return s.rbegin();
 	}
 
 	template <typename T>
-	typename std::set<T>::const_reverse_iterator Set<T>::crend() const
+	typename std::set<T>::const_reverse_iterator Set<T>::rend() const
 	{
-		return s.crend();
+		return s.rend();
 	}
 
 	template <typename T>
