@@ -160,6 +160,16 @@
     <Lib>
       <OutputFile>$(OutDir)$(TargetFileName)</OutputFile>
     </Lib>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>copy ..\external\SDL2\lib\x86\*.lib lib
+copy ..\external\SDL2_image\lib\x86\*.lib lib
+copy ..\external\SDL2_mixer\lib\x86\*.lib lib
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
