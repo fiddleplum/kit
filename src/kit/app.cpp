@@ -4,7 +4,7 @@
 #include "log.h"
 #include "audio.h"
 #include "ptr_set.h"
-#include "../../external/SDL2/include/SDL.h"
+#include <SDL.h>
 
 namespace kit
 {

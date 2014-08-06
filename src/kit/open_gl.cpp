@@ -1,5 +1,5 @@
 #include "open_gl.h"
-#include "../../external/SDL2/include/SDL.h"
+#include <SDL.h>
 
 #include <iostream>
 
