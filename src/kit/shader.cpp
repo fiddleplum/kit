@@ -36,7 +36,10 @@ namespace kit
 
 	Shader::~Shader ()
 	{
-		glDeleteProgram(_program);
+		if(glHasContext())
+		{
+			glDeleteProgram(_program);
+		}
 	}
 
 	int Shader::getUniformLocation (std::string const & name) const

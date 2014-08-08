@@ -7,21 +7,21 @@ namespace kit
 {
 	namespace gui
 	{
-		Viewport::Viewport ()
+		Viewport::Viewport()
 		{
 		}
 
-		Recti Viewport::getBounds () const
+		Recti Viewport::getBounds() const
 		{
 			return _bounds;
 		}
 
-		void Viewport::setPosition (Vector2i position)
+		void Viewport::setPosition(Vector2i position)
 		{
 			_bounds.setMinKeepSize(position);
 		}
 
-		void Viewport::setMaxSize (Vector2i maxSize)
+		void Viewport::setMaxSize(Vector2i maxSize)
 		{
 			_bounds.setSize(maxSize);
 			if(_camera.isValid())
@@ -33,12 +33,12 @@ namespace kit
 			}
 		}
 
-		Ptr<scene::Camera> Viewport::getCamera () const
+		Ptr<scene::Camera> Viewport::getCamera() const
 		{
 			return _camera;
 		}
 
-		void Viewport::setCamera (Ptr<scene::Camera> camera)
+		void Viewport::setCamera(Ptr<scene::Camera> camera)
 		{
 			_camera = camera;
 			if(_bounds.getSize()[1] != 0)
@@ -47,26 +47,29 @@ namespace kit
 			}
 		}
 
-		Ptr<scene::Scene> Viewport::getScene () const
+		Ptr<scene::Scene> Viewport::getScene() const
 		{
 			return _scene;
 		}
 
-		void Viewport::setScene (Ptr<scene::Scene> scene)
+		void Viewport::setScene(Ptr<scene::Scene> scene)
 		{
 			_scene = scene;
 		}
 
-		void Viewport::handleEvent (Event const & event)
+		void Viewport::handleEvent(Event const & event)
 		{
-			Ptr<Cursor> cursor = event.window->getCursor();
-			if(cursor->isPositionValid() && getBounds().containsEx(cursor->getPosition()))
+			if(event.window.isValid())
 			{
-				cursor->consume();
+				Ptr<Cursor> cursor = event.window->getCursor();
+				if(cursor->isPositionValid() && getBounds().containsEx(cursor->getPosition()))
+				{
+					cursor->consume();
+				}
 			}
 		}
 
-		void Viewport::render (Vector2i windowSize)
+		void Viewport::render(Vector2i windowSize)
 		{
 			if(!_camera.isValid() || !_scene.isValid())
 			{

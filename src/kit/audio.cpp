@@ -36,12 +36,12 @@ namespace kit
 
 		void initialize()
 		{
-			int flagsInited = Mix_Init(MIX_INIT_OGG);
-			if((flagsInited & MIX_INIT_OGG) == 0)
+			int flagsInitted = Mix_Init(MIX_INIT_OGG);
+			if((flagsInitted & MIX_INIT_OGG) == 0)
 			{
 				throw std::runtime_error("Could not initialize ogg audio");
 			}
-			if(Mix_OpenAudio(22050, AUDIO_S16SYS, 1, 1024) == -1)
+			if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 4096) == -1)
 			{
 				throw std::runtime_error("Could not open audio for mixer");
 			}

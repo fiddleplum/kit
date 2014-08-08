@@ -4,6 +4,13 @@
 #include <iostream>
 
 bool initialized = false;
+namespace kit
+{
+	namespace app
+	{
+		extern SDL_GLContext _sdlGlContext;
+	}
+}
 
 PFNGLENABLEPROC glEnable;
 PFNGLDISABLEPROC glDisable;
@@ -132,6 +139,11 @@ void glInitialize ()
 bool glIsInitialized ()
 {
 	return initialized;
+}
+
+bool glHasContext()
+{
+	return kit::app::_sdlGlContext != 0;
 }
 
 float glGetGLSLVersion()

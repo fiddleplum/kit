@@ -2,8 +2,9 @@
 
 #include "gl3.h"
 
-void glInitialize ();
-bool glIsInitialized ();
+void glInitialize();
+bool glIsInitialized();
+bool glHasContext();
 float glGetGLSLVersion();
 
 extern PFNGLENABLEPROC glEnable;

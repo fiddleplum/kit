@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\kit\app.cpp" />
     <ClCompile Include="src\kit\audio.cpp" />
+    <ClCompile Include="src\kit\controllers.cpp" />
     <ClCompile Include="src\kit\file_system.cpp" />
     <ClCompile Include="src\kit\scene\camera.cpp" />
     <ClCompile Include="src\kit\csv.cpp" />
@@ -47,6 +48,7 @@
   <ItemGroup>
     <ClInclude Include="src\kit\app.h" />
     <ClInclude Include="src\kit\box.h" />
+    <ClInclude Include="src\kit\controllers.h" />
     <ClInclude Include="src\kit\file_system.h" />
     <ClInclude Include="src\kit\list.h" />
     <ClInclude Include="src\kit\platform.h" />

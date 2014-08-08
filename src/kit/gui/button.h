@@ -19,7 +19,7 @@ namespace kit
 				Hold, Toggle, Shot
 			};
 
-			Button ();
+			Button();
 
 			Recti getBounds() const override;
 
@@ -27,7 +27,7 @@ namespace kit
 
 			void setMaxSize(Vector2i maxSize) override;
 
-			void handleEvent (Event const & event) override;
+			void handleEvent(Event const & event) override;
 
 			void render(Vector2i windowSize) override;
 
@@ -48,27 +48,32 @@ namespace kit
 			// Set how long the button will stay pressed, if the shot type.
 			void setShotInterval(float interval);
 
+			// Sets if the button is selected.
+			void setSelected(bool selected);
+
 			// Set a function to be called when the cursor moves over the button.
-			void setHoverFunction(std::function<void ()> hoverFunction);
+			void setHoverFunction(std::function<void()> hoverFunction);
 
 			// Set a function to be called when the cursor moves away from the button.
-			void setUnhoverFunction(std::function<void ()> unhoverFunction);
+			void setUnhoverFunction(std::function<void()> unhoverFunction);
 
 			// Sets a function to be called when the button becomes pressed.
-			void setPressFunction(std::function<void ()> pressFunction);
+			void setPressFunction(std::function<void()> pressFunction);
 
 			// Sets a function to be called when the button comes back up (from either mouse up or a second press on a toggle button).
-			void setUnpressFunction(std::function<void ()> unpressFunction);
+			void setUnpressFunction(std::function<void()> unpressFunction);
 
 		private:
-			void setSpriteTextureBoundsFromState ();
+			void press();
+			void setSpriteTextureBoundsFromState();
 
-			std::function<void ()> hoverFunction;
-			std::function<void ()> unhoverFunction;
-			std::function<void ()> pressFunction;
-			std::function<void ()> unpressFunction;
+			std::function<void()> hoverFunction;
+			std::function<void()> unhoverFunction;
+			std::function<void()> pressFunction;
+			std::function<void()> unpressFunction;
 			Type type;
 			float shotInterval;
+			bool selected;
 			bool hovered;
 			bool pressed;
 			bool toggled;
