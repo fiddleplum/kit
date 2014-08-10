@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "../math_util.h"
 
 namespace kit
 {
@@ -19,7 +20,7 @@ namespace kit
 			_camera->setNear(1.0f);
 			_camera->setFar(1000.0f);
 			_camera->setPosition(Vector3f(0, 0, 999.0f));
-			_camera->setOrientation(Quaternionf(0, -3.14159265359f / 2.0f, 0)); // looking straight down
+			_camera->setOrientation(Quaternionf(0, -(float)math::PI_OVER_2, 0)); // looking straight down
 		}
 
 		Camera::~Camera()
@@ -44,7 +45,7 @@ namespace kit
 			Entity::setOrientation(orientation);
 			if(_camera.isValid())
 			{
-				_camera->setOrientation(Quaternionf(std::acos(2.0f * getOrientation()), 0, 0, std::asin(2.0f * getOrientation())));
+				_camera->setOrientation(Quaternionf(orientation, -(float)math::PI_OVER_2, 0));
 			}
 		}
 

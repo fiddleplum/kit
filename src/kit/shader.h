@@ -11,48 +11,51 @@ namespace kit
 	class Shader
 	{
 	public:
-		enum CodeType { Vertex, Fragment, NumCodeTypes };
+		enum CodeType
+		{
+			Vertex, Fragment, NumCodeTypes
+		};
 
-		Shader (std::string const code [NumCodeTypes]);
+		Shader(std::string const code[NumCodeTypes]);
 
-		~Shader ();
+		~Shader();
 
-		int getUniformLocation (std::string const & name) const;
+		int getUniformLocation(std::string const & name) const;
 
-		int getAttributeLocation (std::string const & name) const;
+		int getAttributeLocation(std::string const & name) const;
 
-		void activate ();
+		void activate();
 
-		static void deactivate ();
+		static void deactivate();
 
-		static void setUniform (int location, int value);
+		static void setUniform(int location, int value);
 
-		static void setUniform (int location, float value);
+		static void setUniform(int location, float value);
 
-		static void setUniform (int location, Vector2i value);
+		static void setUniform(int location, Vector2i value);
 
-		static void setUniform (int location, Vector2f value);
+		static void setUniform(int location, Vector2f value);
 
-		static void setUniform (int location, Vector3i value);
+		static void setUniform(int location, Vector3i value);
 
-		static void setUniform (int location, Vector3f value);
+		static void setUniform(int location, Vector3f value);
 
-		static void setUniform (int location, Vector4i value);
+		static void setUniform(int location, Vector4i value);
 
-		static void setUniform (int location, Vector4f value);
+		static void setUniform(int location, Vector4f value);
 
-		static void setUniform (int location, Matrix33f const & value);
+		static void setUniform(int location, Matrix33f const & value);
 
-		static void setUniform (int location, Matrix44f const & value);
+		static void setUniform(int location, Matrix44f const & value);
 
-		static void setUniform (int location, Vector3f const * value, unsigned int count);
+		static void setUniform(int location, Vector3f const * value, unsigned int count);
 
-		static void setUniform (int location, Vector2f const * value, unsigned int count);
+		static void setUniform(int location, Vector2f const * value, unsigned int count);
 
 	private:
-		static unsigned int compileShaderObject (CodeType type, std::string const & code);
-		static unsigned int linkShaderProgram (std::vector<unsigned int> const & shaderObjects);
-		void populateVariableLocations ();
+		static unsigned int compileShaderObject(CodeType type, std::string const & code);
+		static unsigned int linkShaderProgram(std::vector<unsigned int> const & shaderObjects);
+		void populateVariableLocations();
 
 		unsigned int _program;
 		std::map<std::string, int> _uniforms;

@@ -78,6 +78,9 @@ public:
 	// Change the object to a new pointer to an object of type T with arguments. Uses the new operator for allocation. For special allocation, use the function OwnPtr(Y * newP, ...).
 	template <typename... Args> void setNew(Args... args);
 
+	// Change the object to a new pointer to an object of type Y with arguments. Uses the new operator for allocation. For special allocation, use the function OwnPtr(Y * newP, ...).
+	template <typename Y, typename... Args> void setNew(Args... args);
+
 	// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
 	void setNull();
 
@@ -504,6 +507,12 @@ template <class T> template <typename... Args>
 void OwnPtr<T>::setNew(Args... args)
 {
 	setRaw(new T(args...));
+}
+
+template <class T> template <typename Y, typename... Args>
+void OwnPtr<T>::setNew(Args... args)
+{
+	setRaw(new Y(args...));
 }
 
 template <class T>
