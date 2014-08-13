@@ -3,18 +3,29 @@
 #include "noncopyable.h"
 #include <exception>
 
+/*
+Although using smart pointers provides many benefits, I've come to the conclusion that just
+properly manually managing lifetimes is simpler. In addition, smart pointers don't work with
+self references (giving an object 'this'). I've tried making a subclass PtrBase, but it does
+not work well, since you still cannot pass 'this' in a constructor.
+*/
+
+/*
+I realize that I don't need the entire UsePtr class.
+
+I can get away with the same functionality by just adding an optional flag on the setNew functions, "guaranteePtrs",
+that will, upon setNull, if the flag is set, throw an error if there are any Ptrs still existing.
+
+Also, I would like to make OwnPtr be a subclass of Ptr if I can.
+
+*/
+
 // Forward declarations
 template <class T>
 class OwnPtr;
 
 template <class T>
-class UsePtr;
-
-template <class T>
 class Ptr;
-
-template <class T>
-class UniquePtr;
 
 class _PtrCounter;
 
@@ -60,16 +71,10 @@ public:
 	// Templated assignment operator. It can take a pointer that has a type that is a subclass of T.
 	template <class Y> OwnPtr<T> & operator = (OwnPtr<Y> const & ptr);
 
-	// Returns true if this points to zero.
-	bool isNull() const;
-
 	// Returns true if this points to something non-zero.
 	bool isValid() const;
 
-	// Returns true if there is at least one UsePtr that points to the object this points to.
-	bool isUsed() const;
-
-	// Returns true if there is at least one UsePtr or Ptr that points to the object this points to.
+	// Returns true if there is at least one Ptr that points to the object this points to.
 	bool isReferenced() const;
 
 	// Point the pointer to newP, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
@@ -83,6 +88,9 @@ public:
 
 	// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
 	void setNull();
+
+	// Sets whether all Ptrs pointing to the object are guaranteed existence. This means that setNull will throw an exception if there are still Ptrs pointing to the object. This must be pointing to an object or an exception is thrown.
+	void setGuaranteeForPtrs(bool guarantee);
 
 	// Provides access to the object's members.
 	T * operator -> () const;
@@ -106,16 +114,10 @@ public:
 	bool operator < (OwnPtr<T> const & ptr);
 
 	// Returns true if the address of this object is less than the address of ptr's object.
-	bool operator < (UsePtr<T> const & ptr);
-
-	// Returns true if the address of this object is less than the address of ptr's object.
 	bool operator < (Ptr<T> const & ptr);
 
 	// Returns true if the address of this object is equal to the address of ptr's object.
 	bool operator == (OwnPtr<T> const & ptr);
-
-	// Returns true if the address of this object is equal to the address of ptr's object.
-	bool operator == (UsePtr<T> const & ptr);
 
 	// Returns true if the address of this object is equal to the address of ptr's object.
 	bool operator == (Ptr<T> const & ptr);
@@ -124,88 +126,6 @@ private:
 	T * p;
 	_PtrCounter * c;
 	template <class Y> friend class OwnPtr;
-	template <class Y> friend class UsePtr;
-	template <class Y> friend class Ptr;
-};
-
-// UsePtr is a smart pointer that has no ownership and so never deletes the pointer that it references. The object it points to is guaranteed to exist while the UsePtr points to it.
-template <class T> class UsePtr
-{
-public:
-	// Default constructor. Initializes the pointer to null.
-	UsePtr();
-
-	// Default copy constructor. Needed otherwise C++ will create its own.
-	UsePtr(UsePtr<T> const & ptr);
-
-	// Templated copy constructor.
-	template <class Y> UsePtr(UsePtr<Y> const & ptr);
-
-	// Initializes this to point to the same object that ptr points to. While this exists and points to the object, it has a guarantee that the object exists.
-	template <class Y> UsePtr(OwnPtr<Y> const & ptr);
-
-	// Destructor.
-	~UsePtr();
-
-	// Default assignment operator. Needed, otherwise C++ will create its own.
-	UsePtr<T> & operator = (UsePtr<T> const & ptr);
-
-	// Templated assignment operator.
-	template <class Y> UsePtr<T> & operator = (UsePtr<Y> const & ptr);
-
-	// Assigns this to point to the same object that ptr points to. If this pointed to a previous object, then that reference is removed.
-	template <class Y> UsePtr<T> & operator = (OwnPtr<Y> const & ptr);
-
-	// Returns true if this points to zero.
-	bool isNull() const;
-
-	// Returns true if this points to something non-zero.
-	bool isValid() const;
-
-	// Makes this point to nothing.
-	void setNull();
-
-	// Provides access to the object's members.
-	T * operator -> () const;
-
-	// Provides access to the element located at index. Warning: this provides no index out-of-bounds checking.
-	T & operator [] (int index) const;
-
-	// Provides reference access to the object.
-	T & operator * () const;
-
-	// Get the unsigned integer value of the address of the object.
-	operator unsigned int() const;
-
-	// Only to be used for functions that require a pointer. Be careful how you use this.
-	T * raw() const;
-
-	// Returns a use pointer dynamically casted to Y.
-	template <class Y> UsePtr<Y> as() const;
-
-	// Returns true if the address of this object is less than the address of ptr's object.
-	bool operator < (OwnPtr<T> const & ptr) const;
-
-	// Returns true if the address of this object is less than the address of ptr's object.
-	bool operator < (UsePtr<T> const & ptr) const;
-
-	// Returns true if the address of this object is less than the address of ptr's object.
-	bool operator < (Ptr<T> const & ptr) const;
-
-	// Returns true if the address of this object is equal to the address of ptr's object.
-	template <class Y> bool operator == (OwnPtr<Y> const & ptr) const;
-
-	// Returns true if the address of this object is equal to the address of ptr's object.
-	template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
-
-	// Returns true if the address of this object is equal to the address of ptr's object.
-	template <class Y> bool operator == (Ptr<Y> const & ptr) const;
-
-private:
-	T * p;
-	_PtrCounter * c;
-	template <class Y> friend class OwnPtr;
-	template <class Y> friend class UsePtr;
 	template <class Y> friend class Ptr;
 };
 
@@ -222,9 +142,6 @@ public:
 	// Templated copy constructor.
 	template <class Y> Ptr(Ptr<Y> const & ptr);
 
-	// Templated copy constructor.
-	template <class Y> Ptr(UsePtr<Y> const & ptr);
-
 	// Initializes this to point to the same object that ptr points to.
 	template <class Y> Ptr(OwnPtr<Y> const & ptr);
 
@@ -237,14 +154,8 @@ public:
 	// Templated assignment operator.
 	template <class Y> Ptr<T> & operator = (Ptr<Y> const & ptr);
 
-	// Templated assignment operator.
-	template <class Y> Ptr<T> & operator = (UsePtr<Y> const & ptr);
-
 	// Assigns this to point to the same object that ptr points to. If this pointed to a previous object, then that reference is removed.
 	template <class Y> Ptr<T> & operator = (OwnPtr<Y> const & ptr);
-
-	// Returns true if this points to zero.
-	bool isNull() const;
 
 	// Returns true if this points to something non-zero.
 	bool isValid() const;
@@ -267,14 +178,14 @@ public:
 	// Only to be used for functions that require a pointer. Be careful how you use this.
 	T * raw() const;
 
+	// Returns true if the object is guaranteed to exist (set by the OwnPtr). Throws an exception is there is no object.
+	bool isGuaranteed() const;
+
 	// Returns a use pointer dynamically casted to Y.
 	template <class Y> Ptr<Y> as() const;
 
 	// Returns true if the address of this object is less than the address of ptr's object.
 	bool operator < (OwnPtr<T> const & ptr) const;
-
-	// Returns true if the address of this object is less than the address of ptr's object.
-	bool operator < (UsePtr<T> const & ptr) const;
 
 	// Returns true if the address of this object is less than the address of ptr's object.
 	bool operator < (Ptr<T> const & ptr) const;
@@ -283,69 +194,13 @@ public:
 	template <class Y> bool operator == (OwnPtr<Y> const & ptr) const;
 
 	// Returns true if the address of this object is equal to the address of ptr's object.
-	template <class Y> bool operator == (UsePtr<Y> const & ptr) const;
-
-	// Returns true if the address of this object is equal to the address of ptr's object.
 	template <class Y> bool operator == (Ptr<Y> const & ptr) const;
 
 private:
 	T * p;
 	_PtrCounter * c;
 	template <class Y> friend class OwnPtr;
-	template <class Y> friend class UsePtr;
 	template <class Y> friend class Ptr;
-};
-
-template <class T>
-class UniquePtr : public Noncopyable
-{
-public:
-	// Initialize the pointer to null. It can take a function that destroys the object(default is the standard delete operator).
-	UniquePtr();
-
-	// Destructor. If this is the last UniquePtr reference to the object, either delete is called or the destroy function is called if it is specified. There must be no UsePtrs pointing to the object. Note that it is not virtual, so don't subclass UniquePtr.
-	~UniquePtr();
-
-	// Returns true if this points to zero.
-	bool isNull() const;
-
-	// Returns true if this points to something non-zero.
-	bool isValid() const;
-
-	// Change the object that this points to p, which can have a type that is subclass of T. Only pass in something that looks like 'new T()' to ensure that the raw pointer isn't used elsewhere. If there was a previous object pointed to, the same algorithm as the destructor is called.
-	template <class Y> void setRaw(Y * p, void(*deleteFunction) (Y *) = nullptr);
-
-	// Change the object to a new pointer to an object of type T with arguments. Uses the new operator for allocation. For special allocation, use the function OwnPtr(Y * newP, ...).
-	template <typename... Args> void setNew(Args... args);
-
-	// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
-	void setNull();
-
-	// Provides access to the object's members.
-	T * operator -> () const;
-
-	// Provides access to the element located at index. Warning: this provides no index out-of-bounds checking.
-	T & operator [] (int index) const;
-
-	// Provides reference access to the object.
-	T & operator * () const;
-
-	// Only to be used for functions that require a pointer. Be careful how you use this.
-	T * raw() const;
-
-	// Get the unsigned integer value of the address of the object.
-	operator unsigned int() const;
-
-	// Returns true if the address of this object is less than the address of ptr's object.
-	bool operator < (UniquePtr<T> const & ptr) const;
-
-	// Returns true if the address of this object is equal to the address of ptr's object.
-	bool operator == (UniquePtr<T> const & ptr) const;
-
-private:
-	T * p;
-	void(*deleteFunction) (T *); // User-supplied destroy function.
-	template <class Y> friend class UniquePtr;
 };
 
 // Template Implementation.
@@ -355,9 +210,9 @@ class _PtrCounter
 public:
 	virtual void destroy() = 0;
 
-	int oc; // OwnPtr reference counter
-	int uc; // UsePtr reference counter
-	int pc; // Ptr reference counter
+	int oc = 0; // OwnPtr reference counter
+	int pc = 0; // Ptr reference counter
+	bool guarantee = false; // Are Ptrs guaranteed access to the object?
 };
 
 template <class T>
@@ -372,7 +227,7 @@ public:
 
 	void destroy() override
 	{
-		if (deleteFunction)
+		if(deleteFunction)
 		{
 			deleteFunction(p);
 		}
@@ -384,8 +239,8 @@ public:
 		p = nullptr;
 	}
 
-	T * p; // Derived type for correct destruction, even without base virtual destructor.
-	void(*deleteFunction) (T *); // User-supplied destroy function.
+	T * p = 0; // Derived type for correct destruction, even without base virtual destructor.
+	void(*deleteFunction) (T *) = 0; // User-supplied destroy function.
 };
 
 // OwnPtr
@@ -398,7 +253,7 @@ OwnPtr<T>::OwnPtr() : p(nullptr), c(nullptr)
 template <class T>
 OwnPtr<T>::OwnPtr(OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c)
 {
-	if (p != 0)
+	if(p != 0)
 	{
 		c->oc++;
 	}
@@ -407,7 +262,7 @@ OwnPtr<T>::OwnPtr(OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c)
 template <class T> template <class Y>
 OwnPtr<T>::OwnPtr(OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 {
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->oc++;
 	}
@@ -430,13 +285,13 @@ OwnPtr<T> OwnPtr<T>::createNew(Args... args)
 template <class T>
 OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<T> const & ptr)
 {
-	if (p != ptr.p)
+	if(p != ptr.p)
 	{
 		setNull();
 		// Set new pointer
 		p = ptr.p;
 		c = ptr.c;
-		if (p != nullptr)
+		if(p != nullptr)
 		{
 			c->oc++;
 		}
@@ -447,24 +302,18 @@ OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<T> const & ptr)
 template <class T> template <class Y>
 OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<Y> const & ptr)
 {
-	if (p != ptr.p)
+	if(p != ptr.p)
 	{
 		setNull();
 		// Set new pointer
 		p = ptr.p;
 		c = ptr.c;
-		if (p != nullptr)
+		if(p != nullptr)
 		{
 			c->oc++;
 		}
 	}
 	return *this;
-}
-
-template <class T>
-bool OwnPtr<T>::isNull() const
-{
-	return p == nullptr;
 }
 
 template <class T>
@@ -474,15 +323,9 @@ bool OwnPtr<T>::isValid() const
 }
 
 template <class T>
-bool OwnPtr<T>::isUsed() const
-{
-	return p != nullptr && c->uc != 0;
-}
-
-template <class T>
 bool OwnPtr<T>::isReferenced() const
 {
-	return p != nullptr && c->uc != 0 && c->pc != 0;
+	return p != nullptr && c->pc != 0;
 }
 
 template <class T> template <class Y>
@@ -490,12 +333,10 @@ void OwnPtr<T>::setRaw(Y * newP, void(*deleteFunction) (Y *))
 {
 	setNull();
 	p = newP;
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c = new _PtrCounterTyped<Y>(newP, deleteFunction);
-		c->oc = 1;
-		c->uc = 0;
-		c->pc = 0;
+		c->oc++;
 	}
 	else
 	{
@@ -518,18 +359,18 @@ void OwnPtr<T>::setNew(Args... args)
 template <class T>
 void OwnPtr<T>::setNull()
 {
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->oc--;
-		if (c->oc == 0)
+		if(c->oc == 0)
 		{
-			if (c->uc != 0)
+			if(c->pc > 0 && c->guarantee)
 			{
 				c->oc++; // Rewind function.
-				throw std::exception(); // This OwnPtr still has UsePtrs out there, so it can't be deleted.
+				throw std::exception(); // This OwnPtr still has guaranteed Ptrs out there, so it can't be deleted.
 			}
 			c->destroy();
-			if (c->pc == 0) // If there are Ptrs still out there, keep the counter around. They'll take care of deleting it.
+			if(c->pc == 0) // If there are Ptrs still out there, keep the counter around. They'll take care of deleting it.
 			{
 				delete c;
 			}
@@ -540,9 +381,19 @@ void OwnPtr<T>::setNull()
 }
 
 template <class T>
+void OwnPtr<T>::setGuaranteeForPtrs(bool guarantee)
+{
+	if(p == nullptr)
+	{
+		throw nullptr_exception();
+	}
+	c->guarantee = guarantee;
+}
+
+template <class T>
 T * OwnPtr<T>::operator -> () const
 {
-	if (p == nullptr)
+	if(p == nullptr)
 	{
 		throw nullptr_exception();
 	}
@@ -552,7 +403,7 @@ T * OwnPtr<T>::operator -> () const
 template <class T>
 T & OwnPtr<T>::operator [] (int index) const
 {
-	if (p == nullptr)
+	if(p == nullptr)
 	{
 		throw nullptr_exception();
 	}
@@ -562,7 +413,7 @@ T & OwnPtr<T>::operator [] (int index) const
 template <class T>
 T & OwnPtr<T>::operator * () const
 {
-	if (p == nullptr)
+	if(p == nullptr)
 	{
 		throw nullptr_exception();
 	}
@@ -586,7 +437,7 @@ template <class T> template <class Y> OwnPtr<Y> OwnPtr<T>::as() const
 	OwnPtr<Y> up;
 	up.p = dynamic_cast<Y *>(p);
 	up.c = c;
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->oc++;
 	}
@@ -595,12 +446,6 @@ template <class T> template <class Y> OwnPtr<Y> OwnPtr<T>::as() const
 
 template <class T>
 bool OwnPtr<T>::operator < (OwnPtr<T> const & ptr)
-{
-	return p < ptr.p;
-}
-
-template <class T>
-bool OwnPtr<T>::operator < (UsePtr<T> const & ptr)
 {
 	return p < ptr.p;
 }
@@ -618,226 +463,7 @@ bool OwnPtr<T>::operator == (OwnPtr<T> const & ptr)
 }
 
 template <class T>
-bool OwnPtr<T>::operator == (UsePtr<T> const & ptr)
-{
-	return p == ptr.p;
-}
-
-template <class T>
 bool OwnPtr<T>::operator == (Ptr<T> const & ptr)
-{
-	return p == ptr.p;
-}
-
-// UsePtr
-
-template <class T>
-UsePtr<T>::UsePtr() : p(nullptr), c(nullptr)
-{
-}
-
-template <class T>
-UsePtr<T>::UsePtr(UsePtr<T> const & ptr) : p(ptr.p), c(ptr.c)
-{
-	if (p != nullptr)
-	{
-		c->uc++;
-	}
-}
-
-template <class T> template <class Y>
-UsePtr<T>::UsePtr(UsePtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
-{
-	if (p != nullptr)
-	{
-		c->uc++;
-	}
-}
-
-template <class T> template <class Y>
-UsePtr<T>::UsePtr(OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
-{
-	if (p != nullptr)
-	{
-		c->uc++;
-	}
-}
-
-template <class T>
-UsePtr<T>::~UsePtr()
-{
-	if (p != nullptr)
-	{
-		c->uc--;
-	}
-}
-
-template <class T>
-UsePtr<T> & UsePtr<T>::operator = (UsePtr<T> const & ptr)
-{
-	if (p != ptr.p)
-	{
-		if (p != nullptr)
-		{
-			c->uc--;
-		}
-		p = ptr.p;
-		c = ptr.c;
-		if (p != nullptr)
-		{
-			c->uc++;
-		}
-	}
-	return *this;
-}
-
-template <class T> template <class Y>
-UsePtr<T> & UsePtr<T>::operator = (UsePtr<Y> const & ptr)
-{
-	if (p != ptr.p)
-	{
-		if (p != nullptr)
-		{
-			c->uc--;
-		}
-		p = ptr.p;
-		c = ptr.c;
-		if (p != nullptr)
-		{
-			c->uc++;
-		}
-	}
-	return *this;
-}
-
-template <class T> template <class Y>
-UsePtr<T> & UsePtr<T>::operator = (OwnPtr<Y> const & ptr)
-{
-	if (p != ptr.p)
-	{
-		if (p != nullptr)
-		{
-			c->uc--;
-		}
-		p = ptr.p;
-		c = ptr.c;
-		if (p != nullptr)
-		{
-			c->uc++;
-		}
-	}
-	return *this;
-}
-
-template <class T>
-bool UsePtr<T>::isNull() const
-{
-	return p == nullptr;
-}
-
-template <class T>
-bool UsePtr<T>::isValid() const
-{
-	return p != nullptr;
-}
-
-template <class T>
-void UsePtr<T>::setNull()
-{
-	if (p != nullptr)
-	{
-		c->uc--;
-	}
-	p = nullptr;
-	c = nullptr;
-}
-
-template <class T>
-T * UsePtr<T>::operator -> () const
-{
-	if (p == nullptr)
-	{
-		throw nullptr_exception();
-	}
-	return p;
-}
-
-template <class T>
-T & UsePtr<T>::operator [] (int index) const
-{
-	if (p == nullptr)
-	{
-		throw nullptr_exception();
-	}
-	return p[index];
-}
-
-template <class T>
-T & UsePtr<T>::operator * () const
-{
-	if (p == nullptr)
-	{
-		throw nullptr_exception();
-	}
-	return *p;
-}
-
-template <class T>
-T * UsePtr<T>::raw() const
-{
-	return p;
-}
-
-template <class T>
-UsePtr<T>::operator unsigned int() const
-{
-	return (unsigned int)p;
-}
-
-template <class T> template <class Y> UsePtr<Y> UsePtr<T>::as() const
-{
-	UsePtr<Y> up;
-	up.p = dynamic_cast<Y *>(p);
-	up.c = c;
-	if (p != nullptr)
-	{
-		c->uc++;
-	}
-	return up;
-}
-
-template <class T>
-bool UsePtr<T>::operator < (OwnPtr<T> const & ptr) const
-{
-	return p < ptr.p;
-}
-
-template <class T>
-bool UsePtr<T>::operator < (UsePtr<T> const & ptr) const
-{
-	return p < ptr.p;
-}
-
-template <class T>
-bool UsePtr<T>::operator < (Ptr<T> const & ptr) const
-{
-	return p < ptr.p;
-}
-
-template <class T> template <class Y>
-bool UsePtr<T>::operator == (OwnPtr<Y> const & ptr) const
-{
-	return p == ptr.p;
-}
-
-template <class T> template <class Y>
-bool UsePtr<T>::operator == (UsePtr<Y> const & ptr) const
-{
-	return p == ptr.p;
-}
-
-template <class T> template <class Y>
-bool UsePtr<T>::operator == (Ptr<Y> const & ptr) const
 {
 	return p == ptr.p;
 }
@@ -852,7 +478,7 @@ Ptr<T>::Ptr() : p(nullptr), c(nullptr)
 template <class T>
 Ptr<T>::Ptr(Ptr<T> const & ptr) : p(ptr.p), c(ptr.c)
 {
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->pc++;
 	}
@@ -861,16 +487,7 @@ Ptr<T>::Ptr(Ptr<T> const & ptr) : p(ptr.p), c(ptr.c)
 template <class T> template <class Y>
 Ptr<T>::Ptr(Ptr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 {
-	if (p != nullptr)
-	{
-		c->pc++;
-	}
-}
-
-template <class T> template <class Y>
-Ptr<T>::Ptr(UsePtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
-{
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->pc++;
 	}
@@ -879,7 +496,7 @@ Ptr<T>::Ptr(UsePtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 template <class T> template <class Y>
 Ptr<T>::Ptr(OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 {
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->pc++;
 	}
@@ -894,12 +511,12 @@ Ptr<T>::~Ptr()
 template <class T>
 Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 {
-	if (p != ptr.p)
+	if(p != ptr.p)
 	{
 		setNull();
 		p = ptr.p;
 		c = ptr.c;
-		if (p != nullptr)
+		if(p != nullptr)
 		{
 			c->pc++;
 		}
@@ -910,28 +527,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 template <class T> template <class Y>
 Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 {
-	if (p != ptr.p)
+	if(p != ptr.p)
 	{
 		setNull();
 		p = ptr.p;
 		c = ptr.c;
-		if (p != nullptr)
-		{
-			c->pc++;
-		}
-	}
-	return *this;
-}
-
-template <class T> template <class Y>
-Ptr<T> & Ptr<T>::operator = (UsePtr<Y> const & ptr)
-{
-	if (p != ptr.p)
-	{
-		setNull();
-		p = ptr.p;
-		c = ptr.c;
-		if (p != nullptr)
+		if(p != nullptr)
 		{
 			c->pc++;
 		}
@@ -942,23 +543,17 @@ Ptr<T> & Ptr<T>::operator = (UsePtr<Y> const & ptr)
 template <class T> template <class Y>
 Ptr<T> & Ptr<T>::operator = (OwnPtr<Y> const & ptr)
 {
-	if (p != ptr.p)
+	if(p != ptr.p)
 	{
 		setNull();
 		p = ptr.p;
 		c = ptr.c;
-		if (p != nullptr)
+		if(p != nullptr)
 		{
 			c->pc++;
 		}
 	}
 	return *this;
-}
-
-template <class T>
-bool Ptr<T>::isNull() const
-{
-	return p == nullptr;
 }
 
 template <class T>
@@ -970,10 +565,10 @@ bool Ptr<T>::isValid() const
 template <class T>
 void Ptr<T>::setNull()
 {
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->pc--;
-		if (c->pc == 0 && c->oc == 0) // If there are no OwnPtrs around, that means this the last to reference the Counter.
+		if(c->pc == 0 && c->oc == 0) // If there are no OwnPtrs around, that means this the last to reference the Counter.
 		{
 			delete c;
 		}
@@ -985,7 +580,7 @@ void Ptr<T>::setNull()
 template <class T>
 T * Ptr<T>::operator -> () const
 {
-	if (p == nullptr || c->oc == 0)
+	if(p == nullptr || c->oc == 0)
 	{
 		throw nullptr_exception();
 	}
@@ -995,7 +590,7 @@ T * Ptr<T>::operator -> () const
 template <class T>
 T & Ptr<T>::operator [] (int index) const
 {
-	if (p == nullptr || c->oc == 0)
+	if(p == nullptr || c->oc == 0)
 	{
 		throw nullptr_exception();
 	}
@@ -1005,7 +600,7 @@ T & Ptr<T>::operator [] (int index) const
 template <class T>
 T & Ptr<T>::operator * () const
 {
-	if (p == nullptr || c->oc == 0)
+	if(p == nullptr || c->oc == 0)
 	{
 		throw nullptr_exception();
 	}
@@ -1019,6 +614,16 @@ T * Ptr<T>::raw() const
 }
 
 template <class T>
+bool Ptr<T>::isGuaranteed() const
+{
+	if(p == nullptr)
+	{
+		throw nullptr_exception();
+	}
+	return c->guarantee;
+}
+
+template <class T>
 Ptr<T>::operator unsigned int() const
 {
 	return (unsigned int)p;
@@ -1029,7 +634,7 @@ template <class T> template <class Y> Ptr<Y> Ptr<T>::as() const
 	Ptr<Y> pp;
 	pp.p = dynamic_cast<Y *>(p);
 	pp.c = c;
-	if (p != nullptr)
+	if(p != nullptr)
 	{
 		c->pc++;
 	}
@@ -1038,12 +643,6 @@ template <class T> template <class Y> Ptr<Y> Ptr<T>::as() const
 
 template <class T>
 bool Ptr<T>::operator < (OwnPtr<T> const & ptr) const
-{
-	return p < ptr.p;
-}
-
-template <class T>
-bool Ptr<T>::operator < (UsePtr<T> const & ptr) const
 {
 	return p < ptr.p;
 }
@@ -1061,126 +660,7 @@ bool Ptr<T>::operator == (OwnPtr<Y> const & ptr) const
 }
 
 template <class T> template <class Y>
-bool Ptr<T>::operator == (UsePtr<Y> const & ptr) const
-{
-	return p == ptr.p;
-}
-
-template <class T> template <class Y>
 bool Ptr<T>::operator == (Ptr<Y> const & ptr) const
-{
-	return p == ptr.p;
-}
-
-// UniquePtr
-
-template <class T>
-UniquePtr<T>::UniquePtr()
-{
-	this->p = nullptr;
-	this->deleteFunction = nullptr;
-}
-
-template <class T>
-UniquePtr<T>::~UniquePtr()
-{
-	setNull();
-}
-
-template <class T>
-bool UniquePtr<T>::isNull() const
-{
-	return p == nullptr;
-}
-
-template <class T>
-bool UniquePtr<T>::isValid() const
-{
-	return p != nullptr;
-}
-
-template <class T> template <class Y>
-void UniquePtr<T>::setRaw(Y * p, void(*deleteFunction) (Y *))
-{
-	setNull();
-	this->p = p;
-	this->deleteFunction = deleteFunction;
-}
-
-template <class T> template <typename... Args>
-void UniquePtr<T>::setNew(Args... args)
-{
-	setRaw(new T(args...));
-}
-
-template <class T>
-void UniquePtr<T>::setNull()
-{
-	if (p != nullptr)
-	{
-		if (deleteFunction)
-		{
-			deleteFunction(p);
-			deleteFunction = nullptr;
-		}
-		else
-		{
-			delete p;
-		}
-		p = nullptr;
-	}
-}
-
-template <class T>
-T * UniquePtr<T>::operator -> () const
-{
-	if (p == nullptr)
-	{
-		throw nullptr_exception();
-	}
-	return p;
-}
-
-template <class T>
-T & UniquePtr<T>::operator [] (int index) const
-{
-	if (p == nullptr)
-	{
-		throw nullptr_exception();
-	}
-	return p[index];
-}
-
-template <class T>
-T & UniquePtr<T>::operator * () const
-{
-	if (p == nullptr)
-	{
-		throw nullptr_exception();
-	}
-	return *p;
-}
-
-template <class T>
-T * UniquePtr<T>::raw() const
-{
-	return p;
-}
-
-template <class T>
-UniquePtr<T>::operator unsigned int() const
-{
-	return (unsigned int)p;
-}
-
-template <class T>
-bool UniquePtr<T>::operator < (UniquePtr<T> const & ptr) const
-{
-	return p < ptr.p;
-}
-
-template <class T>
-bool UniquePtr<T>::operator == (UniquePtr<T> const & ptr) const
 {
 	return p == ptr.p;
 }
