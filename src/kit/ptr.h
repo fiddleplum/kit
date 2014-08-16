@@ -13,8 +13,8 @@ not work well, since you still cannot pass 'this' in a constructor.
 /*
 I realize that I don't need the entire UsePtr class.
 
-I can get away with the same functionality by just adding an optional flag on the setNew functions, "guaranteePtrs",
-that will, upon setNull, if the flag is set, throw an error if there are any Ptrs still existing.
+I can get away with the same functionality by just adding an optional flag on the create functions, "guaranteePtrs",
+that will, upon destroy, if the flag is set, throw an error if there are any Ptrs still existing.
 
 Also, I would like to make OwnPtr be a subclass of Ptr if I can.
 
@@ -62,7 +62,7 @@ public:
 	// Destructor. If this is the last OwnPtr reference to the object, either delete is called or the destroy function is called if it is specified. There must be no UsePtrs pointing to the object. Note that it is not virtual, so don't subclass OwnPtr.
 	~OwnPtr();
 
-	// Returns a newly created OwnPtr. Same as if this were used: OwnPtr<T> ptr; ptr.setNew(args...); return ptr;
+	// Returns a newly created OwnPtr. Same as if this were used: OwnPtr<T> ptr; ptr.create(args...); return ptr;
 	template <typename ...Args> static OwnPtr<T> createNew(Args... args);
 
 	// Default assignment operator. Needed otherwise C++ will create its own.
@@ -81,15 +81,15 @@ public:
 	template <class Y> void setRaw(Y * newP, void(*deleteFunction) (Y *) = nullptr);
 
 	// Change the object to a new pointer to an object of type T with arguments. Uses the new operator for allocation. For special allocation, use the function OwnPtr(Y * newP, ...).
-	template <typename... Args> void setNew(Args... args);
+	template <typename... Args> void create(Args... args);
 
 	// Change the object to a new pointer to an object of type Y with arguments. Uses the new operator for allocation. For special allocation, use the function OwnPtr(Y * newP, ...).
-	template <typename Y, typename... Args> void setNew(Args... args);
+	template <typename Y, typename... Args> void create(Args... args);
 
 	// Resets the object to point to nothing. If there was a previous object pointed to, the same algorithm as the destructor is called.
-	void setNull();
+	void destroy();
 
-	// Sets whether all Ptrs pointing to the object are guaranteed existence. This means that setNull will throw an exception if there are still Ptrs pointing to the object. This must be pointing to an object or an exception is thrown.
+	// Sets whether all Ptrs pointing to the object are guaranteed existence. This means that destroy will throw an exception if there are still Ptrs pointing to the object. This must be pointing to an object or an exception is thrown.
 	void setGuaranteeForPtrs(bool guarantee);
 
 	// Provides access to the object's members.
@@ -161,7 +161,7 @@ public:
 	bool isValid() const;
 
 	// Makes this point to nothing.
-	void setNull();
+	void destroy();
 
 	// Provides access to the object's members.
 	T * operator -> () const;
@@ -271,14 +271,14 @@ OwnPtr<T>::OwnPtr(OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 template <class T>
 OwnPtr<T>::~OwnPtr()
 {
-	setNull();
+	destroy();
 }
 
 template <class T> template <typename ...Args>
 OwnPtr<T> OwnPtr<T>::createNew(Args... args)
 {
 	OwnPtr<T> ptr;
-	ptr.setNew(args...);
+	ptr.create(args...);
 	return ptr;
 }
 
@@ -287,7 +287,7 @@ OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<T> const & ptr)
 {
 	if(p != ptr.p)
 	{
-		setNull();
+		destroy();
 		// Set new pointer
 		p = ptr.p;
 		c = ptr.c;
@@ -304,7 +304,7 @@ OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<Y> const & ptr)
 {
 	if(p != ptr.p)
 	{
-		setNull();
+		destroy();
 		// Set new pointer
 		p = ptr.p;
 		c = ptr.c;
@@ -331,7 +331,7 @@ bool OwnPtr<T>::isReferenced() const
 template <class T> template <class Y>
 void OwnPtr<T>::setRaw(Y * newP, void(*deleteFunction) (Y *))
 {
-	setNull();
+	destroy();
 	p = newP;
 	if(p != nullptr)
 	{
@@ -345,19 +345,19 @@ void OwnPtr<T>::setRaw(Y * newP, void(*deleteFunction) (Y *))
 }
 
 template <class T> template <typename... Args>
-void OwnPtr<T>::setNew(Args... args)
+void OwnPtr<T>::create(Args... args)
 {
 	setRaw(new T(args...));
 }
 
 template <class T> template <typename Y, typename... Args>
-void OwnPtr<T>::setNew(Args... args)
+void OwnPtr<T>::create(Args... args)
 {
 	setRaw(new Y(args...));
 }
 
 template <class T>
-void OwnPtr<T>::setNull()
+void OwnPtr<T>::destroy()
 {
 	if(p != nullptr)
 	{
@@ -505,7 +505,7 @@ Ptr<T>::Ptr(OwnPtr<Y> const & ptr) : p(ptr.p), c(ptr.c)
 template <class T>
 Ptr<T>::~Ptr()
 {
-	setNull();
+	destroy();
 }
 
 template <class T>
@@ -513,7 +513,7 @@ Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 {
 	if(p != ptr.p)
 	{
-		setNull();
+		destroy();
 		p = ptr.p;
 		c = ptr.c;
 		if(p != nullptr)
@@ -529,7 +529,7 @@ Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 {
 	if(p != ptr.p)
 	{
-		setNull();
+		destroy();
 		p = ptr.p;
 		c = ptr.c;
 		if(p != nullptr)
@@ -545,7 +545,7 @@ Ptr<T> & Ptr<T>::operator = (OwnPtr<Y> const & ptr)
 {
 	if(p != ptr.p)
 	{
-		setNull();
+		destroy();
 		p = ptr.p;
 		c = ptr.c;
 		if(p != nullptr)
@@ -563,7 +563,7 @@ bool Ptr<T>::isValid() const
 }
 
 template <class T>
-void Ptr<T>::setNull()
+void Ptr<T>::destroy()
 {
 	if(p != nullptr)
 	{

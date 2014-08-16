@@ -11,7 +11,7 @@ namespace kit
 		{
 			updateShader();
 
-			_vbo.setNew();
+			_vbo.create();
 			_vbo->addVertexComponent(_shader->getAttributeLocation("aPos"), 0, 2);
 			_vbo->addVertexComponent(_shader->getAttributeLocation("aUv"), sizeof(Vector2f), 2);
 			_vbo->setBytesPerVertex(sizeof(Vertex));

@@ -1,30 +1,18 @@
 #include "log.h"
-#include <fstream>
 
-namespace kit
+Log::Log(std::string const & filename)
 {
-	namespace log
-	{
-		std::ofstream file;
+	file.open(filename);
+	write("Log started.");
+}
 
-		void initialize ()
-		{
-			//file.open("log.txt");
-			write("Log started.");
-			//file.close();
-		}
+Log::~Log()
+{
+	file.close();
+}
 
-		void finalize ()
-		{
-			//file.close();
-		}
-
-		void write (std::string const & message)
-		{
-			file.open("log.txt", std::ios::app);
-			file << message << std::endl;
-			file.close();
-		}
-	}
+void Log::write(std::string const & message)
+{
+	file << message << std::endl;
 }
 

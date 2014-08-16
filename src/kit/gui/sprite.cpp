@@ -11,7 +11,7 @@ namespace kit
 	{
 		Sprite::Sprite()
 		{
-			_model.setNew();
+			_model.create();
 			std::vector<unsigned int> indices(6);
 			indices[0] = 0;
 			indices[1] = 3;

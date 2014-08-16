@@ -18,7 +18,7 @@ namespace kit
 		}
 		setMaxSize(size);
 
-		_cursor.setNew();
+		_cursor.create();
 	}
 
 	Window::~Window ()

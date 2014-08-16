@@ -9,7 +9,7 @@ namespace kit
 	{
 		Button::Button()
 		{
-			sprite.setNew();
+			sprite.create();
 			type = Hold;
 			selected = false;
 			hovered = false;

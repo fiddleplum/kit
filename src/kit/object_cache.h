@@ -60,7 +60,7 @@ namespace kit
 			OwnPtr<Object> object;
 			try
 			{
-				object.setNew(args...);
+				object.create(args...);
 			}
 			catch(std::runtime_error const & e)
 			{

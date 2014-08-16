@@ -1,16 +1,18 @@
 #pragma once
 
 #include <string>
+#include <fstream>
 
-namespace kit
+class Log
 {
-	namespace log
-	{
-		void initialize ();
+public:
+	Log(std::string const & filename = "log.txt");
 
-		void finalize ();
+	~Log();
 
-		void write (std::string const & message);
-	}
-}
+	void write(std::string const & message);
+
+private:
+	std::ofstream file;
+};
 

@@ -61,7 +61,7 @@ namespace kit
 		Ptr<Window> addWindow(char const * title)
 		{
 			OwnPtr<Window> window;
-			window.setNew(title);
+			window.create(title);
 			if(_windows.empty())
 			{
 				_sdlGlContext = SDL_GL_CreateContext(window->getSDLWindow());
@@ -84,7 +84,7 @@ namespace kit
 		Ptr<scene::Scene> addScene()
 		{
 			OwnPtr<scene::Scene> scene;
-			scene.setNew();
+			scene.create();
 			_scenes.insert(scene);
 			return scene;
 		}
@@ -415,7 +415,6 @@ namespace kit
 					ControllerButtonEvent event(window);
 					event.controller = sdlEvent.jbutton.which;
 					event.button = sdlEvent.jbutton.button;
-					log::write("Button: " + std::to_string(sdlEvent.jbutton.button));
 					event.pressed = (sdlEvent.type == SDL_JOYBUTTONDOWN);
 					handleEvent(event);
 					break;

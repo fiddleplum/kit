@@ -29,11 +29,6 @@ namespace kit
 					throw std::runtime_error("Could not initialize input controller " + std::to_string(i + 1));
 				}
 				joysticks.push_back(joystick);
-				log::write("Controller " + std::to_string(i));
-				log::write("  Num Axes: " + std::to_string(SDL_JoystickNumAxes(joystick)));
-				log::write("  Num Buttons: " + std::to_string(SDL_JoystickNumButtons(joystick)));
-				log::write("  Num Balls: " + std::to_string(SDL_JoystickNumBalls(joystick)));
-				log::write("  Num Hats: " + std::to_string(SDL_JoystickNumHats(joystick)));
 			}
 		}
 

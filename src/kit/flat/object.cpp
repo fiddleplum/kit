@@ -12,7 +12,7 @@ namespace kit
 			}
 			_scene = scene;
 			_object = scene->addObject();
-			_model.setNew();
+			_model.create();
 			_model->setVertexFormat(false, false, false, 1);
 			_object->setModel(_model);
 		}
@@ -23,7 +23,7 @@ namespace kit
 			{
 				_scene->removeObject(_object);
 			}
-			_model.setNull();
+			_model.destroy();
 		}
 
 		void Object::setPosition(Vector2f position)

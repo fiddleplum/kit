@@ -36,16 +36,16 @@ namespace kit
 
 		void initialize ()
 		{
-			_shaderCache.setNew();
-			_textureCache.setNew();
-			_modelCache.setNew();
+			_shaderCache.create();
+			_textureCache.create();
+			_modelCache.create();
 		}
 
 		void finalize ()
 		{
-			_modelCache.setNull();
-			_textureCache.setNull();
-			_shaderCache.setNull();
+			_modelCache.destroy();
+			_textureCache.destroy();
+			_shaderCache.destroy();
 		}
 	}
 }
