@@ -9,6 +9,11 @@
 
 namespace kit
 {
+	namespace controllers
+	{
+		extern int getNumSDLAxes(int joystick);
+	}
+
 	namespace app
 	{
 		Ptr<Window> getWindowFromId(unsigned int id);
@@ -20,7 +25,7 @@ namespace kit
 		SDL_GLContext _sdlGlContext;
 		bool _looping;
 		bool _firstMouseMoveEvent;
-		std::vector<SDL_Joystick *> _joysticks;
+		//std::vector<SDL_Joystick *> _joysticks;
 		float targetFrameRate = 60.f;
 
 		void initialize()
@@ -439,7 +444,7 @@ namespace kit
 				{
 					ControllerAxisEvent event(window);
 					event.controller = sdlEvent.jhat.which;
-					event.axis = SDL_JoystickNumAxes(_joysticks[sdlEvent.jhat.which]) + sdlEvent.jhat.hat * 2 + 0;
+					event.axis = controllers::getNumSDLAxes(sdlEvent.jhat.which) + sdlEvent.jhat.hat * 2 + 0;
 					if((sdlEvent.jhat.value & SDL_HAT_LEFT) != 0)
 					{
 						event.value = -1;
