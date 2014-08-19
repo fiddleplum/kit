@@ -356,10 +356,9 @@ void Vector<dim, T>::normalize()
 		throw std::exception();
 	}
 	T nInv = 1 / n;
-	Vector<dim, T> r;
 	for(unsigned int i = 0; i < dim; ++i)
 	{
-		r.c[i] = c[i] * nInv;
+		c[i] = c[i] * nInv;
 	}
 }
 

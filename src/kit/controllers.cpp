@@ -54,9 +54,9 @@ namespace kit
 		{
 			if(controller < 0 || (int)joysticks.size() <= controller)
 			{
-				throw std::runtime_error("Invalid controller index.");
+				return "None";
 			}
-			return SDL_JoystickName(joysticks[controller]);
+			return SDL_JoystickNameForIndex(getNumControllers() - 1 - controller);
 		}
 
 		void refresh()
