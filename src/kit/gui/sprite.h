@@ -31,6 +31,10 @@ namespace kit
 
 			void setTexture (std::string const & filename);
 
+			float getScale() const;
+
+			void setScale(float scale);
+
 			Recti getTextureBounds() const;
 
 			void setTextureBounds(Recti bounds);
@@ -44,6 +48,7 @@ namespace kit
 
 			OwnPtr<Model> _model;
 			Recti _textureBounds;
+			float scale;
 			Vector2i _maxSize;
 		};
 	}

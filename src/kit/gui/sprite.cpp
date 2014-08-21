@@ -11,6 +11,7 @@ namespace kit
 	{
 		Sprite::Sprite()
 		{
+			scale = 1.f;
 			_model.create();
 			std::vector<unsigned int> indices(6);
 			indices[0] = 0;
@@ -25,7 +26,7 @@ namespace kit
 
 		Recti Sprite::getBounds() const
 		{
-			return Recti::minSize(_model->getPosition(), _textureBounds.getSize());
+			return Recti::minSize(_model->getPosition(), Vector2i(Vector2f(_textureBounds.getSize()) * scale));
 		}
 
 		void Sprite::setPosition(Vector2i position)
@@ -52,6 +53,17 @@ namespace kit
 		void Sprite::setTexture(std::string const & filename)
 		{
 			setTexture(resources::getTextureFromFile(filename));
+		}
+
+		float Sprite::getScale() const
+		{
+			return scale;
+		}
+
+		void Sprite::setScale(float _scale)
+		{
+			scale = _scale;
+			updateVertices();
 		}
 
 		Recti Sprite::getTextureBounds() const
@@ -84,18 +96,19 @@ namespace kit
 
 		void Sprite::updateVertices()
 		{
-			Vector2i size;
-			size[0] = std::min(_textureBounds.getSize()[0], _maxSize[0]);
-			size[1] = std::min(_textureBounds.getSize()[1], _maxSize[1]);
+			Vector2f size;
+			size[0] = std::min(_textureBounds.getSize()[0] * scale, (float)_maxSize[0]);
+			size[1] = std::min(_textureBounds.getSize()[1] * scale, (float)_maxSize[1]);
+			Vector2f uvSize = size / scale;
 			std::vector<Model::Vertex> vertices(4);
 			vertices[0].pos.set(0, 0);
 			vertices[0].uv.set((float)_textureBounds.min[0], (float)_textureBounds.min[1]);
-			vertices[1].pos.set((float)size[0], 0);
-			vertices[1].uv.set((float)_textureBounds.min[0] + (float)size[0], (float)_textureBounds.min[1]);
-			vertices[2].pos.set((float)size[0], (float)size[1]);
-			vertices[2].uv.set((float)_textureBounds.min[0] + (float)size[0], (float)_textureBounds.min[1] + (float)size[1]);
-			vertices[3].pos.set(0, (float)size[1]);
-			vertices[3].uv.set((float)_textureBounds.min[0], (float)_textureBounds.min[1] + (float)size[1]);
+			vertices[1].pos.set(size[0], 0);
+			vertices[1].uv.set((float)_textureBounds.min[0] + (float)uvSize[0], (float)_textureBounds.min[1]);
+			vertices[2].pos.set(size[0], size[1]);
+			vertices[2].uv.set((float)_textureBounds.min[0] + (float)uvSize[0], (float)_textureBounds.min[1] + (float)uvSize[1]);
+			vertices[3].pos.set(0, size[1]);
+			vertices[3].uv.set((float)_textureBounds.min[0], (float)_textureBounds.min[1] + (float)uvSize[1]);
 			_model->setVertices(vertices);
 		}
 	}
