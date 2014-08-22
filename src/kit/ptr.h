@@ -447,25 +447,25 @@ template <class T> template <class Y> OwnPtr<Y> OwnPtr<T>::as() const
 template <class T>
 bool OwnPtr<T>::operator < (OwnPtr<T> const & ptr)
 {
-	return p < ptr.p;
+	return (void const *)p < (void const *)ptr.p;
 }
 
 template <class T>
 bool OwnPtr<T>::operator < (Ptr<T> const & ptr)
 {
-	return p < ptr.p;
+	return (void const *)p < (void const *)ptr.p;
 }
 
 template <class T>
 bool OwnPtr<T>::operator == (OwnPtr<T> const & ptr)
 {
-	return p == ptr.p;
+	return (void const *)p == (void const *)ptr.p;
 }
 
 template <class T>
 bool OwnPtr<T>::operator == (Ptr<T> const & ptr)
 {
-	return p == ptr.p;
+	return (void const *)p == (void const *)ptr.p;
 }
 
 // Ptr
@@ -644,24 +644,24 @@ template <class T> template <class Y> Ptr<Y> Ptr<T>::as() const
 template <class T>
 bool Ptr<T>::operator < (OwnPtr<T> const & ptr) const
 {
-	return p < ptr.p;
+	return (void const *)p < (void const *)ptr.p;
 }
 
 template <class T>
 bool Ptr<T>::operator < (Ptr<T> const & ptr) const
 {
-	return p < ptr.p;
+	return (void const *)p < (void const *)ptr.p;
 }
 
 template <class T> template <class Y>
 bool Ptr<T>::operator == (OwnPtr<Y> const & ptr) const
 {
-	return p == ptr.p;
+	return (void const *)p == (void const *)ptr.p;
 }
 
 template <class T> template <class Y>
 bool Ptr<T>::operator == (Ptr<Y> const & ptr) const
 {
-	return p == ptr.p;
+	return (void const *)p == (void const *)ptr.p;
 }
 
