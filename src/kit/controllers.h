@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace kit
 {
@@ -20,6 +21,12 @@ namespace kit
 
 		// Reloads the controllers, enabling plug-in and play functionality.
 		void refresh();
+
+		void startFrame();
+
+		void updateControllerAxis(int controllerIndex, int axis, float value);
+
+		std::vector<std::pair<int, float>> getAxesChangedSinceLastFrame(int controllerIndex);
 	}
 }
 

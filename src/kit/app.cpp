@@ -25,9 +25,10 @@ namespace kit
 		SDL_GLContext _sdlGlContext;
 		bool _looping;
 		bool _firstMouseMoveEvent;
-		//std::vector<SDL_Joystick *> _joysticks;
 		float targetFrameRate = 60.f;
 
+		void handleEvent(Event const& event);
+			
 		void initialize()
 		{
 			_looping = false;
@@ -112,11 +113,24 @@ namespace kit
 			{
 				float frameStartTime = getTime();
 
-				// Get SDL Events
+				// Handle events
+				controllers::startFrame();
 				SDL_Event sdlEvent;
 				while(_looping && SDL_PollEvent(&sdlEvent))
 				{
 					handleSDLEvent(sdlEvent);
+				}
+				for(int i = 0; i < controllers::getNumControllers(); i++)
+				{
+					std::vector<std::pair<int, float>> controllerAxisEvents = controllers::getAxesChangedSinceLastFrame(i);
+					for(auto controllerAxisEvent : controllerAxisEvents)
+					{
+						ControllerAxisEvent event{Ptr<Window>()};
+						event.controller = i;
+						event.axis = controllerAxisEvent.first;
+						event.value = controllerAxisEvent.second;
+						handleEvent(event);
+					}
 				}
 
 				// Update
@@ -426,18 +440,16 @@ namespace kit
 				}
 				case SDL_JOYAXISMOTION:
 				{
-					ControllerAxisEvent event(window);
-					event.controller = sdlEvent.jaxis.which;
-					event.axis = sdlEvent.jaxis.axis;
+					float value;
 					if(sdlEvent.jaxis.value > 0)
 					{
-						event.value = (float)sdlEvent.jaxis.value / 32767.0f;
+						value = (float)sdlEvent.jaxis.value / 32767.0f;
 					}
 					else
 					{
-						event.value = (float)sdlEvent.jaxis.value / 32768.0f;
+						value = (float)sdlEvent.jaxis.value / 32768.0f;
 					}
-					handleEvent(event);
+					controllers::updateControllerAxis(sdlEvent.jaxis.which, sdlEvent.jaxis.axis, value);
 					break;
 				}
 				case SDL_JOYHATMOTION:

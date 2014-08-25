@@ -8,7 +8,16 @@ namespace kit
 {
 	namespace controllers
 	{
-		std::vector<SDL_Joystick *> joysticks;
+		class Controller
+		{
+		public:
+			std::string name;
+			SDL_Joystick * sdlJoystick;
+			std::vector<float> axisStatesLastFrame;
+			std::vector<float> axisStates;
+		};
+
+		std::vector<Controller *> controllers;
 
 		void initialize()
 		{
@@ -23,12 +32,15 @@ namespace kit
 			int numJoysticks = SDL_NumJoysticks();
 			for(int i = 0; i < numJoysticks; ++i)
 			{
-				SDL_Joystick * joystick = SDL_JoystickOpen(i);
-				if(joystick == NULL)
+				Controller * controller = new Controller;
+				controller->sdlJoystick = SDL_JoystickOpen(i);
+				if(controller->sdlJoystick == NULL)
 				{
 					throw std::runtime_error("Could not initialize input controller " + std::to_string(i + 1));
 				}
-				joysticks.push_back(joystick);
+				controller->name = SDL_JoystickNameForIndex(i);
+				controller->axisStates.resize(SDL_JoystickNumAxes(controller->sdlJoystick), 0);
+				controllers.push_back(controller);
 			}
 		}
 
@@ -36,27 +48,28 @@ namespace kit
 		{
 			if(SDL_WasInit(SDL_INIT_JOYSTICK) != 0)
 			{
-				for(int i = 0; i < (int)joysticks.size(); ++i)
+				for(int i = 0; i < (int)controllers.size(); ++i)
 				{
-					SDL_JoystickClose(joysticks[i]);
+					SDL_JoystickClose(controllers[i]->sdlJoystick);
+					delete controllers[i];
 				}
-				joysticks.clear();
+				controllers.clear();
 				SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 			}
 		}
 
 		int getNumControllers()
 		{
-			return (int)joysticks.size();
+			return (int)controllers.size();
 		}
 
 		std::string getName(int controller)
 		{
-			if(controller < 0 || (int)joysticks.size() <= controller)
+			if(controller < 0 || (int)controllers.size() <= controller)
 			{
 				return "None";
 			}
-			return SDL_JoystickNameForIndex(getNumControllers() - 1 - controller);
+			return controllers[getNumControllers() - 1 - controller]->name;
 		}
 
 		void refresh()
@@ -65,9 +78,51 @@ namespace kit
 			initialize();
 		}
 
-		int getNumSDLAxes(int joystick)
+		int getNumSDLAxes(int controller)
 		{
-			return SDL_JoystickNumAxes(joysticks[joystick]);
+			if(controller < 0 || (int)controllers.size() <= controller)
+			{
+				return 0;
+			}
+			return controllers[controller]->axisStates.size();
+		}
+
+		void startFrame()
+		{
+			for(auto controller : controllers)
+			{
+				controller->axisStatesLastFrame = controller->axisStates;
+			}
+		}
+
+		void updateControllerAxis(int controllerIndex, int axis, float value)
+		{
+			if(controllerIndex < 0 || (int)controllers.size() <= controllerIndex)
+			{
+				return;
+			}
+			if(axis < 0 || (int)controllers[controllerIndex]->axisStates.size() <= axis)
+			{
+				return;
+			}
+			controllers[controllerIndex]->axisStates[axis] = value;
+		}
+
+		std::vector<std::pair<int, float>> getAxesChangedSinceLastFrame(int controllerIndex)
+		{
+			std::vector<std::pair<int, float>> r;
+			if(controllerIndex < 0 || (int)controllers.size() <= controllerIndex)
+			{
+				return r;
+			}
+			for(int axis = 0; axis < (int)controllers[controllerIndex]->axisStates.size(); axis++)
+			{
+				if(controllers[controllerIndex]->axisStates[axis] != controllers[controllerIndex]->axisStatesLastFrame[axis])
+				{
+					r.push_back(std::pair<int, float>(axis, controllers[controllerIndex]->axisStates[axis]));
+				}
+			}
+			return r;
 		}
 	}
 }
