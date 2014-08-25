@@ -6,6 +6,12 @@ namespace kit
 {
 	namespace audio
 	{
+		class Resource;
+
+		ObjectCache<Resource> resourceCache;
+		const int numChannels = 8;
+		int nextFreeChannel;
+
 		class Resource
 		{
 		public:
@@ -25,14 +31,13 @@ namespace kit
 
 			void play()
 			{
-				Mix_PlayChannel(-1, m, 0);
+				Mix_PlayChannel(nextFreeChannel, m, 0);
+				nextFreeChannel = (nextFreeChannel + 1) % numChannels;
 			}
 
 		private:
 			Mix_Chunk * m;
 		};
-
-		ObjectCache<Resource> resourceCache;
 
 		void initialize()
 		{
@@ -45,7 +50,8 @@ namespace kit
 			{
 				throw std::runtime_error("Could not open audio for mixer");
 			}
-			Mix_AllocateChannels(8);
+			Mix_AllocateChannels(numChannels);
+			nextFreeChannel = 0;
 		}
 
 		void finalize()
