@@ -46,7 +46,7 @@ namespace kit
 			{
 				throw std::runtime_error("Could not initialize ogg audio");
 			}
-			if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 4096) == -1)
+			if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 2048) == -1)
 			{
 				throw std::runtime_error("Could not open audio for mixer");
 			}

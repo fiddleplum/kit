@@ -485,6 +485,8 @@ namespace kit
 			_worldViewLocation = _shader->getUniformLocation("uWorldView");
 
 			_shaderDirty = false;
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		}
 	}
 }
