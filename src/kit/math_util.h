@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cassert>
 #include <cstdlib>
+#include <ctime>
 #ifndef _MSC_VER
 #include <float.h>
 #endif
@@ -11,6 +12,8 @@ namespace kit
 {
 	namespace math
 	{
+		extern bool firstRandom;
+
 		const double PI = 3.1415926535897932384626433832795; // 180 degrees
 		const double TWO_PI = 6.283185307179586476925286766559; // 360 degrees
 		const double PI_OVER_2 = 1.5707963267948966192313216916398; // 90 degrees
@@ -66,12 +69,22 @@ namespace kit
 		inline int random (int min, int max)
 		{
 			assert(max - min <= RAND_MAX && max > min);
+			if(firstRandom)
+			{
+				std::srand((int)(std::time(nullptr)));
+				firstRandom = false;
+			}
 			return (rand() % (max - min)) + min;
 		}
 
 		inline float random (float min, float max)
 		{
 			assert(max >= min);
+			if(firstRandom)
+			{
+				std::srand((int)(std::time(nullptr)));
+				firstRandom = false;
+			}
 			return (float)rand() * ((max - min) / (float)RAND_MAX) + min;
 		}
 
@@ -110,6 +123,6 @@ namespace kit
 			return _isinf(v);
 	#endif
 		}
-	};
+	}
 }
 

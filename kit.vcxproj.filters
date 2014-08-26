@@ -34,6 +34,7 @@
     <ClCompile Include="src\kit\scene\model.cpp" />
     <ClCompile Include="src\kit\file_system.cpp" />
     <ClCompile Include="src\kit\controllers.cpp" />
+    <ClCompile Include="src\kit\math_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\kit\app.h" />

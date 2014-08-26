@@ -15,6 +15,7 @@
     <ClCompile Include="src\kit\audio.cpp" />
     <ClCompile Include="src\kit\controllers.cpp" />
     <ClCompile Include="src\kit\file_system.cpp" />
+    <ClCompile Include="src\kit\math_util.cpp" />
     <ClCompile Include="src\kit\scene\camera.cpp" />
     <ClCompile Include="src\kit\csv.cpp" />
     <ClCompile Include="src\kit\cursor.cpp" />
