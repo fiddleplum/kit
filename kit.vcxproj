@@ -142,7 +142,7 @@
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\projects\kit\external\SDL2_image-2.0.0\include;D:\projects\kit\external\SDL2_net-2.0.0\include;D:\projects\kit\external\SDL2_ttf-2.0.12\include;D:\projects\kit\external\SDL2-2.0.0\include;D:\projects\kit\inc;$(IncludePath)</IncludePath>
+    <IncludePath>..\external\SDL2_image\include;..\external\SDL2_net\include;..\external\SDL2_ttf\include;..\external\SDL2\include;..\external\SDL2_mixer\include;$(IncludePath)</IncludePath>
     <TargetName>kit</TargetName>
     <OutDir>lib\</OutDir>
     <IntDir>build\</IntDir>
@@ -195,6 +195,12 @@ copy ..\external\SDL2_mixer\lib\x86\*.lib lib
     <Lib>
       <OutputFile>$(OutDir)$(TargetFileName)</OutputFile>
     </Lib>
+    <PostBuildEvent>
+      <Command>copy ..\external\SDL2\lib\x86\*.lib lib
+copy ..\external\SDL2_image\lib\x86\*.lib lib
+copy ..\external\SDL2_mixer\lib\x86\*.lib lib
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
