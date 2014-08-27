@@ -1,8 +1,11 @@
 #include "controllers.h"
 #include "log.h"
+#include "app.h"
 #include <vector>
 #include <string>
 #include <SDL.h>
+
+// Note bug in SDL Code: When querying the joysticks, the indices are reversed compared to when receiving events.
 
 namespace kit
 {
@@ -18,6 +21,7 @@ namespace kit
 		};
 
 		std::vector<Controller *> controllers;
+		int getNumSDLAxes(int controller);
 
 		void initialize()
 		{
@@ -69,7 +73,7 @@ namespace kit
 			{
 				return "None";
 			}
-			return controllers[getNumControllers() - 1 - controller]->name;
+			return controllers[controller]->name;
 		}
 
 		void refresh()

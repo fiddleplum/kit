@@ -432,7 +432,7 @@ namespace kit
 				case SDL_JOYBUTTONUP:
 				{
 					ControllerButtonEvent event(window);
-					event.controller = sdlEvent.jbutton.which;
+					event.controller = controllers::getNumControllers() - 1 - sdlEvent.jbutton.which;
 					event.button = sdlEvent.jbutton.button;
 					event.pressed = (sdlEvent.type == SDL_JOYBUTTONDOWN);
 					handleEvent(event);
@@ -449,14 +449,14 @@ namespace kit
 					{
 						value = (float)sdlEvent.jaxis.value / 32768.0f;
 					}
-					controllers::updateControllerAxis(sdlEvent.jaxis.which, sdlEvent.jaxis.axis, value);
+					controllers::updateControllerAxis(controllers::getNumControllers() - 1 - sdlEvent.jaxis.which, sdlEvent.jaxis.axis, value);
 					break;
 				}
 				case SDL_JOYHATMOTION:
 				{
 					ControllerAxisEvent event(window);
-					event.controller = sdlEvent.jhat.which;
-					event.axis = controllers::getNumSDLAxes(sdlEvent.jhat.which) + sdlEvent.jhat.hat * 2 + 0;
+					event.controller = controllers::getNumControllers() - 1 - sdlEvent.jhat.which;
+					event.axis = controllers::getNumSDLAxes(controllers::getNumControllers() - 1 - sdlEvent.jhat.which) + sdlEvent.jhat.hat * 2 + 0;
 					if((sdlEvent.jhat.value & SDL_HAT_LEFT) != 0)
 					{
 						event.value = -1;
@@ -489,7 +489,7 @@ namespace kit
 				case SDL_JOYBALLMOTION:
 				{
 					ControllerBallEvent event(window);
-					event.controller = sdlEvent.jball.which;
+					event.controller = controllers::getNumControllers() - 1 - sdlEvent.jball.which;
 					event.ball = sdlEvent.jball.ball;
 					event.offset[0] = sdlEvent.jball.xrel;
 					event.offset[1] = sdlEvent.jball.yrel;
