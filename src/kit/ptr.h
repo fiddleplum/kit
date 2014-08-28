@@ -514,12 +514,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 	if(p != ptr.p)
 	{
 		destroy();
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
+	}
+	p = ptr.p;
+	c = ptr.c;
+	if (p != nullptr)
+	{
+		c->pc++;
 	}
 	return *this;
 }
@@ -530,12 +530,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 	if(p != ptr.p)
 	{
 		destroy();
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
+	}
+	p = ptr.p;
+	c = ptr.c;
+	if (p != nullptr)
+	{
+		c->pc++;
 	}
 	return *this;
 }
@@ -546,12 +546,12 @@ Ptr<T> & Ptr<T>::operator = (OwnPtr<Y> const & ptr)
 	if(p != ptr.p)
 	{
 		destroy();
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
+	}
+	p = ptr.p;
+	c = ptr.c;
+	if (p != nullptr)
+	{
+		c->pc++;
 	}
 	return *this;
 }
