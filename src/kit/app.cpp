@@ -84,6 +84,7 @@ namespace kit
 			{
 				SDL_GL_DeleteContext(_sdlGlContext);
 				_sdlGlContext = 0;
+				quit();
 			}
 		}
 
@@ -120,6 +121,10 @@ namespace kit
 				{
 					handleSDLEvent(sdlEvent);
 				}
+				if(!_looping)
+				{
+					break;
+				}
 				for(int i = 0; i < controllers::getNumControllers(); i++)
 				{
 					std::vector<std::pair<int, float>> controllerAxisEvents = controllers::getAxesChangedSinceLastFrame(i);
@@ -132,6 +137,10 @@ namespace kit
 						handleEvent(event);
 					}
 				}
+				if(!_looping)
+				{
+					break;
+				}
 
 				// Update
 				for(auto window : _windows)
@@ -143,11 +152,23 @@ namespace kit
 						window->handleEvent(event);
 					}
 				}
+				if(!_looping)
+				{
+					break;
+				}
 				for(auto scene : _scenes)
 				{
 					UpdateEvent event = UpdateEvent(Ptr<Window>());
 					event.dt = 1.f / targetFrameRate;
 					scene->handleEvent(event);
+					if(!_looping)
+					{
+						break;
+					}
+				}
+				if(!_looping)
+				{
+					break;
 				}
 
 				// PreRender Update

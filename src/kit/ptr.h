@@ -253,7 +253,7 @@ OwnPtr<T>::OwnPtr() : p(nullptr), c(nullptr)
 template <class T>
 OwnPtr<T>::OwnPtr(OwnPtr<T> const & ptr) : p(ptr.p), c(ptr.c)
 {
-	if(p != 0)
+	if(p != nullptr)
 	{
 		c->oc++;
 	}
@@ -514,12 +514,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 	if(p != ptr.p)
 	{
 		destroy();
-	}
-	p = ptr.p;
-	c = ptr.c;
-	if (p != nullptr)
-	{
-		c->pc++;
+		p = ptr.p;
+		c = ptr.c;
+		if(p != nullptr)
+		{
+			c->pc++;
+		}
 	}
 	return *this;
 }
@@ -530,12 +530,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 	if(p != ptr.p)
 	{
 		destroy();
-	}
-	p = ptr.p;
-	c = ptr.c;
-	if (p != nullptr)
-	{
-		c->pc++;
+		p = ptr.p;
+		c = ptr.c;
+		if(p != nullptr)
+		{
+			c->pc++;
+		}
 	}
 	return *this;
 }
@@ -546,12 +546,12 @@ Ptr<T> & Ptr<T>::operator = (OwnPtr<Y> const & ptr)
 	if(p != ptr.p)
 	{
 		destroy();
-	}
-	p = ptr.p;
-	c = ptr.c;
-	if (p != nullptr)
-	{
-		c->pc++;
+		p = ptr.p;
+		c = ptr.c;
+		if(p != nullptr)
+		{
+			c->pc++;
+		}
 	}
 	return *this;
 }
