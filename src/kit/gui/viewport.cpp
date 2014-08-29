@@ -18,17 +18,17 @@ namespace kit
 
 		void Viewport::setPosition(Vector2i position)
 		{
-			_bounds.setMinKeepSize(position);
+			_bounds.min = position;
 		}
 
-		void Viewport::setMaxSize(Vector2i maxSize)
+		void Viewport::setMaxCoord(Vector2i maxCoord)
 		{
-			_bounds.setSize(maxSize);
+			_bounds.max = maxCoord;
 			if(_camera.isValid())
 			{
-				if(maxSize[1] != 0)
+				if(_bounds.getSize()[1] != 0)
 				{
-					_camera->setAspectRatio((float)maxSize[0] / (float)maxSize[1]);
+					_camera->setAspectRatio((float)_bounds.getSize()[0] / (float)_bounds.getSize()[1]);
 				}
 			}
 		}

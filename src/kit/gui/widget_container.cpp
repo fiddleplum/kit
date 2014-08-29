@@ -37,9 +37,16 @@ namespace kit
 			}
 		}
 
-		void WidgetContainer::setMaxSize (Vector2i maxSize)
+		void WidgetContainer::setMaxCoord (Vector2i maxCoord)
 		{
-			bounds.setSize(maxSize);
+			bounds.setSize(maxCoord);
+			for(auto const & widgetInfo : widgetInfos)
+			{
+				if(widgetInfo.active && widgetInfo.visible)
+				{
+					widgetInfo.widget->setMaxCoord(maxCoord);
+				}
+			}
 			if(updateWidgetBoundsFunction)
 			{
 				updateWidgetBoundsFunction();
@@ -119,10 +126,10 @@ namespace kit
 		void WidgetContainer::setWidgetPlacementSize (Ptr<Widget> widget, Vector2f fractionalSize, Vector2i pixelSize)
 		{
 			Vector2i position = widget->getBounds().min;
-			Vector2i maxSize = Vector2i(fractionalSize.scale(bounds.getSize())) + pixelSize;
-			maxSize[0] = std::min(maxSize[0], bounds.getSize()[0] - position[0]);
-			maxSize[1] = std::min(maxSize[1], bounds.getSize()[1] - position[1]);
-			widget->setMaxSize(maxSize);
+			Vector2i maxCoord = Vector2i(fractionalSize.scale(bounds.getSize())) + pixelSize;
+			maxCoord[0] = std::min(maxCoord[0], bounds.getSize()[0] - position[0]);
+			maxCoord[1] = std::min(maxCoord[1], bounds.getSize()[1] - position[1]);
+			widget->setMaxCoord(maxCoord);
 		}
 
 		bool WidgetContainer::isWidgetActive (Ptr<Widget> widget) const
@@ -216,7 +223,7 @@ namespace kit
 			auto widgetIterator = widgetInfos.insert(widgetInfos.end(), WidgetInfo(widget));
 			widgetLookup[widget] = widgetIterator;
 			widget->setPosition(bounds.min);
-			widget->setMaxSize(bounds.getSize());
+			widget->setMaxCoord(bounds.getSize());
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace kit
 			virtual void setPosition(Vector2i position) = 0;
 
 			// Sets the maximum size this widget can be. The widget can max out to this size (text box), or not change its size at all (check box).
-			virtual void setMaxSize(Vector2i maxSize) = 0;
+			virtual void setMaxCoord(Vector2i maxCoord) = 0;
 
 			// Handles an event.
 			virtual void handleEvent (Event const & event) = 0;

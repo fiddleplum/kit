@@ -17,7 +17,7 @@ namespace kit
 
 			void setPosition (Vector2i position) override;
 
-			void setMaxSize (Vector2i maxSize) override;
+			void setMaxCoord (Vector2i maxCoord) override;
 
 			// Get the attached camera.
 			Ptr<scene::Camera> getCamera () const;

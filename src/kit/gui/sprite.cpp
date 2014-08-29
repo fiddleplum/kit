@@ -32,11 +32,12 @@ namespace kit
 		void Sprite::setPosition(Vector2i position)
 		{
 			_model->setPosition(position);
+			updateVertices();
 		}
 
-		void Sprite::setMaxSize(Vector2i maxSize)
+		void Sprite::setMaxCoord(Vector2i maxCoord)
 		{
-			_maxSize = maxSize;
+			_maxCoord = maxCoord;
 			updateVertices();
 		}
 
@@ -97,8 +98,8 @@ namespace kit
 		void Sprite::updateVertices()
 		{
 			Vector2f size;
-			size[0] = std::min(_textureBounds.getSize()[0] * scale, (float)_maxSize[0]);
-			size[1] = std::min(_textureBounds.getSize()[1] * scale, (float)_maxSize[1]);
+			size[0] = std::min(_textureBounds.getSize()[0] * scale, (float)(_maxCoord[0] - _model->getPosition()[0]));
+			size[1] = std::min(_textureBounds.getSize()[1] * scale, (float)(_maxCoord[1] - _model->getPosition()[1]));
 			Vector2f uvSize = size / scale;
 			std::vector<Model::Vertex> vertices(4);
 			vertices[0].pos.set(0, 0);

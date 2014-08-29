@@ -28,9 +28,9 @@ namespace kit
 			sprite->setPosition(position);
 		}
 
-		void Button::setMaxSize(Vector2i maxSize)
+		void Button::setMaxCoord(Vector2i maxCoord)
 		{
-			sprite->setMaxSize(maxSize);
+			sprite->setMaxCoord(maxCoord);
 		}
 
 		void Button::handleEvent(Event const & event)

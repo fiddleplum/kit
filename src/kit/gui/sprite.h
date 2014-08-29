@@ -23,7 +23,7 @@ namespace kit
 
 			void setPosition(Vector2i position) override;
 
-			void setMaxSize(Vector2i maxSize) override;
+			void setMaxCoord(Vector2i maxCoord) override;
 
 			Ptr<Texture> getTexture () const;
 
@@ -49,7 +49,7 @@ namespace kit
 			OwnPtr<Model> _model;
 			Recti _textureBounds;
 			float scale;
-			Vector2i _maxSize;
+			Vector2i _maxCoord;
 		};
 	}
 }

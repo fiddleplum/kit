@@ -30,7 +30,7 @@ namespace kit
 			void setPosition(Vector2i position);
 
 			// Sets the maximum size this container can be.
-			void setMaxSize(Vector2i maxSize);
+			void setMaxCoord(Vector2i maxCoord);
 
 			// Add a sprite into the container.
 			Ptr<Sprite> addSprite();

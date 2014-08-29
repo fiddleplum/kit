@@ -25,7 +25,7 @@ namespace kit
 
 			void setPosition(Vector2i position) override;
 
-			void setMaxSize(Vector2i maxSize) override;
+			void setMaxCoord(Vector2i maxCoord) override;
 
 			void handleEvent(Event const & event) override;
 

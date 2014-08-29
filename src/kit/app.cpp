@@ -368,7 +368,7 @@ namespace kit
 							removeWindow(window);
 							break;
 						case SDL_WINDOWEVENT_SIZE_CHANGED:
-							window->setMaxSize(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
+							window->setMaxCoord(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
 							break;
 						case SDL_WINDOWEVENT_LEAVE:
 							window->getCursor()->setWithinWindow(false);

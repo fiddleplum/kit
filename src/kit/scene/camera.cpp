@@ -154,7 +154,7 @@ namespace kit
 			}
 			if(scale == 0 || aspectRatio == 0 || far == near || near == 0 || far == 0)
 			{
-				throw std::exception();
+				return;
 			}
 			float scaleInv = 1.0f / scale;
 			if(aspectRatio >= 1.0f)

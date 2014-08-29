@@ -16,7 +16,7 @@ namespace kit
 		{
 			throw std::runtime_error("Failed to create the window. ");
 		}
-		setMaxSize(size);
+		setMaxCoord(size);
 
 		_cursor.create();
 	}
@@ -53,7 +53,7 @@ namespace kit
 			{
 				throw std::exception();
 			}
-			if(SDL_SetWindowFullscreen(_sdlWindow, SDL_WINDOW_FULLSCREEN) < 0)
+			if(SDL_SetWindowFullscreen(_sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP) < 0)
 			{
 				throw std::exception();
 			}
