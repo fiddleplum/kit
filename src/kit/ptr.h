@@ -285,16 +285,12 @@ OwnPtr<T> OwnPtr<T>::createNew(Args... args)
 template <class T>
 OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<T> const & ptr)
 {
-	if(p != ptr.p)
+	destroy();
+	p = ptr.p;
+	c = ptr.c;
+	if(p != nullptr)
 	{
-		destroy();
-		// Set new pointer
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->oc++;
-		}
+		c->oc++;
 	}
 	return *this;
 }
@@ -302,16 +298,12 @@ OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<T> const & ptr)
 template <class T> template <class Y>
 OwnPtr<T> & OwnPtr<T>::operator = (OwnPtr<Y> const & ptr)
 {
-	if(p != ptr.p)
+	destroy();
+	p = ptr.p;
+	c = ptr.c;
+	if(p != nullptr)
 	{
-		destroy();
-		// Set new pointer
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->oc++;
-		}
+		c->oc++;
 	}
 	return *this;
 }
@@ -511,15 +503,12 @@ Ptr<T>::~Ptr()
 template <class T>
 Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 {
-	if(p != ptr.p)
+	destroy();
+	p = ptr.p;
+	c = ptr.c;
+	if(p != nullptr)
 	{
-		destroy();
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
+		c->pc++;
 	}
 	return *this;
 }
@@ -527,15 +516,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 template <class T> template <class Y>
 Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 {
-	if(p != ptr.p)
+	destroy();
+	p = ptr.p;
+	c = ptr.c;
+	if(p != nullptr)
 	{
-		destroy();
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
+		c->pc++;
 	}
 	return *this;
 }
@@ -543,15 +529,12 @@ Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 template <class T> template <class Y>
 Ptr<T> & Ptr<T>::operator = (OwnPtr<Y> const & ptr)
 {
-	if(p != ptr.p)
+	destroy();
+	p = ptr.p;
+	c = ptr.c;
+	if(p != nullptr)
 	{
-		destroy();
-		p = ptr.p;
-		c = ptr.c;
-		if(p != nullptr)
-		{
-			c->pc++;
-		}
+		c->pc++;
 	}
 	return *this;
 }
