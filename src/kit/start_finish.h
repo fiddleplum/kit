@@ -16,8 +16,8 @@
 
 namespace kit
 {
-	void start (std::vector<std::string> const & parameters);
+	//void start (std::vector<std::string> const & parameters);
 
-	void finish ();
+	//void finish ();
 }
 
