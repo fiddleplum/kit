@@ -22,9 +22,6 @@ namespace kit
 		// Removes a scene.
 		void removeScene (Ptr<scene::Scene> scene);
 
-		// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
-		float getTime ();
-
 		// Makes the cursor active or inactive. When it is inactive, the edges of the screen do not influence mouse movements.
 		void setCursorActive (bool active);
 

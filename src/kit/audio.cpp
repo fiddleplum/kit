@@ -1,71 +1,59 @@
 #include "audio.h"
-#include "object_cache.h"
-#include <SDL_mixer.h>
+#include <stdexcept>
+#include <SDL.h>
 
-namespace kit
+Audio * instance = nullptr;
+
+Audio::Audio(unsigned int channelConfig, unsigned int samplesPerSecond, unsigned int log2SamplesInBuffer, std::function<void(void *, unsigned int)> _callbackForMoreData)
 {
-	namespace audio
+	if(instance != nullptr)
 	{
-		class Resource;
-
-		ObjectCache<Resource> resourceCache;
-		const int numChannels = 8;
-		int nextFreeChannel;
-
-		class Resource
-		{
-		public:
-			Resource(std::string const & filename)
-			{
-				m = Mix_LoadWAV(filename.c_str());
-				if(!m)
-				{
-					throw std::runtime_error("Could not load " + filename);
-				}
-			}
-
-			~Resource()
-			{
-				Mix_FreeChunk(m);
-			}
-
-			void play()
-			{
-				Mix_PlayChannel(nextFreeChannel, m, 0);
-				nextFreeChannel = (nextFreeChannel + 1) % numChannels;
-			}
-
-		private:
-			Mix_Chunk * m;
-		};
-
-		void initialize()
-		{
-			int flagsInitted = Mix_Init(MIX_INIT_OGG);
-			if((flagsInitted & MIX_INIT_OGG) == 0)
-			{
-				throw std::runtime_error("Could not initialize ogg audio");
-			}
-			if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 2048) == -1)
-			{
-				throw std::runtime_error("Could not open audio for mixer");
-			}
-			Mix_AllocateChannels(numChannels);
-			nextFreeChannel = 0;
-		}
-
-		void finalize()
-		{
-			resourceCache.clean();
-			Mix_CloseAudio();
-			Mix_Quit();
-		}
-
-		void play(std::string const & filename)
-		{
-			Ptr<Resource> resource = resourceCache.get(filename, filename);
-			resource->play();			
-		}
+		throw std::runtime_error("There may be only one instance of audio at a time.");
 	}
+	instance = this;
+
+	callbackForMoreData = _callbackForMoreData;
+
+	SDL_InitSubSystem(SDL_INIT_AUDIO);
+
+	SDL_AudioSpec desired;
+	SDL_AudioSpec obtained;
+	desired.freq = samplesPerSecond;
+	desired.format = AUDIO_S16;
+	switch(channelConfig)
+	{
+		case MONO: desired.channels = 1; break;
+		case STEREO: desired.channels = 2; break;
+		case QUAD: desired.channels = 4; break;
+		case FIVE_POINT_ONE: desired.channels = 6; break;
+		default: throw std::runtime_error("While initializing audio, an invalid channel configuration was specified.");
+	}
+	desired.silence = 0;
+	desired.samples = 1 << log2SamplesInBuffer;
+	desired.size = 0;
+	desired.callback = callback;
+	desired.userdata = 0;
+	device = SDL_OpenAudioDevice(NULL, false, &desired, &obtained, 0);
+	if(device == 0)
+	{
+		throw std::runtime_error("Failed to initialize audio.");
+	}
+}
+
+Audio::~Audio()
+{
+	instance = nullptr;
+	SDL_CloseAudioDevice(device);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+}
+
+void Audio::setPaused(bool paused)
+{
+	SDL_PauseAudioDevice(device, paused ? 1 : 0);
+}
+
+void Audio::callback(void *, unsigned char * data, int size)
+{
+	instance->callbackForMoreData((void *)data, (unsigned int)size);
 }
 

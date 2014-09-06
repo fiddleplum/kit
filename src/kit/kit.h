@@ -13,6 +13,13 @@
 
 namespace kit
 {
+	// The user must implement this function.
 	int main(std::vector<std::string> const & args);
+
+	// Gets the time in seconds since some arbitrary time after the application started, up to 49 days.
+	float getTime();
+
+	// Waits the given amount of time.
+	void wait(float seconds);
 }
 

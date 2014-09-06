@@ -1,3 +1,4 @@
+#include "../kit.h"
 #include "../app.h"
 #include "../resources.h"
 #include "button.h"
@@ -41,7 +42,7 @@ namespace kit
 			{
 				case Event::Update:
 				{
-					if(type == Shot && pressed && app::getTime() - timePressed > shotInterval)
+					if(type == Shot && pressed && getTime() - timePressed > shotInterval)
 					{
 						pressed = false;
 					}
@@ -209,7 +210,7 @@ namespace kit
 			}
 			if(type == Shot)
 			{
-				timePressed = app::getTime();
+				timePressed = getTime();
 			}
 		}
 

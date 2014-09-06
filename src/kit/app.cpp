@@ -5,6 +5,7 @@
 #include "audio.h"
 #include "controllers.h"
 #include "ptr_set.h"
+#include "kit.h"
 #include <SDL.h>
 
 namespace kit
@@ -43,12 +44,10 @@ namespace kit
 
 			resources::initialize();
 			controllers::initialize();
-			audio::initialize();
 		}
 
 		void finalize()
 		{
-			audio::finalize();
 			controllers::finalize();
 			resources::finalize();
 			SDL_Quit();
@@ -57,11 +56,6 @@ namespace kit
 		void quit()
 		{
 			_looping = false;
-		}
-
-		float getTime()
-		{
-			return SDL_GetTicks() / 1000.0f;
 		}
 
 		Ptr<Window> addWindow(char const * title)

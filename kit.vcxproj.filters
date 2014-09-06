@@ -8,7 +8,6 @@
     <ClCompile Include="src\kit\geometry_1d.cpp" />
     <ClCompile Include="src\kit\geometry_2d.cpp" />
     <ClCompile Include="src\kit\log.cpp" />
-    <ClCompile Include="src\kit\main.cpp" />
     <ClCompile Include="src\kit\open_gl.cpp" />
     <ClCompile Include="src\kit\resources.cpp" />
     <ClCompile Include="src\kit\shader.cpp" />
@@ -36,6 +35,7 @@
     <ClCompile Include="src\kit\controllers.cpp" />
     <ClCompile Include="src\kit\math_util.cpp" />
     <ClCompile Include="src\kit\image.cpp" />
+    <ClCompile Include="src\kit\kit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\kit\app.h" />
@@ -95,7 +95,7 @@
     <ClInclude Include="src\kit\list.h" />
     <ClInclude Include="src\kit\set.h" />
     <ClInclude Include="src\kit\controllers.h" />
-    <ClInclude Include="src\kit\main.h" />
     <ClInclude Include="src\kit\image.h" />
+    <ClInclude Include="src\kit\kit.h" />
   </ItemGroup>
 </Project>
