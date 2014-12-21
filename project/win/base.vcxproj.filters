@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\source\kit\csv.cpp" />
+    <ClCompile Include="..\..\source\kit\geometry_1d.cpp" />
+    <ClCompile Include="..\..\source\kit\geometry_2d.cpp" />
+    <ClCompile Include="..\..\source\kit\log.cpp" />
+    <ClCompile Include="..\..\source\kit\math_util.cpp" />
+    <ClCompile Include="..\..\source\kit\string_util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\kit\box.h" />
+    <ClInclude Include="..\..\source\kit\csv.h" />
+    <ClInclude Include="..\..\source\kit\geometry_1d.h" />
+    <ClInclude Include="..\..\source\kit\geometry_2d.h" />
+    <ClInclude Include="..\..\source\kit\interval.h" />
+    <ClInclude Include="..\..\source\kit\list.h" />
+    <ClInclude Include="..\..\source\kit\log.h" />
+    <ClInclude Include="..\..\source\kit\math_util.h" />
+    <ClInclude Include="..\..\source\kit\matrix.h" />
+    <ClInclude Include="..\..\source\kit\noncopyable.h" />
+    <ClInclude Include="..\..\source\kit\object_cache.h" />
+    <ClInclude Include="..\..\source\kit\pimpl.h" />
+    <ClInclude Include="..\..\source\kit\ptr.h" />
+    <ClInclude Include="..\..\source\kit\ptr_set.h" />
+    <ClInclude Include="..\..\source\kit\quaternion.h" />
+    <ClInclude Include="..\..\source\kit\range.h" />
+    <ClInclude Include="..\..\source\kit\ray.h" />
+    <ClInclude Include="..\..\source\kit\rect.h" />
+    <ClInclude Include="..\..\source\kit\serialize.h" />
+    <ClInclude Include="..\..\source\kit\serialize_std_string.h" />
+    <ClInclude Include="..\..\source\kit\serialize_std_vector.h" />
+    <ClInclude Include="..\..\source\kit\serialize_vector.h" />
+    <ClInclude Include="..\..\source\kit\set.h" />
+    <ClInclude Include="..\..\source\kit\storage.h" />
+    <ClInclude Include="..\..\source\kit\string_util.h" />
+    <ClInclude Include="..\..\source\kit\unique_id_factory.h" />
+    <ClInclude Include="..\..\source\kit\vector.h" />
+  </ItemGroup>
+</Project>

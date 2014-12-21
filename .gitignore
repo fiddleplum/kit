@@ -1,8 +1,7 @@
-external/
-build/
-lib/
+*_Debug
+*_Release
 *.sdf
-*.opensdf
 *.suo
+*.opensdf
 *.vcxproj.user
 *.pyc

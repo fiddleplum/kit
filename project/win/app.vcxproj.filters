@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\source\kit\event.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_button.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_container.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_model.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_sprite.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_viewport.cpp" />
+    <ClCompile Include="..\..\source\kit\open_gl.cpp" />
+    <ClCompile Include="..\..\source\kit\resource_cache.cpp" />
+    <ClCompile Include="..\..\source\kit\scene.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_camera.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_entity.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_light.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_model.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_object.cpp" />
+    <ClCompile Include="..\..\source\kit\shader.cpp" />
+    <ClCompile Include="..\..\source\kit\texture.cpp" />
+    <ClCompile Include="..\..\source\kit\time.cpp" />
+    <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp" />
+    <ClCompile Include="..\..\source\kit\window.cpp" />
+    <ClCompile Include="..\..\source\kit\cursor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\kit\event.h" />
+    <ClInclude Include="..\..\source\kit\gl3.h" />
+    <ClInclude Include="..\..\source\kit\gui_button.h" />
+    <ClInclude Include="..\..\source\kit\gui_container.h" />
+    <ClInclude Include="..\..\source\kit\gui_element.h" />
+    <ClInclude Include="..\..\source\kit\gui_model.h" />
+    <ClInclude Include="..\..\source\kit\gui_sprite.h" />
+    <ClInclude Include="..\..\source\kit\gui_viewport.h" />
+    <ClInclude Include="..\..\source\kit\open_gl.h" />
+    <ClInclude Include="..\..\source\kit\resource_cache.h" />
+    <ClInclude Include="..\..\source\kit\scene.h" />
+    <ClInclude Include="..\..\source\kit\scene_camera.h" />
+    <ClInclude Include="..\..\source\kit\scene_entity.h" />
+    <ClInclude Include="..\..\source\kit\scene_light.h" />
+    <ClInclude Include="..\..\source\kit\scene_model.h" />
+    <ClInclude Include="..\..\source\kit\scene_object.h" />
+    <ClInclude Include="..\..\source\kit\shader.h" />
+    <ClInclude Include="..\..\source\kit\texture.h" />
+    <ClInclude Include="..\..\source\kit\time.h" />
+    <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />
+    <ClInclude Include="..\..\source\kit\window.h" />
+    <ClInclude Include="..\..\source\kit\cursor.h" />
+  </ItemGroup>
+</Project>
