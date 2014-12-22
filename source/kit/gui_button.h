@@ -2,6 +2,7 @@
 
 #include "texture.h"
 #include "gui_element.h"
+#include "ptr.h"
 #include <functional>
 
 class GuiSprite;
@@ -20,9 +21,7 @@ public:
 
 	void setPosition(Vector2i position) override;
 
-	void setClipBounds(Recti clipBounds) override;
-
-	bool handleEvent(Event const & event, Ptr<Cursor> cursor) override;
+	bool handleEvent(Event const & event, Vector2i cursorPosition, bool cursorPositionIsValid) override;
 
 	void render(Vector2i windowSize) const override;
 

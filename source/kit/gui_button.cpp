@@ -1,7 +1,6 @@
 #include "gui_button.h"
 #include "gui_sprite.h"
 #include "time.h"
-#include "cursor.h"
 
 GuiButton::GuiButton()
 {
@@ -22,16 +21,12 @@ void GuiButton::setPosition(Vector2i position)
 	sprite->setPosition(position);
 }
 
-void GuiButton::setClipBounds(Recti clipBounds)
+bool GuiButton::handleEvent(Event const & event, Vector2i cursorPosition, bool cursorPositionIsValid)
 {
-	sprite->setClipBounds(clipBounds);
-}
-
-bool GuiButton::handleEvent(Event const & event, Ptr<Cursor> cursor)
-{
+	bool cursorIsOver = cursorPositionIsValid && getBounds().containsEx(cursorPosition);
 	if(!hovered)
 	{
-		if((event.type == Event::MouseMove && getBounds().containsEx(cursor->getPosition())) || hasFocus())
+		if((event.type == Event::MouseMove && cursorIsOver) || hasFocus())
 		{
 			hovered = true;
 			setSpriteTextureBoundsFromState();
@@ -39,7 +34,7 @@ bool GuiButton::handleEvent(Event const & event, Ptr<Cursor> cursor)
 	}
 	else // hovered
 	{
-		if((event.type == Event::MouseMove && !getBounds().containsEx(cursor->getPosition())) && !hasFocus())
+		if((event.type == Event::MouseMove && !cursorIsOver) && !hasFocus())
 		{
 			hovered = false;
 			setSpriteTextureBoundsFromState();
@@ -122,7 +117,7 @@ bool GuiButton::handleEvent(Event const & event, Ptr<Cursor> cursor)
 			}
 		}
 	}
-	return sprite->handleEvent(event, cursor);
+	return sprite->handleEvent(event, cursorPosition, cursorPositionIsValid);
 }
 
 void GuiButton::render(Vector2i windowSize) const

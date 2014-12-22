@@ -77,7 +77,7 @@ PFNGLBINDTEXTUREPROC glBindTexture;
 PFNGLTEXIMAGE2DPROC glTexImage2D;
 PFNGLTEXPARAMETERIPROC glTexParameteri;
 
-void glInitialize ()
+void glInitialize()
 {
 	// Replace RegEx: ([^ ]+) ([^ ]+);   ->   \t\2 = (\1)SDL_GL_GetProcAddress("\2");
 	glEnable = (PFNGLENABLEPROC)SDL_GL_GetProcAddress("glEnable");
@@ -144,7 +144,7 @@ void glInitialize ()
 	initialized = true;
 }
 
-bool glIsInitialized ()
+bool glIsInitialized()
 {
 	return initialized;
 }
@@ -194,8 +194,18 @@ float glGetGLSLVersion()
 
 void glScissorPush(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-	scissorStack.push(Recti::minSize(x, y, width, height));
-	glScissor(x, y, width, height);
+	Recti rect = Recti::minSize(x, y, width, height);
+	Recti scissor;
+	if(!scissorStack.empty())
+	{
+		scissor = scissorStack.top().intersectedWith(rect);
+	}
+	else
+	{
+		scissor = rect;
+	}
+	scissorStack.push(scissor);
+	glScissor(scissor.min[0], scissor.min[1], scissor.getSize()[0], scissor.getSize()[1]);
 }
 
 void glScissorPop()

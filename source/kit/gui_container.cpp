@@ -1,7 +1,27 @@
 #include "gui_container.h"
 #include <algorithm>
 
-bool GuiContainer::handleEvent(Event const & event, Ptr<Cursor> cursor)
+bool GuiContainer::isElementActive(Ptr<GuiElement> const & element) const
+{
+	auto lookupIterator = elementLookup.find(element);
+	if(lookupIterator == elementLookup.end())
+	{
+		throw std::runtime_error("GuiContainer::isElementActive, element not found");
+	}
+	return lookupIterator->second->active;
+}
+
+void GuiContainer::setElementActive(Ptr<GuiElement> const & element, bool active)
+{
+	auto lookupIterator = elementLookup.find(element);
+	if(lookupIterator == elementLookup.end())
+	{
+		throw std::runtime_error("GuiContainer::setElementActive, element not found");
+	}
+	lookupIterator->second->active = active;
+}
+
+bool GuiContainer::handleEvent(Event const & event, Vector2i cursorPosition, bool cursorPositionIsValid)
 {
 	// Every update, remove the marked elements.
 	if(event.type == Event::Update)
@@ -22,11 +42,12 @@ bool GuiContainer::handleEvent(Event const & event, Ptr<Cursor> cursor)
 	{
 		return true;
 	}
+	bool cursorPositionIsValidInClippingBounds = cursorPositionIsValid && clippingBounds.containsEx(cursorPosition);
 	for(auto elementInfoIterator = elementInfos.rbegin(); elementInfoIterator != elementInfos.rend(); elementInfoIterator++)
 	{
 		if(elementInfoIterator->active)
 		{
-			consumed = elementInfoIterator->element->handleEvent(event, cursor);
+			consumed = elementInfoIterator->element->handleEvent(event, cursorPosition, cursorPositionIsValidInClippingBounds);
 			if(consumed)
 			{
 				break;
@@ -47,25 +68,11 @@ void GuiContainer::render(Vector2i windowSize) const
 	}
 }
 
-bool GuiContainer::isElementActive(Ptr<GuiElement> const & element) const
+void GuiContainer::setClippingBounds(Recti bounds)
 {
-	auto lookupIterator = elementLookup.find(element);
-	if(lookupIterator == elementLookup.end())
-	{
-		throw std::runtime_error("GuiContainer::isElementActive, element not found");
-	}
-	return lookupIterator->second->active;
+	clippingBounds = bounds;
 }
 
-void GuiContainer::setElementActive(Ptr<GuiElement> const & element, bool active)
-{
-	auto lookupIterator = elementLookup.find(element);
-	if(lookupIterator == elementLookup.end())
-	{
-		throw std::runtime_error("GuiContainer::setElementActive, element not found");
-	}
-	lookupIterator->second->active = active;
-}
 
 void GuiContainer::addElement(OwnPtr<GuiElement> const & element)
 {

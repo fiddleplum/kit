@@ -7,13 +7,13 @@ class GuiElement
 {
 public:
 	// Can the element have focus?
-	virtual bool canHaveFocus() = 0;
+	virtual bool canHaveFocus();
 
 	// Returns true if the element has focus.
-	virtual bool hasFocus() const = 0;
+	virtual bool hasFocus() const;
 
 	// Sets the keyboard focus.
-	virtual void setFocus(bool value) = 0;
+	virtual void setFocus(bool value);
 
 	// Returns the bounds of the element.
 	virtual Recti getBounds() const = 0;
@@ -21,14 +21,11 @@ public:
 	// Sets the position of the element.
 	virtual void setPosition(Vector2i position) = 0;
 
-	// Sets the clipping bounds outside which the element is not rendered or interacted with. Can't just use glscissor, because mouse interactions need to be clipped, too.
-	//virtual void setClipBounds(Recti clipBounds) = 0;
-
 	// Handles an event with the associated window.
-	// If the cursor position is inside the window and not blocked by another widget, cursorPositionIsValid is true.
 	// The cursorPosition is relative to the parent window.
+	// If the cursor position is inside the window and not blocked by another widget, cursorPositionIsValid is true.
 	// Returns true if the event is consumed.
-	virtual bool handleEvent(Event const & event, bool cursorPositionIsValid, Vector2i cursorPosition) = 0;
+	virtual bool handleEvent(Event const & event, Vector2i cursorPosition, bool cursorPositionIsValid);
 
 	// Renders the element.
 	virtual void render(Vector2i windowSize) const = 0;

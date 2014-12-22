@@ -21,6 +21,7 @@
     <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp" />
     <ClCompile Include="..\..\source\kit\window.cpp" />
     <ClCompile Include="..\..\source\kit\cursor.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_element.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />

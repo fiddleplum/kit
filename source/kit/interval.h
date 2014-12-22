@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vector.h"
+#include <algorithm>
 
 //! A <b>dim</b>-dimensional interval with dimensions of type \b T.
 template <int dim, typename T>

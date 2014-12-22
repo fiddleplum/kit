@@ -99,7 +99,7 @@ void Window::handleEvent(Event const & event)
 	{
 		return;
 	}
-	gui->handleEvent(event, cursor);
+	gui->handleEvent(event, cursor->getPosition(), cursor->isPositionValid());
 }
 
 void Window::render(SDL_GLContext sdlGlContext) const

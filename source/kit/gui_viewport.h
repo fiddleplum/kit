@@ -15,14 +15,8 @@ public:
 	// Implements parent.
 	void setPosition(Vector2i position) override;
 
-	// Implements Widget::setMaxCoord.
-	void setClipBounds(Recti) override;
-
-	// Implements Widget::handleEvent.
-	bool handleEvent(Event const & event) override;
-
-	// Implements Widget::render.
-	void render(Vector2i windowSize) override;
+	// Implements parent.
+	void render(Vector2i windowSize) const override;
 
 	// Get the attached camera.
 	Ptr<SceneCamera> getCamera() const;

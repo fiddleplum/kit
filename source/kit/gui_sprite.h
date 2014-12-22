@@ -15,13 +15,6 @@ class GuiSprite : public GuiElement
 public:
 	GuiSprite();
 
-	bool canHaveFocus() override;
-
-	bool hasFocus() const override;
-
-	void setFocus(bool value) override;
-
-	// Returns the unclipped bounds.
 	Recti getBounds() const;
 
 	void setPosition(Vector2i position);
@@ -30,15 +23,11 @@ public:
 
 	void setTextureBounds(Recti bounds);
 
-	void setClipBounds(Recti clipBounds) override;
-
 	Ptr<Texture> getTexture() const;
 
 	void setTexture(Ptr<Texture> texture);
 
 	void setTexture(std::string const & filename);
-
-	bool handleEvent(Event const & event, Ptr<Cursor> cursor) override;
 
 	void render(Vector2i windowSize) const override;
 
@@ -47,8 +36,7 @@ private:
 
 	OwnPtr<GuiModel> model;
 	Vector2i position;
-	Recti clipBounds;
 	Recti textureBounds;
-	Recti visibleBounds; // intersection between real bounds and clipped bounds
+	Recti bounds;
 };
 
