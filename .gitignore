@@ -1,3 +1,7 @@
+libraries/win/app.lib
+libraries/win/app_d.lib
+libraries/win/base.lib
+libraries/win/base_d.lib
 *_Debug
 *_Release
 *.sdf
