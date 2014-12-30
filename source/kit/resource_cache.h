@@ -27,10 +27,6 @@ private:
 	ResourceCache();
 	~ResourceCache();
 
-	OwnPtr<ObjectCache<Texture>> textureCache;
-	OwnPtr<ObjectCache<Shader>> shaderCache;
-	OwnPtr<ObjectCache<SceneModel>> modelCache;
-
 	friend class App;
 };
 

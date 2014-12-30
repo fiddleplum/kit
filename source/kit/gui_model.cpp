@@ -2,7 +2,7 @@
 #include "shader.h"
 #include "vertex_buffer_object.h"
 #include "open_gl.h"
-#include "resource_cache.h"
+#include "shader_cache.h"
 
 GuiModel::GuiModel()
 {
@@ -66,43 +66,50 @@ void GuiModel::render(Vector2i windowSize)
 
 void GuiModel::updateShader()
 {
-	std::string version = "120";
-	std::string attribute = "attribute";
-	std::string varyingIn = "varying";
-	std::string varyingOut = "varying";
-	float glslVersion = glGetGLSLVersion();
-	if(glslVersion >= 1.5f)
+	if(!ShaderCache::instance()->has("guiShader"))
 	{
-		version = "150";
-		attribute = "in";
-		varyingIn = "in";
-		varyingOut = "out";
+		std::string version = "120";
+		std::string attribute = "attribute";
+		std::string varyingIn = "varying";
+		std::string varyingOut = "varying";
+		float glslVersion = glGetGLSLVersion();
+		if(glslVersion >= 1.5f)
+		{
+			version = "150";
+			attribute = "in";
+			varyingIn = "in";
+			varyingOut = "out";
+		}
+		std::string code[Shader::NumCodeTypes];
+		code[Shader::Vertex] +=
+			"#version " + version + "\n"
+			"uniform ivec2 uWindowSize;\n"
+			"uniform ivec2 uPosition;\n"
+			+ attribute + " ivec2 aPos;\n"
+			+ attribute + " ivec2 aUv;\n"
+			+ varyingOut + " ivec2 vUv;\n"
+			"void main()\n"
+			"{\n"
+			"  gl_Position.x = float(uPosition.x + aPos.x) / float(uWindowSize.x) * 2.0f - 1.0f;\n"
+			"  gl_Position.y = 1.0f - float(uPosition.y + aPos.y) / float(uWindowSize.y) * 2.0f;\n"
+			"  gl_Position.z = 0;\n"
+			"  gl_Position.w = 1;\n"
+			"  vUv = aUv;\n"
+			"}\n";
+		code[Shader::Fragment] +=
+			"#version " + version + "\n"
+			"uniform ivec2 uTextureSize;\n"
+			"uniform sampler2D uSampler;\n"
+			+ varyingIn + " ivec2 vUv;\n"
+			"void main()\n"
+			"{\n"
+			"  gl_FragColor = texture2D(uSampler, vec2(float(vUv.s) / float(uTextureSize.x), float(vUv.t) / float(uTextureSize.y)));\n"
+			"}\n";
+		shader = ShaderCache::instance()->load("guiShader", code);
 	}
-	std::string code[Shader::NumCodeTypes];
-	code[Shader::Vertex] +=
-		"#version " + version + "\n"
-		"uniform ivec2 uWindowSize;\n"
-		"uniform ivec2 uPosition;\n"
-		+ attribute + " ivec2 aPos;\n"
-		+ attribute + " ivec2 aUv;\n"
-		+ varyingOut + " ivec2 vUv;\n"
-		"void main()\n"
-		"{\n"
-		"  gl_Position.x = float(uPosition.x + aPos.x) / float(uWindowSize.x) * 2.0f - 1.0f;\n"
-		"  gl_Position.y = 1.0f - float(uPosition.y + aPos.y) / float(uWindowSize.y) * 2.0f;\n"
-		"  gl_Position.z = 0;\n"
-		"  gl_Position.w = 1;\n"
-		"  vUv = aUv;\n"
-		"}\n";
-	code[Shader::Fragment] +=
-		"#version " + version + "\n"
-		"uniform ivec2 uTextureSize;\n"
-		"uniform sampler2D uSampler;\n"
-		+ varyingIn + " ivec2 vUv;\n"
-		"void main()\n"
-		"{\n"
-		"  gl_FragColor = texture2D(uSampler, vec2(float(vUv.s) / float(uTextureSize.x), float(vUv.t) / float(uTextureSize.y)));\n"
-		"}\n";
-	shader = ResourceCache::getShader("guiShader", code);
+	else
+	{
+		shader = ShaderCache::instance()->get("guiShader");
+	}
 }
 

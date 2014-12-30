@@ -1,6 +1,6 @@
 #include "gui_sprite.h"
 #include "gui_model.h"
-#include "resource_cache.h"
+#include "texture_cache.h"
 #include <algorithm>
 
 GuiSprite::GuiSprite()
@@ -54,7 +54,7 @@ void GuiSprite::setTexture(Ptr<Texture> texture)
 
 void GuiSprite::setTexture(std::string const & filename)
 {
-	setTexture(ResourceCache::getTextureFromFile(filename));
+	setTexture(TextureCache::instance()->load(filename, filename));
 }
 
 void GuiSprite::render(Vector2i windowSize) const

@@ -3,9 +3,9 @@
 #include <vector>
 #include <SDL_image.h>
 
-std::vector<unsigned int> currentTextures; // current textures in the open gl state
+std::vector<unsigned int> currentTextures; // Current textures in the OpenGL state.
 
-Texture::Texture(Vector2i)
+Texture::Texture(Vector2i size)
 {
 	if(!glIsInitialized())
 	{

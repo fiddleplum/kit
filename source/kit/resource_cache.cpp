@@ -1,7 +1,9 @@
 #include "resource_cache.h"
 #include <fstream>
 
-OwnPtr<ResourceCache> resourceCache;
+OwnPtr<ObjectCache<Texture>> textureCache;
+OwnPtr<ObjectCache<Shader>> shaderCache;
+OwnPtr<ObjectCache<SceneModel>> modelCache;
 
 Ptr<Texture> ResourceCache::getTexture(std::string const & name, Vector2i size)
 {

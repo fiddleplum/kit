@@ -20,7 +20,6 @@
     <ClInclude Include="..\..\source\kit\matrix.h" />
     <ClInclude Include="..\..\source\kit\noncopyable.h" />
     <ClInclude Include="..\..\source\kit\object_cache.h" />
-    <ClInclude Include="..\..\source\kit\pimpl.h" />
     <ClInclude Include="..\..\source\kit\ptr.h" />
     <ClInclude Include="..\..\source\kit\ptr_set.h" />
     <ClInclude Include="..\..\source\kit\quaternion.h" />
@@ -36,5 +35,8 @@
     <ClInclude Include="..\..\source\kit\string_util.h" />
     <ClInclude Include="..\..\source\kit\unique_id_factory.h" />
     <ClInclude Include="..\..\source\kit\vector.h" />
+    <ClInclude Include="..\..\source\kit\singleton.h" />
+    <ClInclude Include="..\..\source\kit\pimpl_static.h" />
+    <ClInclude Include="..\..\source\kit\pimpl.h" />
   </ItemGroup>
 </Project>

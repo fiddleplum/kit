@@ -22,6 +22,10 @@
     <ClCompile Include="..\..\source\kit\window.cpp" />
     <ClCompile Include="..\..\source\kit\cursor.cpp" />
     <ClCompile Include="..\..\source\kit\gui_element.cpp" />
+    <ClCompile Include="..\..\source\kit\app.cpp" />
+    <ClCompile Include="..\..\source\kit\kit.cpp" />
+    <ClCompile Include="..\..\source\kit\controller_system.cpp" />
+    <ClCompile Include="..\..\source\kit\input_system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
@@ -46,5 +50,15 @@
     <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />
     <ClInclude Include="..\..\source\kit\window.h" />
     <ClInclude Include="..\..\source\kit\cursor.h" />
+    <ClInclude Include="..\..\source\kit\app.h" />
+    <ClInclude Include="..\..\source\kit\kit.h" />
+    <ClInclude Include="..\..\source\kit\resource_loader.h" />
+    <ClInclude Include="..\..\source\kit\object_cache.h" />
+    <ClInclude Include="..\..\source\kit\shader_cache.h" />
+    <ClInclude Include="..\..\source\kit\texture_cache.h" />
+    <ClInclude Include="..\..\source\kit\scene_model_cache.h" />
+    <ClInclude Include="..\..\source\kit\controller_system.h" />
+    <ClInclude Include="..\..\source\kit\input_system.h" />
+    <ClInclude Include="..\..\source\kit\input_event.h" />
   </ItemGroup>
 </Project>

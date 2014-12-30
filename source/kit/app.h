@@ -1,31 +1,38 @@
 #pragma once
 
-#include "resource_cache.h"
+#ifdef _DEBUG
+#pragma comment (lib, "base_d.lib")
+#pragma comment (lib, "app_d.lib")
+#else
+#pragma comment (lib, "base.lib")
+#pragma comment (lib, "app.lib")
+#endif
+#pragma comment (lib, "SDL2.lib")
+#pragma comment (lib, "SDL2main.lib")
+
 #include "list.h"
+#include "ptr.h"
+#include "pimpl.h"
+#include "window.h"
+#include "scene.h"
 
-class Cursor;
-class Window;
-class Scene;
-
-class App
+class App : public Pimpl<App>
 {
 public:
-	// Construct the application. Calling it more than once before another destroy doesn't do anything.
-	static void create(bool usingAudio);
+	// Called after the app is opened. Implemented by the user.
+	static void onOpen(std::vector<std::string> const & params);
 
-	// Destroy the application. Calling it more than once before another create doesn't do anything.
-	static void destroy();
+	// Called before the app is closed. Implemented by the user.
+	static void onClose();
 
-	// Get the singleton App.
-	static Ptr<App> get();
-
-	// Runs the application. Starts the application loop, and does not leave the function until quit is called.
-	void run();
+	// Tells the app that you will be using one of the optional systems. Call it in onOpen. If you don't call this, the system won't function.
+	enum { ControllerSystem, AudioSystem };
+	static void useSystem(int system);
 
 	// Quits the application. Stops the application loop.
 	void quit();
 
-	// Adds a new window.
+	// Creates a new window.
 	Ptr<Window> addWindow(char const * title);
 
 	// Removes a window.
@@ -37,23 +44,19 @@ public:
 	// Removes a scene.
 	void removeScene(Ptr<Scene> scene);
 
-	Ptr<Cursor> getCursor();
-
 	// Shows a message dialog box.
 	void showMessage(std::string const & message);
 
-	// Gets the resource cache used by the guis and scenes.
-	Ptr<ResourceCache> getResourceCache();
+	// Internal. Constructs the app.
+	App(std::vector<std::string> const & args);
 
-private:
-	App(bool usingAudio);
+	// Internal. Destructs the app.
 	~App();
 
-	bool running = false;
-	void * glContext = nullptr;
-	OwnPtr<ResourceCache> resourceCache;
-	List<Window> windows;
-	List<Scene> scenes;
-	OwnPtr<Cursor> cursor;
+	// Internal. Starts the application loop.
+	void loop();
+
+	// Internal. Handles an event, passing to the windows and scenes.
+	static void handleEvent(Event const & event);
 };
 

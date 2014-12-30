@@ -7,6 +7,8 @@
 #include <string>
 
 // TODO: Add ability to have a texture mask for determining the shape of the sprite when it comes to cursor clicks, etc.
+// TODO: Add ability to have a base color (yellow, blue, transparent, etc) as vertex color that the texture lays on top of.
+//   This would require modifying the gui shader.
 
 class GuiModel;
 

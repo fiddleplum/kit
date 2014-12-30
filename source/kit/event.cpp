@@ -197,7 +197,7 @@ MouseMoveEvent::MouseMoveEvent()
 
 std::string MouseMoveEvent::toString() const
 {
-	return "Mouse Move: " + std::to_string(relative[0]) + ", " + std::to_string(relative[1]);
+	return "Mouse Move: " + std::to_string(offset[0]) + ", " + std::to_string(offset[1]);
 }
 
 MouseWheelEvent::MouseWheelEvent()
@@ -228,15 +228,5 @@ ControllerAxisEvent::ControllerAxisEvent()
 std::string ControllerAxisEvent::toString() const
 {
 	return "Controller " + std::to_string(controller) + " Axis " + std::to_string(axis) + ": " + std::to_string(value);
-}
-
-ControllerBallEvent::ControllerBallEvent()
-	: Event(ControllerBall)
-{
-}
-
-std::string ControllerBallEvent::toString() const
-{
-	return "Controller " + std::to_string(controller) + " Ball " + std::to_string(ball) + ": " + std::to_string(offset[0]) + ", " + std::to_string(offset[1]);
 }
 

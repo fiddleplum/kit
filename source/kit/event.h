@@ -19,7 +19,8 @@ public:
 		MouseWheel,
 		ControllerButton,
 		ControllerAxis,
-		ControllerBall,
+		ControllerAdded,
+		ControllerRemoved
 	};
 
 	Event(Type type);
@@ -113,7 +114,8 @@ public:
 	{
 		Left,
 		Middle,
-		Right
+		Right,
+		Button0 = Left
 	};
 
 	MouseButtonEvent();
@@ -131,7 +133,7 @@ public:
 
 	virtual std::string toString() const override;
 
-	Vector2i relative;
+	Vector2i offset;
 };
 
 class MouseWheelEvent : public Event
@@ -165,19 +167,7 @@ public:
 
 	int controller;
 	int axis;
-	float value; // From -1 to +1
-};
-
-class ControllerBallEvent : public Event
-{
-public:
-	ControllerBallEvent();
-
-	virtual std::string toString() const override;
-
-	int controller;
-	int ball;
-	Vector2i offset;
+	float value; // from -1 to +1
 };
 
 template <typename EventType>

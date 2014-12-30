@@ -1,0 +1,18 @@
+Questions:
+
+Should app be an object or namespace?
+If it is an object, then who owns it? for true RAII, the user should own it.
+
+What about hiding data/functionality from the user, but have it still available internally?
+I might create a Pimpl object that others can inherit from. It would use std::aligned_storage with a static check for the size
+in the constructor. However, this would be a bit of maintenance.
+
+
+
+
+Perhaps I should make nothing subclass from the kit objects, because I keep running into design difficulties.
+
+The only one currently that requires subclassing is the WidgetContainer. It is fine if a client subclasses widget, since it is pure virtual.
+
+---Can I have the user subclass Widget, and have WidgetContainer as a component?
+

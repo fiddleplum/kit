@@ -40,9 +40,10 @@ public:
 	// Returns the cursor information associated with this window.
 	Ptr<Cursor> getCursor() const;
 
+	// Returns the currently set gui container.
 	template <typename Type> Ptr<GuiContainer> getContainer() const;
 
-	// Sets the gui container of type Type.
+	// Creates and sets the gui container of type Type.
 	template <typename Type> Ptr<GuiContainer> setContainer();
 
 	// Handles an event. Called by app.
