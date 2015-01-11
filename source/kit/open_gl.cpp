@@ -1,18 +1,7 @@
 #include "open_gl.h"
-#include "rect.h"
-#include <SDL.h>
+#include <kit/rect.h>
 #include <stack>
-
-#include <iostream>
-
-bool initialized = false;
-namespace kit
-{
-	namespace app
-	{
-		extern SDL_GLContext _sdlGlContext;
-	}
-}
+#include <SDL.h>
 
 std::stack<Recti> scissorStack;
 
@@ -140,18 +129,6 @@ void glInitialize()
 	glBindTexture = (PFNGLBINDTEXTUREPROC)SDL_GL_GetProcAddress("glBindTexture");
 	glTexImage2D = (PFNGLTEXIMAGE2DPROC)SDL_GL_GetProcAddress("glTexImage2D");
 	glTexParameteri = (PFNGLTEXPARAMETERIPROC)SDL_GL_GetProcAddress("glTexParameteri");
-
-	initialized = true;
-}
-
-bool glIsInitialized()
-{
-	return initialized;
-}
-
-bool glHasContext()
-{
-	return kit::app::_sdlGlContext != 0;
 }
 
 float glGetGLSLVersion()
@@ -194,7 +171,7 @@ float glGetGLSLVersion()
 
 void glScissorPush(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-	Recti rect = Recti::minSize(x, y, width, height);
+	Recti rect{{x, y}, {width, height}};
 	Recti scissor;
 	if(!scissorStack.empty())
 	{
@@ -205,7 +182,7 @@ void glScissorPush(GLint x, GLint y, GLsizei width, GLsizei height)
 		scissor = rect;
 	}
 	scissorStack.push(scissor);
-	glScissor(scissor.min[0], scissor.min[1], scissor.getSize()[0], scissor.getSize()[1]);
+	glScissor(scissor.min[0], scissor.min[1], scissor.max[0] - scissor.min[0] + 1, scissor.max[1] - scissor.min[1] + 1);
 }
 
 void glScissorPop()
@@ -214,7 +191,7 @@ void glScissorPop()
 	{
 		Recti scissor = scissorStack.top();
 		scissorStack.pop();
-		glScissor(scissor.min[0], scissor.min[1], scissor.getSize()[0], scissor.getSize()[1]);
+		glScissor(scissor.min[0], scissor.min[1], scissor.max[0] - scissor.min[0] + 1, scissor.max[1] - scissor.min[1] + 1);
 	}
 }
 

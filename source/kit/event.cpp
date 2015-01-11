@@ -1,8 +1,13 @@
-#include "event.h"
+#include <kit/event.h>
 
 Event::Event(Event::Type type)
+	: type(type)
 {
-	this->type = type;
+}
+
+bool Event::is(Event::Type type) const
+{
+	return this->type == type;
 }
 
 ShutdownEvent::ShutdownEvent()

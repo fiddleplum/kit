@@ -11,65 +11,46 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\kit\app.cpp" />
-    <ClCompile Include="..\..\source\kit\controller_system.cpp" />
-    <ClCompile Include="..\..\source\kit\cursor.cpp" />
     <ClCompile Include="..\..\source\kit\event.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_button.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_container.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_element.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_container_impl.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_element_impl.cpp" />
     <ClCompile Include="..\..\source\kit\gui_model.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_sprite.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_viewport.cpp" />
-    <ClCompile Include="..\..\source\kit\input_system.cpp" />
-    <ClCompile Include="..\..\source\kit\kit.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_sprite_impl.cpp" />
     <ClCompile Include="..\..\source\kit\open_gl.cpp" />
-    <ClCompile Include="..\..\source\kit\resource_cache.cpp" />
-    <ClCompile Include="..\..\source\kit\scene.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_camera.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_entity.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_light.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_model.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_object.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_entity_impl.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_light_impl.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_model_impl.cpp" />
     <ClCompile Include="..\..\source\kit\shader.cpp" />
     <ClCompile Include="..\..\source\kit\texture.cpp" />
-    <ClCompile Include="..\..\source\kit\time.cpp" />
     <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp" />
-    <ClCompile Include="..\..\source\kit\window.cpp" />
+    <ClCompile Include="..\..\source\kit\window_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\source\kit\app.h" />
-    <ClInclude Include="..\..\source\kit\controller_system.h" />
-    <ClInclude Include="..\..\source\kit\cursor.h" />
-    <ClInclude Include="..\..\source\kit\event.h" />
+    <ClInclude Include="..\..\include\kit\event.h" />
+    <ClInclude Include="..\..\include\kit\gui_container.h" />
+    <ClInclude Include="..\..\include\kit\gui_element.h" />
+    <ClInclude Include="..\..\include\kit\gui_sprite.h" />
+    <ClInclude Include="..\..\include\kit\scene_entity.h" />
+    <ClInclude Include="..\..\include\kit\scene_light.h" />
+    <ClInclude Include="..\..\include\kit\scene_model.h" />
+    <ClInclude Include="..\..\include\kit\window.h" />
     <ClInclude Include="..\..\source\kit\gl3.h" />
-    <ClInclude Include="..\..\source\kit\gui_button.h" />
-    <ClInclude Include="..\..\source\kit\gui_container.h" />
-    <ClInclude Include="..\..\source\kit\gui_element.h" />
+    <ClInclude Include="..\..\source\kit\gui_container_impl.h" />
+    <ClInclude Include="..\..\source\kit\gui_element_impl.h" />
     <ClInclude Include="..\..\source\kit\gui_model.h" />
-    <ClInclude Include="..\..\source\kit\gui_sprite.h" />
-    <ClInclude Include="..\..\source\kit\gui_viewport.h" />
-    <ClInclude Include="..\..\source\kit\input_event.h" />
-    <ClInclude Include="..\..\source\kit\input_system.h" />
-    <ClInclude Include="..\..\source\kit\kit.h" />
+    <ClInclude Include="..\..\source\kit\gui_sprite_impl.h" />
     <ClInclude Include="..\..\source\kit\object_cache.h" />
     <ClInclude Include="..\..\source\kit\open_gl.h" />
-    <ClInclude Include="..\..\source\kit\resource_cache.h" />
-    <ClInclude Include="..\..\source\kit\resource_loader.h" />
-    <ClInclude Include="..\..\source\kit\scene.h" />
-    <ClInclude Include="..\..\source\kit\scene_camera.h" />
-    <ClInclude Include="..\..\source\kit\scene_entity.h" />
-    <ClInclude Include="..\..\source\kit\scene_light.h" />
-    <ClInclude Include="..\..\source\kit\scene_model.h" />
+    <ClInclude Include="..\..\source\kit\scene_entity_impl.h" />
+    <ClInclude Include="..\..\source\kit\scene_light_impl.h" />
     <ClInclude Include="..\..\source\kit\scene_model_cache.h" />
-    <ClInclude Include="..\..\source\kit\scene_object.h" />
+    <ClInclude Include="..\..\source\kit\scene_model_impl.h" />
     <ClInclude Include="..\..\source\kit\shader.h" />
     <ClInclude Include="..\..\source\kit\shader_cache.h" />
     <ClInclude Include="..\..\source\kit\texture.h" />
     <ClInclude Include="..\..\source\kit\texture_cache.h" />
-    <ClInclude Include="..\..\source\kit\time.h" />
     <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />
-    <ClInclude Include="..\..\source\kit\window.h" />
+    <ClInclude Include="..\..\source\kit\window_impl.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F010F4CB-1864-4292-8A87-D71AE2070920}</ProjectGuid>
@@ -105,12 +86,12 @@
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\include;$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\include;$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -119,6 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,6 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -1,4 +1,5 @@
 #include "gui_model.h"
+#include "texture.h"
 #include "shader.h"
 #include "vertex_buffer_object.h"
 #include "open_gl.h"
@@ -8,7 +9,7 @@ GuiModel::GuiModel()
 {
 	updateShader();
 
-	vbo.create();
+	vbo.setNew();
 	vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
 	vbo->addVertexComponent(shader->getAttributeLocation("aUv"), sizeof(Vector2f), 2);
 	vbo->setBytesPerVertex(sizeof(Vertex));

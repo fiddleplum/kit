@@ -11,43 +11,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\kit\csv.cpp" />
-    <ClCompile Include="..\..\source\kit\geometry_1d.cpp" />
-    <ClCompile Include="..\..\source\kit\geometry_2d.cpp" />
-    <ClCompile Include="..\..\source\kit\log.cpp" />
-    <ClCompile Include="..\..\source\kit\math_util.cpp" />
-    <ClCompile Include="..\..\source\kit\string_util.cpp" />
+    <ClInclude Include="..\..\include\kit\image.h" />
+    <ClInclude Include="..\..\include\kit\interval.h" />
+    <ClInclude Include="..\..\include\kit\matrix.h" />
+    <ClInclude Include="..\..\include\kit\ptr.h" />
+    <ClInclude Include="..\..\include\kit\quaternion.h" />
+    <ClInclude Include="..\..\include\kit\rect.h" />
+    <ClInclude Include="..\..\include\kit\serialize.h" />
+    <ClInclude Include="..\..\include\kit\serialize_std_string.h" />
+    <ClInclude Include="..\..\include\kit\serialize_std_vector.h" />
+    <ClInclude Include="..\..\include\kit\serialize_vector.h" />
+    <ClInclude Include="..\..\include\kit\singleton.h" />
+    <ClInclude Include="..\..\include\kit\vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\source\kit\box.h" />
-    <ClInclude Include="..\..\source\kit\csv.h" />
-    <ClInclude Include="..\..\source\kit\geometry_1d.h" />
-    <ClInclude Include="..\..\source\kit\geometry_2d.h" />
-    <ClInclude Include="..\..\source\kit\interval.h" />
-    <ClInclude Include="..\..\source\kit\list.h" />
-    <ClInclude Include="..\..\source\kit\log.h" />
-    <ClInclude Include="..\..\source\kit\math_util.h" />
-    <ClInclude Include="..\..\source\kit\matrix.h" />
-    <ClInclude Include="..\..\source\kit\noncopyable.h" />
-    <ClInclude Include="..\..\source\kit\object_cache.h" />
-    <ClInclude Include="..\..\source\kit\pimpl.h" />
-    <ClInclude Include="..\..\source\kit\pimpl_static.h" />
-    <ClInclude Include="..\..\source\kit\ptr.h" />
-    <ClInclude Include="..\..\source\kit\ptr_set.h" />
-    <ClInclude Include="..\..\source\kit\quaternion.h" />
-    <ClInclude Include="..\..\source\kit\range.h" />
-    <ClInclude Include="..\..\source\kit\ray.h" />
-    <ClInclude Include="..\..\source\kit\rect.h" />
-    <ClInclude Include="..\..\source\kit\serialize.h" />
-    <ClInclude Include="..\..\source\kit\serialize_std_string.h" />
-    <ClInclude Include="..\..\source\kit\serialize_std_vector.h" />
-    <ClInclude Include="..\..\source\kit\serialize_vector.h" />
-    <ClInclude Include="..\..\source\kit\set.h" />
-    <ClInclude Include="..\..\source\kit\singleton.h" />
-    <ClInclude Include="..\..\source\kit\storage.h" />
-    <ClInclude Include="..\..\source\kit\string_util.h" />
-    <ClInclude Include="..\..\source\kit\unique_id_factory.h" />
-    <ClInclude Include="..\..\source\kit\vector.h" />
+    <ClCompile Include="..\..\include\kit\_test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0E419CF3-2A77-4913-AA40-7171F49F7E32}</ProjectGuid>
@@ -82,10 +60,12 @@
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -33,11 +33,11 @@ private:
 		unsigned int size;
 		unsigned int offset;
 	};
-	unsigned int mArrayBuffer;
-	unsigned int mElementArrayBuffer;
-	unsigned int mMode;
-	unsigned int mNumIndices;
-	unsigned int mBytesPerVertex;
-	std::vector<VertexComponent> mVertexComponents;
+	unsigned int arrayBuffer;
+	unsigned int elementArrayBuffer;
+	unsigned int mode;
+	unsigned int numIndices;
+	unsigned int bytesPerVertex;
+	std::vector<VertexComponent> vertexComponents;
 };
 

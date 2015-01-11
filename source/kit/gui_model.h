@@ -1,11 +1,11 @@
 #pragma once
 
-#include "texture.h"
-#include "vector.h"
-#include "ptr.h"
+#include <kit/vector.h>
+#include <kit/ptr.h>
 #include <string>
 #include <vector>
 
+class Texture;
 class Shader;
 class VertexBufferObject;
 

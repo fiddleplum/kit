@@ -1,30 +1,30 @@
 #pragma once
 
-#include "vector.h"
+#include <kit/vector.h>
 #include <string>
+
+class Image;
 
 class Texture
 {
 public:
-	// Creates a new texture. The pixels are uninitialized.
-	// Size is the size of the new texture.
-	Texture(Vector2i size);
+	// Creates a new texture from an image.
+	Texture(Image const & image);
 
-	// Creates a texture from the filesystem.
-	// Filename is the name of the file to load.
+	// Creates a texture from a file.
 	Texture(std::string const & filename);
 
 	// Destroys the texture.
-	~Texture();
+	virtual ~Texture();
 
 	// Returns the size of the texture.
 	Vector2i getSize() const;
 
-	// Returns the raw pixels of the texture (RGBA 32-bit). While locked, the texture is not rendered.
-	unsigned char * lockPixels();
+	// Returns the image of the texture.
+	Image getImage();
 
-	// Unlocks the pixels of the texture, after a call to lockPixels.
-	void unlockPixels();
+	// Sets the texture to the image.
+	void setImage(Image const & image);
 
 	// Activates the texture in the GL slot. Used by Models.
 	void activate(unsigned int slot) const;

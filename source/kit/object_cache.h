@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ptr.h"
+#include <kit/ptr.h>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -92,7 +92,7 @@ Ptr<Object> ObjectCache<Object>::load(std::string const & name, Args... args)
 		OwnPtr<Object> object;
 		try
 		{
-			object.create(args...);
+			object.setNew(args...);
 		}
 		catch(std::runtime_error const & e)
 		{

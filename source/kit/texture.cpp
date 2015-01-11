@@ -1,26 +1,24 @@
 #include "texture.h"
 #include "open_gl.h"
-#include <vector>
+#include <kit/image.h>
 #include <SDL_image.h>
 
 std::vector<unsigned int> currentTextures; // Current textures in the OpenGL state.
 
-Texture::Texture(Vector2i size)
+Texture::Texture(Image const & image)
 {
-	if(!glIsInitialized())
-	{
-		throw std::runtime_error("You must create a window first to initialize OpenGL.");
-	}
-	// TODO
+	size = image.getSize();
+	SDL_Surface * surface = SDL_CreateRGBSurfaceFrom((void *)image.getRawPixels(), image.getSize()[0], image.getSize()[1], 32, 4 * image.getSize()[0], 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size[0], size[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	SDL_FreeSurface(surface);
 }
 
 Texture::Texture(std::string const & filename)
 {
-	if(!glIsInitialized())
-	{
-		throw std::runtime_error("You must create a window first to initialize OpenGL.");
-	}
-
 	SDL_Surface * surface = IMG_Load(filename.c_str());
 	if(surface == 0)
 	{
@@ -45,6 +43,7 @@ Texture::Texture(std::string const & filename)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size[0], size[1], 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	SDL_FreeSurface(surface);
 }
 
 Texture::~Texture()
@@ -55,17 +54,6 @@ Texture::~Texture()
 Vector2i Texture::getSize() const
 {
 	return size;
-}
-
-unsigned char * Texture::lockPixels()
-{
-	// TODO
-	return nullptr;
-}
-
-void Texture::unlockPixels()
-{
-	// TODO
 }
 
 void Texture::activate(unsigned int slot) const

@@ -3,8 +3,7 @@
 #include "gl3.h"
 
 void glInitialize();
-bool glIsInitialized();
-bool glHasContext();
+
 float glGetGLSLVersion();
 void glScissorPush(GLint x, GLint y, GLsizei width, GLsizei height);
 void glScissorPop();
@@ -70,3 +69,4 @@ extern PFNGLACTIVETEXTUREPROC glActiveTexture;
 extern PFNGLBINDTEXTUREPROC glBindTexture;
 extern PFNGLTEXIMAGE2DPROC glTexImage2D;
 extern PFNGLTEXPARAMETERIPROC glTexParameteri;
+

@@ -1,42 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\source\kit\csv.cpp" />
-    <ClCompile Include="..\..\source\kit\geometry_1d.cpp" />
-    <ClCompile Include="..\..\source\kit\geometry_2d.cpp" />
-    <ClCompile Include="..\..\source\kit\log.cpp" />
-    <ClCompile Include="..\..\source\kit\math_util.cpp" />
-    <ClCompile Include="..\..\source\kit\string_util.cpp" />
+    <Filter Include="include">
+      <UniqueIdentifier>{bb008ac6-933d-4506-929d-433762937445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{566240eb-7684-49f3-8d60-6453baba8213}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\source\kit\box.h" />
-    <ClInclude Include="..\..\source\kit\csv.h" />
-    <ClInclude Include="..\..\source\kit\geometry_1d.h" />
-    <ClInclude Include="..\..\source\kit\geometry_2d.h" />
-    <ClInclude Include="..\..\source\kit\interval.h" />
-    <ClInclude Include="..\..\source\kit\list.h" />
-    <ClInclude Include="..\..\source\kit\log.h" />
-    <ClInclude Include="..\..\source\kit\math_util.h" />
-    <ClInclude Include="..\..\source\kit\matrix.h" />
-    <ClInclude Include="..\..\source\kit\noncopyable.h" />
-    <ClInclude Include="..\..\source\kit\object_cache.h" />
-    <ClInclude Include="..\..\source\kit\ptr.h" />
-    <ClInclude Include="..\..\source\kit\ptr_set.h" />
-    <ClInclude Include="..\..\source\kit\quaternion.h" />
-    <ClInclude Include="..\..\source\kit\range.h" />
-    <ClInclude Include="..\..\source\kit\ray.h" />
-    <ClInclude Include="..\..\source\kit\rect.h" />
-    <ClInclude Include="..\..\source\kit\serialize.h" />
-    <ClInclude Include="..\..\source\kit\serialize_std_string.h" />
-    <ClInclude Include="..\..\source\kit\serialize_std_vector.h" />
-    <ClInclude Include="..\..\source\kit\serialize_vector.h" />
-    <ClInclude Include="..\..\source\kit\set.h" />
-    <ClInclude Include="..\..\source\kit\storage.h" />
-    <ClInclude Include="..\..\source\kit\string_util.h" />
-    <ClInclude Include="..\..\source\kit\unique_id_factory.h" />
-    <ClInclude Include="..\..\source\kit\vector.h" />
-    <ClInclude Include="..\..\source\kit\singleton.h" />
-    <ClInclude Include="..\..\source\kit\pimpl_static.h" />
-    <ClInclude Include="..\..\source\kit\pimpl.h" />
+    <ClInclude Include="..\..\include\kit\vector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\ptr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\interval.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\rect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\image.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\matrix.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\singleton.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\serialize_std_vector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\serialize_vector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\serialize.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\serialize_std_string.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\kit\quaternion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\include\kit\_test.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
