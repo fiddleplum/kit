@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "coord.h"
 #include "matrix.h"
 #include "ptr.h"
 #include <vector>
@@ -24,8 +24,8 @@ namespace kit
 		class Vertex
 		{
 		public:
-			Vector2f pos;
-			Vector2f uv;
+			Coord2f pos;
+			Coord2f uv;
 		};
 
 		Model2D();
@@ -34,14 +34,14 @@ namespace kit
 		int getZ() const { return z; }
 		void setZ(int);
 
-		Vector2f getScale() const { return scale; }
-		void setScale(Vector2f);
+		Coord2f getScale() const { return scale; }
+		void setScale(Coord2f);
 
 		Ptr<Texture> getTexture() const { return texture; }
 		void setTexture(std::string const & filename);
 
-		Vector3f getColor() const { return color; }
-		void setColor(Vector3f);
+		Coord3f getColor() const { return color; }
+		void setColor(Coord3f);
 
 		void setVertices(void const * vertices, unsigned int numBytes);
 		void setNumIndicesPerPrimitive(unsigned int num);
@@ -68,10 +68,10 @@ namespace kit
 		void updateShader();
 
 		int z;
-		Vector2f scale;
+		Coord2f scale;
 
 		Ptr<Texture> texture;
-		Vector3f color;
+		Coord3f color;
 
 		int numBytesPerVertex;
 		VertexBufferObject * vertexBufferObject;

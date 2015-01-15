@@ -64,7 +64,7 @@ namespace kit
 			{
 				if(entity->frame && entity->body)
 				{
-					Vector2f acceleration = entity->body->getAccumForce() * entity->body->getInverseMass();
+					Coord2f acceleration = entity->body->getAccumForce() * entity->body->getInverseMass();
 					float angularAcceleration = entity->body->getAccumTorque() * entity->body->getInverseMass() * entity->body->getInverseMass() * entity->body->getDensity();
 
 					entity->body->setVelocity(entity->body->getVelocity() + acceleration * deltaTime);
@@ -244,7 +244,7 @@ namespace kit
 		//void World::applyImpulse(std::shared_ptr<Entity> entity, Ray2f ray)
 		//{
 		//	//Attributes & attributes = entityAttributes.find(entity)->second;
-		//	//Vector2f r = ray.start - entity->getPosition();
+		//	//Coord2f r = ray.start - entity->getPosition();
 		//	//if(r.normSq() > 0 && attributes.mass > 0 && attributes.density > 0)
 		//	//{
 		//	//	attributes.velocity += ray.direction / attributes.mass;
@@ -252,7 +252,7 @@ namespace kit
 		//	//}
 		//}
 
-		//Collision getCollision(std::shared_ptr<Polygon> polygon1, Vector2f const & offset1, std::shared_ptr<Polygon> polygon2, Vector2f const & offset2)
+		//Collision getCollision(std::shared_ptr<Polygon> polygon1, Coord2f const & offset1, std::shared_ptr<Polygon> polygon2, Coord2f const & offset2)
 		//{
 		//	// Use SAT, but include offsets to calculate a collision.toi. (always >= 0)
 		//	// Just project the offsets on each axis to get a moving range, and then intersect the moving ranges.

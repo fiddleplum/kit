@@ -19,7 +19,7 @@ namespace kit
 			_camera->setOrthogonal(1.0f);
 			_camera->setNear(1.0f);
 			_camera->setFar(1000.0f);
-			_camera->setPosition(Vector3f(0, 0, 999.0f));
+			_camera->setPosition(Coord3f(0, 0, 999.0f));
 			_camera->setOrientation(Quaternionf(0, -(float)math::PI_OVER_2, 0)); // looking straight down
 		}
 
@@ -31,7 +31,7 @@ namespace kit
 			}
 		}
 
-		void Camera::setPosition(Vector2f position)
+		void Camera::setPosition(Coord2f position)
 		{
 			Entity::setPosition(position);
 			if(_camera.isValid())
@@ -69,12 +69,12 @@ namespace kit
 			updateViewSize();
 		}
 
-		Vector2f Camera::getNdcPosition(Vector2f worldPosition) const
+		Coord2f Camera::getNdcPosition(Coord2f worldPosition) const
 		{
 			return getTransformInv().transform(worldPosition, 1).scaleInv(_viewSize);
 		}
 
-		Vector2f Camera::getWorldPosition(Vector2f ndcPosition) const
+		Coord2f Camera::getWorldPosition(Coord2f ndcPosition) const
 		{
 			return getTransform().transform(ndcPosition.scale(_viewSize), 1);
 		}

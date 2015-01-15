@@ -9,14 +9,14 @@ namespace kit
 	class Circle
 	{
 	public:
-		Vector2f center;
+		Coord2f center;
 		float radius;
 	};
 
 	class Polygon
 	{
 	public:
-		std::vector<Vector2f> vertices;
+		std::vector<Coord2f> vertices;
 
 		Rectf getBoundingRect() const;
 	};

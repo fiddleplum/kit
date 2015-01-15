@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../vector.h"
+#include "../coord.h"
 #include "../matrix.h"
 
 namespace kit
@@ -14,9 +14,9 @@ namespace kit
 
 			~Entity() {}
 
-			Vector2f getPosition() const { return _position; }
+			Coord2f getPosition() const { return _position; }
 
-			virtual void setPosition(Vector2f position);
+			virtual void setPosition(Coord2f position);
 
 			float getOrientation() const { return _orientation; }
 
@@ -33,7 +33,7 @@ namespace kit
 		private:
 			void updateTransforms();
 
-			Vector2f _position;
+			Coord2f _position;
 			float _orientation;
 			int _z;
 			Matrix33f _transform;

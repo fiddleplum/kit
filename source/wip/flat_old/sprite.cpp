@@ -25,7 +25,7 @@ namespace kit
 		{
 		}
 
-		Vector2f Sprite::getSize() const
+		Coord2f Sprite::getSize() const
 		{
 			return textureBounds.getSize();
 		}
@@ -54,11 +54,11 @@ namespace kit
 
 		void Sprite::updateVertices()
 		{
-			Vector2f size;
+			Coord2f size;
 			Rectf uvBounds;
 			size = textureBounds.getSize();
-			uvBounds.min = Vector2f(textureBounds.min + Vector2i(textureBounds.getSize()[0] * frame, 0)).scaleInv(model->getTexture()->getSize());
-			uvBounds.max = Vector2f(textureBounds.max + Vector2i(textureBounds.getSize()[0] * frame, 0)).scaleInv(model->getTexture()->getSize());
+			uvBounds.min = Coord2f(textureBounds.min + Coord2i(textureBounds.getSize()[0] * frame, 0)).scaleInv(model->getTexture()->getSize());
+			uvBounds.max = Coord2f(textureBounds.max + Coord2i(textureBounds.getSize()[0] * frame, 0)).scaleInv(model->getTexture()->getSize());
 			std::vector<Model2D::Vertex> vertices(4);
 			vertices[0].pos.set(0, 0);
 			vertices[0].uv.set(uvBounds.min[0], uvBounds.min[1]);

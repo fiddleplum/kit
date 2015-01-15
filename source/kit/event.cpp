@@ -1,4 +1,4 @@
-#include <kit/event.h>
+#include "event.h"
 
 Event::Event(Event::Type type)
 	: type(type)

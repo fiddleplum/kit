@@ -18,9 +18,9 @@ namespace kit
 			class Vertex
 			{
 			public:
-				Vector2f position;
+				Coord2f position;
 				float _reserved = 0;
-				Vector2f textureCoord;
+				Coord2f textureCoord;
 			};
 
 			Object(Ptr<scene::Scene> scene);
@@ -29,7 +29,7 @@ namespace kit
 
 			Ptr<scene::Object> getSceneObject() const { return _object; }
 
-			void setPosition(Vector2f position) override;
+			void setPosition(Coord2f position) override;
 
 			void setOrientation(float orientation) override;
 
@@ -41,7 +41,7 @@ namespace kit
 
 			void setTexture(std::string const & filename);
 
-			void setAsSprite(Vector2f bottomLeftOffsetFromPosition, Recti textureCoords);
+			void setAsSprite(Coord2f bottomLeftOffsetFromPosition, Recti textureCoords);
 
 			void setVertices(std::vector<Vertex> const & vertices);
 

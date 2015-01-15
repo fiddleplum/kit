@@ -1,20 +1,18 @@
 #include "texture.h"
 #include "open_gl.h"
-#include <kit/image.h>
+#include <vector>
 #include <SDL_image.h>
 
 std::vector<unsigned int> currentTextures; // Current textures in the OpenGL state.
 
-Texture::Texture(Image const & image)
+Texture::Texture(void const * pixels, Coord2i size_)
 {
-	size = image.getSize();
-	SDL_Surface * surface = SDL_CreateRGBSurfaceFrom((void *)image.getRawPixels(), image.getSize()[0], image.getSize()[1], 32, 4 * image.getSize()[0], 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+	size = size_;
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size[0], size[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size_[0], size_[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	SDL_FreeSurface(surface);
 }
 
 Texture::Texture(std::string const & filename)
@@ -51,9 +49,20 @@ Texture::~Texture()
 	glDeleteTextures(1, &id);
 }
 
-Vector2i Texture::getSize() const
+Coord2i Texture::getSize() const
 {
 	return size;
+}
+
+void * Texture::getPixels() const
+{
+	// TODO
+	return nullptr;
+}
+
+void Texture::setPixels(void const * pixels)
+{
+	// TODO
 }
 
 void Texture::activate(unsigned int slot) const

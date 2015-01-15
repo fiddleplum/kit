@@ -9,7 +9,7 @@ class ResourceCache
 {
 public:
 	// If the named texture does not exist, it will create a blank texture.
-	static Ptr<Texture> getTexture(std::string const & name, Vector2i size);
+	static Ptr<Texture> getTexture(std::string const & name, Coord2i size);
 
 	// If the texture has not already been loaded, it will load the texture from a file.
 	static Ptr<Texture> getTextureFromFile(std::string const & filename);

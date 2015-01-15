@@ -9,18 +9,18 @@ namespace kit
 	public:
 		Light2D();
 
-		Vector2f getPosition() const { return frame.getPosition(); }
-		void setPosition(Vector2f position) { frame.setPosition(position); }
+		Coord2f getPosition() const { return frame.getPosition(); }
+		void setPosition(Coord2f position) { frame.setPosition(position); }
 
 		float getOrientation() const { return frame.getOrientation(); }
 		void setOrientation(float orientation) { frame.setOrientation(orientation); }
 
-		Vector3f getColor() const { return color; }
-		void setColor(Vector3f);
+		Coord3f getColor() const { return color; }
+		void setColor(Coord3f);
 
 	private:
 		Frame2D frame;
-		Vector3f color;
+		Coord3f color;
 	};
 }
 

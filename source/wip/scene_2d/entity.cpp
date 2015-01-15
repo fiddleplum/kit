@@ -4,18 +4,18 @@ namespace Scene2D
 {
 	Entity::Entity()
 	{
-		position = Vector2f::zero();
-		scale = Vector2f::filled(1);
+		position = Coord2f::zero();
+		scale = Coord2f::filled(1);
 		matrixInverse = matrix = Matrix33f::identity();
 		matricesNeedUpdate = false;
 	}
 
-	Vector2f const & Entity::getPosition() const
+	Coord2f const & Entity::getPosition() const
 	{
 		return position;
 	}
 
-	void Entity::setPosition(Vector2f newPosition)
+	void Entity::setPosition(Coord2f newPosition)
 	{
 		position = newPosition;
 		matricesNeedUpdate = true;
@@ -32,12 +32,12 @@ namespace Scene2D
 		matricesNeedUpdate = true;
 	}
 
-	Vector2f const & Entity::getScale() const
+	Coord2f const & Entity::getScale() const
 	{
 		return scale;
 	}
 
-	void Entity::setScale(Vector2f newScale)
+	void Entity::setScale(Coord2f newScale)
 	{
 		scale = newScale;
 		matricesNeedUpdate = true;

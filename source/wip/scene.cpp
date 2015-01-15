@@ -76,8 +76,8 @@ void Scene::render(Ptr<SceneCamera> camera)
 	}
 
 	// Prepare the lights.
-	std::vector<Vector3f> lightPositions;
-	std::vector<Vector3f> lightColors;
+	std::vector<Coord3f> lightPositions;
+	std::vector<Coord3f> lightColors;
 	for(Ptr<SceneLight> light : lights)
 	{
 		lightPositions.push_back(camera->getWorldToCameraTransform().transform(light->getPosition(), 1));
@@ -87,8 +87,8 @@ void Scene::render(Ptr<SceneCamera> camera)
 	{
 		while(lightPositions.size() < SceneModel::maxLights)
 		{
-			lightPositions.push_back(Vector3f(0, 0, 0));
-			lightColors.push_back(Vector3f(0, 0, 0));
+			lightPositions.push_back(Coord3f(0, 0, 0));
+			lightColors.push_back(Coord3f(0, 0, 0));
 		}
 	}
 

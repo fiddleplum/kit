@@ -1,18 +1,18 @@
 #pragma once
 
-#include "vector.h"
+#include "coord.h"
 
 template <unsigned int dim, typename T>
 class Ray
 {
 public:
 	Ray();
-	Ray(Vector<dim, T> start, Vector<dim, T> direction);
+	Ray(Coord<dim, T> start, Coord<dim, T> direction);
 
 	Ray<dim, T> scaled(float factor);  // only affects direction
 
-	Vector<dim, T> start;
-	Vector<dim, T> direction;
+	Coord<dim, T> start;
+	Coord<dim, T> direction;
 };
 
 typedef Ray<2, int> Ray2i;
@@ -28,7 +28,7 @@ Ray<dim, T>::Ray()
 }
 
 template <unsigned int dim, typename T>
-Ray<dim, T>::Ray(Vector<dim, T> newStart, Vector<dim, T> newDirection)
+Ray<dim, T>::Ray(Coord<dim, T> newStart, Coord<dim, T> newDirection)
 {
 	start = newStart;
 	direction = newDirection;

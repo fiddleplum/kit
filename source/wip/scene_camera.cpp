@@ -14,7 +14,7 @@ SceneCamera::SceneCamera()
 	worldToCameraTransformNeedsUpdate = true;
 }
 
-void SceneCamera::setPosition(Vector3f position)
+void SceneCamera::setPosition(Coord3f position)
 {
 	SceneEntity::setPosition(position);
 	worldToCameraTransformNeedsUpdate = true;
@@ -58,7 +58,7 @@ void SceneCamera::setOrthogonal(float newSize)
 	cameraToNdcTransformNeedsUpdate = true;
 }
 
-Vector2f SceneCamera::getNdcPosition(Vector3f positionInWorld) const
+Coord2f SceneCamera::getNdcPosition(Coord3f positionInWorld) const
 {
 	if(worldToCameraTransformNeedsUpdate)
 	{
@@ -71,7 +71,7 @@ Vector2f SceneCamera::getNdcPosition(Vector3f positionInWorld) const
 	return (cameraToNdcTransform * worldToCameraTransform).transform(positionInWorld, 1).shrink<2>();
 }
 
-Ray3f SceneCamera::getRay(Vector2f ndcPosition) const
+Ray3f SceneCamera::getRay(Coord2f ndcPosition) const
 {
 	if(worldToCameraTransformNeedsUpdate)
 	{
@@ -83,7 +83,7 @@ Ray3f SceneCamera::getRay(Vector2f ndcPosition) const
 	}
 	Ray3f ray;
 	ray.start = getPosition();
-	Vector3f endPosition = (cameraToWorldTransform * ndcToCameraTransform).transform(ndcPosition.extend<3>(-1), 1);
+	Coord3f endPosition = (cameraToWorldTransform * ndcToCameraTransform).transform(ndcPosition.extend<3>(-1), 1);
 	ray.direction = endPosition - ray.start;
 	return ray;
 }
@@ -108,7 +108,7 @@ Matrix44f const & SceneCamera::getCameraToNdcTransform() const
 
 void SceneCamera::updateWorldToCamera()
 {
-	Vector3f position = getPosition();
+	Coord3f position = getPosition();
 	Matrix33f rot = getOrientation().getMatrix();
 	worldToCameraTransform(0, 0) = rot(0, 0);
 	worldToCameraTransform(1, 0) = rot(0, 2);

@@ -203,7 +203,7 @@ void showMessage(std::string const & message)
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Information", message.c_str(), nullptr);
 }
 
-void App::_setCursorPosition(int windowId, Vector2i position)
+void App::_setCursorPosition(int windowId, Coord2i position)
 {
 	Ptr<Window> window = getWindowFromId(windowId);
 	if(window.isValid())
@@ -265,7 +265,7 @@ void handleSDLEvent(SDL_Event const & sdlEvent)
 					removeWindow(window);
 					break;
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
-					window->setMaxCoord(Vector2i(sdlEvent.window.data1, sdlEvent.window.data2));
+					window->setMaxCoord(Coord2i(sdlEvent.window.data1, sdlEvent.window.data2));
 					break;
 				case SDL_WINDOWEVENT_LEAVE:
 					window->getCursor()->setWithinWindow(false);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "coord.h"
 #include "range.h"
 
 namespace kit

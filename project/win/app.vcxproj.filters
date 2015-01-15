@@ -1,129 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\source\kit\gui_model.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\gui_element_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\event.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\texture.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\open_gl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\shader.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\gui_sprite_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\gui_container_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\window_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\scene_model_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\scene_entity_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\kit\scene_light_impl.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\source\kit\event.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_element.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_sprite.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_model.cpp" />
+    <ClCompile Include="..\..\source\kit\shader.cpp" />
+    <ClCompile Include="..\..\source\kit\open_gl.cpp" />
+    <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp" />
+    <ClCompile Include="..\..\source\kit\texture.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_container.cpp" />
+    <ClCompile Include="..\..\source\kit\window.cpp" />
+    <ClCompile Include="..\..\source\kit\display.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_layering.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\kit\gui_element.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\gui_model.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\gui_element_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\event.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\texture.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\open_gl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\gl3.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\shader.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\vertex_buffer_object.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\shader_cache.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\object_cache.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\gui_sprite_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\gui_sprite.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\gui_container.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\gui_container_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\window_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\window.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\scene_model_cache.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\scene_model.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\scene_model_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\texture_cache.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\scene_entity_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\scene_entity.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\scene_light.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\kit\scene_light_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="include">
-      <UniqueIdentifier>{5f094c81-d586-44df-91ae-17d1fca845f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source">
-      <UniqueIdentifier>{d2f25415-0da2-42e0-ac36-30d83227b08e}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="..\..\source\kit\event.h" />
+    <ClInclude Include="..\..\source\kit\gui_element.h" />
+    <ClInclude Include="..\..\source\kit\gui_sprite.h" />
+    <ClInclude Include="..\..\source\kit\gui_model.h" />
+    <ClInclude Include="..\..\source\kit\shader_cache.h" />
+    <ClInclude Include="..\..\source\kit\shader.h" />
+    <ClInclude Include="..\..\source\kit\object_cache.h" />
+    <ClInclude Include="..\..\source\kit\open_gl.h" />
+    <ClInclude Include="..\..\source\kit\gl3.h" />
+    <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />
+    <ClInclude Include="..\..\source\kit\texture.h" />
+    <ClInclude Include="..\..\source\kit\texture_cache.h" />
+    <ClInclude Include="..\..\source\kit\gui_container.h" />
+    <ClInclude Include="..\..\source\kit\window.h" />
+    <ClInclude Include="..\..\source\kit\display.h" />
+    <ClInclude Include="..\..\source\kit\gui_layering.h" />
   </ItemGroup>
 </Project>

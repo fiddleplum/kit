@@ -13,7 +13,7 @@ namespace kit
 			_transform = _transformInv = Matrix33f::identity();
 		}
 
-		void Entity::setPosition(Vector2f position)
+		void Entity::setPosition(Coord2f position)
 		{
 			_position = position;
 			_transformsDirty = true;
@@ -50,7 +50,7 @@ namespace kit
 
 		void Entity::updateTransforms()
 		{
-			Vector2f basis [2];
+			Coord2f basis [2];
 			basis[0].set(cos(_orientation), sin(_orientation));
 			basis[1] = basis[0].perp2d();
 

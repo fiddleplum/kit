@@ -16,12 +16,12 @@ Recti GuiButton::getBounds() const
 	return sprite->getBounds();
 }
 
-void GuiButton::setPosition(Vector2i position)
+void GuiButton::setPosition(Coord2i position)
 {
 	sprite->setPosition(position);
 }
 
-bool GuiButton::handleEvent(Event const & event, Vector2i cursorPosition, bool cursorPositionIsValid)
+bool GuiButton::handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)
 {
 	bool cursorIsOver = cursorPositionIsValid && getBounds().containsEx(cursorPosition);
 	if(!hovered)
@@ -120,7 +120,7 @@ bool GuiButton::handleEvent(Event const & event, Vector2i cursorPosition, bool c
 	return sprite->handleEvent(event, cursorPosition, cursorPositionIsValid);
 }
 
-void GuiButton::render(Vector2i windowSize) const
+void GuiButton::render(Coord2i windowSize) const
 {
 	sprite->render(windowSize);
 }
@@ -178,7 +178,7 @@ void GuiButton::setSpriteTextureBoundsFromState()
 		index += 2;
 	}
 	Recti stateTextureBounds = sprite->getTextureBounds();
-	stateTextureBounds.setMinKeepSize(defaultTextureBounds.min + Vector2i(defaultTextureBounds.getSize()[0] * index, 0));
+	stateTextureBounds.setMinKeepSize(defaultTextureBounds.min + Coord2i(defaultTextureBounds.getSize()[0] * index, 0));
 	sprite->setTextureBounds(stateTextureBounds);
 }
 

@@ -19,11 +19,11 @@ public:
 
 	Recti getBounds() const override;
 
-	void setPosition(Vector2i position) override;
+	void setPosition(Coord2i position) override;
 
-	bool handleEvent(Event const & event, Vector2i cursorPosition, bool cursorPositionIsValid) override;
+	bool handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid) override;
 
-	void render(Vector2i windowSize) const override;
+	void render(Coord2i windowSize) const override;
 
 	Ptr<Texture> getTexture() const;
 

@@ -11,46 +11,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\kit\display.cpp" />
     <ClCompile Include="..\..\source\kit\event.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_container_impl.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_element_impl.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_container.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_element.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_layering.cpp" />
     <ClCompile Include="..\..\source\kit\gui_model.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_sprite_impl.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_sprite.cpp" />
     <ClCompile Include="..\..\source\kit\open_gl.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_entity_impl.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_light_impl.cpp" />
-    <ClCompile Include="..\..\source\kit\scene_model_impl.cpp" />
     <ClCompile Include="..\..\source\kit\shader.cpp" />
     <ClCompile Include="..\..\source\kit\texture.cpp" />
     <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp" />
-    <ClCompile Include="..\..\source\kit\window_impl.cpp" />
+    <ClCompile Include="..\..\source\kit\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\kit\event.h" />
-    <ClInclude Include="..\..\include\kit\gui_container.h" />
-    <ClInclude Include="..\..\include\kit\gui_element.h" />
-    <ClInclude Include="..\..\include\kit\gui_sprite.h" />
-    <ClInclude Include="..\..\include\kit\scene_entity.h" />
-    <ClInclude Include="..\..\include\kit\scene_light.h" />
-    <ClInclude Include="..\..\include\kit\scene_model.h" />
-    <ClInclude Include="..\..\include\kit\window.h" />
+    <ClInclude Include="..\..\source\kit\display.h" />
+    <ClInclude Include="..\..\source\kit\event.h" />
     <ClInclude Include="..\..\source\kit\gl3.h" />
-    <ClInclude Include="..\..\source\kit\gui_container_impl.h" />
-    <ClInclude Include="..\..\source\kit\gui_element_impl.h" />
+    <ClInclude Include="..\..\source\kit\gui_container.h" />
+    <ClInclude Include="..\..\source\kit\gui_element.h" />
+    <ClInclude Include="..\..\source\kit\gui_layering.h" />
     <ClInclude Include="..\..\source\kit\gui_model.h" />
-    <ClInclude Include="..\..\source\kit\gui_sprite_impl.h" />
+    <ClInclude Include="..\..\source\kit\gui_sprite.h" />
     <ClInclude Include="..\..\source\kit\object_cache.h" />
     <ClInclude Include="..\..\source\kit\open_gl.h" />
-    <ClInclude Include="..\..\source\kit\scene_entity_impl.h" />
-    <ClInclude Include="..\..\source\kit\scene_light_impl.h" />
-    <ClInclude Include="..\..\source\kit\scene_model_cache.h" />
-    <ClInclude Include="..\..\source\kit\scene_model_impl.h" />
     <ClInclude Include="..\..\source\kit\shader.h" />
     <ClInclude Include="..\..\source\kit\shader_cache.h" />
     <ClInclude Include="..\..\source\kit\texture.h" />
     <ClInclude Include="..\..\source\kit\texture_cache.h" />
     <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />
-    <ClInclude Include="..\..\source\kit\window_impl.h" />
+    <ClInclude Include="..\..\source\kit\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F010F4CB-1864-4292-8A87-D71AE2070920}</ProjectGuid>
@@ -86,12 +76,12 @@
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)..\..\include;$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)..\..\include;$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\..\_external\SDL2\include;$(SolutionDir)..\..\..\_external\SDL2_image\include;$(SolutionDir)..\..\..\_external\SDL2_mixer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

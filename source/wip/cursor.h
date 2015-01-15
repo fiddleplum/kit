@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kit/vector.h>
+#include <kit/coord.h>
 #include <kit/ptr.h>
 #include <map>
 
@@ -13,7 +13,7 @@ public:
 	Cursor();
 
 	// Gets the cursor position relative to the window.
-	Vector2i getPosition();
+	Coord2i getPosition();
 
 	// Returns true if the cursor position is within the window and active.
 	bool isPositionValid();
@@ -25,13 +25,13 @@ public:
 	void setActive(bool state);
 
 	// Called by Window to set the position.
-	void setPosition(Vector2i position);
+	void setPosition(Coord2i position);
 
 	// Called by Window to set the within window state.
 	void setWithinWindow(bool state);
 
 private:
-	Vector2i position;
+	Coord2i position;
 	bool withinWindow;
 	static bool active;
 

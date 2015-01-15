@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../vector.h"
+#include "../coord.h"
 
 namespace kit
 {
@@ -11,8 +11,8 @@ namespace kit
 		public:
 			Body();
 
-			Vector2f const & getVelocity() const { return velocity; }
-			void setVelocity(Vector2f velocity) { this->velocity = velocity; }
+			Coord2f const & getVelocity() const { return velocity; }
+			void setVelocity(Coord2f velocity) { this->velocity = velocity; }
 
 			float const & getAngularVelocity() const { return angularVelocity; }
 			void setAngularVelocity(float angularVelocity) { this->angularVelocity = angularVelocity; }
@@ -26,15 +26,15 @@ namespace kit
 			float getDensity() const { return density; }
 			void setDensity(float density) { this->density = density; }
 
-			Vector2f getAccumForce() const { return accumForce; }
+			Coord2f getAccumForce() const { return accumForce; }
 			float getAccumTorque() const { return accumTorque; }
-			void addForceAtPosition(Vector2f force);
-			void addForce(Vector2f force, Vector2f pointRelativeToFrame);
+			void addForceAtPosition(Coord2f force);
+			void addForce(Coord2f force, Coord2f pointRelativeToFrame);
 			void clearForces();
 
 		private:
 			// Velocities
-			Vector2f velocity;
+			Coord2f velocity;
 			float angularVelocity;
 
 			// Properties
@@ -43,7 +43,7 @@ namespace kit
 			float density; // approx moment of inertia = mass^2 / density
 
 			// Forces
-			Vector2f accumForce;
+			Coord2f accumForce;
 			float accumTorque;
 		};
 	}

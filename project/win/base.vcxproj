@@ -11,21 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\kit\image.h" />
-    <ClInclude Include="..\..\include\kit\interval.h" />
-    <ClInclude Include="..\..\include\kit\matrix.h" />
-    <ClInclude Include="..\..\include\kit\ptr.h" />
-    <ClInclude Include="..\..\include\kit\quaternion.h" />
-    <ClInclude Include="..\..\include\kit\rect.h" />
-    <ClInclude Include="..\..\include\kit\serialize.h" />
-    <ClInclude Include="..\..\include\kit\serialize_std_string.h" />
-    <ClInclude Include="..\..\include\kit\serialize_std_vector.h" />
-    <ClInclude Include="..\..\include\kit\serialize_vector.h" />
-    <ClInclude Include="..\..\include\kit\singleton.h" />
-    <ClInclude Include="..\..\include\kit\vector.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\include\kit\_test.cpp" />
+    <ClInclude Include="..\..\source\kit\box.h" />
+    <ClInclude Include="..\..\source\kit\interval.h" />
+    <ClInclude Include="..\..\source\kit\matrix.h" />
+    <ClInclude Include="..\..\source\kit\object_vector.h" />
+    <ClInclude Include="..\..\source\kit\ptr.h" />
+    <ClInclude Include="..\..\source\kit\quaternion.h" />
+    <ClInclude Include="..\..\source\kit\range.h" />
+    <ClInclude Include="..\..\source\kit\rect.h" />
+    <ClInclude Include="..\..\source\kit\singleton.h" />
+    <ClInclude Include="..\..\source\kit\coord.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0E419CF3-2A77-4913-AA40-7171F49F7E32}</ProjectGuid>
@@ -60,12 +55,10 @@
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\..\libraries\win\</OutDir>
     <IntDir>$(ProjectName)_$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

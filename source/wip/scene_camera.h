@@ -8,7 +8,7 @@ class SceneCamera : public SceneEntity
 public:
 	SceneCamera();
 
-	void setPosition(Vector3f position) override;
+	void setPosition(Coord3f position) override;
 
 	void setOrientation(Quaternionf orientation) override;
 
@@ -22,9 +22,9 @@ public:
 
 	void setOrthogonal(float size);
 
-	Vector2f getNdcPosition(Vector3f worldPosition) const;
+	Coord2f getNdcPosition(Coord3f worldPosition) const;
 
-	Ray3f getRay(Vector2f ndcPosition) const;
+	Ray3f getRay(Coord2f ndcPosition) const;
 
 	Matrix44f const & getWorldToCameraTransform() const;
 

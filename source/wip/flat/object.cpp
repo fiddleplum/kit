@@ -26,7 +26,7 @@ namespace kit
 			_model.destroy();
 		}
 
-		void Object::setPosition(Vector2f position)
+		void Object::setPosition(Coord2f position)
 		{
 			if(_object.isValid())
 			{
@@ -67,7 +67,7 @@ namespace kit
 			_model->addTexture(filename, "diffuse", 0);
 		}
 
-		void Object::setAsSprite(Vector2f offsetFromPosition, Recti textureCoords)
+		void Object::setAsSprite(Coord2f offsetFromPosition, Recti textureCoords)
 		{
 			std::vector<unsigned int> indices(6);
 			indices[0] = 0;
@@ -81,7 +81,7 @@ namespace kit
 			Ptr<Texture> texture = _model->getTexture(0);
 			if(texture.isValid())
 			{
-				Vector2i textureSize = _model->getTexture(0)->getSize();
+				Coord2i textureSize = _model->getTexture(0)->getSize();
 				std::vector<Vertex> vertices(4);
 				vertices[0].position.set(offsetFromPosition[0], offsetFromPosition[1]);
 				vertices[0].textureCoord.set((float)textureCoords.min[0] / textureSize[0], (float)textureCoords.max[1] / textureSize[1]);

@@ -11,10 +11,10 @@ namespace Scene2D
 		Camera();
 		void setAspectRatio(float);
 		void setMaxViewSize(float);
-		virtual void setPosition(Vector2f) override;
+		virtual void setPosition(Coord2f) override;
 		virtual void setOrientation(float) override;
-		Vector2f getAppPosition(Vector2f worldPosition) const;
-		Vector2f getWorldPosition(Vector2f appPosition) const;
+		Coord2f getAppPosition(Coord2f worldPosition) const;
+		Coord2f getWorldPosition(Coord2f appPosition) const;
 		Matrix33f const & getProjection() const;
 		Matrix33f const & getView() const;
 

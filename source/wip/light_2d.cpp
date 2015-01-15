@@ -7,7 +7,7 @@ namespace kit
 		color.set(1, 1, 1);
 	}
 
-	void Light2D::setColor(Vector3f newColor)
+	void Light2D::setColor(Coord3f newColor)
 	{
 		color = newColor;
 	}

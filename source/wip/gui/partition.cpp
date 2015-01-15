@@ -115,7 +115,7 @@ namespace kit
 			}
 
 			// adjust widget sizes
-			Vector2i size = bounds.getSize();
+			Coord2i size = bounds.getSize();
 			for(Panel & panel : panels)
 			{
 				size[axis] = panel.actualSize;

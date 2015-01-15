@@ -39,9 +39,9 @@ namespace kit
 			return (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 		}
 
-		Vector2i getSize()
+		Coord2i getSize()
 		{
-			Vector2i size;
+			Coord2i size;
 			SDL_GetWindowSize(window, &size[0], &size[1]);
 			return size;
 		}
@@ -51,7 +51,7 @@ namespace kit
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		}
 
-		void setWindowed(Vector2i size)
+		void setWindowed(Coord2i size)
 		{
 			SDL_SetWindowFullscreen(window, 0);
 			SDL_SetWindowSize(window, size[0], size[1]);
@@ -356,9 +356,9 @@ namespace kit
 			return gCursorPositionValid;
 		}
 
-		Vector2i getCursorPosition()
+		Coord2i getCursorPosition()
 		{
-			Vector2i position;
+			Coord2i position;
 			SDL_GetMouseState(&position[0], &position[1]);
 			return position;
 		}

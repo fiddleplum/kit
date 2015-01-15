@@ -16,7 +16,7 @@ namespace kit
 
 			Ptr<scene::Camera> getSceneCamera() const { return _camera; }
 
-			void setPosition(Vector2f position) override;
+			void setPosition(Coord2f position) override;
 
 			void setOrientation(float orientation) override;
 
@@ -28,11 +28,11 @@ namespace kit
 
 			virtual void setMaxViewSize(float maxViewSize);
 
-			Vector2f getViewSize() const { return _viewSize; }
+			Coord2f getViewSize() const { return _viewSize; }
 
-			Vector2f getNdcPosition(Vector2f worldPosition) const;
+			Coord2f getNdcPosition(Coord2f worldPosition) const;
 
-			Vector2f getWorldPosition(Vector2f ndcPosition) const;
+			Coord2f getWorldPosition(Coord2f ndcPosition) const;
 
 		private:
 			void updateViewSize();
@@ -41,7 +41,7 @@ namespace kit
 			Ptr<scene::Camera> _camera;
 			float _aspectRatio;
 			float _maxViewSize;
-			Vector2f _viewSize;
+			Coord2f _viewSize;
 		};
 	}
 }

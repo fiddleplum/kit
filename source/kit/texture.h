@@ -1,15 +1,13 @@
 #pragma once
 
-#include <kit/vector.h>
+#include "coord.h"
 #include <string>
-
-class Image;
 
 class Texture
 {
 public:
-	// Creates a new texture from an image.
-	Texture(Image const & image);
+	// Creates a new texture from raw RGBA32 pixels.
+	Texture(void const * pixels, Coord2i size);
 
 	// Creates a texture from a file.
 	Texture(std::string const & filename);
@@ -18,13 +16,13 @@ public:
 	virtual ~Texture();
 
 	// Returns the size of the texture.
-	Vector2i getSize() const;
+	Coord2i getSize() const;
 
-	// Returns the image of the texture.
-	Image getImage();
+	// Returns the raw RGBA32 pixels of the texture.
+	void * getPixels() const;
 
-	// Sets the texture to the image.
-	void setImage(Image const & image);
+	// Sets the texture content from raw RGBA32 pixels.
+	void setPixels(void const * pixels);
 
 	// Activates the texture in the GL slot. Used by Models.
 	void activate(unsigned int slot) const;
@@ -33,7 +31,7 @@ public:
 	static void deactivateRest(unsigned int slot);
 
 private:
-	Vector2i size;
+	Coord2i size;
 	unsigned int id;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/matrix.h>
+#include "coord.h"
+#include "matrix.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -30,25 +30,25 @@ public:
 
 	static void setUniform(int location, float value);
 
-	static void setUniform(int location, Vector2i value);
+	static void setUniform(int location, Coord2i value);
 
-	static void setUniform(int location, Vector2f value);
+	static void setUniform(int location, Coord2f value);
 
-	static void setUniform(int location, Vector3i value);
+	static void setUniform(int location, Coord3i value);
 
-	static void setUniform(int location, Vector3f value);
+	static void setUniform(int location, Coord3f value);
 
-	static void setUniform(int location, Vector4i value);
+	static void setUniform(int location, Coord4i value);
 
-	static void setUniform(int location, Vector4f value);
+	static void setUniform(int location, Coord4f value);
 
 	static void setUniform(int location, Matrix33f const & value);
 
 	static void setUniform(int location, Matrix44f const & value);
 
-	static void setUniform(int location, Vector3f const * value, unsigned int count);
+	static void setUniform(int location, Coord3f const * value, unsigned int count);
 
-	static void setUniform(int location, Vector2f const * value, unsigned int count);
+	static void setUniform(int location, Coord2f const * value, unsigned int count);
 
 private:
 	static unsigned int compileShaderObject(CodeType type, std::string const & code);

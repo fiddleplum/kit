@@ -6,7 +6,7 @@
 #include "vertex_buffer_object.h"
 #include "serialize.h"
 #include "serialize_std_string.h"
-#include "serialize_std_vector.h"
+#include "serialize_std_coord.h"
 #include <kit/string_util.h>
 #include <fstream>
 #include <stdexcept>
@@ -18,7 +18,7 @@ namespace kit
 		z = 0;
 		scale.set(1.0f, 1.0f);
 		color.set(1.0f, 1.0f, 1.0f);
-		numBytesPerVertex = sizeof(Vector2f) + sizeof(Vector2f);
+		numBytesPerVertex = sizeof(Coord2f) + sizeof(Coord2f);
 		vertexBufferObject = new VertexBufferObject();
 		vertexBufferObject->setBytesPerVertex(numBytesPerVertex);
 		updateShader();
@@ -35,7 +35,7 @@ namespace kit
 		sorted = false;
 	}
 
-	void Model2D::setScale(Vector2f newScale)
+	void Model2D::setScale(Coord2f newScale)
 	{
 		scale = newScale;
 	}
@@ -46,7 +46,7 @@ namespace kit
 		sorted = false;
 	}
 
-	void Model2D::setColor(Vector3f newColor)
+	void Model2D::setColor(Coord3f newColor)
 	{
 		color = newColor;
 	}
@@ -200,7 +200,7 @@ namespace kit
 		vertexBufferObject->clearVertexComponents();
 		unsigned int offset = 0;
 		vertexBufferObject->addVertexComponent(shader->getAttributeLocation("aPosition"), offset, 3);
-		offset += sizeof(Vector3f);
+		offset += sizeof(Coord3f);
 		vertexBufferObject->addVertexComponent(shader->getAttributeLocation("aUV"), offset, 2);
 
 		// Update uniform locations

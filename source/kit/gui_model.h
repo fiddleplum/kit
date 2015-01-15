@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kit/vector.h>
-#include <kit/ptr.h>
+#include "coord.h"
+#include "ptr.h"
 #include <string>
 #include <vector>
 
@@ -15,26 +15,38 @@ public:
 	class Vertex
 	{
 	public:
-		Vector2i pos;
-		Vector2i uv;
+		Coord2i pos;
+		Coord2i uv;
 	};
 
+	// Constructor.
 	GuiModel();
 
-	Vector2i getPosition() const;
-	void setPosition(Vector2i position);
+	// Returns the position.
+	Coord2i getPosition() const;
 
+	// Sets the position.
+	void setPosition(Coord2i position);
+
+	// Returns the texture.
 	Ptr<Texture> getTexture() const;
+
+	// Sets the texture.
 	void setTexture(Ptr<Texture> texture);
 
+	// Sets the vertices.
 	void setVertices(std::vector<Vertex> const & vertices);
+
+	// Sets the indices.
 	void setIndices(std::vector<unsigned int> const & indices);
-	void render(Vector2i windowSize);
+
+	// Renders the model.
+	void render(Coord2i windowSize);
 
 private:
 	void updateShader();
 
-	Vector2i position;
+	Coord2i position;
 	Ptr<Texture> texture;
 	Ptr<Shader> shader;
 	OwnPtr<VertexBufferObject> vbo;

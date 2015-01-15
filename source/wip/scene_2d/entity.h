@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Vector.h"
+#include "../Coord.h"
 #include "../Quaternion.h"
 #include "../Matrix.h"
 
@@ -12,23 +12,23 @@ namespace Scene
 		Entity();
 		virtual ~Entity() {}
 
-		Vector2f const & getPosition() const;
-		virtual void setPosition(Vector2f);
+		Coord2f const & getPosition() const;
+		virtual void setPosition(Coord2f);
 
 		float const & getOrientation() const;
 		virtual void setOrientation(float);
 
-		Vector2f const & getScale() const;
-		virtual void setScale(Vector2f);
+		Coord2f const & getScale() const;
+		virtual void setScale(Coord2f);
 
 		Matrix33f const & getMatrix() const;
 		Matrix33f  const & getMatrixInverse() const;
 
 		void updateMatrices();
 
-		Vector2f position;
+		Coord2f position;
 		float orientation;
-		Vector2f scale;
+		Coord2f scale;
 		bool matricesNeedUpdate;
 		Matrix33f matrix;
 		Matrix33f matrixInverse;

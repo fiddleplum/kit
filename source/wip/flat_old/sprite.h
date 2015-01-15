@@ -17,7 +17,7 @@ namespace kit
 			Sprite();
 			~Sprite();
 
-			Vector2f getSize() const;
+			Coord2f getSize() const;
 			void setTexture(std::string const & filename);
 			void setTextureBounds(Recti bounds);
 			Recti getTextureBounds() const;

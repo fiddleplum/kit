@@ -13,10 +13,10 @@ public:
 	Recti getBounds() const override;
 
 	// Implements parent.
-	void setPosition(Vector2i position) override;
+	void setPosition(Coord2i position) override;
 
 	// Implements parent.
-	void render(Vector2i windowSize) const override;
+	void render(Coord2i windowSize) const override;
 
 	// Get the attached camera.
 	Ptr<SceneCamera> getCamera() const;

@@ -11,7 +11,7 @@ GuiModel::GuiModel()
 
 	vbo.setNew();
 	vbo->addVertexComponent(shader->getAttributeLocation("aPos"), 0, 2);
-	vbo->addVertexComponent(shader->getAttributeLocation("aUv"), sizeof(Vector2f), 2);
+	vbo->addVertexComponent(shader->getAttributeLocation("aUv"), sizeof(Coord2f), 2);
 	vbo->setBytesPerVertex(sizeof(Vertex));
 	vbo->setNumIndicesPerPrimitive(3);
 
@@ -21,12 +21,12 @@ GuiModel::GuiModel()
 	samplerLocation = shader->getUniformLocation("uSampler");
 }
 
-Vector2i GuiModel::getPosition() const
+Coord2i GuiModel::getPosition() const
 {
 	return position;
 }
 
-void GuiModel::setPosition(Vector2i position)
+void GuiModel::setPosition(Coord2i position)
 {
 	this->position = position;
 }
@@ -51,7 +51,7 @@ void GuiModel::setIndices(std::vector<unsigned int> const & indices)
 	vbo->setIndices(&indices[0], indices.size());
 }
 
-void GuiModel::render(Vector2i windowSize)
+void GuiModel::render(Coord2i windowSize)
 {
 	shader->activate();
 	shader->setUniform(windowSizeLocation, windowSize);

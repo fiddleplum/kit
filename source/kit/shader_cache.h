@@ -2,7 +2,7 @@
 
 #include "shader.h"
 #include "object_cache.h"
-#include <kit/singleton.h>
+#include "singleton.h"
 
 class ShaderCache : public Singleton<ObjectCache<Shader>>
 {

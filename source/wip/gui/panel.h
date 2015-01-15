@@ -14,7 +14,7 @@ namespace gui
 		void setBounds(Recti bounds);
 
 		// Implements Widget::render.
-		void render(Vector2i windowSize) const override;
+		void render(Coord2i windowSize) const override;
 
 	protected:
 		// Updates the positions/sizes of the child widgets.

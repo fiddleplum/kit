@@ -78,32 +78,32 @@ void Shader::setUniform(int location, float value)
 	glUniform1f(location, value);
 }
 
-void Shader::setUniform(int location, Vector2i value)
+void Shader::setUniform(int location, Coord2i value)
 {
 	glUniform2iv(location, 1, value.ptr());
 }
 
-void Shader::setUniform(int location, Vector2f value)
+void Shader::setUniform(int location, Coord2f value)
 {
 	glUniform2fv(location, 1, value.ptr());
 }
 
-void Shader::setUniform(int location, Vector3i value)
+void Shader::setUniform(int location, Coord3i value)
 {
 	glUniform3iv(location, 1, value.ptr());
 }
 
-void Shader::setUniform(int location, Vector3f value)
+void Shader::setUniform(int location, Coord3f value)
 {
 	glUniform3fv(location, 1, value.ptr());
 }
 
-void Shader::setUniform(int location, Vector4i value)
+void Shader::setUniform(int location, Coord4i value)
 {
 	glUniform4iv(location, 1, value.ptr());
 }
 
-void Shader::setUniform(int location, Vector4f value)
+void Shader::setUniform(int location, Coord4f value)
 {
 	glUniform4fv(location, 1, value.ptr());
 }
@@ -118,12 +118,12 @@ void Shader::setUniform(int location, Matrix44f const & value)
 	glUniformMatrix4fv(location, 1, false, value.ptr());
 }
 
-void Shader::setUniform(int location, Vector2f const * value, unsigned int count)
+void Shader::setUniform(int location, Coord2f const * value, unsigned int count)
 {
 	glUniform2fv(location, count, (GLfloat const *)value);
 }
 
-void Shader::setUniform(int location, Vector3f const * value, unsigned int count)
+void Shader::setUniform(int location, Coord3f const * value, unsigned int count)
 {
 	glUniform3fv(location, count, (GLfloat const *)value);
 }

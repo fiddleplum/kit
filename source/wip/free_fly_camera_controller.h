@@ -1,7 +1,7 @@
 #pragma once
 
 #include "controller.h"
-#include <kit/vector.h>
+#include <kit/coord.h>
 #include <memory>
 
 namespace kit
@@ -29,7 +29,7 @@ namespace kit
 		std::shared_ptr<Camera> camera;
 		float lookSensitivity;
 		float moveSensitivity;
-		Vector3i moving;
+		Coord3i moving;
 		float yaw;
 		float pitch;
 		bool looking;

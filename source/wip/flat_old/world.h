@@ -59,7 +59,7 @@ namespace kit
 			std::function<void ()> impactFunctions [Shape::NumTypes][Shape::NumTypes];
 		};
 
-		//Collision getCollision(std::shared_ptr<Polygon> polygon1, Vector2f const & offset1, std::shared_ptr<Polygon> polygon2, Vector2f const & offset2);
+		//Collision getCollision(std::shared_ptr<Polygon> polygon1, Coord2f const & offset1, std::shared_ptr<Polygon> polygon2, Coord2f const & offset2);
 
 		//Intersection getIntersection(std::shared_ptr<Polygon> polygon1, std::shared_ptr<Polygon> polygon2);
 	}

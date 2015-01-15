@@ -1,54 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="include">
-      <UniqueIdentifier>{bb008ac6-933d-4506-929d-433762937445}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source">
-      <UniqueIdentifier>{566240eb-7684-49f3-8d60-6453baba8213}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\include\kit\vector.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\ptr.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\interval.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\rect.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\image.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\matrix.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\singleton.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\serialize_std_vector.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\serialize_vector.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\serialize.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\serialize_std_string.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\kit\quaternion.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\include\kit\_test.cpp">
-      <Filter>include</Filter>
-    </ClCompile>
+    <ClInclude Include="..\..\source\kit\quaternion.h" />
+    <ClInclude Include="..\..\source\kit\matrix.h" />
+    <ClInclude Include="..\..\source\kit\range.h" />
+    <ClInclude Include="..\..\source\kit\rect.h" />
+    <ClInclude Include="..\..\source\kit\box.h" />
+    <ClInclude Include="..\..\source\kit\interval.h" />
+    <ClInclude Include="..\..\source\kit\ptr.h" />
+    <ClInclude Include="..\..\source\kit\singleton.h" />
+    <ClInclude Include="..\..\source\kit\coord.h" />
+    <ClInclude Include="..\..\source\kit\object_vector.h" />
   </ItemGroup>
 </Project>

@@ -135,7 +135,7 @@ namespace kit
 			glClearDepth(0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Vector2i windowSize = getSize();
+			Coord2i windowSize = getSize();
 			glViewport(0, 0, windowSize[0], windowSize[1]);
 			if(widget != nullptr)
 			{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kit/singleton.h>
+#include "singleton.h"
 #include "texture.h"
 #include "object_cache.h"
 

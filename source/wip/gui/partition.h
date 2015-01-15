@@ -32,8 +32,8 @@ namespace kit
 
 			// Inherited from Widget.
 			virtual Recti getBounds() const override;
-			virtual void setPosition(Vector2i) override;
-			virtual void setMaxSize(Vector2i) override;
+			virtual void setPosition(Coord2i) override;
+			virtual void setMaxSize(Coord2i) override;
 			virtual void handleEvent(Event const & event) override;
 			virtual void render() override;
 

@@ -5,7 +5,7 @@ OwnPtr<ObjectCache<Texture>> textureCache;
 OwnPtr<ObjectCache<Shader>> shaderCache;
 OwnPtr<ObjectCache<SceneModel>> modelCache;
 
-Ptr<Texture> ResourceCache::getTexture(std::string const & name, Vector2i size)
+Ptr<Texture> ResourceCache::getTexture(std::string const & name, Coord2i size)
 {
 	return resourceCache->textureCache->get(name, size);
 }

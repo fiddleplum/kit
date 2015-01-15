@@ -8,7 +8,7 @@ namespace kit
 	{
 		lookSensitivity = .05f;
 		moveSensitivity = 1.0f;
-		moving = Vector3i::zero();
+		moving = Coord3i::zero();
 		yaw = 0;
 		pitch = 0;
 		looking = false;

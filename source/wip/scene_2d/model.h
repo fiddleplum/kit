@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "../Vector.h"
+#include "../Coord.h"
 #include <vector>
 #include <istream>
 #include <string>
@@ -40,13 +40,13 @@ namespace Scene
 
 		void clearTextures();
 
-		void setColor(Vector3f const & emitColor, Vector4f const & diffuseColor);
+		void setColor(Coord3f const & emitColor, Coord4f const & diffuseColor);
 
 		void setSpecular(unsigned int level, float strength);
 		
 		// For use with RenderEngine
 	
-		void render(std::shared_ptr<Camera const> camera, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const;
+		void render(std::shared_ptr<Camera const> camera, std::vector<Coord3f> const & lightPositions, std::vector<Coord3f> const & lightColors) const;
 
 		bool needsResorting() const;
 
@@ -71,9 +71,9 @@ namespace Scene
 
 		void updateShader();
 
-		Vector3f mEmitColor;
+		Coord3f mEmitColor;
 		int mEmitColorLocation;
-		Vector4f mDiffuseColor;
+		Coord4f mDiffuseColor;
 		int mDiffuseColorLocation;
 		unsigned int mSpecularLevel;
 		int mSpecularLevelLocation;

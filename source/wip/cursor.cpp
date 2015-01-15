@@ -1,7 +1,7 @@
 #include "cursor.h"
 #include <SDL.h>
 
-Vector2i Cursor::getPosition()
+Coord2i Cursor::getPosition()
 {
 	return position;
 }
@@ -29,7 +29,7 @@ Cursor::Cursor()
 	active = true;
 }
 
-void Cursor::setPosition(Vector2i position)
+void Cursor::setPosition(Coord2i position)
 {
 	this->position = position;
 }

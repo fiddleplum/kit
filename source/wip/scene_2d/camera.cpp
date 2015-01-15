@@ -25,7 +25,7 @@ namespace Scene2D
 		projectionNeedsUpdate = true;
 	}
 
-	void Camera::setPosition(Vector2f position)
+	void Camera::setPosition(Coord2f position)
 	{
 		Entity::setPosition(position);
 		viewNeedsUpdate = true;
@@ -37,7 +37,7 @@ namespace Scene2D
 		viewNeedsUpdate = true;
 	}
 
-	Vector2f Camera::getAppPosition(Vector2f worldPosition) const
+	Coord2f Camera::getAppPosition(Coord2f worldPosition) const
 	{
 		if(projectionNeedsUpdate)
 		{
@@ -50,7 +50,7 @@ namespace Scene2D
 		return (projection * view).transform(worldPosition, 1);
 	}
 
-	Vector2f Camera::getWorldPosition(Vector2f appPosition) const
+	Coord2f Camera::getWorldPosition(Coord2f appPosition) const
 	{
 		if(projectionNeedsUpdate)
 		{
@@ -107,7 +107,7 @@ namespace Scene2D
 
 	void Camera::updateView()
 	{
-		Vector2f position = getPosition();
+		Coord2f position = getPosition();
 		float cosOrientation = std::cos(getOrientation());
 		float sinOrientation = std::sin(getOrientation());
 		view(0, 0) = cosOrientation;

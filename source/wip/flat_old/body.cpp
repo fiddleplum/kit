@@ -13,12 +13,12 @@ namespace kit
 			accumTorque = 0;
 		}
 
-		void Body::addForceAtPosition(Vector2f force)
+		void Body::addForceAtPosition(Coord2f force)
 		{
 			accumForce += force;
 		}
 
-		void Body::addForce(Vector2f force, Vector2f pointRelativeToFrame)
+		void Body::addForce(Coord2f force, Coord2f pointRelativeToFrame)
 		{
 			accumForce += force;
 			accumTorque += pointRelativeToFrame.cross2d(force);

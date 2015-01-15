@@ -1,7 +1,7 @@
 #pragma once
 
 #include "resource_manager.h"
-#include <kit/vector.h>
+#include <kit/coord.h>
 #include <kit/event.h>
 #include <string>
 #include <vector>
@@ -53,13 +53,13 @@ namespace kit
 		bool isFullscreen();
 
 		/// Returns the size of the window, which is the resolution of the screen if fullscreen.
-		Vector2i getSize();
+		Coord2i getSize();
 
 		/// Sets the application to be fullscreen.
 		void setFullscreen();
 
 		/// If it was in fullscreen, exists fullscreen. Sets the window size. The window starts in 800x600 windowed mode.
-		void setWindowed(Vector2i size);
+		void setWindowed(Coord2i size);
 
 		/******* Widgets *******/
 
@@ -78,7 +78,7 @@ namespace kit
 		bool hasValidCursorPosition();
 	
 		/// Returns the cursor position. If the cursor does not have a valid position, it fails an assertion.
-		Vector2i getCursorPosition();
+		Coord2i getCursorPosition();
 	
 		/// Returns true if the system cursor is visible.
 		bool isCursorVisible();

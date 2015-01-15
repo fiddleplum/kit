@@ -297,14 +297,14 @@ std::vector<InputEvent> InputSystem::pollEvents()
 	return polledEvents;
 }
 
-Vector2i InputSystem::getCursorPosition(SDL_WindowEventID windowId)
+Coord2i InputSystem::getCursorPosition(SDL_WindowEventID windowId)
 {
 	auto it = cursorPositions.find(windowId);
 	if(it != cursorPositions.end())
 	{
 		return it->second;
 	}
-	return Vector2i(0, 0);
+	return Coord2i(0, 0);
 }
 
 InputSystem::Controller::Controller(int deviceIndex)

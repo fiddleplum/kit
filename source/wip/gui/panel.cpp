@@ -14,7 +14,7 @@ namespace gui
 		updateWidgetBounds();
 	}
 
-	void Panel::render(Vector2i windowSize) const
+	void Panel::render(Coord2i windowSize) const
 	{
 		glScissorPush(bounds.min[0], bounds.min[1], bounds.getSize()[0], bounds.getSize()[1]);
 		WidgetContainer::render(windowSize);

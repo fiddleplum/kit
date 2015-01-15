@@ -10,7 +10,7 @@ Recti GuiViewport::getBounds() const
 	return bounds;
 }
 
-void GuiViewport::setPosition(Vector2i position)
+void GuiViewport::setPosition(Coord2i position)
 {
 	bounds.setMinKeepSize(position);
 }
@@ -39,7 +39,7 @@ void GuiViewport::setScene(Ptr<Scene> scene)
 	this->scene = scene;
 }
 
-void GuiViewport::render(Vector2i windowSize) const
+void GuiViewport::render(Coord2i windowSize) const
 {
 	if(!camera.isValid() || !scene.isValid())
 	{

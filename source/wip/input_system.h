@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "coord.h"
 #include "singleton.h"
 #include <vector>
 #include <map>
@@ -28,7 +28,7 @@ public:
 	std::string pollText();
 
 	// Internal. Retrieves the cursor position for a window given its SDL id. Returns (0, 0) for invalid windows.
-	Vector2i getCursorPosition(SDL_WindowEventID windowId);
+	Coord2i getCursorPosition(SDL_WindowEventID windowId);
 
 private:
 	class Controller
@@ -44,7 +44,7 @@ private:
 
 	std::vector<InputEvent> events; // Stores the events since the last event poll.
 	std::string text; // Stores the text since the last text poll.
-	std::map<SDL_WindowEventID, Vector2i> cursorPositions; // The cursor position of each SDL window.
+	std::map<SDL_WindowEventID, Coord2i> cursorPositions; // The cursor position of each SDL window.
 	std::vector<Controller *> controllers; // Controllers currently connected.
 	std::map<SDL_JoystickID, int> sdlJoystickToControllerMapping; // Mapping from the SDL joystick to the controller indices.
 };

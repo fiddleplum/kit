@@ -6,7 +6,7 @@
 #include "../VertexBufferObject.h"
 #include "../Serialize.h"
 #include "../SerializeStdString.h"
-#include "../SerializeStdVector.h"
+#include "../SerializeStdCoord.h"
 #include "../StringUtil.h"
 #include <fstream>
 #include <stdexcept>
@@ -19,12 +19,12 @@ namespace Scene
 		mVertexHasTangent = false;
 		mVertexHasColor = false;
 		mNumVertexUVs = 0;
-		mEmitColor = Vector3f::zero();
-		mDiffuseColor = Vector4f(1, 1, 1, 1);
+		mEmitColor = Coord3f::zero();
+		mDiffuseColor = Coord4f(1, 1, 1, 1);
 		mSpecularLevel = 1;
 		mSpecularStrength = 0;
 		mVertexBufferObject = new VertexBufferObject();
-		mVertexBufferObject->setBytesPerVertex(sizeof(Vector3f));
+		mVertexBufferObject->setBytesPerVertex(sizeof(Coord3f));
 		updateShader();
 		mNeedsResorting = true;
 	}
@@ -39,11 +39,11 @@ namespace Scene
 		std::fstream in (filename, std::fstream::in | std::fstream::binary);
 
 		// Material
-		Vector3f emitColor;
+		Coord3f emitColor;
 		deserialize(in, emitColor[0]);
 		deserialize(in, emitColor[1]);
 		deserialize(in, emitColor[2]);
-		Vector4f diffuseColor;
+		Coord4f diffuseColor;
 		deserialize(in, diffuseColor[0]);
 		deserialize(in, diffuseColor[1]);
 		deserialize(in, diffuseColor[2]);
@@ -100,24 +100,24 @@ namespace Scene
 
 	void Model::setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int numVertexUVs)
 	{
-		mNumBytesPerVertex = sizeof(Vector3f); // position
+		mNumBytesPerVertex = sizeof(Coord3f); // position
 		mVertexHasNormal = hasNormal;
 		if(mVertexHasNormal)
 		{
-			mNumBytesPerVertex += sizeof(Vector3f);
+			mNumBytesPerVertex += sizeof(Coord3f);
 		}
 		mVertexHasTangent = hasTangent;
 		if(mVertexHasTangent)
 		{
-			mNumBytesPerVertex += sizeof(Vector3f);
+			mNumBytesPerVertex += sizeof(Coord3f);
 		}
 		mVertexHasColor = hasColor;
 		if(mVertexHasColor)
 		{
-			mNumBytesPerVertex += sizeof(Vector4f);
+			mNumBytesPerVertex += sizeof(Coord4f);
 		}
 		mNumVertexUVs = numVertexUVs;
-		mNumBytesPerVertex += numVertexUVs * 2 * sizeof(Vector2f);
+		mNumBytesPerVertex += numVertexUVs * 2 * sizeof(Coord2f);
 		mVertexBufferObject->setBytesPerVertex(mNumBytesPerVertex);
 		updateShader();
 	}
@@ -154,7 +154,7 @@ namespace Scene
 		updateShader();
 	}
 
-	void Model::setColor(Vector3f const & emitColor, Vector4f const & diffuseColor)
+	void Model::setColor(Coord3f const & emitColor, Coord4f const & diffuseColor)
 	{
 		mEmitColor = emitColor;
 		mDiffuseColor = diffuseColor;
@@ -166,7 +166,7 @@ namespace Scene
 		mSpecularStrength = strength;
 	}
 
-	void Model::render(std::shared_ptr<Camera const> camera, std::vector<Vector3f> const & lightPositions, std::vector<Vector3f> const & lightColors) const
+	void Model::render(std::shared_ptr<Camera const> camera, std::vector<Coord3f> const & lightPositions, std::vector<Coord3f> const & lightColors) const
 	{
 		// The render engine handles shader and texture activation.
 		mShader->activate();
@@ -395,25 +395,25 @@ namespace Scene
 		mVertexBufferObject->clearVertexComponents();
 		unsigned int offset = 0;
 		mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aPosition"), offset, 3);
-		offset += sizeof(Vector3f);
+		offset += sizeof(Coord3f);
 		if(mVertexHasNormal)
 		{
 			mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aNormal"), offset, 3);
-			offset += sizeof(Vector3f);
+			offset += sizeof(Coord3f);
 		}
 		if(mVertexHasTangent)
 		{
 			mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aTangent"), offset, 3);
-			offset += sizeof(Vector3f);
+			offset += sizeof(Coord3f);
 		}
 		if(mVertexHasColor)
 		{
 			mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aColor"), offset, 4);
-			offset += sizeof(Vector4f);
+			offset += sizeof(Coord4f);
 		}
 		for(TextureInfo const & textureInfo : mTextureInfos)
 		{
-			mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aUV" + std::to_string(textureInfo.uvIndex)), offset + textureInfo.uvIndex * sizeof(Vector2f), 2);
+			mVertexBufferObject->addVertexComponent(mShader->getAttributeLocation("aUV" + std::to_string(textureInfo.uvIndex)), offset + textureInfo.uvIndex * sizeof(Coord2f), 2);
 		}
 		mVertexBufferObject->setNumIndicesPerPrimitive(3);
 

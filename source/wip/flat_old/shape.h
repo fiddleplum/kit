@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../vector.h"
+#include "../coord.h"
 #include <vector>
 
 namespace kit
@@ -20,7 +20,7 @@ namespace kit
 		public:
 			Circle() { type = Shape::Circle; }
 
-			Vector2f center;
+			Coord2f center;
 			float radius;
 		};
 
@@ -38,7 +38,7 @@ namespace kit
 		public:
 			Polygon() { type = Shape::Polygon; }
 
-			std::vector<Vector2f> vertices;
+			std::vector<Coord2f> vertices;
 		};
 	}
 }
