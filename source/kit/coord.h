@@ -168,7 +168,7 @@ Coord<dim, T>::Coord()
 }
 
 template <unsigned int dim, typename T> template <typename Y>
-Coord<dim, T>::Coord(Coord<dim, Y> v)
+Coord<dim, T>::Coord(Coord<dim, Y> a)
 {
 	assert(dim > 0);
 	*this = a;

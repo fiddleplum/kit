@@ -12,7 +12,6 @@
     <ClCompile Include="..\..\source\kit\gui_container.cpp" />
     <ClCompile Include="..\..\source\kit\window.cpp" />
     <ClCompile Include="..\..\source\kit\display.cpp" />
-    <ClCompile Include="..\..\source\kit\gui_layering.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
@@ -30,6 +29,5 @@
     <ClInclude Include="..\..\source\kit\gui_container.h" />
     <ClInclude Include="..\..\source\kit\window.h" />
     <ClInclude Include="..\..\source\kit\display.h" />
-    <ClInclude Include="..\..\source\kit\gui_layering.h" />
   </ItemGroup>
 </Project>

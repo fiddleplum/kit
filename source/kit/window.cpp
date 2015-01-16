@@ -9,22 +9,28 @@
 Window::Window(char const * title)
 {
 	cursorPositionIsValid = false;
-
 	sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	if(sdlWindow == nullptr)
 	{
 		throw std::runtime_error("Failed to create the window.");
 	}
+	root.createNew();
 }
 
 Window::~Window()
 {
+	root.setNull();
 	SDL_DestroyWindow(sdlWindow);
 }
 
 void Window::setTitle(char const * title)
 {
 	SDL_SetWindowTitle(sdlWindow, title);
+}
+
+Ptr<GuiContainer> Window::getRoot()
+{
+	return root;
 }
 
 void Window::setWindowed()
@@ -90,18 +96,12 @@ int Window::getDisplay() const
 
 void Window::handleResize(Coord2i size)
 {
-	if(rootElement)
-	{
-		rootElement->s
-	}
+	root->setSize(size);
 }
 
 void Window::handleEvent(Event const & event)
 {
-	if(rootElement)
-	{
-		rootElement->handleEvent(event, cursorPosition, cursorPositionIsValid);
-	}
+	root->handleEvent(event, cursorPosition, cursorPositionIsValid);
 }
 
 void Window::render(SDL_GLContext glContext) const
@@ -122,9 +122,9 @@ void Window::render(SDL_GLContext glContext) const
 	Coord2i windowSize = getSize();
 	glViewport(0, 0, windowSize[0], windowSize[1]);
 
-	if(rootElement)
+	if(root)
 	{
-		rootElement->render(windowSize);
+		root->render(windowSize);
 	}
 
 	SDL_GL_SwapWindow(sdlWindow);

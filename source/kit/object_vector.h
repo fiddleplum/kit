@@ -14,6 +14,12 @@ public:
 	// Initializer list constructor.
 	ObjectVector(std::initializer_list<T> il);
 
+	// Finds an element based on another type.
+	template <typename Y> T & find(Y const & item);
+
+	// Finds an element based on another type.
+	template <typename Y> T const & find(Y const & item) const;
+
 	// Adds an item at the end.
 	void add(T const & item);
 
@@ -21,7 +27,7 @@ public:
 	template <typename Y> void insertBefore(Y const & beforeItem, T const & item);
 
 	// Removes an item.
-	template <typename Y> void remove(Y const & item);
+	template <typename Y> T const & remove(Y const & item);
 
 	// Removes all items.
 	void clear();
@@ -55,10 +61,36 @@ ObjectVector<T>::ObjectVector()
 template <typename T>
 ObjectVector<T>::ObjectVector(std::initializer_list<T> il)
 {
-	for(auto item : il)
+	for(auto const & item : il)
 	{
 		items.push_back(item);
 	}
+}
+
+template <typename T> template <typename Y>
+T & ObjectVector<T>::find(Y const & item)
+{
+	for(auto & t : items)
+	{
+		if(t == item)
+		{
+			return t;
+		}
+	}
+	throw std::exception();
+}
+
+template <typename T> template <typename Y>
+T const & ObjectVector<T>::find(Y const & item) const
+{
+	for(auto const & t : items)
+	{
+		if(t == item)
+		{
+			return t;
+		}
+	}
+	throw std::exception();
 }
 
 template <typename T>
@@ -82,14 +114,14 @@ void ObjectVector<T>::insertBefore(Y const & beforeItem, T const & item)
 }
 
 template <typename T> template <typename Y>
-void ObjectVector<T>::remove(Y const & item)
+T const & ObjectVector<T>::remove(Y const & item)
 {
 	for(auto it = items.begin(); it != items.end(); ++it)
 	{
 		if(*it == item)
 		{
 			removes.insert(it);
-			return;
+			return *it;
 		}
 	}
 	throw std::exception();

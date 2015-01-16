@@ -2,41 +2,71 @@
 
 #include "gui_element.h"
 #include "ptr.h"
-#include <vector>
+#include <map>
+#include <list>
+#include <functional>
 
-class GuiContainer
+class GuiContainer : public GuiElement
 {
 public:
+	Recti getBounds() const override;
+
+	void setPosition(Coord2i position) override;
+
+	void setSize(Coord2i size) override;
+
 	template <typename T> Ptr<T> addElement();
 
-	void removeElement(Ptr<GuiElement> element);
+	void removeElement(Ptr<GuiElement> const & element);
 
-	void moveElementToFront(Ptr<GuiElement> element);
+	void moveElementToFront(Ptr<GuiElement> const & element);
 
-	bool isElementActive(Ptr<GuiElement> element) const;
+	void setElementActive(Ptr<GuiElement> const & element, bool active);
 
-	void setElementActive(Ptr<GuiElement> element, bool active);
+	void setElementPosition(Ptr<GuiElement> const & element, Coord2f fractionOfElement, Coord2f fractionOfContainer, Coord2i offset);
 
-	bool handleEventForElements(Recti bounds, Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid);
+	void setElementSize(Ptr<GuiElement> const & element, Coord2f fractionOfContainer, Coord2i offset);
 
-	void renderElements(Recti bounds, Coord2i windowSize) const;
+	void setContainerEventHandler(std::function<bool (Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)> handler);
+
+	bool handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid) override;
+
+	void render(Coord2i windowSize) const override;
 
 private:
-	struct ElementInfo
+	class ElementInfo
 	{
+	public:
 		OwnPtr<GuiElement> element;
 		bool active;
+		Coord2f positionFractionOfElement;
+		Coord2f positionFractionOfContainer;
+		Coord2i positionOffset;
+		Coord2f sizeFractionOfContainer;
+		Coord2i sizeOffset;
 	};
 
-	std::vector<ElementInfo> elementInfos;
-	bool breakLoop;
+	std::list<ElementInfo>::iterator find(Ptr<GuiElement> const & element) const;
+	void updateElementBounds(ElementInfo const & info);
+
+	Recti bounds;
+	std::list<ElementInfo> infos;
+	std::map<Ptr<GuiElement>, std::list<ElementInfo>::iterator> lookup;
+	std::function<bool (Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)> eventHandler;
 };
 
 template <typename T> Ptr<T> GuiContainer::addElement()
 {
-	auto element = OwnPtr<T>::createNew();
-	elementInfos.push_back({element, true});
-	breakLoop = true;
-	return element;
+	ElementInfo info;
+	info.element = OwnPtr<T>::createNew();
+	info.active = true;
+	info.sizeFraction = {1, 1};
+	info.positionFractionOfElement = {0, 0};
+	info.positionFractionOfContainer = {0, 0};
+	info.positionOffset = {0, 0};
+	auto it = elements.insert(elements.end(), info);
+	lookup[info.element] = it;
+	updateElementBounds(info);
+	return info.element;
 }
 

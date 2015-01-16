@@ -3,7 +3,7 @@
 #include "coord.h"
 #include "event.h"
 #include "ptr.h"
-#include "gui_element.h"
+#include "gui_container.h"
 #include <functional>
 #include <vector>
 
@@ -43,7 +43,7 @@ public:
 
 	void setTitle(char const * title);
 
-	template <typename T> Ptr<T> setRootElement();
+	Ptr<GuiContainer> getRoot();
 
 	void setWindowed();
 
@@ -71,16 +71,8 @@ public:
 
 private:
 	SDL_Window * sdlWindow;
-	OwnPtr<GuiElement> rootElement;
+	OwnPtr<GuiContainer> root;
 	Coord2i cursorPosition;
 	bool cursorPositionIsValid;
-
-
 };
-
-template <typename T> Ptr<T> Window::setRootElement()
-{
-	rootElement.setNew<T>();
-	return rootElement;
-}
 
