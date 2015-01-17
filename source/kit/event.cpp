@@ -10,46 +10,6 @@ bool Event::is(Event::Type type) const
 	return this->type == type;
 }
 
-ShutdownEvent::ShutdownEvent()
-	: Event(Shutdown)
-{
-}
-
-std::string ShutdownEvent::toString() const
-{
-	return "Shutdown";
-}
-
-ResizeEvent::ResizeEvent()
-	: Event(Resize)
-{
-}
-
-std::string ResizeEvent::toString() const
-{
-	return "Resize: " + std::to_string(size[0]) + ", " + std::to_string(size[1]);
-}
-
-UpdateEvent::UpdateEvent()
-	: Event(Update)
-{
-}
-
-std::string UpdateEvent::toString() const
-{
-	return "Update: " + std::to_string(dt) + " secs";
-}
-
-PreRenderUpdateEvent::PreRenderUpdateEvent()
-	: Event(PreRenderUpdate)
-{
-}
-
-std::string PreRenderUpdateEvent::toString() const
-{
-	return "PreRenderUpdate";
-}
-
 KeyboardEvent::KeyboardEvent()
 	: Event(Keyboard)
 {

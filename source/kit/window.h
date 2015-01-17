@@ -6,6 +6,7 @@
 #include "gui_container.h"
 #include <functional>
 #include <vector>
+#include <string>
 
 // QUESTION:
 /*
@@ -37,11 +38,11 @@ typedef void * SDL_GLContext;
 class Window
 {
 public:
-	Window(char const * title);
+	Window(std::string const & title);
 
-	virtual ~Window();
+	~Window();
 
-	void setTitle(char const * title);
+	void setTitle(std::string const & title);
 
 	Ptr<GuiContainer> getRoot();
 
@@ -57,17 +58,29 @@ public:
 
 	int getDisplay() const;
 
+	// Called by App when the window is resized.
 	void handleResize(Coord2i size);
 
+	// Called by App when an event comes in.
 	void handleEvent(Event const & event);
 
+	// Called by App to update the window gui elements.
+	void update(float dt);
+
+	// Called by App to update the window elements just before the render.
+	void preRenderUpdate();
+
+	// Called by App to render the window.
 	void render(SDL_GLContext glContext) const;
 
+	// Called by App to set the position of the cursor relative to the window.
 	void setCursorPosition(Coord2i position);
 
+	// Called by App to set whether or not the cursor is within the window.
 	void setCursorWithinWindow(bool state);
 
-	void setSizeChangedHandler(std::function<void(Coord2i)> handler);
+	// Called by App to get the SDL handle for the window.
+	SDL_Window * getSDLWindow() const;
 
 private:
 	SDL_Window * sdlWindow;

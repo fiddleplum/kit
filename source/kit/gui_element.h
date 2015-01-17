@@ -27,13 +27,19 @@ public:
 	// Sets the keyboard focus.
 	virtual void setFocus(bool value);
 
-	// Handles an event with the associated window.
+	// Called by GuiContainer to handle an event.
 	// The cursorPosition is relative to the parent window.
 	// If the cursor position is inside the window and not blocked by another widget, cursorPositionIsValid is true.
 	// Returns true if the event is consumed.
 	virtual bool handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid) = 0;
 
-	// Renders the element.
+	// Called by GuiContainer to update the element every frame.
+	virtual void update(float dt) {}
+
+	// Called by GuiContainer to update the element after a regular update but before the render. Good for things that keep track of scene elements.
+	virtual void preRenderUpdate() {}
+
+	// Called by GuiContainer to render the element.
 	virtual void render(Coord2i windowSize) const = 0;
 
 protected:

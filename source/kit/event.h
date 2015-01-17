@@ -9,10 +9,6 @@ public:
 	// All of the possible types of events.
 	enum Type
 	{
-		Shutdown, // needed?
-		Resize, // needed?
-		Update, // needed?
-		PreRenderUpdate, // needed?
 		Keyboard,
 		Text,
 		MouseButton,
@@ -39,42 +35,6 @@ public:
 
 private:
 	Type type;
-};
-
-class ShutdownEvent : public Event
-{
-public:
-	ShutdownEvent();
-
-	virtual std::string toString() const override;
-};
-
-class ResizeEvent : public Event
-{
-public:
-	ResizeEvent();
-
-	virtual std::string toString() const override;
-
-	Coord2i size;
-};
-
-class UpdateEvent : public Event
-{
-public:
-	UpdateEvent();
-
-	virtual std::string toString() const override;
-
-	float dt;
-};
-
-class PreRenderUpdateEvent : public Event
-{
-public:
-	PreRenderUpdateEvent();
-
-	virtual std::string toString() const override;
 };
 
 class KeyboardEvent : public Event

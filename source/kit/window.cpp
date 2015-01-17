@@ -6,15 +6,15 @@
 #include <map>
 #include <SDL.h>
 
-Window::Window(char const * title)
+Window::Window(std::string const & title)
 {
 	cursorPositionIsValid = false;
-	sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	sdlWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	if(sdlWindow == nullptr)
 	{
 		throw std::runtime_error("Failed to create the window.");
 	}
-	root.createNew();
+	root.setNew();
 }
 
 Window::~Window()
@@ -23,9 +23,9 @@ Window::~Window()
 	SDL_DestroyWindow(sdlWindow);
 }
 
-void Window::setTitle(char const * title)
+void Window::setTitle(std::string const & title)
 {
-	SDL_SetWindowTitle(sdlWindow, title);
+	SDL_SetWindowTitle(sdlWindow, title.c_str());
 }
 
 Ptr<GuiContainer> Window::getRoot()
@@ -104,6 +104,16 @@ void Window::handleEvent(Event const & event)
 	root->handleEvent(event, cursorPosition, cursorPositionIsValid);
 }
 
+void Window::update(float dt)
+{
+	root->update(dt);
+}
+
+void Window::preRenderUpdate()
+{
+	root->preRenderUpdate();
+}
+
 void Window::render(SDL_GLContext glContext) const
 {
 	SDL_GL_MakeCurrent(sdlWindow, glContext);
@@ -138,5 +148,10 @@ void Window::setCursorPosition(Coord2i position)
 void Window::setCursorWithinWindow(bool state)
 {
 	cursorPositionIsValid = state;
+}
+
+SDL_Window * Window::getSDLWindow() const
+{
+	return sdlWindow;
 }
 

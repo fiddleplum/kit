@@ -67,6 +67,16 @@ void GuiContainer::setContainerEventHandler(std::function<bool(Event const & eve
 	eventHandler = handler;
 }
 
+void GuiContainer::setUpdateHandler(std::function<void (float dt)> handler)
+{
+	updateHandler = handler;
+}
+
+void GuiContainer::setPreRenderUpdateHandler(std::function<void ()> handler)
+{
+	preRenderUpdateHandler = handler;
+}
+
 bool GuiContainer::handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)
 {
 	bool consumed = false;
@@ -84,6 +94,36 @@ bool GuiContainer::handleEvent(Event const & event, Coord2i cursorPosition, bool
 		}
 	}
 	return consumed;
+}
+
+void GuiContainer::update(float dt)
+{
+	if(updateHandler)
+	{
+		updateHandler(dt);
+	}
+	for(auto const & info : infos)
+	{
+		if(info.active)
+		{
+			info.element->update(dt);
+		}
+	}
+}
+
+void GuiContainer::preRenderUpdate()
+{
+	if(preRenderUpdateHandler)
+	{
+		preRenderUpdateHandler();
+	}
+	for(auto const & info : infos)
+	{
+		if(info.active)
+		{
+			info.element->preRenderUpdate();
+		}
+	}
 }
 
 void GuiContainer::render(Coord2i windowSize) const

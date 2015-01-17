@@ -29,7 +29,15 @@ public:
 
 	void setContainerEventHandler(std::function<bool (Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)> handler);
 
+	void setUpdateHandler(std::function<void (float dt)> handler);
+
+	void setPreRenderUpdateHandler(std::function<void ()> handler);
+
 	bool handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid) override;
+
+	void update(float dt) override;
+
+	void preRenderUpdate() override;
 
 	void render(Coord2i windowSize) const override;
 
@@ -53,6 +61,8 @@ private:
 	std::list<ElementInfo> infos;
 	std::map<Ptr<GuiElement>, std::list<ElementInfo>::iterator> lookup;
 	std::function<bool (Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)> eventHandler;
+	std::function<void (float dt)> updateHandler;
+	std::function<void ()> preRenderUpdateHandler;
 };
 
 template <typename T> Ptr<T> GuiContainer::addElement()

@@ -12,6 +12,9 @@
     <ClCompile Include="..\..\source\kit\gui_container.cpp" />
     <ClCompile Include="..\..\source\kit\window.cpp" />
     <ClCompile Include="..\..\source\kit\display.cpp" />
+    <ClCompile Include="..\..\source\kit\app.cpp" />
+    <ClCompile Include="..\..\source\kit\texture_cache.cpp" />
+    <ClCompile Include="..\..\source\kit\shader_cache.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
@@ -29,5 +32,6 @@
     <ClInclude Include="..\..\source\kit\gui_container.h" />
     <ClInclude Include="..\..\source\kit\window.h" />
     <ClInclude Include="..\..\source\kit\display.h" />
+    <ClInclude Include="..\..\source\kit\app.h" />
   </ItemGroup>
 </Project>

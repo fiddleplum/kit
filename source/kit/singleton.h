@@ -12,13 +12,13 @@ public:
 	static Ptr<T> instance();
 
 	// Creates the instance. If there is already an instance, throws a run_time exception.
-	static void createInstance();
+	template <typename ...Args> static void createInstance(Args... args);
 
 	// Destroys the instance. If there is not an instance, throws a run_time exception.
 	static void destroyInstance();
 
 private:
-	static OwnPtr<T> t;
+	static OwnPtr<T> global;
 };
 
 // Template Implementation
@@ -26,26 +26,26 @@ private:
 template <typename T>
 Ptr<T> Singleton<T>::instance()
 {
-	return t;
+	return global;
 }
 
-template <typename T>
-void Singleton<T>::createInstance()
+template <typename T> template <typename ...Args>
+void Singleton<T>::createInstance(Args... args)
 {
-	if(t.isValid())
+	if(global.isValid())
 	{
 		throw std::exception();
 	}
-	t.create();
+	global.setNew(args...);
 }
 
 template <typename T>
 void Singleton<T>::destroyInstance()
 {
-	if(!t.isValid())
+	if(!global.isValid())
 	{
 		throw std::exception();
 	}
-	t.destroy();
+	global.setNull();
 }
 
