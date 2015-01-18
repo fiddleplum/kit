@@ -1,12 +1,8 @@
 #pragma once
 
-#include "coord.h"
 #include "event.h"
-#include "ptr.h"
 #include "gui_container.h"
-#include <functional>
 #include <vector>
-#include <string>
 
 // QUESTION:
 /*

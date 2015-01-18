@@ -88,7 +88,7 @@ void GuiModel::updateShader()
 			"uniform ivec2 uPosition;\n"
 			+ attribute + " ivec2 aPos;\n"
 			+ attribute + " ivec2 aUv;\n"
-			+ varyingOut + " ivec2 vUv;\n"
+			+ varyingOut + " vec2 vUv;\n"
 			"void main()\n"
 			"{\n"
 			"  gl_Position.x = float(uPosition.x + aPos.x) / float(uWindowSize.x) * 2.0f - 1.0f;\n"
@@ -101,10 +101,10 @@ void GuiModel::updateShader()
 			"#version " + version + "\n"
 			"uniform ivec2 uTextureSize;\n"
 			"uniform sampler2D uSampler;\n"
-			+ varyingIn + " ivec2 vUv;\n"
+			+ varyingIn + " vec2 vUv;\n"
 			"void main()\n"
 			"{\n"
-			"  gl_FragColor = texture2D(uSampler, vec2(float(vUv.s) / float(uTextureSize.x), float(vUv.t) / float(uTextureSize.y)));\n"
+			"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 			"}\n";
 		shader = ShaderCache::instance()->load("guiShader", code);
 	}

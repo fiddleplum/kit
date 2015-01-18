@@ -248,19 +248,34 @@ Ptr<Window> App::getWindowFromId(unsigned int id) const
 // Called by SDL to run the entire app.
 int main(int argc, char *argv[])
 {
+	std::vector<std::string> args;
 	try
 	{
 		// Grab the params.
-		std::vector<std::string> args;
 		for(int i = 1; i < argc; ++i) // don't include the 0th arg, because it is the program name
 		{
 			args.push_back(std::string(argv[i]));
 		}
 
 		App::createInstance(args);
-
+	}
+	catch(std::exception const & e)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
+		return -1;
+	}
+	try
+	{
 		onAppOpen(args);
-
+	}
+	catch(std::exception const & e)
+	{
+		App::destroyInstance();
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
+		return -1;
+	}
+	try
+	{
 		App::instance()->loop();
 
 		onAppClose();
@@ -269,6 +284,8 @@ int main(int argc, char *argv[])
 	}
 	catch(std::exception const & e)
 	{
+		onAppClose();
+		App::destroyInstance();
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
 		return -1;
 	}

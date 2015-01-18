@@ -20,6 +20,8 @@ public:
 
 	void setPosition(Coord2i position) override;
 
+	void setSize(Coord2i size) override;
+
 	Recti getTextureBounds() const;
 
 	void setTextureBounds(Recti bounds);

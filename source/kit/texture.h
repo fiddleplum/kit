@@ -3,6 +3,8 @@
 #include "coord.h"
 #include <string>
 
+#pragma comment (lib, "SDL2_image.lib")
+
 class Texture
 {
 public:

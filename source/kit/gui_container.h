@@ -68,15 +68,16 @@ private:
 template <typename T> Ptr<T> GuiContainer::addElement()
 {
 	ElementInfo info;
-	info.element = OwnPtr<T>::createNew();
+	OwnPtr<T> elementDerived = OwnPtr<T>::createNew();
+	info.element = elementDerived;
 	info.active = true;
-	info.sizeFraction = {1, 1};
+	info.sizeFractionOfContainer = {1, 1};
 	info.positionFractionOfElement = {0, 0};
 	info.positionFractionOfContainer = {0, 0};
 	info.positionOffset = {0, 0};
-	auto it = elements.insert(elements.end(), info);
+	auto it = infos.insert(infos.end(), info);
 	lookup[info.element] = it;
 	updateElementBounds(info);
-	return info.element;
+	return elementDerived;
 }
 

@@ -29,6 +29,11 @@ void GuiSprite::setPosition(Coord2i position)
 	updateVertices();
 }
 
+void GuiSprite::setSize(Coord2i size)
+{
+	// does nothing
+}
+
 Recti GuiSprite::getTextureBounds() const
 {
 	return textureBounds;

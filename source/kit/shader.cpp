@@ -161,7 +161,7 @@ unsigned int Shader::compileShaderObject(CodeType type, std::string const & code
 		log.pop_back(); // get rid of \0
 		std::string typeString;
 		glDeleteShader(handle);
-		throw std::runtime_error("\n\nLog:\n" + log + "\n\nCode:\n" + code + "\n");
+		throw std::runtime_error("Error compiling shader: " + log + "Code:\n" + code + "\n");
 	}
 	return handle;
 }
