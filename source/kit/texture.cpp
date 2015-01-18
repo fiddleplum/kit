@@ -20,7 +20,7 @@ Texture::Texture(std::string const & filename)
 	SDL_Surface * surface = IMG_Load(filename.c_str());
 	if(surface == 0)
 	{
-		throw std::runtime_error("Could not load texture: " + filename);
+		throw std::runtime_error("Could not load texture '" + filename + "': " + IMG_GetError());
 	}
 	size[0] = surface->w;
 	size[1] = surface->h;

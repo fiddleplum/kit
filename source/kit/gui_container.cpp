@@ -47,12 +47,13 @@ void GuiContainer::setElementActive(Ptr<GuiElement> const & element, bool active
 	it->active = active;
 }
 
-void GuiContainer::setElementPosition(Ptr<GuiElement> const & element, Coord2f fractionOfElement, Coord2f fractionOfContainer, Coord2i offset)
+void GuiContainer::setElementPosition(Ptr<GuiElement> const & element, Coord2f fractionOfContainer, Coord2f fractionOfElement, Coord2i offset)
 {
 	auto it = find(element);
 	it->positionFractionOfElement = fractionOfElement;
 	it->positionFractionOfContainer = fractionOfContainer;
 	it->positionOffset = offset;
+	updateElementBounds(*it);
 }
 
 void GuiContainer::setElementSize(Ptr<GuiElement> const & element, Coord2f fractionOfContainer, Coord2i offset)
@@ -60,6 +61,7 @@ void GuiContainer::setElementSize(Ptr<GuiElement> const & element, Coord2f fract
 	auto it = find(element);
 	it->sizeFractionOfContainer = fractionOfContainer;
 	it->sizeOffset = offset;
+	updateElementBounds(*it);
 }
 
 void GuiContainer::setContainerEventHandler(std::function<bool(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid)> handler)

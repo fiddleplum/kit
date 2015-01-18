@@ -23,7 +23,7 @@ public:
 
 	void setElementActive(Ptr<GuiElement> const & element, bool active);
 
-	void setElementPosition(Ptr<GuiElement> const & element, Coord2f fractionOfElement, Coord2f fractionOfContainer, Coord2i offset);
+	void setElementPosition(Ptr<GuiElement> const & element, Coord2f fractionOfContainer, Coord2f fractionOfElement, Coord2i offset);
 
 	void setElementSize(Ptr<GuiElement> const & element, Coord2f fractionOfContainer, Coord2i offset);
 

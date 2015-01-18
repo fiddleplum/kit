@@ -87,16 +87,16 @@ void GuiSprite::render(Coord2i windowSize) const
 
 void GuiSprite::updateVertices()
 {
-	Recti bounds{position, position + textureBounds.max - textureBounds.min};
+	Coord2i size = textureBounds.max - textureBounds.min + Coord2i{1, 1};
 	std::vector<GuiModel::Vertex> vertices(4);
-	vertices[0].pos = {bounds.min[0], bounds.min[1]};
+	vertices[0].pos = {0, 0};
 	vertices[0].uv = {textureBounds.min[0], textureBounds.min[1]};
-	vertices[1].pos = {bounds.max[0], bounds.min[1]};
-	vertices[1].uv = {textureBounds.max[0], textureBounds.min[1]};
-	vertices[2].pos = {bounds.max[0], bounds.max[1]};
-	vertices[2].uv = {textureBounds.max[0], textureBounds.max[1]};
-	vertices[3].pos = {bounds.min[0], bounds.max[1]};
-	vertices[3].uv = {textureBounds.min[0], textureBounds.max[1]};
+	vertices[1].pos = {size[0], 0};
+	vertices[1].uv = {textureBounds.min[0] + size[0], textureBounds.min[1]};
+	vertices[2].pos = {size[0], size[1]};
+	vertices[2].uv = {textureBounds.min[0] + size[0], textureBounds.min[1] + size[1]};
+	vertices[3].pos = {0, size[1]};
+	vertices[3].uv = {textureBounds.min[0], textureBounds.min[1] + size[1]};
 	model->setVertices(vertices);
 }
 

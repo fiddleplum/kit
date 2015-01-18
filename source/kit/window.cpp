@@ -8,13 +8,15 @@
 
 Window::Window(std::string const & title)
 {
+	Coord2i initialSize = {800, 600};
 	cursorPositionIsValid = false;
-	sdlWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	sdlWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, initialSize[0], initialSize[1], SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	if(sdlWindow == nullptr)
 	{
 		throw std::runtime_error("Failed to create the window.");
 	}
 	root.setNew();
+	root->setSize(initialSize);
 }
 
 Window::~Window()
