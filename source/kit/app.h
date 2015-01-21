@@ -10,12 +10,7 @@
 #pragma comment (lib, "SDL2.lib")
 #pragma comment (lib, "SDL2main.lib")
 
-//#include "window.h"
-//#include "scene.h"
-//
-
 #include "ptr.h"
-#include "singleton.h"
 #include <list>
 #include <vector>
 #include <string>
@@ -32,7 +27,7 @@ void onAppOpen(std::vector<std::string> const & params);
 // Called before the app is closed. Implemented by the user.
 void onAppClose();
 
-class App : public Singleton<App>
+class App
 {
 public:
 	// Constructor. Takes commmand line arguments.
@@ -72,4 +67,6 @@ private:
 	float targetFrameRate;
 	SDL_GLContext glContext;
 };
+
+extern OwnPtr<App> app;
 

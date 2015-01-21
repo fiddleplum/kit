@@ -1,6 +1,7 @@
 #include "gui_sprite.h"
 #include "gui_model.h"
-#include "texture_cache.h"
+#include "texture.h"
+#include "resources.h"
 #include <algorithm>
 
 GuiSprite::GuiSprite()
@@ -52,7 +53,7 @@ void GuiSprite::setTexture(Ptr<Texture> texture)
 
 void GuiSprite::setTexture(std::string const & filename)
 {
-	model->setTexture(TextureCache::instance()->load(filename, filename));
+	model->setTexture(textureCache->load(filename, filename));
 }
 
 Ptr<Texture> GuiSprite::getTexture() const

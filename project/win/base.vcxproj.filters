@@ -11,5 +11,11 @@
     <ClInclude Include="..\..\source\kit\singleton.h" />
     <ClInclude Include="..\..\source\kit\coord.h" />
     <ClInclude Include="..\..\source\kit\object_vector.h" />
+    <ClInclude Include="..\..\source\kit\math_util.h" />
+    <ClInclude Include="..\..\source\kit\text.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\kit\math_util.cpp" />
+    <ClCompile Include="..\..\source\kit\text.cpp" />
   </ItemGroup>
 </Project>

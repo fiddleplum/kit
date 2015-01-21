@@ -3,7 +3,7 @@
 #include "shader.h"
 #include "vertex_buffer_object.h"
 #include "open_gl.h"
-#include "shader_cache.h"
+#include "resources.h"
 
 GuiModel::GuiModel()
 {
@@ -67,7 +67,7 @@ void GuiModel::render(Coord2i windowSize)
 
 void GuiModel::updateShader()
 {
-	if(!ShaderCache::instance()->has("guiShader"))
+	if(!shaderCache->has("guiShader"))
 	{
 		std::string version = "120";
 		std::string attribute = "attribute";
@@ -106,11 +106,11 @@ void GuiModel::updateShader()
 			"{\n"
 			"  gl_FragColor = texture2D(uSampler, vec2(vUv.s / float(uTextureSize.x), vUv.t / float(uTextureSize.y)));\n"
 			"}\n";
-		shader = ShaderCache::instance()->load("guiShader", code);
+		shader = shaderCache->load("guiShader", code);
 	}
 	else
 	{
-		shader = ShaderCache::instance()->get("guiShader");
+		shader = shaderCache->get("guiShader");
 	}
 }
 

@@ -13,25 +13,25 @@
     <ClCompile Include="..\..\source\kit\window.cpp" />
     <ClCompile Include="..\..\source\kit\display.cpp" />
     <ClCompile Include="..\..\source\kit\app.cpp" />
-    <ClCompile Include="..\..\source\kit\texture_cache.cpp" />
-    <ClCompile Include="..\..\source\kit\shader_cache.cpp" />
+    <ClCompile Include="..\..\source\kit\resources.cpp" />
+    <ClCompile Include="..\..\source\kit\font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
     <ClInclude Include="..\..\source\kit\gui_element.h" />
     <ClInclude Include="..\..\source\kit\gui_sprite.h" />
     <ClInclude Include="..\..\source\kit\gui_model.h" />
-    <ClInclude Include="..\..\source\kit\shader_cache.h" />
     <ClInclude Include="..\..\source\kit\shader.h" />
     <ClInclude Include="..\..\source\kit\object_cache.h" />
     <ClInclude Include="..\..\source\kit\open_gl.h" />
     <ClInclude Include="..\..\source\kit\gl3.h" />
     <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />
     <ClInclude Include="..\..\source\kit\texture.h" />
-    <ClInclude Include="..\..\source\kit\texture_cache.h" />
     <ClInclude Include="..\..\source\kit\gui_container.h" />
     <ClInclude Include="..\..\source\kit\window.h" />
     <ClInclude Include="..\..\source\kit\display.h" />
     <ClInclude Include="..\..\source\kit\app.h" />
+    <ClInclude Include="..\..\source\kit\resources.h" />
+    <ClInclude Include="..\..\source\kit\font.h" />
   </ItemGroup>
 </Project>

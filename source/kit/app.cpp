@@ -1,15 +1,13 @@
 #include "app.h"
 #include "open_gl.h"
 //#include "input_system.h"
-#include "texture_cache.h"
-#include "shader_cache.h"
-//#include "scene_model_cache.h"
+#include "resources.h"
 #include "window.h"
 #include <SDL.h>
 
 //#include "audio.h"
 
-OwnPtr<App> Singleton<App>::global;
+OwnPtr<App> app;
 
 App::App(std::vector<std::string> const & args)
 {
@@ -25,8 +23,8 @@ App::App(std::vector<std::string> const & args)
 
 	// Initialize the singletons.
 	//InputSystem::createInstance();
-	TextureCache::createInstance();
-	ShaderCache::createInstance();
+	textureCache.setNew();
+	shaderCache.setNew();
 	//SceneModelCache::createInstance();
 
 	//SDL_InitSubSystem(SDL_INIT_AUDIO);
@@ -35,8 +33,8 @@ App::App(std::vector<std::string> const & args)
 App::~App()
 {
 	// Destroy the singletons.
-	TextureCache::destroyInstance();
-	ShaderCache::destroyInstance();
+	textureCache.setNull();
+	shaderCache.setNull();
 	//SceneModelCache::destroyInstance();
 	//InputSystem::destroyInstance();
 
@@ -256,40 +254,17 @@ int main(int argc, char *argv[])
 		{
 			args.push_back(std::string(argv[i]));
 		}
-
-		App::createInstance(args);
-	}
-	catch(std::exception const & e)
-	{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
-		return -1;
-	}
-	try
-	{
+		app.setNew(args);
 		onAppOpen(args);
+		app->loop();
+		onAppClose();
+		app.setNull();
 	}
 	catch(std::exception const & e)
 	{
-		App::destroyInstance();
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
 		return -1;
 	}
-	try
-	{
-		App::instance()->loop();
-
-		onAppClose();
-
-		App::destroyInstance();
-	}
-	catch(std::exception const & e)
-	{
-		onAppClose();
-		App::destroyInstance();
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", e.what(), nullptr);
-		return -1;
-	}
-
 	return 0;
 }
 
