@@ -23,8 +23,9 @@ App::App(std::vector<std::string> const & args)
 
 	// Initialize the singletons.
 	//InputSystem::createInstance();
-	textureCache.setNew();
 	shaderCache.setNew();
+	textureCache.setNew();
+	fontCache.setNew();
 	//SceneModelCache::createInstance();
 
 	//SDL_InitSubSystem(SDL_INIT_AUDIO);
@@ -33,6 +34,7 @@ App::App(std::vector<std::string> const & args)
 App::~App()
 {
 	// Destroy the singletons.
+	fontCache.setNull();
 	textureCache.setNull();
 	shaderCache.setNull();
 	//SceneModelCache::destroyInstance();

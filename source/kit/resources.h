@@ -4,7 +4,9 @@
 
 class Texture;
 class Shader;
+class Font;
 
 extern OwnPtr<ObjectCache<Texture>> textureCache;
 extern OwnPtr<ObjectCache<Shader>> shaderCache;
+extern OwnPtr<ObjectCache<Font>> fontCache;
 

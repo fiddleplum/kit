@@ -19,6 +19,7 @@
     <ClCompile Include="..\..\source\kit\gui_element.cpp" />
     <ClCompile Include="..\..\source\kit\gui_model.cpp" />
     <ClCompile Include="..\..\source\kit\gui_sprite.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_text.cpp" />
     <ClCompile Include="..\..\source\kit\open_gl.cpp" />
     <ClCompile Include="..\..\source\kit\resources.cpp" />
     <ClCompile Include="..\..\source\kit\shader.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="..\..\source\kit\gui_element.h" />
     <ClInclude Include="..\..\source\kit\gui_model.h" />
     <ClInclude Include="..\..\source\kit\gui_sprite.h" />
+    <ClInclude Include="..\..\source\kit\gui_text.h" />
     <ClInclude Include="..\..\source\kit\object_cache.h" />
     <ClInclude Include="..\..\source\kit\open_gl.h" />
     <ClInclude Include="..\..\source\kit\resources.h" />

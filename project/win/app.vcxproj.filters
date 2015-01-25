@@ -15,6 +15,7 @@
     <ClCompile Include="..\..\source\kit\app.cpp" />
     <ClCompile Include="..\..\source\kit\resources.cpp" />
     <ClCompile Include="..\..\source\kit\font.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
@@ -33,5 +34,6 @@
     <ClInclude Include="..\..\source\kit\app.h" />
     <ClInclude Include="..\..\source\kit\resources.h" />
     <ClInclude Include="..\..\source\kit\font.h" />
+    <ClInclude Include="..\..\source\kit\gui_text.h" />
   </ItemGroup>
 </Project>

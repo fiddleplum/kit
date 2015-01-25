@@ -17,7 +17,7 @@ class Font
 public:
 	Font(std::string const & filename, int size);
 	~Font();
-	std::vector<OwnPtr<GuiModel>> getGuiModelsFromText(std::string const & text);
+	std::vector<OwnPtr<GuiModel>> getGuiModelsFromText(std::string const & text, Coord2i & textSize);
 
 private:
 	void loadBlock(int unicodeStart);
@@ -26,6 +26,7 @@ private:
 	{
 		OwnPtr<Texture> texture;
 		std::vector<int> widths;
+		int cellSize;
 	};
 
 	std::map<int, Block> blocks;
