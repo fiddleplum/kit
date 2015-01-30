@@ -13,9 +13,13 @@
     <ClInclude Include="..\..\source\kit\object_vector.h" />
     <ClInclude Include="..\..\source\kit\math_util.h" />
     <ClInclude Include="..\..\source\kit\text.h" />
+    <ClInclude Include="..\..\source\kit\config.h" />
+    <ClInclude Include="..\..\source\kit\string_util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\kit\math_util.cpp" />
     <ClCompile Include="..\..\source\kit\text.cpp" />
+    <ClCompile Include="..\..\source\kit\config.cpp" />
+    <ClCompile Include="..\..\source\kit\string_util.cpp" />
   </ItemGroup>
 </Project>

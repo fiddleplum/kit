@@ -2,42 +2,66 @@
 
 #include <string>
 
-// UTF-8 Text String
+// UTF-8 Encoded Text
 class Text
 {
 public:
 	Text();
 	Text(std::string const & chars);
 
-	class Iterator;
-	class IteratorConst;
-	Iterator begin();
-	IteratorConst begin() const;
-	Iterator end();
-	IteratorConst end() const;
+	std::string const & str() const;
 
-	class Iterator
+	void clear();
+
+	void operator += (unsigned int c);
+	void operator += (std::string const & s);
+	void operator += (Text const & text);
+
+	Text operator + (unsigned int c) const;
+	Text operator + (std::string const & s) const;
+	Text operator + (Text const & text) const;
+
+	bool operator == (Text const & text) const;
+	bool operator != (Text const & text) const;
+	bool operator < (Text const & text) const;
+
+	class iterator;
+	class const_iterator;
+	iterator begin();
+	const_iterator begin() const;
+	iterator end();
+	const_iterator end() const;
+
+	class iterator
 	{
 	public:
-		Iterator(int i_, Text * s_) : i(i_), s(s_) {}
+		iterator(int i_, Text * s_) : i(i_), s(s_) {}
 		void operator ++ ();
-		int operator * () const;
-		bool operator != (Iterator const & it);
+		void operator ++ (int);
+		unsigned int operator * () const;
+		bool operator != (iterator const & it);
+	private:
 		int i;
 		Text * s;
+		friend const_iterator;
 	};
-	class IteratorConst
+	class const_iterator
 	{
 	public:
-		IteratorConst(int i_, Text const * s_) : i(i_), s(s_) {}
+		const_iterator(int i_, Text const * s_) : i(i_), s(s_) {}
+		const_iterator(iterator const & iter) : i(iter.i), s(iter.s) {}
 		void operator ++ ();
-		int operator * () const;
-		bool operator != (IteratorConst const & it);
+		void operator ++ (int);
+		unsigned int operator * () const;
+		bool operator != (const_iterator const & it);
+	private:
 		int i;
 		Text const * s;
 	};
 
-	void getChar(int i, int & numBytes, int & codePoint) const;
+private:
+	void getChar(unsigned int i, unsigned int & numBytes, unsigned int & codePoint) const;
+	void putChar(unsigned int i, unsigned int codePoint);
 
 	std::string s;
 };

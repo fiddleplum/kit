@@ -7,9 +7,9 @@
 #include "math_util.h"
 #include <SDL_ttf.h>
 
-int numFontsLoaded = 0;
-int numCharsInRow = 16;
-int numCharsInCol = 8;
+unsigned int numFontsLoaded = 0;
+unsigned int numCharsInRow = 16;
+unsigned int numCharsInCol = 8;
 
 Font::Font(std::string const & filename, int size_)
 {
@@ -46,7 +46,7 @@ Font::~Font()
 std::vector<OwnPtr<GuiModel>> Font::getGuiModelsFromText(std::string const & text, Coord2i & textSize)
 {
 	textSize = {0, 0};
-	int numCharsInBlock = numCharsInRow * numCharsInCol;
+	unsigned int numCharsInBlock = numCharsInRow * numCharsInCol;
 	std::map<Ptr<Texture>, int> texturesToModels;
 	std::vector<OwnPtr<GuiModel>> models;
 	std::vector<std::vector<GuiModel::Vertex>> vertices;
@@ -62,7 +62,7 @@ std::vector<OwnPtr<GuiModel>> Font::getGuiModelsFromText(std::string const & tex
 			continue;
 		}
 		// Get the block (or load a new one)
-		int blockStart = c / numCharsInBlock * numCharsInBlock;
+		auto blockStart = c / numCharsInBlock * numCharsInBlock;
 		auto blockIt = blocks.find(blockStart);
 		if(blockIt == blocks.end())
 		{
@@ -87,10 +87,10 @@ std::vector<OwnPtr<GuiModel>> Font::getGuiModelsFromText(std::string const & tex
 		// Do the vertices
 		Recti bounds;
 		Recti uvBounds;
-		bounds.min = {pos[0] - (block.cellSize - block.widths[c - blockStart]) / 2, pos[1] - (block.cellSize - heightOfChar) / 2};
-		bounds.max = bounds.min + Coord2i{block.cellSize, block.cellSize};
-		uvBounds.min = {(c - blockStart) % numCharsInRow * block.cellSize, (c - blockStart) / numCharsInRow * block.cellSize};
-		uvBounds.max = uvBounds.min + Coord2i{block.cellSize, block.cellSize};
+		bounds.min = {pos[0] - (int)(block.cellSize - block.widths[c - blockStart]) / 2, pos[1] - (int)(block.cellSize - heightOfChar) / 2};
+		bounds.max = bounds.min + Coord2i{(int)block.cellSize, (int)block.cellSize};
+		uvBounds.min = {(int)((c - blockStart) % numCharsInRow * block.cellSize), (int)((c - blockStart) / numCharsInRow * block.cellSize)};
+		uvBounds.max = uvBounds.min + Coord2i{(int)block.cellSize, (int)block.cellSize};
 		indices[modelIndex].push_back(vertices[modelIndex].size() + 0);
 		indices[modelIndex].push_back(vertices[modelIndex].size() + 3);
 		indices[modelIndex].push_back(vertices[modelIndex].size() + 2);

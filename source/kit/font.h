@@ -25,13 +25,13 @@ private:
 	struct Block
 	{
 		OwnPtr<Texture> texture;
-		std::vector<int> widths;
-		int cellSize;
+		std::vector<unsigned int> widths;
+		unsigned int cellSize;
 	};
 
 	std::map<int, Block> blocks;
 	TTF_Font * ttfFont;
 	int size;
-	int heightOfChar;
+	unsigned int heightOfChar;
 };
 

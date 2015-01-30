@@ -3,23 +3,23 @@
 #include <string>
 #include <vector>
 
-namespace kit
-{
-	//! Read filename into content. Returns true if successful.
-	bool readFile(std::string & content, std::string const & filename);
+// Read a file into a string. Returns true if successful.
+std::string readFile(std::string const & filename, bool binary);
 
-	// These return true on success.
-	bool stringToBool(bool & b, std::string const & s); // s can be "true" or "false"
-	bool stringToInt(int & i, std::string const & s, int base = 0); // base can be 2 to 36, or 0, in which case it is automatically determined
-	bool stringToLong(long & l, std::string const & s, int base = 0);
-	bool stringToFloat(float & f, std::string const & s);
-	bool stringToDouble(double & d, std::string const & s);
+void toUnicode(std::vector<unsigned int> & codes, std::string const & s);
+void fromUnicode(std::string & s, std::vector<unsigned int> const & codes);
 
-	bool beginsWith(std::string const & s, std::string const & pattern);
-	bool endsWith(std::string const & s, std::string const & pattern);
-	std::string trim(std::string const & s, bool left = true, bool right = true);
-	std::vector<std::string> split(std::string const & s, char delimiter, bool trimTokens = true); // if s is empty, then vector still contains one empty string
-}
+// These return true on success.
+bool stringToBool(bool & b, std::string const & s); // s can be "true" or "false"
+bool stringToInt(int & i, std::string const & s, int base = 0); // base can be 2 to 36, or 0, in which case it is automatically determined
+bool stringToLong(long & l, std::string const & s, int base = 0);
+bool stringToFloat(float & f, std::string const & s);
+bool stringToDouble(double & d, std::string const & s);
+
+bool beginsWith(std::string const & s, std::string const & pattern);
+bool endsWith(std::string const & s, std::string const & pattern);
+std::string trim(std::string const & s, bool left = true, bool right = true);
+std::vector<std::string> split(std::string const & s, char delimiter, bool trimTokens = true); // if s is empty, then vector still contains one empty string
 
 #ifdef __GNUC__
 /// THESE FUNCTIONS CAN BE DELETED ONCE std::to_string works in GCC!
