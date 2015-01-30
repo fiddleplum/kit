@@ -61,6 +61,11 @@ std::vector<OwnPtr<GuiModel>> Font::getGuiModelsFromText(std::string const & tex
 			pos[0] = 0;
 			continue;
 		}
+		if(c == '\t')
+		{
+			pos[0] += heightOfChar;
+			continue;
+		}
 		// Get the block (or load a new one)
 		auto blockStart = c / numCharsInBlock * numCharsInBlock;
 		auto blockIt = blocks.find(blockStart);
@@ -128,7 +133,7 @@ void Font::loadBlock(int blockStart)
 	Block block;
 	int numCharsInBlock = numCharsInRow * numCharsInCol;
 	block.widths.resize(numCharsInBlock);
-	block.cellSize = Math::ceilPow2(size);
+	block.cellSize = 2 * Math::ceilPow2(size);
 	SDL_Color white = {255, 255, 255, 255};
 	SDL_Surface * surface = SDL_CreateRGBSurface(0, block.cellSize * numCharsInRow, block.cellSize * numCharsInCol, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 	for(int i = 0; i < numCharsInBlock; ++i)
@@ -140,9 +145,7 @@ void Font::loadBlock(int blockStart)
 			block.widths[i] = glyphSurface->w;
 			SDL_Rect rect;
 			rect.x = (i % numCharsInRow) * block.cellSize + (block.cellSize - glyphSurface->w) / 2;
-			rect.w = glyphSurface->w;
 			rect.y = (i / numCharsInRow) * block.cellSize + (block.cellSize - glyphSurface->h) / 2;
-			rect.h = glyphSurface->h;
 			SDL_BlitSurface(glyphSurface, 0, surface, &rect);
 			SDL_FreeSurface(glyphSurface);
 		}
