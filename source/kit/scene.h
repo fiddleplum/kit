@@ -6,6 +6,7 @@
 #include "event.h"
 #include "ptr_set.h"
 #include <functional>
+#include <set>
 
 class Scene
 {
@@ -26,9 +27,10 @@ public:
 
 	void setEventHandler(std::function<void(Event const &)> eventHandler);
 
-	// Called by app
+	// Called by app to handle an event.
 	void handleEvent(Event const & event);
 
+	// Called by GuiViewport to render the scene.
 	void render(Ptr<SceneCamera> camera);
 
 private:

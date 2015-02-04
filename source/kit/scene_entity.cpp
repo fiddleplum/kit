@@ -1,52 +1,52 @@
-#include "scene_entity_impl.h"
+#include "scene_entity.h"
 
-SceneEntityImpl::SceneEntityImpl()
+SceneEntity::SceneEntity()
 {
 	worldToLocalTransform = localToWorldTransform = Matrix44f::identity();
 	transformsNeedUpdate = false;
 }
 
-Coord3f const & SceneEntityImpl::getPosition() const
+Coord3f const & SceneEntity::getPosition() const
 {
 	return position;
 }
 
-void SceneEntityImpl::setPosition(Coord3f position_)
+void SceneEntity::setPosition(Coord3f position_)
 {
 	position = position_;
 	transformsNeedUpdate = true;
 }
 
-Quaternionf const & SceneEntityImpl::getOrientation() const
+Quaternionf const & SceneEntity::getOrientation() const
 {
 	return orientation;
 }
 
-void SceneEntityImpl::setOrientation(Quaternionf orientation_)
+void SceneEntity::setOrientation(Quaternionf orientation_)
 {
 	orientation = orientation_;
 	transformsNeedUpdate = true;
 }
 
-Matrix44f const & SceneEntityImpl::getLocalToWorldTransform() const
+Matrix44f const & SceneEntity::getLocalToWorldTransform() const
 {
 	if(transformsNeedUpdate)
 	{
-		const_cast<SceneEntityImpl *>(this)->updateTransforms();
+		const_cast<SceneEntity *>(this)->updateTransforms();
 	}
 	return localToWorldTransform;
 }
 
-Matrix44f  const & SceneEntityImpl::getWorldToLocalTransform() const
+Matrix44f  const & SceneEntity::getWorldToLocalTransform() const
 {
 	if(transformsNeedUpdate)
 	{
-		const_cast<SceneEntityImpl *>(this)->updateTransforms();
+		const_cast<SceneEntity *>(this)->updateTransforms();
 	}
 	return worldToLocalTransform;
 }
 
-void SceneEntityImpl::updateTransforms()
+void SceneEntity::updateTransforms()
 {
 	Matrix33f rot = orientation.getMatrix();
 	localToWorldTransform(0, 0) = rot(0, 0);

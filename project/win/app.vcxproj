@@ -22,6 +22,12 @@
     <ClCompile Include="..\..\source\kit\gui_text.cpp" />
     <ClCompile Include="..\..\source\kit\open_gl.cpp" />
     <ClCompile Include="..\..\source\kit\resources.cpp" />
+    <ClCompile Include="..\..\source\kit\scene.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_camera.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_entity.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_light.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_model.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_object.cpp" />
     <ClCompile Include="..\..\source\kit\shader.cpp" />
     <ClCompile Include="..\..\source\kit\texture.cpp" />
     <ClCompile Include="..\..\source\kit\vertex_buffer_object.cpp" />
@@ -41,6 +47,12 @@
     <ClInclude Include="..\..\source\kit\object_cache.h" />
     <ClInclude Include="..\..\source\kit\open_gl.h" />
     <ClInclude Include="..\..\source\kit\resources.h" />
+    <ClInclude Include="..\..\source\kit\scene.h" />
+    <ClInclude Include="..\..\source\kit\scene_camera.h" />
+    <ClInclude Include="..\..\source\kit\scene_entity.h" />
+    <ClInclude Include="..\..\source\kit\scene_light.h" />
+    <ClInclude Include="..\..\source\kit\scene_model.h" />
+    <ClInclude Include="..\..\source\kit\scene_object.h" />
     <ClInclude Include="..\..\source\kit\shader.h" />
     <ClInclude Include="..\..\source\kit\texture.h" />
     <ClInclude Include="..\..\source\kit\vertex_buffer_object.h" />

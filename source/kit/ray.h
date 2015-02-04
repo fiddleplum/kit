@@ -22,6 +22,8 @@ typedef Ray<3, int> Ray3i;
 typedef Ray<3, float> Ray3f;
 typedef Ray<3, double> Ray3d;
 
+// Template implementation
+
 template <unsigned int dim, typename T>
 Ray<dim, T>::Ray()
 {

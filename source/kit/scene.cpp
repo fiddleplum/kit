@@ -87,8 +87,8 @@ void Scene::render(Ptr<SceneCamera> camera)
 	{
 		while(lightPositions.size() < SceneModel::maxLights)
 		{
-			lightPositions.push_back(Coord3f(0, 0, 0));
-			lightColors.push_back(Coord3f(0, 0, 0));
+			lightPositions.push_back({0, 0, 0});
+			lightColors.push_back({0, 0, 0});
 		}
 	}
 

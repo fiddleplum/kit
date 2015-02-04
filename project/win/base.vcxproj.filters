@@ -15,6 +15,9 @@
     <ClInclude Include="..\..\source\kit\text.h" />
     <ClInclude Include="..\..\source\kit\config.h" />
     <ClInclude Include="..\..\source\kit\string_util.h" />
+    <ClInclude Include="..\..\source\kit\serialize.h" />
+    <ClInclude Include="..\..\source\kit\ray.h" />
+    <ClInclude Include="..\..\source\kit\ptr_set.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\kit\math_util.cpp" />

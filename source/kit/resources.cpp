@@ -3,3 +3,5 @@
 OwnPtr<ObjectCache<Texture>> textureCache;
 OwnPtr<ObjectCache<Shader>> shaderCache;
 OwnPtr<ObjectCache<Font>> fontCache;
+OwnPtr<ObjectCache<SceneModel>> sceneModelCache;
+

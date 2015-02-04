@@ -1,15 +1,11 @@
-#include "scene_model_impl.h"
-#include "vertex_buffer_object.h"
-#include "texture_cache.h"
-#include "shader_cache.h"
+#include "scene_model.h"
+#include "resources.h"
 #include "open_gl.h"
-#include <kit/serialize.h>
-#include <kit/serialize_std_string.h>
-#include <kit/serialize_std_coord.h>
+#include "serialize.h"
 #include <fstream>
 #include <algorithm>
 
-SceneModelImpl::SceneModelImpl()
+SceneModel::SceneModel()
 {
 	vertexHasNormal = false;
 	vertexHasTangent = false;
@@ -26,18 +22,13 @@ SceneModelImpl::SceneModelImpl()
 	sorted = false;
 }
 
-SceneModelImpl::SceneModelImpl(std::string const & filename)
+SceneModel::SceneModel(std::string const & filename)
 {
 	std::fstream in(filename, std::fstream::in | std::fstream::binary);
 
 	// Material
-	deserialize(in, emitColor[0]);
-	deserialize(in, emitColor[1]);
-	deserialize(in, emitColor[2]);
-	deserialize(in, diffuseColor[0]);
-	deserialize(in, diffuseColor[1]);
-	deserialize(in, diffuseColor[2]);
-	deserialize(in, diffuseColor[3]);
+	deserialize(in, emitColor);
+	deserialize(in, diffuseColor);
 	deserialize(in, specularLevel);
 	deserialize(in, specularStrength);
 
@@ -79,11 +70,11 @@ SceneModelImpl::SceneModelImpl(std::string const & filename)
 
 	// Indices
 	std::vector<unsigned int> indices;
-	deserialize<unsigned int>(in, indices, deserialize);
+	deserialize(in, indices, deserialize);
 	setIndices(&indices[0], indices.size());
 }
 
-void SceneModelImpl::setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int _numVertexUVs)
+void SceneModel::setVertexFormat(bool hasNormal, bool hasTangent, bool hasColor, unsigned int _numVertexUVs)
 {
 	numBytesPerVertex = sizeof(Coord3f);
 	vertexHasNormal = hasNormal;
@@ -108,34 +99,25 @@ void SceneModelImpl::setVertexFormat(bool hasNormal, bool hasTangent, bool hasCo
 	sorted = false;
 }
 
-void SceneModelImpl::setVertices(void const * vertices, unsigned int numBytes)
+void SceneModel::setVertices(void const * vertices, unsigned int numBytes)
 {
 	vertexBufferObject->setVertices(vertices, numBytes, false);
 }
 
-void SceneModelImpl::setNumIndicesPerPrimitive(unsigned int num)
+void SceneModel::setNumIndicesPerPrimitive(unsigned int num)
 {
 	vertexBufferObject->setNumIndicesPerPrimitive(num);
 }
 
-void SceneModelImpl::setIndices(unsigned int const * indices, unsigned int numIndices)
+void SceneModel::setIndices(unsigned int const * indices, unsigned int numIndices)
 {
 	vertexBufferObject->setIndices(indices, numIndices);
 }
 
-Image SceneModelImpl::getImageOfTexture(unsigned int textureIndex) const
-{
-	if(textureIndex >= textureInfos.size())
-	{
-		throw std::exception();
-	}
-	return textureInfos[textureIndex].texture->getImage();
-}
-
-void SceneModelImpl::addTextureFromImage(std::string const & name, Image const & image, std::string const & type, unsigned int uvIndex)
+void SceneModel::addTextureFromFile(std::string const & filename, std::string const & type, unsigned int uvIndex)
 {
 	TextureInfo textureInfo;
-	textureInfo.texture = TextureCache::instance()->load(name, image);
+	textureInfo.texture = textureCache->load(filename, filename);
 	textureInfo.type = type;
 	textureInfo.samplerLocation = -1;
 	textureInfo.uvIndex = uvIndex;
@@ -144,53 +126,41 @@ void SceneModelImpl::addTextureFromImage(std::string const & name, Image const &
 	sorted = false;
 }
 
-void SceneModelImpl::addTextureFromFile(std::string const & filename, std::string const & type, unsigned int uvIndex)
-{
-	TextureInfo textureInfo;
-	textureInfo.texture = TextureCache::instance()->load(filename, filename);
-	textureInfo.type = type;
-	textureInfo.samplerLocation = -1;
-	textureInfo.uvIndex = uvIndex;
-	textureInfos.push_back(textureInfo);
-	shaderDirty = true;
-	sorted = false;
-}
-
-void SceneModelImpl::clearTextures()
+void SceneModel::clearTextures()
 {
 	textureInfos.clear();
 	shaderDirty = true;
 	sorted = false;
 }
 
-void SceneModelImpl::setColor(Coord3f const & _emitColor, Coord4f const & _diffuseColor)
+void SceneModel::setColor(Coord3f const & _emitColor, Coord4f const & _diffuseColor)
 {
 	emitColor = _emitColor;
 	diffuseColor = _diffuseColor;
 }
 
-void SceneModelImpl::setSpecular(unsigned int level, float strength)
+void SceneModel::setSpecular(unsigned int level, float strength)
 {
 	specularLevel = level;
 	specularStrength = strength;
 }
 
-float SceneModelImpl::getScale() const
+float SceneModel::getScale() const
 {
 	return scale;
 }
 
-void SceneModelImpl::setScale(float _scale)
+void SceneModel::setScale(float _scale)
 {
 	scale = _scale;
 }
 
-void SceneModelImpl::render(Matrix44f const & projectionTransform, Matrix44f const & localToCameraTransform, std::vector<Coord3f> const & lightPositions, std::vector<Coord3f> const & lightColors) const
+void SceneModel::render(Matrix44f const & projectionTransform, Matrix44f const & localToCameraTransform, std::vector<Coord3f> const & lightPositions, std::vector<Coord3f> const & lightColors) const
 {
 	// The render engine handles shader and texture activation.
 	if(shaderDirty)
 	{
-		const_cast<SceneModelImpl *>(this)->updateShader();
+		const_cast<SceneModel *>(this)->updateShader();
 	}
 	shader->activate();
 	shader->setUniform(projectionLocation, projectionTransform);
@@ -216,17 +186,17 @@ void SceneModelImpl::render(Matrix44f const & projectionTransform, Matrix44f con
 	vertexBufferObject->render();
 }
 
-bool SceneModelImpl::needsResorting() const
+bool SceneModel::needsResorting() const
 {
 	return !sorted;
 }
 
-void SceneModelImpl::resortingDone()
+void SceneModel::resortingDone()
 {
 	sorted = true;
 }
 
-bool SceneModelImpl::operator < (SceneModelImpl const & model) const
+bool SceneModel::operator < (SceneModel const & model) const
 {
 	if(shader < model.shader)
 	{
@@ -258,7 +228,7 @@ bool SceneModelImpl::operator < (SceneModelImpl const & model) const
 	return vertexBufferObject < model.vertexBufferObject;
 }
 
-void SceneModelImpl::updateShader()
+void SceneModel::updateShader()
 {
 	std::string version = "120";
 	std::string attribute = "attribute";
@@ -438,7 +408,7 @@ void SceneModelImpl::updateShader()
 		name += textureInfo.type[0] + std::to_string(textureInfo.uvIndex);
 	}
 
-	shader = ShaderCache::instance()->load(name, code);
+	shader = shaderCache->load(name, code);
 	sorted = false;
 
 	// Update attribute locations

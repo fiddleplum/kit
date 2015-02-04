@@ -16,6 +16,12 @@
     <ClCompile Include="..\..\source\kit\resources.cpp" />
     <ClCompile Include="..\..\source\kit\font.cpp" />
     <ClCompile Include="..\..\source\kit\gui_text.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_entity.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_model.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_light.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_camera.cpp" />
+    <ClCompile Include="..\..\source\kit\scene_object.cpp" />
+    <ClCompile Include="..\..\source\kit\scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
@@ -35,5 +41,11 @@
     <ClInclude Include="..\..\source\kit\resources.h" />
     <ClInclude Include="..\..\source\kit\font.h" />
     <ClInclude Include="..\..\source\kit\gui_text.h" />
+    <ClInclude Include="..\..\source\kit\scene_model.h" />
+    <ClInclude Include="..\..\source\kit\scene_entity.h" />
+    <ClInclude Include="..\..\source\kit\scene_light.h" />
+    <ClInclude Include="..\..\source\kit\scene_camera.h" />
+    <ClInclude Include="..\..\source\kit\scene_object.h" />
+    <ClInclude Include="..\..\source\kit\scene.h" />
   </ItemGroup>
 </Project>

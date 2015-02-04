@@ -1,6 +1,6 @@
 #include "scene_object.h"
 #include "scene_model.h"
-#include "resource_cache.h"
+#include "resources.h"
 
 float SceneObject::getScale() const
 {
@@ -24,6 +24,6 @@ void SceneObject::setModel(Ptr<SceneModel> model)
 
 void SceneObject::setModel(std::string const & filename)
 {
-	model = ResourceCache::getModelFromFile(filename);
+	model = sceneModelCache->load(filename);
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "serialize.h"
 #include <initializer_list>
 #include <exception>
 #include <cassert>
@@ -154,6 +155,12 @@ template <unsigned int dim, typename T> Coord<dim, T> operator * (Coord<dim, T> 
 
 // Returns v / a. Beware of truncation if they are both integers.
 template <unsigned int dim, typename T> Coord<dim, T> operator / (Coord<dim, T> v, T a);
+
+// Serializes v to out.
+template <unsigned int dim, typename T> void serialize(std::ostream & out, Coord<dim, T> const & v);
+
+// Deserialize v from in.
+template <unsigned int dim, typename T> void deserialize(std::istream & in, Coord<dim, T> & v);
 
 // Template implementations
 
@@ -632,5 +639,23 @@ Coord<dim, T> operator / (Coord<dim, T> v, T a)
 		r[i] = v[i] / a;
 	}
 	return r;
+}
+
+template <unsigned int dim, typename T>
+void serialize(std::ostream & out, Coord<dim, T> const & v)
+{
+	for(unsigned int i = 0; i < dim; i++)
+	{
+		serialize(out, v[i]);
+	}
+}
+
+template <unsigned int dim, typename T>
+void deserialize(std::istream & in, Coord<dim, T> & v)
+{
+	for(unsigned int i = 0; i < dim; i++)
+	{
+		deserialize(in, v[i]);
+	}
 }
 
