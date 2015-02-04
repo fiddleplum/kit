@@ -3,6 +3,8 @@
 #include <istream>
 #include <ostream>
 #include <exception>
+#include <string>
+#include <vector>
 
 inline void serialize(std::ostream & out, void const * v, int numBytes)
 {
@@ -163,5 +165,43 @@ inline void deserialize(std::istream & in, double & v)
 {
 	v = 0;
 	deserialize(in, (void *)&v, 8);
+}
+
+inline void serialize(std::ostream & out, std::string const & v)
+{
+	serialize(out, (unsigned int)v.size());
+	serialize(out, (void const *)&v[0], v.size());
+}
+
+inline void deserialize(std::istream & in, std::string & v)
+{
+	unsigned int size;
+	deserialize(in, size);
+	v.clear();
+	v.resize(size);
+	deserialize(in, (void *)&v[0], v.size());
+}
+
+template <class T>
+void serialize(std::ostream & out, std::vector<T> const & v, void(*serializeItem)(std::ostream &, T const &))
+{
+	serialize(out, (unsigned int)v.size());
+	for(T const & item : v)
+	{
+		serializeItem(out, item);
+	}
+}
+
+template <class T>
+void deserialize(std::istream & in, std::vector<T> & v, void(*deserializeItem)(std::istream &, T &))
+{
+	unsigned int size;
+	deserialize(in, size);
+	v.clear();
+	v.resize(size);
+	for(T & item : v)
+	{
+		deserializeItem(in, item);
+	}
 }
 
