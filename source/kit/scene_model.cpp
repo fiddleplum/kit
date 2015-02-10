@@ -114,16 +114,22 @@ void SceneModel::setIndices(unsigned int const * indices, unsigned int numIndice
 	vertexBufferObject->setIndices(indices, numIndices);
 }
 
-void SceneModel::addTextureFromFile(std::string const & filename, std::string const & type, unsigned int uvIndex)
+void SceneModel::addTexture(Ptr<Texture> texture, std::string const & type, unsigned int uvIndex)
 {
 	TextureInfo textureInfo;
-	textureInfo.texture = textureCache->load(filename, filename);
+	textureInfo.texture = texture;
 	textureInfo.type = type;
 	textureInfo.samplerLocation = -1;
 	textureInfo.uvIndex = uvIndex;
 	textureInfos.push_back(textureInfo);
 	shaderDirty = true;
 	sorted = false;
+}
+
+void SceneModel::addTextureFromFile(std::string const & filename, std::string const & type, unsigned int uvIndex)
+{
+	Ptr<Texture> texture = textureCache->load(filename, filename);
+	addTexture(texture, type, uvIndex);
 }
 
 void SceneModel::clearTextures()

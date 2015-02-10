@@ -39,7 +39,7 @@ void GuiText::setText(std::string const & text)
 		throw std::runtime_error("Please set a font first. ");
 	}
 	Coord2i textSize;
-	models = font->getGuiModelsFromText(text, textSize);
+	font->getGuiModelsFromText(text, models, textSize);
 	bounds.max = bounds.min + textSize;
 	for(auto model : models)
 	{

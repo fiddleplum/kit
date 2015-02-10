@@ -2,6 +2,7 @@
 
 #include "coord.h"
 #include "ptr.h"
+#include "rect.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -10,6 +11,7 @@
 
 typedef struct _TTF_Font TTF_Font;
 class GuiModel;
+class SceneModel;
 class Texture;
 
 class Font
@@ -17,10 +19,12 @@ class Font
 public:
 	Font(std::string const & filename, int size);
 	~Font();
-	std::vector<OwnPtr<GuiModel>> getGuiModelsFromText(std::string const & text, Coord2i & textSize);
+	void getGuiModelsFromText(std::string const & text, std::vector<OwnPtr<GuiModel>> & models, Coord2i & textSize);
+	void getSceneModelsFromText(std::string const & text, std::vector<OwnPtr<SceneModel>> & models, Coord2i & textSize);
 
 private:
 	void loadBlock(int unicodeStart);
+	bool getInfoFromChar(unsigned int c, Coord2i & pos, Recti & bounds, Recti & uvBounds, Ptr<Texture> & texture);
 
 	struct Block
 	{
