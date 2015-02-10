@@ -12,7 +12,13 @@ Recti GuiViewport::getBounds() const
 
 void GuiViewport::setPosition(Coord2i position)
 {
-	bounds.setMinKeepSize(position);
+	bounds.max += position - bounds.min;
+	bounds.min = position;
+}
+
+void GuiViewport::setSize(Coord2i size)
+{
+	bounds.max = bounds.min + size - Coord2i{1, 1};
 }
 
 Ptr<SceneCamera> GuiViewport::getCamera() const
@@ -23,9 +29,9 @@ Ptr<SceneCamera> GuiViewport::getCamera() const
 void GuiViewport::setCamera(Ptr<SceneCamera> camera)
 {
 	this->camera = camera;
-	if(bounds.getSize()[1] != 0)
+	if(bounds.max[1] - bounds.min[1] + 1 != 0)
 	{
-		camera->setAspectRatio((float)bounds.getSize()[0] / (float)bounds.getSize()[1]);
+		camera->setAspectRatio((float)(bounds.max[0] - bounds.min[0] + 1) / (float)(bounds.max[1] - bounds.min[1] + 1));
 	}
 }
 

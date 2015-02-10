@@ -3,6 +3,7 @@
 //#include "input_system.h"
 #include "resources.h"
 #include "window.h"
+#include "scene.h"
 #include <SDL.h>
 
 //#include "audio.h"
@@ -33,6 +34,8 @@ App::App(std::vector<std::string> const & args)
 
 App::~App()
 {
+	scenes.clear();
+	windows.clear();
 	// Destroy the singletons.
 	fontCache.setNull();
 	textureCache.setNull();
@@ -58,24 +61,21 @@ Ptr<Window> App::addWindow(std::string const & title)
 		glContext = SDL_GL_CreateContext(window->getSDLWindow());
 		glInitialize();
 	}
-	auto it = windows.insert(windows.end(), window);
-	windowLookup[window] = it;
+	windows.insert(window);
 	return window;
 }
 
 void App::removeWindow(Ptr<Window> window)
 {
-	//if(!scenes.empty() && windows.size() == 1 && *windows.begin() == window)
-	//{
-	//	throw std::runtime_error("All scenes must be removed before the last window is removed.");
-	//}
-	auto it = windowLookup.find(window);
-	if(it == windowLookup.end())
+	if(!window.isValid())
 	{
-		throw std::exception();
+		throw std::runtime_error("Invalid window.");
 	}
-	windows.erase(it->second);
-	windowLookup.erase(window);
+	if(!scenes.empty() && windows.size() == 1)
+	{
+		throw std::runtime_error("All scenes must be removed before the last window is removed.");
+	}
+	windows.erase(window);
 	if(windows.empty())
 	{
 		SDL_GL_DeleteContext(glContext);
@@ -83,22 +83,26 @@ void App::removeWindow(Ptr<Window> window)
 	}
 }
 
-//Ptr<scene::Scene> addScene()
-//{
-//	if(windows.empty())
-//	{
-//		throw std::runtime_error("A scene may not be created until a window has been created.");
-//	}
-//	OwnPtr<scene::Scene> scene;
-//	scene.create();
-//	scenes.insert(scene);
-//	return scene;
-//}
-//
-//void removeScene(Ptr<scene::Scene> scene)
-//{
-//	_scenes.erase(scene);
-//}
+Ptr<Scene> App::addScene()
+{
+	if(windows.empty())
+	{
+		throw std::runtime_error("A scene may not be created until a window has been created.");
+	}
+	OwnPtr<Scene> scene;
+	scene.setNew();
+	scenes.insert(scene);
+	return scene;
+}
+
+void App::removeScene(Ptr<Scene> scene)
+{
+	if(!scene.isValid())
+	{
+		throw std::runtime_error("Invalid scene.");
+	}
+	scenes.erase(scene);
+}
 
 void App::showMessage(std::string const & message)
 {
@@ -133,28 +137,27 @@ void App::loop()
 		//}
 
 		// Update
+		float dt = 1.f / targetFrameRate;
 		for(auto & window : windows)
 		{
-			window->update(1.f / targetFrameRate);
+			window->update(dt);
 		}
-		//for(auto & scene : app->scenes)
-		//{
-		//	UpdateEvent event = UpdateEvent(Ptr<Window>());
-		//	event.dt = 1.f / targetFrameRate;
-		//	scene->handleEvent(event);
-		//}
+		for(auto & scene : scenes)
+		{
+			scene->update(dt);
+		}
 
 		// PreRender Update
 		for(auto & window : windows)
 		{
 			window->preRenderUpdate();
 		}
-		//for(auto scene : app->scenes)
-		//{
-		//	scene->handleEvent(PreRenderUpdateEvent(Ptr<Window>()));
-		//}
+		for(auto scene : scenes)
+		{
+			scene->preRenderUpdate();
+		}
 
-		// Render
+		// Render (Scene render happens in each Viewport)
 		for(auto const & window : windows)
 		{
 			window->render(glContext);
@@ -186,7 +189,7 @@ void App::handleSDLEvent(SDL_Event const & sdlEvent)
 			switch(sdlEvent.window.event)
 			{
 				case SDL_WINDOWEVENT_CLOSE:
-					removeWindow(window);
+					quit();
 					break;
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
 					window->handleResize({sdlEvent.window.data1, sdlEvent.window.data2});

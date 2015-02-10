@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\source\kit\scene_camera.cpp" />
     <ClCompile Include="..\..\source\kit\scene_object.cpp" />
     <ClCompile Include="..\..\source\kit\scene.cpp" />
+    <ClCompile Include="..\..\source\kit\gui_viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\kit\event.h" />
@@ -47,5 +48,6 @@
     <ClInclude Include="..\..\source\kit\scene_camera.h" />
     <ClInclude Include="..\..\source\kit\scene_object.h" />
     <ClInclude Include="..\..\source\kit\scene.h" />
+    <ClInclude Include="..\..\source\kit\gui_viewport.h" />
   </ItemGroup>
 </Project>

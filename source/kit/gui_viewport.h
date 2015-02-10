@@ -7,6 +7,7 @@
 class GuiViewport : public GuiElement
 {
 public:
+	// Constructor.
 	GuiViewport();
 
 	// Implements parent.
@@ -14,6 +15,9 @@ public:
 
 	// Implements parent.
 	void setPosition(Coord2i position) override;
+
+	// Implements parent.
+	void setSize(Coord2i size) override;
 
 	// Implements parent.
 	void render(Coord2i windowSize) const override;

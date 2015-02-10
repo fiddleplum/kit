@@ -31,7 +31,7 @@ public:
 	// The cursorPosition is relative to the parent window.
 	// If the cursor position is inside the window and not blocked by another widget, cursorPositionIsValid is true.
 	// Returns true if the event is consumed.
-	virtual bool handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid) = 0;
+	virtual bool handleEvent(Event const & event, Coord2i cursorPosition, bool cursorPositionIsValid);
 
 	// Called by GuiContainer to update the element every frame.
 	virtual void update(float dt) {}

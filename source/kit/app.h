@@ -11,6 +11,7 @@
 #pragma comment (lib, "SDL2main.lib")
 
 #include "ptr.h"
+#include "ptr_set.h"
 #include <list>
 #include <vector>
 #include <string>
@@ -46,10 +47,10 @@ public:
 	void removeWindow(Ptr<Window> window);
 
 	// Adds a scene.
-	//Ptr<Scene> addScene();
+	Ptr<Scene> addScene();
 
 	// Removes a scene.
-	//void removeScene(Ptr<Scene> scene);
+	void removeScene(Ptr<Scene> scene);
 
 	// Shows a message dialog box.
 	void showMessage(std::string const & message);
@@ -61,8 +62,8 @@ private:
 	void handleSDLEvent(SDL_Event const & event);
 	Ptr<Window> getWindowFromId(unsigned int id) const;
 
-	std::list<OwnPtr<Window>> windows;
-	std::map<Ptr<Window>, std::list<OwnPtr<Window>>::iterator> windowLookup;
+	PtrSet<Window> windows;
+	PtrSet<Scene> scenes;
 	bool looping;
 	float targetFrameRate;
 	SDL_GLContext glContext;

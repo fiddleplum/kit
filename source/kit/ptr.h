@@ -515,7 +515,7 @@ Ptr<T> & Ptr<T>::operator = (Ptr<T> const & ptr)
 template <class T> template <class Y>
 Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 {
-	destroy();
+	setNull();
 	p = ptr.p;
 	c = ptr.c;
 	if(p != nullptr)
@@ -528,7 +528,7 @@ Ptr<T> & Ptr<T>::operator = (Ptr<Y> const & ptr)
 template <class T> template <class Y>
 Ptr<T> & Ptr<T>::operator = (OwnPtr<Y> const & ptr)
 {
-	destroy();
+	setNull();
 	p = ptr.p;
 	c = ptr.c;
 	if(p != nullptr)

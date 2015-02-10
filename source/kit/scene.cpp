@@ -41,11 +41,37 @@ void Scene::setEventHandler(std::function<void(Event const &)> eventHandler)
 	this->eventHandler = eventHandler;
 }
 
+void Scene::setUpdateHandler(std::function<void(float)> updateHandler)
+{
+	this->updateHandler = updateHandler;
+}
+
+void Scene::setPreRenderUpdateHandler(std::function<void()> preRenderUpdateHandler)
+{
+	this->preRenderUpdateHandler = preRenderUpdateHandler;
+}
+
 void Scene::handleEvent(Event const & event)
 {
 	if(eventHandler)
 	{
 		eventHandler(event);
+	}
+}
+
+void Scene::update(float dt)
+{
+	if(updateHandler)
+	{
+		updateHandler(dt);
+	}
+}
+
+void Scene::preRenderUpdate()
+{
+	if(preRenderUpdateHandler)
+	{
+		preRenderUpdateHandler();
 	}
 }
 

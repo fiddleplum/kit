@@ -96,6 +96,10 @@ int Window::getDisplay() const
 	throw std::runtime_error("Could not get the display the window is within. ");
 }
 
+void handleClose()
+{
+}
+
 void Window::handleResize(Coord2i size)
 {
 	root->setSize(size);

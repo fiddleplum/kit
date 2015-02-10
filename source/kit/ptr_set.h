@@ -9,25 +9,31 @@
 template <class T, class Compare = std::less<OwnPtr<T>>> class PtrSet
 {
 public:
-	typename std::set<OwnPtr<T>, Compare>::iterator insert(OwnPtr<T> object);
+	typedef typename std::set<OwnPtr<T>, Compare>::iterator iterator;
+	typedef typename std::set<OwnPtr<T>, Compare>::const_iterator const_iterator;
+	typedef typename std::set<OwnPtr<T>, Compare>::size_type size_type;
 
-	typename std::set<OwnPtr<T>, Compare>::iterator erase(Ptr<T> object);
+	iterator insert(OwnPtr<T> object);
+
+	iterator erase(Ptr<T> object);
+
+	void clear();
 
 	bool empty() const;
 
-	typename std::set<OwnPtr<T>, Compare>::size_type size() const;
+	size_type size() const;
 
-	typename std::set<OwnPtr<T>, Compare>::iterator find(Ptr<T> object);
+	iterator find(Ptr<T> object);
 
-	typename std::set<OwnPtr<T>, Compare>::const_iterator find(Ptr<T> object) const;
+	const_iterator find(Ptr<T> object) const;
 
-	typename std::set<OwnPtr<T>, Compare>::iterator begin();
+	iterator begin();
 
-	typename std::set<OwnPtr<T>, Compare>::iterator end();
+	iterator end();
 
-	typename std::set<OwnPtr<T>, Compare>::const_iterator cbegin() const;
+	const_iterator begin() const;
 
-	typename std::set<OwnPtr<T>, Compare>::const_iterator cend() const;
+	const_iterator end() const;
 
 private:
 	std::set<OwnPtr<T>, Compare> objects;
@@ -37,7 +43,7 @@ private:
 // Template Implementation
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::insert(OwnPtr<T> object)
+typename PtrSet<T, Compare>::iterator PtrSet<T, Compare>::insert(OwnPtr<T> object)
 {
 	auto iterator = objects.insert(object);
 	objectLookup[object] = iterator.first;
@@ -45,7 +51,7 @@ typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::insert(OwnPt
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::erase(Ptr<T> object)
+typename PtrSet<T, Compare>::iterator PtrSet<T, Compare>::erase(Ptr<T> object)
 {
 	auto iterator = objectLookup.find(object);
 	typename std::set<OwnPtr<T>, Compare>::iterator returnIterator;
@@ -62,19 +68,26 @@ typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::erase(Ptr<T>
 }
 
 template <class T, class Compare>
+void PtrSet<T, Compare>::clear()
+{
+	objectLookup.clear();
+	objects.clear();
+}
+
+template <class T, class Compare>
 bool PtrSet<T, Compare>::empty() const
 {
 	return objects.empty();
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::size_type PtrSet<T, Compare>::size() const
+typename PtrSet<T, Compare>::size_type PtrSet<T, Compare>::size() const
 {
 	return objects.size();
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::find(Ptr<T> object)
+typename PtrSet<T, Compare>::iterator PtrSet<T, Compare>::find(Ptr<T> object)
 {
 	auto iterator = objectLookup.find(object);
 	if(iterator != objectLookup.end())
@@ -85,7 +98,7 @@ typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::find(Ptr<T> 
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::const_iterator PtrSet<T, Compare>::find(Ptr<T> object) const
+typename PtrSet<T, Compare>::const_iterator PtrSet<T, Compare>::find(Ptr<T> object) const
 {
 	auto iterator = objectLookup.find(object);
 	if(iterator != objectLookup.end())
@@ -96,26 +109,26 @@ typename std::set<OwnPtr<T>, Compare>::const_iterator PtrSet<T, Compare>::find(P
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::begin()
+typename PtrSet<T, Compare>::iterator PtrSet<T, Compare>::begin()
 {
 	return objects.begin();
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::iterator PtrSet<T, Compare>::end()
+typename PtrSet<T, Compare>::iterator PtrSet<T, Compare>::end()
 {
 	return objects.end();
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::const_iterator PtrSet<T, Compare>::cbegin() const
+typename PtrSet<T, Compare>::const_iterator PtrSet<T, Compare>::begin() const
 {
-	return objects.cbegin();
+	return objects.begin();
 }
 
 template <class T, class Compare>
-typename std::set<OwnPtr<T>, Compare>::const_iterator PtrSet<T, Compare>::cend() const
+typename PtrSet<T, Compare>::const_iterator PtrSet<T, Compare>::end() const
 {
-	return objects.cend();
+	return objects.end();
 }
 

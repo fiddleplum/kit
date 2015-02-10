@@ -27,8 +27,18 @@ public:
 
 	void setEventHandler(std::function<void(Event const &)> eventHandler);
 
+	void setUpdateHandler(std::function<void(float)> updateHandler);
+
+	void setPreRenderUpdateHandler(std::function<void()> preRenderUpdateHandler);
+
 	// Called by app to handle an event.
 	void handleEvent(Event const & event);
+
+	// Called by App to update the scene every frame.
+	void update(float dt);
+
+	// Called by App to update the scene after a regular update but before the render. Good for things that keep track of other scene elements.
+	void preRenderUpdate();
 
 	// Called by GuiViewport to render the scene.
 	void render(Ptr<SceneCamera> camera);
@@ -44,5 +54,7 @@ private:
 	PtrSet<SceneCamera> cameras;
 	PtrSet<SceneObject, ObjectCompare> objects;
 	std::function<void(Event const &)> eventHandler;
+	std::function<void(float)> updateHandler;
+	std::function<void()> preRenderUpdateHandler;
 };
 
